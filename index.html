@@ -94,7 +94,7 @@
   .section-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--aqua); }
 
   /* ── SECTION HEADER ── */
-  .sec-hdr { display: flex; align-items: center; gap: 12px; }
+  .sec-hdr { display: flex; align-items: flex-start; gap: 12px; }
   .sec-icon {
     width: 36px; height: 36px; border-radius: 10px; background: var(--pale-lav);
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -107,7 +107,7 @@
 
   /* ── STEP ROWS ── */
   .step {
-    display: flex; align-items: center; gap: 14px;
+    display: flex; align-items: flex-start; gap: 14px;
     background: var(--white); border: 1px solid var(--border);
     border-radius: var(--r); padding: 18px 22px;
   }
@@ -193,8 +193,8 @@
   .metric-kpi-value { font-size: 30px; font-weight: 700; color: var(--white); line-height: 1.2; min-height: 72px; }
   .metric-sec-label { font-size: 17px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.70); margin-top: 6px; margin-bottom: 14px; }
   .metric-sec-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
-  .metric-sec-list li { font-size: 20px; font-weight: 400; color: rgba(255,255,255,0.74); display: flex; align-items: center; gap: 9px; }
-  .metric-sec-list li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--aqua); opacity: 0.5; flex-shrink: 0; }
+  .metric-sec-list li { font-size: 20px; font-weight: 400; color: rgba(255,255,255,0.74); display: flex; align-items: flex-start; gap: 9px; line-height: 1.4; }
+  .metric-sec-list li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--aqua); opacity: 0.5; flex-shrink: 0; margin-top: 9px; }
 
   /* ── UTM TABLE ── */
   .utm-hdr { display: grid; grid-template-columns: 280px 170px 1fr; background: var(--plum); }
@@ -273,23 +273,27 @@
   .pdf-fab-saved { position: fixed; bottom: 88px; right: 36px; z-index: 9998; font-family: var(--font); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.70); background: rgba(36,4,70,0.72); border-radius: 8px; padding: 5px 12px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
   .pdf-fab-saved.show { opacity: 1; }
 
-  /* ── OFFLINE / SYNC-FAILURE BANNER ── */
+  /* ── SYNC STATUS BANNER (offline / back-online) ── */
   .sync-banner {
     position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-12px);
     z-index: 10000; display: flex; align-items: flex-start; gap: 10px;
-    background: #47170D; color: #FFE3D6; border: 1px solid rgba(255,150,110,0.35);
     border-radius: 10px; padding: 11px 14px 11px 16px; max-width: 560px;
     font-family: var(--font); font-size: 13.5px; font-weight: 500; line-height: 1.4;
     box-shadow: 0 8px 28px rgba(0,0,0,0.35);
     opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease;
   }
   .sync-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+  .sync-banner--offline { background: #47170D; color: #FFE3D6; border: 1px solid rgba(255,150,110,0.35); }
+  .sync-banner--online  { background: #0F3D24; color: #D6FCE8; border: 1px solid rgba(90,220,150,0.35); }
   .sync-banner svg { flex: 0 0 auto; margin-top: 1px; }
   .sync-banner .sync-banner-close {
-    flex: 0 0 auto; background: none; border: none; color: rgba(255,227,214,0.75); cursor: pointer;
+    flex: 0 0 auto; background: none; border: none; cursor: pointer;
     padding: 2px; margin-left: 2px; margin-top: 1px; line-height: 0; border-radius: 4px;
   }
-  .sync-banner .sync-banner-close:hover { color: #FFE3D6; background: rgba(255,255,255,0.08); }
+  .sync-banner--offline .sync-banner-close { color: rgba(255,227,214,0.75); }
+  .sync-banner--offline .sync-banner-close:hover { color: #FFE3D6; background: rgba(255,255,255,0.08); }
+  .sync-banner--online .sync-banner-close { color: rgba(214,252,232,0.75); }
+  .sync-banner--online .sync-banner-close:hover { color: #D6FCE8; background: rgba(255,255,255,0.08); }
   @media print {
     .pdf-fab, .pdf-fab-saved, .sync-banner { display: none !important; }
     [contenteditable] { outline: none !important; box-shadow: none !important; }
@@ -1316,22 +1320,52 @@ document.addEventListener('click',function(e){
   var LOCAL_FALLBACK_KEY = 'knomee_playbook_local_fallback_v1';
   var deck = document.querySelector('.deck');
 
-  /* ── Offline / sync-failure banner ── */
+  /* ── Sync status banner (offline warning / back-online confirmation) ── */
   var banner = document.createElement('div');
   banner.className = 'sync-banner';
   banner.innerHTML =
-    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
-    '</svg>' +
-    '<span>Server disconnected — changes are being saved locally only. Export PDF to keep your copy.</span>' +
+    '<span class="sync-banner-icon"></span>' +
+    '<span class="sync-banner-text"></span>' +
     '<button class="sync-banner-close" aria-label="Dismiss" type="button">' +
       '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
     '</button>';
   document.body.appendChild(banner);
+  var bannerIcon = banner.querySelector('.sync-banner-icon');
+  var bannerText = banner.querySelector('.sync-banner-text');
+  var bannerHideTimer = null;
+  var wasOffline = false;
+
+  var WARNING_ICON =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
+    '</svg>';
+  var CHECK_ICON =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9"/>' +
+    '</svg>';
+
+  function showSyncBanner() {
+    clearTimeout(bannerHideTimer);
+    banner.className = 'sync-banner sync-banner--offline show';
+    bannerIcon.innerHTML = WARNING_ICON;
+    bannerText.textContent = 'Server disconnected — changes are being saved locally only. Export PDF to keep your copy.';
+    wasOffline = true;
+  }
+
+  function showBackOnlineBanner() {
+    if (!wasOffline) return; // only announce recovery if we'd actually shown the offline warning
+    wasOffline = false;
+    clearTimeout(bannerHideTimer);
+    banner.className = 'sync-banner sync-banner--online show';
+    bannerIcon.innerHTML = CHECK_ICON;
+    bannerText.textContent = 'Back online — changes are syncing again.';
+    bannerHideTimer = setTimeout(function () { banner.classList.remove('show'); }, 5000);
+  }
+
   banner.querySelector('.sync-banner-close').addEventListener('click', function () {
+    clearTimeout(bannerHideTimer);
     banner.classList.remove('show');
   });
-  function showSyncBanner() { banner.classList.add('show'); }
 
   /* Firestore promises never reject while offline (writes just queue silently),
      so treat a slow response as "unreachable" too. */
@@ -1400,6 +1434,7 @@ document.addEventListener('click',function(e){
       deck.innerHTML = snap.data().html;
       reapplyNavState();
     }
+    showBackOnlineBanner();
   }).catch(function (err) {
     console.warn('Knomee playbook: could not load shared content', err);
     showSyncBanner();
@@ -1424,6 +1459,7 @@ document.addEventListener('click',function(e){
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }), 6000).then(function () {
         if (toast) { toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1400); }
+        showBackOnlineBanner();
       }).catch(function (err) {
         console.warn('Knomee playbook: save failed, falling back to local storage', err);
         localStorage.setItem(LOCAL_FALLBACK_KEY, html);
