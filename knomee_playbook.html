@@ -1392,43 +1392,47 @@ document.addEventListener('click',function(e){
     return hasText && !hasBlock;
   }
 
+  /* Only the text of each editable element is ever saved/synced — not the
+     surrounding page markup, and not the embedded portrait image. Each
+     editable leaf gets a stable id (assigned in a fixed DOM-order walk that
+     never changes, since only text content is ever edited) so saved text
+     can be mapped back to the right element. This keeps synced payloads at
+     a few KB instead of multiple MB, comfortably under Firestore's 1 MiB
+     per-document limit (the earlier full-HTML approach exceeded it, which
+     is why every single save had always silently failed). */
+  var editIdCounter = 0;
   function applyEditable(root) {
     if (!root || SKIP.has(root.tagName)) return;
     if (isTextLeaf(root)) {
       root.contentEditable = 'true';
       root.spellcheck = false;
+      root.setAttribute('data-edit-id', String(editIdCounter++));
     } else {
       for (var i = 0; i < root.children.length; i++) applyEditable(root.children[i]);
     }
   }
 
-  /* ── SAVE: strip contenteditable before storing ── */
-  function cleanHTML() {
-    var clone = deck.cloneNode(true);
-    clone.querySelectorAll('[contenteditable]').forEach(function (el) {
-      el.removeAttribute('contenteditable');
-      el.removeAttribute('spellcheck');
+  /* ── SAVE: collect each editable element's HTML, keyed by its edit-id ── */
+  function collectEdits() {
+    var edits = {};
+    deck.querySelectorAll('[data-edit-id]').forEach(function (el) {
+      edits[el.getAttribute('data-edit-id')] = el.innerHTML;
     });
-    return clone.innerHTML;
+    return edits;
   }
 
-  /* ── re-apply nav active-state highlighting ── */
-  function reapplyNavState() {
-    var navTargets = ['contents','hot','warm','engaged','disengaged','appendix'];
-    var introIds   = ['overview','lifecycle','prep'];
-    var current = null;
-    document.querySelectorAll('.page').forEach(function (pg) {
-      var id = pg.id;
-      if (navTargets.indexOf(id) !== -1)      current = id;
-      else if (introIds.indexOf(id) !== -1)   current = null;
-      var nav = pg.querySelector('.topnav');
-      if (!nav || !current) return;
-      var link = nav.querySelector('a[href="#' + current + '"]');
-      if (link) link.classList.add('active');
+  /* ── LOAD: overlay saved text onto the already-editable elements ── */
+  function applyEdits(edits) {
+    if (!edits) return;
+    deck.querySelectorAll('[data-edit-id]').forEach(function (el) {
+      var id = el.getAttribute('data-edit-id');
+      if (Object.prototype.hasOwnProperty.call(edits, id)) {
+        el.innerHTML = edits[id];
+      }
     });
   }
 
-  /* local fallback is stored as {html, savedAt} so we can tell whether it's
+  /* local fallback is stored as {edits, savedAt} so we can tell whether it's
      newer than whatever Firestore has (Firestore reads can succeed even
      when a prior write silently failed, so "load succeeded" doesn't mean
      "load has your latest edits"). */
@@ -1437,14 +1441,14 @@ document.addEventListener('click',function(e){
     if (!raw) return null;
     try {
       var parsed = JSON.parse(raw);
-      return parsed && parsed.html ? parsed : null;
+      return parsed && parsed.edits ? parsed : null;
     } catch (e) {
-      return null; // pre-existing plain-string value from an older version
+      return null; // pre-existing value from an older version
     }
   }
-  function writeLocalFallback(html) {
+  function writeLocalFallback(edits) {
     try {
-      localStorage.setItem(LOCAL_FALLBACK_KEY, JSON.stringify({ html: html, savedAt: Date.now() }));
+      localStorage.setItem(LOCAL_FALLBACK_KEY, JSON.stringify({ edits: edits, savedAt: Date.now() }));
     } catch (e) {
       /* Quota errors throw synchronously and would otherwise silently
          swallow the whole catch handler, hiding the failure entirely. */
@@ -1452,18 +1456,19 @@ document.addEventListener('click',function(e){
     }
   }
 
+  /* Editable ids must exist before we can apply saved text onto them. */
+  applyEditable(deck);
+
   /* ── RESTORE saved content: use whichever of Firestore / local is newer ── */
   withTimeout(docRef.get({ source: 'server' }), 7000).then(function (snap) {
     var local = readLocalFallback();
-    var remoteHtml = snap.exists ? snap.data().html : null;
+    var remoteEdits = (snap.exists && snap.data().edits) ? JSON.parse(snap.data().edits) : null;
     var remoteMs = (snap.exists && snap.data().updatedAt) ? snap.data().updatedAt.toMillis() : 0;
     if (local && local.savedAt > remoteMs) {
-      deck.innerHTML = local.html;
-      reapplyNavState();
+      applyEdits(local.edits);
       showSyncBanner(); // local copy is ahead of the server — still not fully synced
-    } else if (remoteHtml) {
-      deck.innerHTML = remoteHtml;
-      reapplyNavState();
+    } else if (remoteEdits) {
+      applyEdits(remoteEdits);
       showBackOnlineBanner();
     } else {
       showBackOnlineBanner();
@@ -1472,12 +1477,7 @@ document.addEventListener('click',function(e){
     console.warn('Knomee playbook: could not load shared content', err);
     showSyncBanner();
     var local = readLocalFallback();
-    if (local) {
-      deck.innerHTML = local.html;
-      reapplyNavState();
-    }
-  }).then(function () {
-    applyEditable(deck);
+    if (local) applyEdits(local.edits);
   });
 
   /* ── Auto-save (debounced 600 ms), with local fallback on failure ── */
@@ -1486,9 +1486,10 @@ document.addEventListener('click',function(e){
   deck.addEventListener('input', function () {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
-      var html = cleanHTML();
+      var edits = collectEdits();
+      var editsJson = JSON.stringify(edits);
       withTimeout(docRef.set({
-        html: html,
+        edits: editsJson,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }), 6000).then(function () {
         /* A resolved set() promise isn't airtight proof the write reached
@@ -1496,7 +1497,7 @@ document.addEventListener('click',function(e){
            server-side read before trusting it and clearing local fallback. */
         return withTimeout(docRef.get({ source: 'server' }), 6000);
       }).then(function (verifySnap) {
-        if (!verifySnap.exists || verifySnap.data().html !== html) {
+        if (!verifySnap.exists || verifySnap.data().edits !== editsJson) {
           throw new Error('write did not verify against server');
         }
         if (toast) { toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1400); }
@@ -1504,7 +1505,7 @@ document.addEventListener('click',function(e){
         showBackOnlineBanner();
       }).catch(function (err) {
         console.warn('Knomee playbook: save failed, falling back to local storage', err);
-        writeLocalFallback(html);
+        writeLocalFallback(edits);
         showSyncBanner();
       });
     }, 600);
