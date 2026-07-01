@@ -1428,19 +1428,46 @@ document.addEventListener('click',function(e){
     });
   }
 
-  /* ── RESTORE saved content: try Firestore first, fall back to local ── */
-  withTimeout(docRef.get(), 7000).then(function (snap) {
-    if (snap.exists && snap.data().html) {
-      deck.innerHTML = snap.data().html;
-      reapplyNavState();
+  /* local fallback is stored as {html, savedAt} so we can tell whether it's
+     newer than whatever Firestore has (Firestore reads can succeed even
+     when a prior write silently failed, so "load succeeded" doesn't mean
+     "load has your latest edits"). */
+  function readLocalFallback() {
+    var raw = localStorage.getItem(LOCAL_FALLBACK_KEY);
+    if (!raw) return null;
+    try {
+      var parsed = JSON.parse(raw);
+      return parsed && parsed.html ? parsed : null;
+    } catch (e) {
+      return null; // pre-existing plain-string value from an older version
     }
-    showBackOnlineBanner();
+  }
+  function writeLocalFallback(html) {
+    localStorage.setItem(LOCAL_FALLBACK_KEY, JSON.stringify({ html: html, savedAt: Date.now() }));
+  }
+
+  /* ── RESTORE saved content: use whichever of Firestore / local is newer ── */
+  withTimeout(docRef.get(), 7000).then(function (snap) {
+    var local = readLocalFallback();
+    var remoteHtml = snap.exists ? snap.data().html : null;
+    var remoteMs = (snap.exists && snap.data().updatedAt) ? snap.data().updatedAt.toMillis() : 0;
+    if (local && local.savedAt > remoteMs) {
+      deck.innerHTML = local.html;
+      reapplyNavState();
+      showSyncBanner(); // local copy is ahead of the server — still not fully synced
+    } else if (remoteHtml) {
+      deck.innerHTML = remoteHtml;
+      reapplyNavState();
+      showBackOnlineBanner();
+    } else {
+      showBackOnlineBanner();
+    }
   }).catch(function (err) {
     console.warn('Knomee playbook: could not load shared content', err);
     showSyncBanner();
-    var local = localStorage.getItem(LOCAL_FALLBACK_KEY);
+    var local = readLocalFallback();
     if (local) {
-      deck.innerHTML = local;
+      deck.innerHTML = local.html;
       reapplyNavState();
     }
   }).then(function () {
@@ -1459,10 +1486,14 @@ document.addEventListener('click',function(e){
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }), 6000).then(function () {
         if (toast) { toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1400); }
+        /* Don't clear the local fallback here: a resolved promise isn't
+           airtight proof the write actually reached the server under
+           flaky conditions. It phases itself out naturally next load,
+           once Firestore's updatedAt is confirmed newer than it. */
         showBackOnlineBanner();
       }).catch(function (err) {
         console.warn('Knomee playbook: save failed, falling back to local storage', err);
-        localStorage.setItem(LOCAL_FALLBACK_KEY, html);
+        writeLocalFallback(html);
         showSyncBanner();
       });
     }, 600);
