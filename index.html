@@ -251,6 +251,31 @@
   .topnav a { font-size:17px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:rgba(255,255,255,0.60); text-decoration:none; padding:2px 0; border-bottom:2px solid transparent; white-space:nowrap; }
   .topnav a:hover { color:var(--aqua); border-bottom-color:var(--aqua); }
   .topnav a.active { color:var(--aqua); border-bottom-color:var(--aqua); font-weight:700; }
+
+  /* ── EDITABLE TEXT ── */
+  [contenteditable] { cursor: text; }
+  [contenteditable]:hover { outline: 1.5px dashed rgba(155,25,251,0.28); border-radius: 3px; }
+  [contenteditable]:focus { outline: 2px solid rgba(155,25,251,0.55); border-radius: 3px; box-shadow: 0 0 0 4px rgba(155,25,251,0.09); }
+
+  /* ── PDF FAB ── */
+  .pdf-fab {
+    position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+    display: flex; align-items: center; gap: 9px;
+    background: #240446; color: #fff;
+    border: none; border-radius: 100px; padding: 15px 26px;
+    font-family: var(--font); font-size: 15px; font-weight: 600;
+    box-shadow: 0 4px 20px rgba(36,4,70,0.45), 0 1px 4px rgba(36,4,70,0.20);
+    cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    letter-spacing: 0.02em; user-select: none;
+  }
+  .pdf-fab:hover { background: #3D1166; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(36,4,70,0.55); }
+  .pdf-fab:active { transform: translateY(0); box-shadow: 0 3px 12px rgba(36,4,70,0.40); }
+  .pdf-fab-saved { position: fixed; bottom: 88px; right: 36px; z-index: 9998; font-family: var(--font); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.70); background: rgba(36,4,70,0.72); border-radius: 8px; padding: 5px 12px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
+  .pdf-fab-saved.show { opacity: 1; }
+  @media print {
+    .pdf-fab, .pdf-fab-saved { display: none !important; }
+    [contenteditable] { outline: none !important; box-shadow: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -1231,6 +1256,7 @@
 </script>
 <script>
 document.addEventListener('click',function(e){
+  if(e.target.closest&&e.target.closest('[contenteditable]'))return;
   var a=e.target.closest&&e.target.closest('a[href^="#"]');
   if(!a)return; var id=a.getAttribute('href').slice(1); if(!id)return;
   var el=document.getElementById(id); if(!el)return;
@@ -1252,6 +1278,104 @@ document.addEventListener('click',function(e){
     var link = nav.querySelector('a[href="#'+current+'"]');
     if (link) link.classList.add('active');
   });
+})();
+</script>
+<script>
+(function () {
+  var STORAGE_KEY = 'knomee_playbook_v1';
+  var deck = document.querySelector('.deck');
+
+  /* ── EDITABLE: tags we never walk into ── */
+  var SKIP = new Set(['SCRIPT','STYLE','SVG','USE','PATH','DEFS','SYMBOL','CLIPPATH',
+                      'RECT','CIRCLE','G','POLYLINE','POLYGON','LINE','ELLIPSE','A']);
+  /* tags treated as inline (don't count as block children) */
+  var INLINE = new Set(['SPAN','STRONG','EM','B','I','BR','SMALL','SUB','SUP','CODE','ABBR','MARK']);
+
+  function isTextLeaf(el) {
+    var hasText = false, hasBlock = false;
+    for (var i = 0; i < el.childNodes.length; i++) {
+      var n = el.childNodes[i];
+      if (n.nodeType === 3 && n.textContent.trim()) hasText = true;
+      if (n.nodeType === 1 && !INLINE.has(n.tagName))  hasBlock = true;
+    }
+    return hasText && !hasBlock;
+  }
+
+  function applyEditable(root) {
+    if (!root || SKIP.has(root.tagName)) return;
+    if (isTextLeaf(root)) {
+      root.contentEditable = 'true';
+      root.spellcheck = false;
+    } else {
+      for (var i = 0; i < root.children.length; i++) applyEditable(root.children[i]);
+    }
+  }
+
+  /* ── SAVE: strip contenteditable before storing ── */
+  function cleanHTML() {
+    var clone = deck.cloneNode(true);
+    clone.querySelectorAll('[contenteditable]').forEach(function (el) {
+      el.removeAttribute('contenteditable');
+      el.removeAttribute('spellcheck');
+    });
+    return clone.innerHTML;
+  }
+
+  /* ── RESTORE saved content ── */
+  var saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    deck.innerHTML = saved;
+    /* re-apply nav active-state highlighting */
+    (function () {
+      var navTargets = ['contents','hot','warm','engaged','disengaged','appendix'];
+      var introIds   = ['overview','lifecycle','prep'];
+      var current = null;
+      document.querySelectorAll('.page').forEach(function (pg) {
+        var id = pg.id;
+        if (navTargets.indexOf(id) !== -1)      current = id;
+        else if (introIds.indexOf(id) !== -1)   current = null;
+        var nav = pg.querySelector('.topnav');
+        if (!nav || !current) return;
+        var link = nav.querySelector('a[href="#' + current + '"]');
+        if (link) link.classList.add('active');
+      });
+    })();
+  }
+
+  /* ── Apply contenteditable ── */
+  applyEditable(deck);
+
+  /* ── Auto-save (debounced 600 ms) ── */
+  var saveTimer = null;
+  var toast = null;
+  deck.addEventListener('input', function () {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      localStorage.setItem(STORAGE_KEY, cleanHTML());
+      if (toast) { toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1400); }
+    }, 600);
+  });
+
+  /* ── PDF FAB ── */
+  var fab = document.createElement('button');
+  fab.className = 'pdf-fab';
+  fab.innerHTML =
+    '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>' +
+      '<polyline points="14 2 14 8 20 8"/>' +
+      '<line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>' +
+      '<polyline points="10 9 9 9 8 9"/>' +
+    '</svg>' +
+    '<span>Export PDF</span>';
+  document.body.appendChild(fab);
+
+  /* saved toast */
+  toast = document.createElement('div');
+  toast.className = 'pdf-fab-saved';
+  toast.textContent = 'Changes saved';
+  document.body.appendChild(toast);
+
+  fab.addEventListener('click', function () { window.print(); });
 })();
 </script>
 </body>
