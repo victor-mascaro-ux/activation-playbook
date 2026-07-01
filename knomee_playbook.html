@@ -1280,9 +1280,21 @@ document.addEventListener('click',function(e){
   });
 })();
 </script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script>
 (function () {
-  var STORAGE_KEY = 'knomee_playbook_v1';
+  var firebaseConfig = {
+    apiKey: "AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",
+    authDomain: "knomee-playbook.firebaseapp.com",
+    projectId: "knomee-playbook",
+    storageBucket: "knomee-playbook.firebasestorage.app",
+    messagingSenderId: "956493019959",
+    appId: "1:956493019959:web:13f099b4ea42ef948d78b2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var docRef = firebase.firestore().collection('playbook').doc('content');
+
   var deck = document.querySelector('.deck');
 
   /* ── EDITABLE: tags we never walk into ── */
@@ -1321,29 +1333,33 @@ document.addEventListener('click',function(e){
     return clone.innerHTML;
   }
 
-  /* ── RESTORE saved content ── */
-  var saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    deck.innerHTML = saved;
-    /* re-apply nav active-state highlighting */
-    (function () {
-      var navTargets = ['contents','hot','warm','engaged','disengaged','appendix'];
-      var introIds   = ['overview','lifecycle','prep'];
-      var current = null;
-      document.querySelectorAll('.page').forEach(function (pg) {
-        var id = pg.id;
-        if (navTargets.indexOf(id) !== -1)      current = id;
-        else if (introIds.indexOf(id) !== -1)   current = null;
-        var nav = pg.querySelector('.topnav');
-        if (!nav || !current) return;
-        var link = nav.querySelector('a[href="#' + current + '"]');
-        if (link) link.classList.add('active');
-      });
-    })();
+  /* ── re-apply nav active-state highlighting ── */
+  function reapplyNavState() {
+    var navTargets = ['contents','hot','warm','engaged','disengaged','appendix'];
+    var introIds   = ['overview','lifecycle','prep'];
+    var current = null;
+    document.querySelectorAll('.page').forEach(function (pg) {
+      var id = pg.id;
+      if (navTargets.indexOf(id) !== -1)      current = id;
+      else if (introIds.indexOf(id) !== -1)   current = null;
+      var nav = pg.querySelector('.topnav');
+      if (!nav || !current) return;
+      var link = nav.querySelector('a[href="#' + current + '"]');
+      if (link) link.classList.add('active');
+    });
   }
 
-  /* ── Apply contenteditable ── */
-  applyEditable(deck);
+  /* ── RESTORE saved content from Firestore, then apply contenteditable ── */
+  docRef.get().then(function (snap) {
+    if (snap.exists && snap.data().html) {
+      deck.innerHTML = snap.data().html;
+      reapplyNavState();
+    }
+  }).catch(function (err) {
+    console.warn('Knomee playbook: could not load shared content', err);
+  }).then(function () {
+    applyEditable(deck);
+  });
 
   /* ── Auto-save (debounced 600 ms) ── */
   var saveTimer = null;
@@ -1351,8 +1367,14 @@ document.addEventListener('click',function(e){
   deck.addEventListener('input', function () {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
-      localStorage.setItem(STORAGE_KEY, cleanHTML());
-      if (toast) { toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1400); }
+      docRef.set({
+        html: cleanHTML(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function () {
+        if (toast) { toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1400); }
+      }).catch(function (err) {
+        console.warn('Knomee playbook: save failed', err);
+      });
     }, 600);
   });
 
