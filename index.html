@@ -1281,9 +1281,15 @@ document.addEventListener('click',function(e){
   if(e.target.closest&&e.target.closest('[contenteditable]'))return;
   var a=e.target.closest&&e.target.closest('a[href^="#"]');
   if(!a)return; var id=a.getAttribute('href').slice(1); if(!id)return;
-  var el=document.getElementById(id); if(!el)return;
   e.preventDefault();
-  window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 4, behavior:'smooth'});
+  /* Wait for any pending saved-edits load to finish before computing the
+     scroll target — clicking while edits are still applying can shift page
+     heights mid-navigation, landing on unrelated content. */
+  var ready = window.__playbookContentReady || Promise.resolve();
+  ready.then(function () {
+    var el = document.getElementById(id); if (!el) return;
+    window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 4, behavior:'smooth'});
+  });
 });
 </script>
 <script>
@@ -1403,6 +1409,7 @@ document.addEventListener('click',function(e){
   var editIdCounter = 0;
   function applyEditable(root) {
     if (!root || SKIP.has(root.tagName)) return;
+    if (root.classList && root.classList.contains('topbar')) return; // header is never editable/synced
     if (isTextLeaf(root)) {
       root.contentEditable = 'true';
       root.spellcheck = false;
