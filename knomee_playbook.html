@@ -1404,21 +1404,33 @@ document.addEventListener('click',function(e){
   }
 
   /* Only the text of each editable element is ever saved/synced — not the
-     surrounding page markup, and not the embedded portrait image. Each
-     editable leaf gets a stable id (assigned in a fixed DOM-order walk that
-     never changes, since only text content is ever edited) so saved text
-     can be mapped back to the right element. This keeps synced payloads at
-     a few KB instead of multiple MB, comfortably under Firestore's 1 MiB
-     per-document limit (the earlier full-HTML approach exceeded it, which
-     is why every single save had always silently failed). */
-  var editIdCounter = 0;
+     surrounding page markup, and not the embedded portrait image. This keeps
+     synced payloads at a few KB instead of multiple MB, comfortably under
+     Firestore's 1 MiB per-document limit (the earlier full-HTML approach
+     exceeded it, which is why every single save had always silently failed).
+
+     Each editable leaf gets a stable id derived from its page + a hash of
+     its ORIGINAL baked-in content (not a sequential position counter).
+     A counter-based id would shift for every element that follows any time
+     new content is inserted into the deck, silently misapplying old saved
+     edits to the wrong elements. A content-hash id only changes for the
+     specific element whose baked-in text actually changed. */
+  function simpleHash(str) {
+    var hash = 5381;
+    for (var i = 0; i < str.length; i++) hash = ((hash << 5) + hash + str.charCodeAt(i)) | 0;
+    return (hash >>> 0).toString(36);
+  }
+  var editIdOccurrences = {};
   function applyEditable(root) {
     if (!root || SKIP.has(root.tagName)) return;
     if (root.classList && root.classList.contains('topbar')) return; // header is never editable/synced
     if (isTextLeaf(root)) {
       root.contentEditable = 'true';
       root.spellcheck = false;
-      root.setAttribute('data-edit-id', String(editIdCounter++));
+      var page = root.closest('.page');
+      var key = (page ? page.id : 'nopage') + ':' + simpleHash(root.innerHTML);
+      var occurrence = editIdOccurrences[key] = (editIdOccurrences[key] || 0) + 1;
+      root.setAttribute('data-edit-id', key + ':' + occurrence);
     } else {
       for (var i = 0; i < root.children.length; i++) applyEditable(root.children[i]);
     }
