@@ -1430,6 +1430,11 @@ document.addEventListener('click',function(e){
         el.innerHTML = edits[id];
       }
     });
+    /* Edited text can be longer/shorter than the original, changing the
+       deck's real height after the page's one-time load-time fit() already
+       ran — recalculate it (fit() listens for 'resize') so nav scroll
+       targets stay accurate instead of landing on the wrong page. */
+    window.dispatchEvent(new Event('resize'));
   }
 
   /* local fallback is stored as {edits, savedAt} so we can tell whether it's
