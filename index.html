@@ -1443,7 +1443,13 @@ document.addEventListener('click',function(e){
     }
   }
   function writeLocalFallback(html) {
-    localStorage.setItem(LOCAL_FALLBACK_KEY, JSON.stringify({ html: html, savedAt: Date.now() }));
+    try {
+      localStorage.setItem(LOCAL_FALLBACK_KEY, JSON.stringify({ html: html, savedAt: Date.now() }));
+    } catch (e) {
+      /* Quota errors throw synchronously and would otherwise silently
+         swallow the whole catch handler, hiding the failure entirely. */
+      console.error('Knomee playbook: could not save local fallback (storage full or blocked)', e);
+    }
   }
 
   /* ── RESTORE saved content: use whichever of Firestore / local is newer ── */
