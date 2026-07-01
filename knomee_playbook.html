@@ -1471,8 +1471,10 @@ document.addEventListener('click',function(e){
   /* Editable ids must exist before we can apply saved text onto them. */
   applyEditable(deck);
 
-  /* ── RESTORE saved content: use whichever of Firestore / local is newer ── */
-  withTimeout(docRef.get({ source: 'server' }), 7000).then(function (snap) {
+  /* ── RESTORE saved content: use whichever of Firestore / local is newer ──
+     Exposed globally so the nav click handler (a separate, earlier script)
+     can wait for this to settle before computing scroll targets. */
+  window.__playbookContentReady = withTimeout(docRef.get({ source: 'server' }), 7000).then(function (snap) {
     var local = readLocalFallback();
     var remoteEdits = (snap.exists && snap.data().edits) ? JSON.parse(snap.data().edits) : null;
     var remoteMs = (snap.exists && snap.data().updatedAt) ? snap.data().updatedAt.toMillis() : 0;
