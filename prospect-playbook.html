@@ -1295,7 +1295,7 @@
   <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 21</span></div>
 </div>
 
-<div class="page" id="appendix">
+<div class="page" id="test-before-launch">
   <div class="topbar">
     <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
     <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix" class="active">Appendix</a></nav>
@@ -1339,7 +1339,7 @@
   <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 22</span></div>
 </div>
 
-<div class="page" id="video-planner-1">
+<div class="page" id="appendix">
   <div class="topbar">
     <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
     <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix" class="active">Appendix</a></nav>
@@ -1444,13 +1444,17 @@ document.addEventListener('click',function(e){
 <script>
 (function(){
   /* 'landing' is intentionally omitted — the landing page is part of the Hot
-     section, so it keeps 'hot' as the active nav item. */
+     section, so it keeps 'hot' as the active nav item. 'test-before-launch'
+     has no nav item of its own and sits in the Appendix section, so it maps
+     to the 'appendix' highlight. */
   var navTargets = ['cold','warm','hot','appendix'];
+  var appendixGroup = ['test-before-launch'];
   var introIds = ['how-to-use','what-is-knomee'];
   var current = null;
   document.querySelectorAll('.page').forEach(function(pg){
     var id = pg.id;
     if (navTargets.indexOf(id) !== -1) current = id;
+    else if (appendixGroup.indexOf(id) !== -1) current = 'appendix';
     else if (introIds.indexOf(id) !== -1) current = null;
     var nav = pg.querySelector('.topnav');
     if (!nav || !current) return;
