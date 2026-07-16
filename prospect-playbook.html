@@ -1595,6 +1595,21 @@ document.addEventListener('click',function(e){
     return edits;
   }
 
+  /* Pasted rich text (Word/Docs/web) carries inline font-size / font-family /
+     line-height that override the template and make edited emails render at the
+     wrong size. Strip those so edited copy always inherits the deck's typography. */
+  function stripPastedTypography(root) {
+    if (!root) return;
+    var styled = root.querySelectorAll('[style]');
+    for (var i = 0; i < styled.length; i++) {
+      var st = styled[i].style;
+      st.removeProperty('font-size');
+      st.removeProperty('font-family');
+      st.removeProperty('line-height');
+      if (!styled[i].getAttribute('style')) styled[i].removeAttribute('style');
+    }
+  }
+
   /* ── LOAD: overlay saved text onto the already-editable elements ── */
   function applyEdits(edits) {
     if (!edits) return;
@@ -1602,6 +1617,7 @@ document.addEventListener('click',function(e){
       var id = el.getAttribute('data-edit-id');
       if (Object.prototype.hasOwnProperty.call(edits, id)) {
         el.innerHTML = edits[id];
+        stripPastedTypography(el);
       }
     });
     /* Edited text can be longer/shorter than the original, changing the
@@ -1664,7 +1680,9 @@ document.addEventListener('click',function(e){
   /* ── Auto-save (debounced 600 ms), with local fallback on failure ── */
   var saveTimer = null;
   var toast = null;
-  deck.addEventListener('input', function () {
+  deck.addEventListener('input', function (e) {
+    var leaf = e && e.target && e.target.closest && e.target.closest('[data-edit-id]');
+    if (leaf) stripPastedTypography(leaf);
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
       var edits = collectEdits();
@@ -1692,6 +1710,17 @@ document.addEventListener('click',function(e){
     }, 600);
   });
 
+  /* Paste as plain text so foreign formatting (fonts/sizes) never enters an edit. */
+  deck.addEventListener('paste', function (e) {
+    var ed = e.target && e.target.closest && e.target.closest('[contenteditable="true"]');
+    if (!ed) return;
+    e.preventDefault();
+    var cd = e.clipboardData || window.clipboardData;
+    var text = cd ? cd.getData('text/plain') : '';
+    try { document.execCommand('insertText', false, text); }
+    catch (_) { ed.appendChild(document.createTextNode(text)); ed.dispatchEvent(new Event('input', { bubbles: true })); }
+  });
+
   /* ── PDF FAB ── */
   var fab = document.createElement('button');
   fab.className = 'pdf-fab';
@@ -1712,6 +1741,92 @@ document.addEventListener('click',function(e){
   document.body.appendChild(toast);
 
   fab.addEventListener('click', function () { window.print(); });
+})();
+</script>
+<script>
+/* ── SAMPLE OVERFLOW REFLOW ──────────────────────────────────────────────
+   Sample-copy pages lay two samples side by side. When an email is edited to
+   realistic (longer) copy it can outgrow its column and get clipped by the
+   fixed page height. When that happens: give the overflowing email the full
+   page width and flow its body into two columns ("continue on the column at
+   its right"), and move the other sample onto a new continuation page that
+   follows ("send the next sample to the next page"). Runs once after saved
+   content settles; a no-op when nothing overflows, so the clean deck is
+   untouched. Fully guarded so it can never break the page. */
+(function () {
+  var deck = document.querySelector('.deck');
+  if (!deck) return;
+
+  function contentOverflows(pageEl) {
+    var c = pageEl.querySelector('.content');
+    return c && c.scrollHeight > c.clientHeight + 4;
+  }
+
+  function continuationPage(srcPage) {
+    var np = document.createElement('div');
+    np.className = 'page';
+    np.setAttribute('data-continuation', '1');
+    var bar = srcPage.querySelector('.topbar');
+    if (bar) np.appendChild(bar.cloneNode(true));
+    var content = document.createElement('div');
+    content.className = 'content';
+    content.style.cssText = 'display:flex;flex-direction:column;';
+    np.appendChild(content);
+    var footer = srcPage.querySelector('.pg-footer');
+    if (footer) {
+      var f = footer.cloneNode(true);
+      var num = f.querySelector('.pg-num');
+      if (num && !/continued/.test(num.textContent)) num.textContent = num.textContent + ' · continued';
+      np.appendChild(f);
+    }
+    return { page: np, content: content };
+  }
+
+  function reflow() {
+    try {
+      var pages = Array.prototype.slice.call(deck.querySelectorAll('.page'));
+      pages.forEach(function (pageEl) {
+        if (pageEl.getAttribute('data-flowed')) return;
+        var grid = pageEl.querySelector('.content div[style*="grid-template-columns:repeat(2,1fr)"]');
+        if (!grid || grid.children.length !== 2) return;
+        if (!contentOverflows(pageEl)) return;
+        pageEl.setAttribute('data-flowed', '1');
+
+        var colA = grid.children[0], colB = grid.children[1];
+        var keep = colA.scrollHeight >= colB.scrollHeight ? colA : colB;
+        var move = keep === colA ? colB : colA;
+
+        /* full-width overflowing sample, body flows into two columns */
+        grid.style.gridTemplateColumns = '1fr';
+        if (move.parentNode === grid) grid.removeChild(move);
+        var body = keep.querySelector('.email-body');
+        if (body) {
+          body.style.columnCount = '2';
+          body.style.columnGap = '34px';
+          var cta = body.querySelector('.email-cta-btn');
+          if (cta) cta.style.columnSpan = 'all';
+        }
+
+        /* move the other sample onto a following continuation page */
+        var cont = continuationPage(pageEl);
+        var inner = document.createElement('div');
+        inner.style.cssText = 'padding:40px 80px 0;';
+        var g2 = document.createElement('div');
+        g2.style.cssText = 'display:grid;grid-template-columns:1fr;gap:26px;padding-left:48px;max-width:900px;';
+        g2.appendChild(move);
+        inner.appendChild(g2);
+        cont.content.appendChild(inner);
+        pageEl.parentNode.insertBefore(cont.page, pageEl.nextSibling);
+      });
+      window.dispatchEvent(new Event('resize'));
+    } catch (err) {
+      if (window.console) console.warn('sample reflow skipped:', err);
+    }
+  }
+
+  window.__reflowSamples = reflow;
+  var ready = window.__playbookContentReady || Promise.resolve();
+  Promise.resolve(ready).catch(function () {}).then(function () { setTimeout(reflow, 80); });
 })();
 </script>
 </body>
