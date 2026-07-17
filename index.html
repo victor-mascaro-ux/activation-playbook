@@ -104,6 +104,10 @@
     border-top: 0; border-left: 0; border-bottom: 0;
     transition: width 0.18s ease;
   }
+  /* The rail — including its collapsed slim tab — belongs to comment mode.
+     Outside comment mode only the FAB (and existing pins) show. */
+  .cc-rail { display: none; }
+  .cc-stage.cc-mode .cc-rail { display: flex; }
   .cc-rail-head { padding: 14px 12px 12px 16px; border-bottom: 1px solid var(--cc-hairline); flex: none; }
   .cc-rail-head-row { display: flex; align-items: center; gap: 9px; }
   .cc-rail-head-row h2 { font-size: 14px; font-weight: 800; color: var(--cc-text); white-space: nowrap; }
@@ -882,6 +886,7 @@
   function setMode(on) {
     commentMode = on;
     stage.classList.toggle('cc-mode', on);
+    if (on) setRailCollapsed(false);   // open the comments panel on entry
     if (!on) closeThread();
     syncProtoReviewClass();
   }
@@ -928,15 +933,20 @@
     };
     draft = t;
     openThread(t.id);
-    // thumbnail for the rail card — captured async, attached when ready
-    captureFrame().then(url => {
-      if (!url) return;
-      const live = findThread(t.id);
-      if (!live) return;   // draft was discarded
-      live.img = url;
-      if (!draft || draft.id !== live.id) persistThread(live);
-      renderRail();
-    });
+    // Thumbnail for the rail card. html2canvas' first phase clones the whole
+    // (potentially huge) playbook DOM synchronously, which would otherwise
+    // block the popover from painting. Defer it past two frames so the modal
+    // shows instantly and the thumbnail fills in when ready.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      captureFrame().then(url => {
+        if (!url) return;
+        const live = findThread(t.id);
+        if (!live) return;   // draft was discarded
+        live.img = url;
+        if (!draft || draft.id !== live.id) persistThread(live);
+        renderRail();
+      });
+    }));
   });
 
   // click outside an open thread closes it
