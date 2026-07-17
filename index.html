@@ -883,6 +883,17 @@
     commentMode = on;
     stage.classList.toggle('cc-mode', on);
     if (!on) closeThread();
+    syncProtoReviewClass();
+  }
+
+  // Tell the (same-origin) playbook page whether comment mode is on, so its
+  // own bottom-right chrome (Export PDF button, "Changes saved" toast) can
+  // lift clear of the overlay's FAB. Re-applied on every navigation.
+  function syncProtoReviewClass() {
+    try {
+      const b = proto.contentDocument && proto.contentDocument.body;
+      if (b) b.classList.toggle('cc-review-on', commentMode);
+    } catch (e) { /* cross-origin or not ready */ }
   }
 
   fab.addEventListener('click', (e) => { e.stopPropagation(); setMode(!commentMode); });
@@ -941,7 +952,15 @@
   // sits (reply input, a pin, the body). One Esc is a full retreat: it
   // dismisses any open card, exits comment mode, AND tucks the persistent
   // menu back to its slim tab — the prototype is left clean in one press.
-  document.addEventListener('keydown', (e) => {
+  function handleGlobalKey(e) {
+    // F2 toggles comment mode (F12 is left for devtools). Same action as the
+    // FAB, but reachable from the keyboard.
+    if (e.key === 'F2') {
+      e.preventDefault();
+      e.stopPropagation();
+      setMode(!commentMode);
+      return;
+    }
     if (e.key !== 'Escape') return;
     const menuOpen = !rail.classList.contains('cc-collapsed');
     if (!activeId && !commentMode && !menuOpen) return;
@@ -950,7 +969,22 @@
     if (commentMode) setMode(false);   // setMode(false) also closes the open thread
     else closeThread();                // a card opened from the rail, mode off
     setRailCollapsed(true);            // full retreat: back to the slim tab
-  }, true);
+  }
+  document.addEventListener('keydown', handleGlobalKey, true);
+
+  // The playbook pages live in the (same-origin) iframe, so a key pressed
+  // while the prototype has focus fires on the iframe's document, not this
+  // one. Bind the same handler inside the iframe, re-binding on every
+  // navigation (each page load replaces the iframe document).
+  function bindProtoKeys() {
+    try {
+      const d = proto.contentDocument;
+      if (d) d.addEventListener('keydown', handleGlobalKey, true);
+    } catch (e) { /* cross-origin or not ready */ }
+    syncProtoReviewClass();
+  }
+  proto.addEventListener('load', bindProtoKeys);
+  bindProtoKeys();
 
   // ── Clear all ────────────────────────────────────────────
   clearBtn.addEventListener('click', (e) => {

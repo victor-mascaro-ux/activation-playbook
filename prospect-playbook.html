@@ -272,6 +272,11 @@
   .pdf-fab:active { transform: translateY(0); box-shadow: 0 3px 12px rgba(36,4,70,0.40); }
   .pdf-fab-saved { position: fixed; bottom: 88px; right: 36px; z-index: 9998; font-family: var(--font); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.70); background: rgba(36,4,70,0.72); border-radius: 8px; padding: 5px 12px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
   .pdf-fab-saved.show { opacity: 1; }
+  /* When the commenting overlay is active it stamps `cc-review-on` on
+     this page's <body>; hide the Export PDF button and its toast so the
+     overlay's bottom-right FAB owns the corner. */
+  body.cc-review-on .pdf-fab,
+  body.cc-review-on .pdf-fab-saved { display: none !important; }
 
   /* ── SYNC STATUS BANNER (offline / back-online) ── */
   .sync-banner {
