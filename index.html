@@ -2,159 +2,1008 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Knomee — Activation Playbooks</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <style>
-  :root {
-    --plum: #240446; --indigo: #4A1C72; --grape: #7639A1; --bright-purple: #9B19FB;
-    --pale-lav: #E9D9F4; --slate: #757575; --ink-2: #6B6178; --white: #FFFFFF; --font: 'Poppins', system-ui, sans-serif;
+  /* ════════════════════════════════════════════════════════
+     Knomee comments overlay — "Neutral Frost"
+     Every rule is scoped under .cc-stage / a .cc- prefix so
+     nothing leaks into (or out of) the host prototype, which
+     additionally lives in its own iframe.
+     ════════════════════════════════════════════════════════ */
+
+  .cc-stage {
+    /* ── design tokens (Neutral Frost defaults) ── */
+    --cc-ink:          #1E1A28;
+    --cc-text:         #37323F;
+    --cc-muted:        #6E6880;
+    --cc-faint:        #9A94A6;
+    --cc-glass:        rgba(255,255,255,0.62);
+    --cc-glass-strong: rgba(255,255,255,0.72);
+    --cc-hairline:     rgba(20,10,40,0.08);
+    --cc-card:         rgba(255,255,255,0.55);
+    --cc-card-active:  rgba(255,255,255,0.85);
+    --cc-purple:       #4A1C72;
+    --cc-purple-deep:  #240446;
+    --cc-knomee-teal:  #2DD2B0;
+    --cc-knomee-teal-ink: #06403A;
+    --cc-blur:   24px;
+    --cc-radius: 16px;
+    --cc-ring:   var(--cc-ink);      /* focus rings — ink, not brand */
+    --cc-pin-ring: var(--cc-ink);    /* active pin outer ring */
+    --cc-pin:      #FFD84D;          /* sticky-note yellow — pin fill */
+    --cc-pin-ink:  #4A3B00;          /* dark amber — the digit on the pin */
+    --cc-input-bg: rgba(255,255,255,0.6);
+    --cc-panel-wash: none;           /* branded-frost adds a purple wash */
+
+    position: relative; width: 100%; height: 100vh; overflow: hidden;
+    background: #0a0a0a;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: var(--font); background: #FCFBFE;
-    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-    padding: 72px 24px 60px; color: var(--plum);
+  .cc-stage *, .cc-stage *::before, .cc-stage *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* chrome type register: deliberately NOT the prototype's font */
+  .cc-chrome, .cc-chrome * { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
+
+  /* ── the prototype frame ── */
+  .cc-frame { position: absolute; inset: 0; background: #fff; overflow: hidden; }
+  .cc-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+  /* ── shared frosted surface ── */
+  .cc-frost {
+    background: var(--cc-glass);
+    background-image: var(--cc-panel-wash);
+    -webkit-backdrop-filter: blur(var(--cc-blur));
+    backdrop-filter: blur(var(--cc-blur));
+    border: 1px solid var(--cc-hairline);
   }
-  .home-logo { margin-bottom: 36px; }
-  .home-eyebrow {
-    font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--grape); margin-bottom: 10px; text-align: center;
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .cc-frost { background-color: rgba(255,255,255,0.94); }
+    .cc-stage[data-cc-theme="smoke-tray"] .cc-frost { background-color: rgba(22,18,30,0.94); }
   }
-  h1 { font-size: 30px; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--plum); }
-  .home-sub { font-size: 16px; font-weight: 300; color: var(--ink-2); max-width: 480px; text-align: center; line-height: 1.55; margin-bottom: 40px; }
-  .doc-list { width: 100%; max-width: 640px; display: flex; flex-direction: column; gap: 12px; }
-  .doc-card {
-    display: flex; align-items: center; gap: 16px; background: #fff;
-    border: 1px solid #ECE7F2; border-radius: 14px; padding: 20px 22px;
-    text-decoration: none; color: inherit; box-shadow: 0 1px 3px rgba(36,4,70,0.04);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+
+  /* ── focus rings (a11y) ── */
+  .cc-stage :is(button, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--cc-ring); outline-offset: 2px;
   }
-  .doc-card:hover { border-color: var(--card-accent); box-shadow: 0 6px 20px rgba(36,4,70,0.08); transform: translateY(-1px); }
-  .doc-icon {
-    width: 42px; height: 42px; border-radius: 11px; background: var(--card-pale); color: var(--card-accent);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+
+  /* Shared bits (K chip lives in the rail header; ghost btn = exit ×). */
+  .cc-kchip {
+    width: 26px; height: 26px; border-radius: 8px; flex: none;
+    background: var(--cc-knomee-teal); color: var(--cc-knomee-teal-ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
   }
-  .doc-card-body { flex: 1; min-width: 0; }
-  .doc-eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--card-accent); margin-bottom: 3px; }
-  .doc-title { font-size: 17px; font-weight: 600; color: var(--plum); margin-bottom: 4px; line-height: 1.3; }
-  .doc-desc { font-size: 13.5px; font-weight: 300; color: var(--slate); line-height: 1.45; }
-  .doc-arrow { color: #C8C2D6; flex-shrink: 0; transition: color 0.15s ease, transform 0.15s ease; }
-  .doc-card:hover .doc-arrow { color: var(--card-accent); transform: translateX(3px); }
-  .older-section { width: 100%; max-width: 640px; margin-top: 40px; }
-  .older-label { font-size: 12px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: #B3ACC2; margin-bottom: 10px; padding-left: 2px; }
-  .doc-card--compact { padding: 14px 18px; background: #FAF9FC; box-shadow: none; }
-  .doc-card--compact .doc-icon { width: 34px; height: 34px; border-radius: 9px; }
-  .doc-card--compact .doc-title { font-size: 15px; }
-  .doc-card--compact .doc-desc { font-size: 12.5px; }
-  .home-footer { margin-top: 48px; font-size: 12.5px; color: #B3ACC2; }
+  .cc-ghost-btn {
+    width: 34px; height: 34px; border-radius: 10px; border: 0; background: transparent;
+    color: var(--cc-muted); font-size: 18px; cursor: pointer; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+  }
+  .cc-ghost-btn:hover { background: var(--cc-hairline); color: var(--cc-text); }
+  /* The "exit comment mode" × only means something while comment mode is on;
+     the collapse chevron is what tucks the persistent menu away. */
+  #ccCloseMode { display: none; }
+  .cc-stage.cc-mode #ccCloseMode { display: flex; }
+
+  /* ════════ Comments rail ════════
+     A persistent, collapsible left menu — always present (independent of
+     comment mode) so existing comment cards are reachable at all times.
+     Full height, in front of the prototype (incl. the prototype's own
+     header). There is deliberately NO full-width overlay top bar — that
+     used to sit over the prototype's header and tint it. The rail is the
+     only left-edge chrome, so the rest of the prototype header keeps its
+     real color. It defaults to the slim collapsed tab (see init) so it
+     never covers the prototype until you expand it. */
+  .cc-rail {
+    position: absolute; top: 0; left: 0; bottom: 0; width: 322px; z-index: 55;
+    display: flex; flex-direction: column; overflow: hidden;
+    border-top: 0; border-left: 0; border-bottom: 0;
+    transition: width 0.18s ease;
+  }
+  .cc-rail-head { padding: 14px 12px 12px 16px; border-bottom: 1px solid var(--cc-hairline); flex: none; }
+  .cc-rail-head-row { display: flex; align-items: center; gap: 9px; }
+  .cc-rail-head-row h2 { font-size: 14px; font-weight: 800; color: var(--cc-text); white-space: nowrap; }
+  .cc-count {
+    min-width: 22px; height: 22px; border-radius: 999px; padding: 0 7px;
+    background: rgba(20,10,40,0.08); color: var(--cc-text);
+    font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .cc-rail-spacer { flex: 1; }
+  .cc-collapse-btn { font-size: 15px; }
+  .cc-collapse-btn svg { transition: transform 0.18s ease; }
+  .cc-rail-subrow { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 6px; padding-left: 2px; white-space: nowrap; }
+  .cc-rail-sub { font-size: 12px; color: var(--cc-faint); }
+  .cc-clear-btn {
+    background: none; border: 0; color: var(--cc-muted); font-size: 12px; font-weight: 600;
+    text-decoration: underline; cursor: pointer; padding: 2px; flex: none;
+  }
+  .cc-clear-btn:hover { color: var(--cc-ink); }
+  .cc-clear-btn:disabled { opacity: 0.4; cursor: default; text-decoration: none; }
+
+  .cc-list { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .cc-list::-webkit-scrollbar { width: 8px; }
+  .cc-list::-webkit-scrollbar-thumb { background: rgba(20,10,40,0.15); border-radius: 8px; }
+
+  /* ── Collapsed rail: a slim tab showing just the K chip, count and the
+     expand chevron. Lets you tuck the column away to see more of the
+     prototype while staying in comment mode (pins stay live). ── */
+  .cc-rail.cc-collapsed { width: 50px; }
+  .cc-rail.cc-collapsed .cc-rail-head { padding: 12px 6px; }
+  .cc-rail.cc-collapsed .cc-rail-head-row { flex-direction: column; gap: 12px; }
+  .cc-rail.cc-collapsed .cc-rail-head-row h2,
+  .cc-rail.cc-collapsed .cc-rail-spacer,
+  .cc-rail.cc-collapsed #ccCloseMode,
+  .cc-rail.cc-collapsed .cc-rail-subrow,
+  .cc-rail.cc-collapsed .cc-list { display: none; }
+  .cc-rail.cc-collapsed .cc-collapse-btn svg { transform: rotate(180deg); }
+
+  .cc-card {
+    position: relative; display: flex; gap: 10px; padding: 10px; border-radius: 12px;
+    background: var(--cc-card); border: 1px solid var(--cc-hairline);
+    cursor: pointer; text-align: left; width: 100%;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  }
+  .cc-card:hover { background: var(--cc-card-active); }
+  .cc-card.cc-active {
+    background: var(--cc-card-active); border-color: rgba(20,10,40,0.18);
+    box-shadow: 0 10px 30px -12px rgba(20,10,40,0.35);
+  }
+  .cc-thumb {
+    position: relative; width: 64px; height: 40px; border-radius: 7px; overflow: hidden;
+    flex: none; background: rgba(20,10,40,0.08); border: 1px solid var(--cc-hairline);
+  }
+  .cc-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cc-thumb-dot {
+    position: absolute; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--cc-pin); border: 1.5px solid #fff; box-shadow: 0 0 0 1px var(--cc-ink);
+    transform: translate(-50%, -50%);
+  }
+  .cc-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; justify-content: center; }
+  .cc-card-meta { display: flex; align-items: center; gap: 7px; }
+  .cc-time { font-size: 11px; color: var(--cc-faint); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .cc-snippet {
+    font-size: 12.5px; color: var(--cc-text); line-height: 1.4;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ── empty state ── */
+  .cc-empty {
+    margin: 24px 14px; padding: 28px 18px; text-align: center;
+    border: 1.5px dashed rgba(20,10,40,0.18); border-radius: 14px; color: var(--cc-muted);
+  }
+  .cc-empty svg { display: block; margin: 0 auto 12px; opacity: 0.55; }
+  .cc-empty-title { font-size: 13px; font-weight: 700; color: var(--cc-text); margin-bottom: 4px; }
+  .cc-empty-sub { font-size: 12px; line-height: 1.55; }
+
+  /* ════════ 3. Pins ════════
+     Teardrop map pins: ink fill, white number, white halo + shadow so they
+     read on any prototype background, light or dark. The tip anchors on the
+     exact clicked coordinate (wrapper bottom-center = the point). */
+  .cc-pin-layer { position: absolute; inset: 0; z-index: 40; pointer-events: none; }
+  .cc-pin-wrap {
+    position: absolute; width: 40px; height: 40px;         /* ≥40px hit target */
+    margin-left: -20px; margin-top: -40px;
+    pointer-events: auto; cursor: pointer; background: none; border: 0; padding: 0;
+  }
+  .cc-pin {
+    position: absolute; left: 6px; top: 6px; width: 28px; height: 28px;
+    background: var(--cc-pin);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);                             /* sharp corner -> tip */
+    box-shadow: 0 0 0 2px #fff, 0 4px 10px rgba(20,10,40,0.4);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .cc-pin > span {
+    transform: rotate(45deg);                              /* digit upright */
+    color: var(--cc-pin-ink); font-weight: 800; font-size: 12px; font-variant-numeric: tabular-nums;
+  }
+  .cc-pin-wrap:hover .cc-pin { transform: rotate(-45deg) scale(1.08); }
+  .cc-pin-wrap.cc-active .cc-pin {
+    transform: rotate(-45deg) scale(1.12);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4.5px var(--cc-pin-ring), 0 6px 14px rgba(20,10,40,0.45);
+  }
+
+  /* mini pin token used in rail cards */
+  .cc-token {
+    width: 20px; height: 20px; flex: none;
+    background: var(--cc-pin); border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 1.5px #fff;
+  }
+  .cc-token > span { transform: rotate(45deg); color: var(--cc-pin-ink); font-size: 10px; font-weight: 800; }
+
+  /* ── click-catcher (comment mode only) ── */
+  .cc-catcher {
+    position: absolute; inset: 0; z-index: 30; display: none;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 24 24'%3E%3Cpath d='M5 4H19C20.1046 4 21 4.89543 21 6V15C21 16.1046 20.1046 17 19 17H9.41421L5.70711 20.7071C5.42111 20.9931 5 20.7889 5 20.3839V17C3.89543 17 3 16.1046 3 15V6C3 4.89543 3.89543 4 5 4Z' fill='none' stroke='%231E1A28' stroke-width='3.2' stroke-linejoin='round' stroke-opacity='0.9'/%3E%3Cpath d='M5 4H19C20.1046 4 21 4.89543 21 6V15C21 16.1046 20.1046 17 19 17H9.41421L5.70711 20.7071C5.42111 20.9931 5 20.7889 5 20.3839V17C3.89543 17 3 16.1046 3 15V6C3 4.89543 3.89543 4 5 4Z' fill='%23FFD84D' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 6 22, crosshair;
+  }
+  .cc-stage.cc-mode .cc-catcher { display: block; }
+
+  /* ════════ Thread popover ════════
+     No avatars, no author names — timestamp + delete only. */
+  .cc-popover {
+    position: absolute; width: 300px; z-index: 70;
+    border-radius: var(--cc-radius);
+    background: var(--cc-glass-strong);
+    background-image: var(--cc-panel-wash);
+    -webkit-backdrop-filter: blur(var(--cc-blur));
+    backdrop-filter: blur(var(--cc-blur));
+    border: 1px solid var(--cc-hairline);
+    box-shadow: 0 24px 60px -18px rgba(20,10,40,0.4);
+    overflow: hidden;
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .cc-popover { background-color: rgba(255,255,255,0.96); }
+    .cc-stage[data-cc-theme="smoke-tray"] .cc-popover { background-color: rgba(22,18,30,0.96); }
+  }
+  .cc-pop-head { display: flex; align-items: center; justify-content: space-between; padding: 6px 6px 0 14px; }
+  .cc-pop-time { font-size: 11.5px; color: var(--cc-faint); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .cc-pop-actions { display: flex; }
+  .cc-icon-btn {
+    width: 40px; height: 40px; border: 0; background: transparent; border-radius: 10px;
+    color: var(--cc-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+  }
+  .cc-icon-btn:hover { background: var(--cc-hairline); color: var(--cc-ink); }
+  .cc-msgs { padding: 2px 14px 6px; display: flex; flex-direction: column; gap: 10px; max-height: 240px; overflow-y: auto; }
+  .cc-msg + .cc-msg { border-top: 1px solid var(--cc-hairline); padding-top: 10px; }
+  .cc-msg-time { font-size: 11px; color: var(--cc-faint); font-variant-numeric: tabular-nums; margin-bottom: 2px; }
+  .cc-msg-text { font-size: 13px; color: var(--cc-text); line-height: 1.45; white-space: pre-wrap; word-wrap: break-word; }
+  .cc-pop-foot { display: flex; gap: 8px; padding: 8px 12px 12px; align-items: flex-end; }
+  .cc-reply {
+    flex: 1; resize: none; min-height: 40px; max-height: 140px; overflow-y: auto;
+    border-radius: 12px; border: 1px solid var(--cc-hairline); background: var(--cc-input-bg);
+    padding: 10px 12px; font-size: 13px; line-height: 1.4; color: var(--cc-text); outline: none;
+  }
+  .cc-reply::placeholder { color: var(--cc-faint); }
+  .cc-send {
+    width: 40px; height: 40px; border-radius: 12px; border: 0; flex: none;
+    background: var(--cc-ink); color: #fff; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.15s;
+  }
+  .cc-send:hover { opacity: 0.85; }
+
+  /* ════════ 5. FAB ════════ */
+  .cc-fab {
+    position: absolute; right: 20px; bottom: 20px; width: 52px; height: 52px;
+    border-radius: 50%; z-index: 65; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--cc-ink);
+    box-shadow: 0 12px 30px -8px rgba(20,10,40,0.45);
+    transition: transform 0.15s, background 0.15s, color 0.15s;
+  }
+  .cc-fab:hover { transform: translateY(-2px); }
+  /* Soft shadow on the bubble glyph itself (on top of the button's own
+     shadow) so the yellow reads on a light frosted circle too. */
+  .cc-fab svg { filter: drop-shadow(0 1.5px 1.5px rgba(20,10,40,0.45)); }
+  .cc-stage.cc-mode .cc-fab { background: var(--cc-ink); color: #fff; border-color: transparent; }
+
+  /* ════════ 6. Esc pill ════════ */
+  .cc-esc {
+    position: absolute; left: 16px; bottom: 24px; z-index: 60; display: none;
+    background: rgba(20,14,30,0.72); color: rgba(255,255,255,0.92);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    font-size: 11.5px; font-weight: 500; padding: 7px 12px; border-radius: 999px;
+    pointer-events: none; white-space: nowrap;
+  }
+  .cc-esc b { color: #fff; font-weight: 800; }
+  .cc-stage.cc-mode .cc-esc { display: block; }
+
+  /* ── error toast (persist failures / namespace conflicts) ── */
+  .cc-warning {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+    background: #c0392b; color: white; font-size: 13px; font-weight: 500;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    padding: 10px 20px; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    z-index: 100; max-width: 460px; text-align: center;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     Theme preset: 1B "Smoke Tray" — dark translucent chrome,
+     floating detached rail + pill top bar. Pins unchanged.
+     ════════════════════════════════════════════════════════ */
+  .cc-stage[data-cc-theme="smoke-tray"] {
+    --cc-text:  #ffffff;
+    --cc-muted: rgba(255,255,255,0.6);
+    --cc-faint: rgba(255,255,255,0.42);
+    --cc-glass:        rgba(22,18,30,0.56);
+    --cc-glass-strong: rgba(22,18,30,0.62);
+    --cc-hairline:     rgba(255,255,255,0.12);
+    --cc-card:         rgba(255,255,255,0.06);
+    --cc-card-active:  rgba(255,255,255,0.14);
+    --cc-input-bg:     rgba(255,255,255,0.08);
+    --cc-ring: #fff;
+  }
+  /* Rail detaches and floats (inset, rounded) — the "unmistakably the tool"
+     read. With no separate top bar, it simply floats from the top edge. */
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-rail {
+    top: 16px; left: 16px; bottom: 16px; border-radius: 20px; border: 1px solid var(--cc-hairline);
+    overflow: hidden;
+  }
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-count { background: rgba(255,255,255,0.12); }
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-ghost-btn:hover,
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-icon-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-send { background: #fff; color: var(--cc-ink); }
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-empty { border-color: rgba(255,255,255,0.22); }
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-fab:not(.cc-mode *) { color: #fff; }
+  .cc-stage[data-cc-theme="smoke-tray"] .cc-clear-btn:hover { color: #fff; }
+
+  /* ════════════════════════════════════════════════════════
+     Theme preset: 1C "Branded Frost" — Neutral Frost plus a faint
+     purple wash, purple accents, compact single-line rail rows.
+     ════════════════════════════════════════════════════════ */
+  .cc-stage[data-cc-theme="branded-frost"] {
+    --cc-panel-wash: linear-gradient(rgba(74,28,114,0.07), rgba(74,28,114,0.03));
+    --cc-pin-ring: var(--cc-purple);
+  }
+  .cc-stage[data-cc-theme="branded-frost"] .cc-count { background: rgba(74,28,114,0.12); color: var(--cc-purple); }
+  .cc-stage[data-cc-theme="branded-frost"] .cc-card { padding: 8px 10px; }
+  .cc-stage[data-cc-theme="branded-frost"] .cc-thumb { display: none; }
+  .cc-stage[data-cc-theme="branded-frost"] .cc-card.cc-active::before {
+    content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px;
+    background: var(--cc-purple); border-radius: 3px;
+  }
+  .cc-stage[data-cc-theme="branded-frost"] .cc-fab { color: var(--cc-purple); }
+  .cc-stage[data-cc-theme="branded-frost"].cc-mode .cc-fab { background: var(--cc-purple-deep); color: #fff; }
 </style>
 </head>
-<body>
-  <div class="home-logo"><svg height="22" viewBox="0 0 236 24" fill="none"><use href="#home-logo"></use></svg></div>
-  <div class="home-eyebrow">Knomee Activation Playbooks</div>
-  <h1>Wealth Management Edition</h1>
-  <p class="home-sub">Ready-to-use playbooks for turning prospects into clients, and keeping clients engaged.</p>
-  <div class="doc-list">
-    <a href="prospect-playbook.html" class="doc-card" style="--card-accent:#7639A1;--card-pale:#F3EBFA;">
-      <div class="doc-icon"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="6.5" cy="6" r="2.3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14c0-2.5 2-4.3 4.5-4.3S11 11.5 11 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="12.5" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.2"/><path d="M13 9.7c1.7.4 3 1.8 3 3.8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-      <div class="doc-card-body">
-        <div class="doc-eyebrow">Prospects · V1</div>
-        <div class="doc-title">Winning New Clients: The Prospect Playbook</div>
-        <div class="doc-desc">Cold, warm, and hot lead campaigns — copy-and-paste ready emails, ads, and landing page language.</div>
-      </div>
-      <div class="doc-arrow">
-        <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-    </a><a href="client-playbook.html" class="doc-card" style="--card-accent:#086375;--card-pale:#EAF6F4;">
-      <div class="doc-icon"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M9 15s-6-3.6-6-8.2C3 4 5 2.5 7 2.5c1 0 2 .5 2 1.7 0-1.2 1-1.7 2-1.7 2 0 4 1.5 4 4.3C15 11.4 9 15 9 15z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-      <div class="doc-card-body">
-        <div class="doc-eyebrow">Clients · V1</div>
-        <div class="doc-title">Deepening Relationships: The Client Playbook</div>
-        <div class="doc-desc">Keep engaged clients engaged, and win back the ones who are drifting — organized by client type.</div>
-      </div>
-      <div class="doc-arrow">
-        <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-    </a>
+<body style="margin:0">
+
+<div class="cc-stage" id="ccStage" data-cc-theme="neutral-frost">
+
+  <!-- the prototype under review -->
+  <div class="cc-frame" id="ccFrame">
+    <iframe id="ccProto" src="home.html" title="Prototype"></iframe>
+    <div class="cc-catcher" id="ccCatcher"></div>
+    <div class="cc-pin-layer" id="ccPinLayer"></div>
+    <!-- thread popover appended here -->
   </div>
-  <div class="older-section">
-    <div class="older-label">Older Versions</div>
-    <div class="doc-list">
-      <a href="knomee_playbook.html" class="doc-card doc-card--compact" style="--card-accent:#9B19FB;--card-pale:#F3EBFA;">
-      <div class="doc-icon"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 7l7 4 7-4" stroke="currentColor" stroke-width="1.4"/></svg></div>
-      <div class="doc-card-body">
-        <div class="doc-eyebrow">Combined · V5</div>
-        <div class="doc-title">Customer Success &amp; Activation Playbook</div>
-        <div class="doc-desc">The original all-in-one deck — prospects and clients together in a single lifecycle document.</div>
+
+  <!-- comments rail (full height, in front of the prototype's own header) -->
+  <aside class="cc-rail cc-frost cc-chrome" id="ccRail">
+    <div class="cc-rail-head">
+      <div class="cc-rail-head-row">
+        <div class="cc-kchip">K</div>
+        <h2>Comments</h2>
+        <span class="cc-count" id="ccCount">0</span>
+        <span class="cc-rail-spacer"></span>
+        <button class="cc-ghost-btn cc-collapse-btn" id="ccCollapse" title="Collapse comments" aria-label="Collapse comments">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="cc-ghost-btn" id="ccCloseMode" title="Exit comment mode" aria-label="Exit comment mode">×</button>
       </div>
-      <div class="doc-arrow">
-        <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="cc-rail-subrow">
+        <span class="cc-rail-sub">Click a card to open it.</span>
+        <button class="cc-clear-btn" id="ccClearAll" disabled>Clear all</button>
       </div>
-    </a>
     </div>
-  </div>
-  <div class="home-footer">&copy; Knomee | Confidential</div>
-  <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="home-logo" viewBox="0 0 236 24">
-<path d="M151.664 17.7879H146.827L146.052 20.0771H142.748L147.437 7.11728H151.092L155.781 20.0771H152.44L151.664 17.7879ZM150.852 15.351L149.246 10.6065L147.658 15.351H150.852ZM161.879 7.11728C163.245 7.11728 164.439 7.38804 165.461 7.92958C166.482 8.47111 167.27 9.23418 167.824 10.2188C168.39 11.1911 168.673 12.3172 168.673 13.5972C168.673 14.8649 168.39 15.991 167.824 16.9756C167.27 17.9602 166.476 18.7233 165.442 19.2648C164.421 19.8064 163.233 20.0771 161.879 20.0771H157.024V7.11728H161.879ZM161.676 17.3449C162.87 17.3449 163.799 17.0187 164.464 16.3664C165.128 15.7141 165.461 14.791 165.461 13.5972C165.461 12.4034 165.128 11.4742 164.464 10.8095C163.799 10.1449 162.87 9.81263 161.676 9.81263H160.181V17.3449H161.676ZM182.419 7.11728L177.822 20.0771H173.871L169.274 7.11728H172.634L175.846 16.9018L179.077 7.11728H182.419ZM186.71 7.11728V20.0771H183.553V7.11728H186.71ZM193.503 20.2064C192.555 20.2064 191.706 20.0525 190.955 19.7448C190.204 19.4372 189.601 18.9818 189.146 18.3787C188.703 17.7756 188.469 17.0495 188.444 16.2003H191.804C191.853 16.6803 192.019 17.0495 192.303 17.3079C192.586 17.5541 192.955 17.6772 193.41 17.6772C193.878 17.6772 194.247 17.5726 194.518 17.3633C194.789 17.1418 194.924 16.8403 194.924 16.4587C194.924 16.1387 194.813 15.8741 194.592 15.6649C194.383 15.4557 194.118 15.2833 193.798 15.148C193.49 15.0126 193.047 14.8587 192.469 14.6864C191.632 14.428 190.949 14.1695 190.419 13.9111C189.89 13.6526 189.435 13.2711 189.053 12.7665C188.672 12.2618 188.481 11.6034 188.481 10.7911C188.481 9.58494 188.918 8.64342 189.792 7.9665C190.666 7.27728 191.804 6.93266 193.207 6.93266C194.635 6.93266 195.786 7.27728 196.659 7.9665C197.533 8.64342 198.001 9.5911 198.062 10.8095H194.647C194.623 10.3911 194.469 10.0649 194.186 9.8311C193.903 9.58494 193.539 9.46187 193.096 9.46187C192.715 9.46187 192.407 9.56648 192.173 9.77571C191.939 9.97263 191.823 10.2619 191.823 10.6434C191.823 11.0619 192.019 11.388 192.413 11.6218C192.807 11.8557 193.423 12.108 194.259 12.3788C195.096 12.6618 195.773 12.9326 196.29 13.1911C196.819 13.4495 197.275 13.8249 197.656 14.3172C198.038 14.8095 198.229 15.4433 198.229 16.2187C198.229 16.9572 198.038 17.6279 197.656 18.231C197.287 18.8341 196.746 19.3141 196.032 19.671C195.318 20.0279 194.475 20.2064 193.503 20.2064ZM206.116 20.2064C204.898 20.2064 203.778 19.9233 202.756 19.3572C201.747 18.791 200.941 18.0033 200.338 16.9941C199.747 15.9726 199.451 14.828 199.451 13.5603C199.451 12.2926 199.747 11.1542 200.338 10.1449C200.941 9.13572 201.747 8.34803 202.756 7.78189C203.778 7.21574 204.898 6.93266 206.116 6.93266C207.334 6.93266 208.448 7.21574 209.457 7.78189C210.479 8.34803 211.279 9.13572 211.857 10.1449C212.448 11.1542 212.744 12.2926 212.744 13.5603C212.744 14.828 212.448 15.9726 211.857 16.9941C211.267 18.0033 210.467 18.791 209.457 19.3572C208.448 19.9233 207.334 20.2064 206.116 20.2064ZM206.116 17.3264C207.15 17.3264 207.974 16.9818 208.59 16.2926C209.217 15.6033 209.531 14.6926 209.531 13.5603C209.531 12.4157 209.217 11.5049 208.59 10.828C207.974 10.1388 207.15 9.79417 206.116 9.79417C205.07 9.79417 204.233 10.1326 203.605 10.8095C202.99 11.4865 202.682 12.4034 202.682 13.5603C202.682 14.7049 202.99 15.6218 203.605 16.311C204.233 16.9879 205.07 17.3264 206.116 17.3264ZM220.924 20.0771L218.229 15.1849H217.472V20.0771H214.315V7.11728H219.614C220.635 7.11728 221.503 7.29574 222.217 7.65266C222.943 8.00958 223.484 8.50188 223.841 9.12956C224.198 9.74494 224.377 10.4342 224.377 11.1972C224.377 12.0588 224.131 12.828 223.638 13.5049C223.158 14.1818 222.444 14.6618 221.497 14.9449L224.487 20.0771H220.924ZM217.472 12.9511H219.429C220.008 12.9511 220.438 12.8095 220.721 12.5265C221.017 12.2434 221.164 11.8434 221.164 11.3265C221.164 10.8342 221.017 10.4465 220.721 10.1634C220.438 9.88033 220.008 9.73879 219.429 9.73879H217.472V12.9511Z" fill="#240446"></path>
-<g clip-path="url(#clip0_1164_57289)">
-<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="#240446"></path>
-<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="#240446"></path>
-<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="#240446"></path>
-<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="#240446"></path>
-<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="#240446"></path>
-<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="#240446"></path>
-<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="#240446"></path>
-<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="#240446"></path>
-<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="#240446"></path>
-<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="#240446"></path>
-<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="#240446"></path>
-<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="#240446"></path>
-<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="#240446"></path>
-</g>
-<defs>
-<clipPath id="clip0_1164_57289">
-<rect width="134.564" height="22.77" fill="#240446"></rect>
-</clipPath>
-</defs>
-</symbol><symbol id="knomee-logo" viewBox="0 0 135 24"><g clip-path="url(#clip0_1164_57289)">
-<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="#240446"></path>
-<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="#240446"></path>
-<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="#240446"></path>
-<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="#240446"></path>
-<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="#240446"></path>
-<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="#240446"></path>
-<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="#240446"></path>
-<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="#240446"></path>
-<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="#240446"></path>
-<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="#240446"></path>
-<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="#240446"></path>
-<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="#240446"></path>
-<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="#240446"></path>
-</g><defs>
-<clipPath id="clip0_1164_57289">
-<rect width="134.564" height="22.77" fill="#240446"></rect>
-</clipPath>
-</defs>
-</symbol><symbol id="knomee-logo-plum" viewBox="0 0 135 24"><g clip-path="url(#clip0_plum)">
-<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="#240446"></path>
-<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="#240446"></path>
-<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="#240446"></path>
-<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="#240446"></path>
-<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="#240446"></path>
-<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="#240446"></path>
-<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="#240446"></path>
-<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="#240446"></path>
-<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="#240446"></path>
-<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="#240446"></path>
-<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="#240446"></path>
-<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="#240446"></path>
-<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="#240446"></path>
-</g><defs>
-<clipPath id="clip0_plum">
-<rect width="134.564" height="22.77" fill="#240446"></rect>
-</clipPath>
-</defs>
-</symbol></svg>
+    <div class="cc-list" id="ccList"></div>
+  </aside>
+
+  <!-- 5. FAB -->
+  <button class="cc-fab cc-frost cc-chrome" id="ccFab" title="Toggle comment mode" aria-label="Toggle comment mode">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M5 4H19C20.1046 4 21 4.89543 21 6V15C21 16.1046 20.1046 17 19 17H9.41421L5.70711 20.7071C5.42111 20.9931 5 20.7889 5 20.3839V17C3.89543 17 3 16.1046 3 15V6C3 4.89543 3.89543 4 5 4Z" fill="none" stroke="#1E1A28" stroke-width="3.2" stroke-linejoin="round" stroke-opacity="0.9"/>
+      <path d="M5 4H19C20.1046 4 21 4.89543 21 6V15C21 16.1046 20.1046 17 19 17H9.41421L5.70711 20.7071C5.42111 20.9931 5 20.7889 5 20.3839V17C3.89543 17 3 16.1046 3 15V6C3 4.89543 3.89543 4 5 4Z" style="fill:var(--cc-pin);stroke:#fff;stroke-width:1.5;stroke-linejoin:round"/>
+    </svg>
+  </button>
+
+  <!-- 6. esc pill -->
+  <div class="cc-esc cc-chrome">Press <b>Esc</b> to exit comment mode</div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ────────────────────────────────────────────────────────
+  // Config. PROJECT_ID must be unique per deployed prototype —
+  // comments are namespaced by it in the shared Firestore project, so
+  // two repos left on "change-me" would share one comment thread.
+  // Never use "state" (the video-feedback tool's own doc ID).
+  // THEME: 'neutral-frost' | 'smoke-tray' | 'branded-frost'
+  // SEED_DEMO: true = local demo mode — no Firestore/localStorage,
+  //            seeds 3 comments and opens one thread. For previewing
+  //            the overlay itself; leave false in real projects.
+  // ────────────────────────────────────────────────────────
+  const PROJECT_ID  = 'activation-playbook';
+  const THEME       = 'neutral-frost';
+  const SEED_DEMO   = false;
+  // ────────────────────────────────────────────────────────
+
+  const stage    = document.getElementById('ccStage');
+  const frame    = document.getElementById('ccFrame');
+  const proto    = document.getElementById('ccProto');
+  const catcher  = document.getElementById('ccCatcher');
+  const pinLayer = document.getElementById('ccPinLayer');
+  const fab      = document.getElementById('ccFab');
+  const closeModeBtn = document.getElementById('ccCloseMode');
+  const listEl   = document.getElementById('ccList');
+  const countEl  = document.getElementById('ccCount');
+  const clearBtn = document.getElementById('ccClearAll');
+  const rail     = document.getElementById('ccRail');
+  const collapseBtn = document.getElementById('ccCollapse');
+  const RAIL_COLLAPSED_KEY = 'knomee-cc-rail-collapsed';
+
+  stage.dataset.ccTheme = THEME;
+
+  const STORE_KEY = 'knomee-prototype-feedback::' + PROJECT_ID;
+
+  let store = { threads: [] };
+  let draft = null;            // unpersisted thread while composing the first note
+  let activeId = null;
+  let popoverEl = null;
+  let commentMode = false;
+  let currentScreen = 'default';
+
+  // ── Shared storage (Firestore) ──────────────────────────
+  // Deliberate deviation from the design spec's localStorage-only
+  // persistence: comments must be shared across reviewers/devices (same
+  // behavior as the knomee-video feedback tool), so Firestore is the
+  // source of truth and localStorage is only a fast-paint seed and
+  // offline fallback. Same Firebase project AND same top-level
+  // collection ("video-feedback") as the video tool — the project's
+  // security rules only allow that one collection name — namespaced
+  // by PROJECT_ID as the doc ID.
+  const firebaseConfig = {
+    apiKey: "AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",
+    authDomain: "knomee-playbook.firebaseapp.com",
+    projectId: "knomee-playbook",
+    storageBucket: "knomee-playbook.firebasestorage.app",
+    messagingSenderId: "956493019959",
+    appId: "1:956493019959:web:13f099b4ea42ef948d78b2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const stateRef = db.collection('video-feedback').doc(PROJECT_ID);
+  const threadsRef = stateRef.collection('comments');
+
+  // Accepts both the current schema and legacy single-text comments
+  // (pre-threads) so old data keeps rendering. Legacy comments have no
+  // screen — screen:null is treated as "show on every screen".
+  function normalize(raw) {
+    return {
+      id: raw.id,
+      screen: (typeof raw.screen === 'string') ? raw.screen : null,
+      x: raw.x, y: raw.y,
+      img: raw.img || null,
+      createdAt: raw.createdAt || Date.now(),
+      resolved: !!raw.resolved,
+      messages: Array.isArray(raw.messages) ? raw.messages
+        : (raw.text ? [{ text: raw.text, createdAt: raw.createdAt || Date.now() }] : [])
+    };
+  }
+
+  function loadLocalFallback() {
+    if (SEED_DEMO) return;
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const items = Array.isArray(parsed.threads) ? parsed.threads
+          : (Array.isArray(parsed.comments) ? parsed.comments : []);
+        store.threads = items.map(normalize);
+      }
+    } catch (e) { /* keep defaults */ }
+  }
+  function cacheLocally() {
+    if (SEED_DEMO) return;
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ threads: store.threads })); }
+    catch (e) { /* best-effort only */ }
+  }
+
+  function initSync() {
+    if (SEED_DEMO) return;
+    threadsRef.orderBy('createdAt').onSnapshot(snap => {
+      store.threads = snap.docs.map(d => normalize(d.data()));
+      cacheLocally();
+      renderAll();
+      refreshOpenThread();
+    }, err => {
+      console.warn('Firestore sync error', err);
+      showWarning("Can't reach the shared comment server — showing your last saved copy.");
+    });
+  }
+
+  function persistThread(t) {
+    cacheLocally();
+    if (SEED_DEMO) return;
+    threadsRef.doc(t.id).set(t).catch(err => {
+      console.warn('Could not save comment', err);
+      showWarning();
+    });
+  }
+  function persistDelete(id) {
+    cacheLocally();
+    if (SEED_DEMO) return;
+    threadsRef.doc(id).delete().catch(err => {
+      console.warn('Could not delete comment', err);
+      showWarning();
+    });
+  }
+
+  let warningEl = null;
+  function showWarning(message, sticky) {
+    const text = message || "Couldn't save that change — it may be lost on reload.";
+    if (warningEl) { warningEl.textContent = text; return; }
+    const el = document.createElement('div');
+    el.className = 'cc-warning';
+    el.textContent = text;
+    document.body.appendChild(el);
+    warningEl = el;
+    if (sticky) {
+      el.style.cursor = 'pointer';
+      el.title = 'Dismiss';
+      el.addEventListener('click', () => { el.remove(); if (warningEl === el) warningEl = null; });
+    } else {
+      setTimeout(() => { el.remove(); if (warningEl === el) warningEl = null; }, 7000);
+    }
+  }
+
+  // ── Namespace conflict detection ─────────────────────────
+  // Warns if and only if a different deployment is actually using this
+  // PROJECT_ID. Each deployed site stamps the state doc with its URL;
+  // finding someone else's stamp means two sites share one thread.
+  // localhost/file:// is skipped so local dev never trips it.
+  const SITE_ID = location.host + location.pathname.replace(/index\.html$/, '').replace(/\/$/, '');
+  const IS_LOCAL_DEV = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+  function checkNamespaceConflict() {
+    if (IS_LOCAL_DEV || SEED_DEMO) return;
+    stateRef.get().then(snap => {
+      const claimedBy = snap.exists ? snap.data().claimedBy : null;
+      if (claimedBy && claimedBy !== SITE_ID) {
+        showWarning('Another prototype (' + claimedBy + ') uses the same PROJECT_ID — you are seeing and overwriting each other\'s comments. Change PROJECT_ID in index.html. (Click to dismiss)', true);
+      }
+      return stateRef.set({ claimedBy: SITE_ID }, { merge: true });
+    }).catch(err => console.warn('Namespace conflict check failed', err));
+  }
+
+  // ── Screens ──────────────────────────────────────────────
+  // Pins belong to a screen. The overlay reads the prototype's current
+  // screen id without requiring integration: a prototype can expose
+  // window.__ccScreenId, or use the .screen.active convention (like the
+  // dummy). This site is multi-page (home + playbook pages navigated
+  // inside the iframe), so we also fall back to the iframe's current
+  // filename, giving each playbook page its own comment namespace.
+  // Falls back to a single 'default' screen when nothing is readable.
+  function getScreenId() {
+    try {
+      const w = proto.contentWindow;
+      if (w && w.__ccScreenId) return String(w.__ccScreenId);
+      const d = proto.contentDocument;
+      const el = d && d.querySelector('.screen.active');
+      if (el && el.id) return el.id;
+      const path = w && w.location && w.location.pathname;
+      if (path) {
+        const file = path.split('/').pop().replace(/\.html?$/i, '');
+        if (file) return file;
+      }
+    } catch (e) { /* cross-origin or not ready */ }
+    return 'default';
+  }
+  setInterval(() => {
+    const s = getScreenId();
+    if (s !== currentScreen) {
+      currentScreen = s;
+      closeThread();
+      renderAll();
+    }
+  }, 400);
+
+  // ── Helpers ──────────────────────────────────────────────
+  function relTime(ts) {
+    const s = Math.floor((Date.now() - ts) / 1000);
+    if (s < 10) return 'Just now';
+    if (s < 60) return s + 's ago';
+    const m = Math.floor(s / 60);
+    if (m < 60) return m + 'm ago';
+    const h = Math.floor(m / 60);
+    if (h < 24) return h + 'h ago';
+    return Math.floor(h / 24) + 'd ago';
+  }
+
+  function findThread(id) {
+    if (draft && draft.id === id) return draft;
+    return store.threads.find(t => t.id === id) || null;
+  }
+
+  // Unresolved threads on the current screen (legacy null-screen threads
+  // show everywhere), in creation order — their index is the pin number.
+  function visibleThreads() {
+    const list = store.threads.filter(t =>
+      !t.resolved && (t.screen === null || t.screen === currentScreen));
+    if (draft) list.push(draft);
+    return list.sort((a, b) => a.createdAt - b.createdAt);
+  }
+
+  // ── Capture (rail thumbnails) ────────────────────────────
+  function captureFrame() {
+    let target;
+    try { target = proto.contentDocument.body; } catch (e) { target = null; }
+    if (!target || typeof html2canvas === 'undefined') return Promise.resolve(null);
+    const w = proto.clientWidth, h = proto.clientHeight;
+    return html2canvas(target, {
+      backgroundColor: '#ffffff', logging: false, useCORS: true,
+      foreignObjectRendering: true,
+      width: w, height: h, windowWidth: w, windowHeight: h,
+      scale: Math.min(1, 900 / w)
+    }).then(c => c.toDataURL('image/jpeg', 0.8)).catch(() => null);
+  }
+
+  // ── Rendering ────────────────────────────────────────────
+  function renderAll() { renderPins(); renderRail(); }
+
+  function renderPins() {
+    pinLayer.innerHTML = '';
+    visibleThreads().forEach((t, i) => {
+      const wrap = document.createElement('button');
+      wrap.className = 'cc-pin-wrap' + (t.id === activeId ? ' cc-active' : '');
+      wrap.style.left = t.x + '%';
+      wrap.style.top = t.y + '%';
+      wrap.setAttribute('aria-label', 'Comment ' + (i + 1));
+      wrap.innerHTML = '<div class="cc-pin"><span>' + (i + 1) + '</span></div>';
+      wrap.addEventListener('click', (e) => { e.stopPropagation(); openThread(t.id); });
+      pinLayer.appendChild(wrap);
+    });
+  }
+
+  function renderRail() {
+    const visible = visibleThreads().filter(t => t !== draft);
+    const numbers = new Map(visibleThreads().map((t, i) => [t.id, i + 1]));
+    countEl.textContent = String(visible.length);
+    clearBtn.disabled = store.threads.length === 0;
+    listEl.innerHTML = '';
+
+    if (!visible.length) {
+      const empty = document.createElement('div');
+      empty.className = 'cc-empty';
+      empty.innerHTML =
+        '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" stroke-linejoin="round"/>' +
+          '<circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.5 2.5"/>' +
+        '</svg>' +
+        '<div class="cc-empty-title">No comments yet</div>' +
+        '<div class="cc-empty-sub">Click anywhere on the frame to drop a pin and leave the first note.</div>';
+      listEl.appendChild(empty);
+      return;
+    }
+
+    // newest first
+    visible.slice().sort((a, b) => b.createdAt - a.createdAt).forEach(t => {
+      const card = document.createElement('button');
+      card.className = 'cc-card' + (t.id === activeId ? ' cc-active' : '');
+
+      const thumb = document.createElement('div');
+      thumb.className = 'cc-thumb';
+      if (t.img) {
+        const img = document.createElement('img');
+        img.src = t.img; img.alt = '';
+        thumb.appendChild(img);
+      }
+      const dot = document.createElement('div');
+      dot.className = 'cc-thumb-dot';
+      dot.style.left = t.x + '%'; dot.style.top = t.y + '%';
+      thumb.appendChild(dot);
+
+      const body = document.createElement('div');
+      body.className = 'cc-card-body';
+      const meta = document.createElement('div');
+      meta.className = 'cc-card-meta';
+      meta.innerHTML = '<div class="cc-token"><span>' + (numbers.get(t.id) || '') + '</span></div>';
+      const time = document.createElement('span');
+      time.className = 'cc-time';
+      time.textContent = relTime(t.createdAt);
+      meta.appendChild(time);
+      const snippet = document.createElement('div');
+      snippet.className = 'cc-snippet';
+      snippet.textContent = t.messages.length ? t.messages[0].text : '…';
+      body.appendChild(meta);
+      body.appendChild(snippet);
+
+      card.appendChild(thumb);
+      card.appendChild(body);
+      card.addEventListener('click', (e) => { e.stopPropagation(); openThread(t.id); });
+      listEl.appendChild(card);
+    });
+  }
+
+  // ── Thread popover ───────────────────────────────────────
+  function clampPopover(el, xPct, yPct) {
+    const fw = frame.clientWidth, fh = frame.clientHeight;
+    const px = (xPct / 100) * fw, py = (yPct / 100) * fh;
+    const w = el.offsetWidth || 300, h = el.offsetHeight || 160;
+    let left = px + 18;
+    if (left + w > fw - 10) left = px - w - 18;
+    if (left < 10) left = 10;
+    let top = py - 10;
+    if (top + h > fh - 10) top = fh - h - 10;
+    if (top < 10) top = 10;
+    el.style.left = left + 'px';
+    el.style.top = top + 'px';
+  }
+
+  function removePopover() {
+    if (popoverEl) { popoverEl.remove(); popoverEl = null; }
+  }
+
+  function fillMessages(container, t) {
+    container.innerHTML = '';
+    t.messages.forEach((m, i) => {
+      const msg = document.createElement('div');
+      msg.className = 'cc-msg';
+      if (i > 0) {
+        const mt = document.createElement('div');
+        mt.className = 'cc-msg-time';
+        mt.textContent = relTime(m.createdAt);
+        msg.appendChild(mt);
+      }
+      const txt = document.createElement('div');
+      txt.className = 'cc-msg-text';
+      txt.textContent = m.text;
+      msg.appendChild(txt);
+      container.appendChild(msg);
+    });
+  }
+
+  // Keeps an open popover honest when a Firestore snapshot replaces
+  // store.threads (e.g. another reviewer replied, or our own write echoed
+  // back) — without rebuilding the popover, which would eat focus and any
+  // half-typed reply.
+  function refreshOpenThread() {
+    if (!activeId || !popoverEl) return;
+    if (draft && draft.id === activeId) return;   // drafts aren't in the store yet
+    const t = store.threads.find(x => x.id === activeId);
+    if (!t || t.resolved) { closeThread(); return; }   // gone or resolved elsewhere
+    const msgs = popoverEl.querySelector('.cc-msgs');
+    if (msgs) fillMessages(msgs, t);
+  }
+
+  function openThread(id) {
+    const t = findThread(id);
+    if (!t) return;
+    // switching threads discards an empty draft
+    if (draft && draft.id !== id && !draft.messages.length) discardDraft();
+    activeId = id;
+    removePopover();
+
+    const pop = document.createElement('div');
+    pop.className = 'cc-popover cc-chrome';
+    pop.addEventListener('click', (e) => e.stopPropagation());
+
+    // head: timestamp + delete — no identity chrome
+    const head = document.createElement('div');
+    head.className = 'cc-pop-head';
+    const time = document.createElement('span');
+    time.className = 'cc-pop-time';
+    time.textContent = t.messages.length ? relTime(t.createdAt) : 'New comment';
+    // Delete is always present (the collapsed "menu" — just this one icon).
+    // On a real thread it confirms and removes; on an empty draft it just
+    // discards the pin.
+    const actions = document.createElement('div');
+    actions.className = 'cc-pop-actions';
+    const del = document.createElement('button');
+    del.className = 'cc-icon-btn';
+    del.title = 'Delete'; del.setAttribute('aria-label', 'Delete comment');
+    del.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    del.addEventListener('click', () => {
+      if (t.messages.length) {
+        if (!confirm('Delete this comment thread?')) return;
+        store.threads = store.threads.filter(x => x.id !== t.id);
+        persistDelete(t.id);
+      }
+      closeThread();   // an empty draft simply discards
+    });
+    actions.appendChild(del);
+    head.appendChild(time);
+    head.appendChild(actions);
+    pop.appendChild(head);
+
+    // body: messages (first = the note, rest = replies)
+    const msgs = document.createElement('div');
+    msgs.className = 'cc-msgs';
+    fillMessages(msgs, t);
+    pop.appendChild(msgs);
+
+    // foot: reply input + send
+    const foot = document.createElement('div');
+    foot.className = 'cc-pop-foot';
+    const input = document.createElement('textarea');
+    input.className = 'cc-reply';
+    input.rows = 1;
+    input.placeholder = t.messages.length ? 'Reply…' : 'Add a comment…';
+    const send = document.createElement('button');
+    send.className = 'cc-send';
+    send.title = 'Send'; send.setAttribute('aria-label', 'Send');
+    send.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    function doSend() {
+      const text = input.value.trim();
+      if (!text) { input.focus(); return; }
+      t.messages.push({ text: text, createdAt: Date.now() });
+      // Replace-by-id rather than plain push: a Firestore snapshot may have
+      // swapped store.threads for fresh objects since this popover opened,
+      // leaving `t` a stale reference that findThread would no longer see.
+      store.threads = store.threads.filter(x => x.id !== t.id);
+      store.threads.push(t);
+      if (draft && draft.id === t.id) draft = null;   // first message makes the draft real
+      persistThread(t);
+      openThread(t.id);   // re-render popover with the new message
+      renderAll();
+    }
+    send.addEventListener('click', doSend);
+    // Grow the input with its content (up to the CSS max-height, then scroll),
+    // re-clamping the popover so it doesn't slide off the frame as it grows.
+    function autoGrow() {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 140) + 'px';
+      if (popoverEl) clampPopover(popoverEl, t.x, t.y);
+    }
+    input.addEventListener('input', autoGrow);
+    input.addEventListener('keydown', (e) => {
+      // Enter sends; Shift+Enter inserts a line break. (Esc is handled once,
+      // globally, by the capture-phase listener — never here.)
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); doSend(); }
+    });
+    foot.appendChild(input);
+    foot.appendChild(send);
+    pop.appendChild(foot);
+
+    frame.appendChild(pop);
+    popoverEl = pop;
+    clampPopover(pop, t.x, t.y);
+    input.focus();
+    autoGrow();
+
+    renderAll();
+  }
+
+  function discardDraft() {
+    draft = null;
+  }
+
+  function closeThread() {
+    if (draft && !draft.messages.length) discardDraft();
+    activeId = null;
+    removePopover();
+    renderAll();
+  }
+
+  // ── Comment mode ─────────────────────────────────────────
+  function setMode(on) {
+    commentMode = on;
+    stage.classList.toggle('cc-mode', on);
+    if (!on) closeThread();
+  }
+
+  fab.addEventListener('click', (e) => { e.stopPropagation(); setMode(!commentMode); });
+  closeModeBtn.addEventListener('click', (e) => { e.stopPropagation(); setMode(false); });
+
+  function setRailCollapsed(on) {
+    rail.classList.toggle('cc-collapsed', on);
+    collapseBtn.title = on ? 'Expand comments' : 'Collapse comments';
+    collapseBtn.setAttribute('aria-label', collapseBtn.title);
+    try { localStorage.setItem(RAIL_COLLAPSED_KEY, on ? '1' : '0'); } catch (e) { /* best-effort */ }
+  }
+  collapseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setRailCollapsed(!rail.classList.contains('cc-collapsed'));
+  });
+
+  // drop a pin
+  catcher.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeThread();
+    const rect = catcher.getBoundingClientRect();
+    const xPct = Math.min(98, Math.max(2, ((e.clientX - rect.left) / rect.width) * 100));
+    const yPct = Math.min(96, Math.max(4, ((e.clientY - rect.top) / rect.height) * 100));
+    const t = {
+      id: 'c' + Date.now() + Math.random().toString(36).slice(2, 7),
+      screen: currentScreen,
+      x: xPct, y: yPct,
+      img: null,
+      createdAt: Date.now(),
+      resolved: false,
+      messages: []
+    };
+    draft = t;
+    openThread(t.id);
+    // thumbnail for the rail card — captured async, attached when ready
+    captureFrame().then(url => {
+      if (!url) return;
+      const live = findThread(t.id);
+      if (!live) return;   // draft was discarded
+      live.img = url;
+      if (!draft || draft.id !== live.id) persistThread(live);
+      renderRail();
+    });
+  });
+
+  // click outside an open thread closes it
+  document.addEventListener('click', (e) => {
+    if (!activeId) return;
+    if (popoverEl && popoverEl.contains(e.target)) return;
+    if (e.target.closest && e.target.closest('.cc-pin-wrap, .cc-card')) return;
+    closeThread();
+  });
+
+  // Single source of truth for Esc, in the CAPTURE phase so it runs before
+  // any element-level handler and behaves identically no matter where focus
+  // sits (reply input, a pin, the body). One Esc is a full retreat: it
+  // dismisses any open card, exits comment mode, AND tucks the persistent
+  // menu back to its slim tab — the prototype is left clean in one press.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const menuOpen = !rail.classList.contains('cc-collapsed');
+    if (!activeId && !commentMode && !menuOpen) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (commentMode) setMode(false);   // setMode(false) also closes the open thread
+    else closeThread();                // a card opened from the rail, mode off
+    setRailCollapsed(true);            // full retreat: back to the slim tab
+  }, true);
+
+  // ── Clear all ────────────────────────────────────────────
+  clearBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!store.threads.length) return;
+    if (!confirm('Delete all ' + store.threads.length + ' comment thread(s)? This can\'t be undone.')) return;
+    const ids = store.threads.map(t => t.id);
+    store.threads = [];
+    closeThread();
+    cacheLocally();
+    if (!SEED_DEMO) {
+      const batch = db.batch();
+      ids.forEach(id => batch.delete(threadsRef.doc(id)));
+      batch.commit().catch(err => {
+        console.warn('Could not clear comments', err);
+        showWarning("Couldn't clear all comments on the shared server — they may reappear on reload.");
+      });
+    }
+  });
+
+  // ── Demo seeding (SEED_DEMO only — memory only, no persistence) ──
+  function seedDemo() {
+    const now = Date.now();
+    const mk = (x, y, mins, msgs) => ({
+      id: 'demo' + x + y, screen: null, x: x, y: y, img: null,
+      createdAt: now - mins * 60000, resolved: false,
+      messages: msgs.map((m, i) => ({ text: m, createdAt: now - mins * 60000 + i * 90000 }))
+    });
+    store.threads = [
+      mk(38, 30, 42, ['The headline feels one size too small at this width.']),
+      mk(62, 52, 18, ['Can this field validate on blur instead of on submit?', 'Agreed — on-submit-only feels laggy here.']),
+      mk(50, 74, 6,  ['Love the button treatment. Ship it.'])
+    ];
+    setMode(true);
+    renderAll();
+    openThread(store.threads[1].id);
+  }
+
+  // ── Init ─────────────────────────────────────────────────
+  // The menu is persistent, so default it to the slim collapsed tab — it
+  // stays reachable at all times without covering the prototype. Only an
+  // explicit '0' (the reviewer expanded it before) keeps it open on load.
+  try { setRailCollapsed(localStorage.getItem(RAIL_COLLAPSED_KEY) !== '0'); }
+  catch (e) { setRailCollapsed(true); }
+  loadLocalFallback();
+  renderAll();
+  initSync();
+  checkNamespaceConflict();
+  if (SEED_DEMO) {
+    // wait a beat for the iframe so pins land over painted content
+    setTimeout(seedDemo, 600);
+  }
+})();
+</script>
 </body>
 </html>
