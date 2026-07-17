@@ -18,9 +18,14 @@ any page.
 ## Commenting overlay
 
 Copied from [`commenting-template`](https://github.com/victor-mascaro-ux/commenting-template)
-("Neutral Frost"). A frosted **FAB** (bottom-right) toggles comment mode; click
-anywhere on the frame to drop a numbered pin and leave/resolve threads. Comments
-persist via Firestore, namespaced by `PROJECT_ID` (`'activation-playbook'`).
+("Neutral Frost"). A frosted **FAB** (bottom-right) toggles comment mode — or
+press **F2** (F12 is left for devtools). Click anywhere on the frame to drop a
+numbered pin and leave/resolve threads. Comments persist via Firestore,
+namespaced by `PROJECT_ID` (`'activation-playbook'`).
+
+While comment mode is on, the overlay stamps a `cc-review-on` class on the
+current playbook page's `<body>`, and each page hides its own Export PDF button
+and "Changes saved" toast so the overlay's FAB owns the bottom-right corner.
 
 Because the site is multi-page, comment pins are namespaced **per page** — the
 overlay derives the screen id from the current page in the iframe, so pins left
