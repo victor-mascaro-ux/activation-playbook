@@ -104,10 +104,6 @@
     border-top: 0; border-left: 0; border-bottom: 0;
     transition: width 0.18s ease;
   }
-  /* The rail — including its collapsed slim tab — belongs to comment mode.
-     Outside comment mode only the FAB (and existing pins) show. */
-  .cc-rail { display: none; }
-  .cc-stage.cc-mode .cc-rail { display: flex; }
   .cc-rail-head { padding: 14px 12px 12px 16px; border-bottom: 1px solid var(--cc-hairline); flex: none; }
   .cc-rail-head-row { display: flex; align-items: center; gap: 9px; }
   .cc-rail-head-row h2 { font-size: 14px; font-weight: 800; color: var(--cc-text); white-space: nowrap; }
@@ -358,6 +354,29 @@
   }
   .cc-stage[data-cc-theme="branded-frost"] .cc-fab { color: var(--cc-purple); }
   .cc-stage[data-cc-theme="branded-frost"].cc-mode .cc-fab { background: var(--cc-purple-deep); color: #fff; }
+
+  /* ════════════════════════════════════════════════════════
+     knomee-demo integration overrides
+     ════════════════════════════════════════════════════════ */
+  /* 1) The whole overlay is invisible until the activation key arms it,
+        so the prototype looks and behaves completely normally by default. */
+  .cc-stage:not(.cc-armed) .cc-fab,
+  .cc-stage:not(.cc-armed) .cc-rail,
+  .cc-stage:not(.cc-armed) .cc-esc,
+  .cc-stage:not(.cc-armed) .cc-catcher,
+  .cc-stage:not(.cc-armed) .cc-pin-layer { display: none !important; }
+
+  /* 2) The prototype is a long, scrolling page — not a fixed screen. Let the
+        document scroll and size the iframe to its full content height (done in
+        JS), so dropped pins anchor to the content and scroll with it. The
+        chrome floats fixed above the scrolling frame. */
+  html, body { height: auto; }
+  .cc-stage { height: auto; min-height: 100vh; overflow: visible; background: #fff; }
+  .cc-frame { position: relative; inset: auto; }
+  .cc-frame iframe { height: 100vh; } /* fallback until JS reports content height */
+  .cc-rail { position: fixed; }
+  .cc-fab  { position: fixed; }
+  .cc-esc  { position: fixed; }
 </style>
 </head>
 <body style="margin:0">
@@ -376,7 +395,11 @@
   <aside class="cc-rail cc-frost cc-chrome" id="ccRail">
     <div class="cc-rail-head">
       <div class="cc-rail-head-row">
-        <div class="cc-kchip">K</div>
+        <div class="cc-kchip" title="Comments" aria-label="Comments">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 4H19C20.105 4 21 4.895 21 6V15C21 16.105 20.105 17 19 17H9.414L5.707 20.707C5.421 20.993 5 20.789 5 20.384V17C3.895 17 3 16.105 3 15V6C3 4.895 3.895 4 5 4Z" fill="currentColor"/>
+          </svg>
+        </div>
         <h2>Comments</h2>
         <span class="cc-count" id="ccCount">0</span>
         <span class="cc-rail-spacer"></span>
@@ -421,8 +444,11 @@
   //            the overlay itself; leave false in real projects.
   // ────────────────────────────────────────────────────────
   const PROJECT_ID  = 'activation-playbook';
-  const THEME       = 'neutral-frost';
+  const THEME       = 'branded-frost';
   const SEED_DEMO   = false;
+  // Key that reveals/hides the commenting overlay. It stays completely
+  // hidden until this is pressed (F12 is reserved for browser devtools).
+  const ACTIVATION_KEY = 'F2';
   // ────────────────────────────────────────────────────────
 
   const stage    = document.getElementById('ccStage');
@@ -576,10 +602,7 @@
   // Pins belong to a screen. The overlay reads the prototype's current
   // screen id without requiring integration: a prototype can expose
   // window.__ccScreenId, or use the .screen.active convention (like the
-  // dummy). This site is multi-page (home + playbook pages navigated
-  // inside the iframe), so we also fall back to the iframe's current
-  // filename, giving each playbook page its own comment namespace.
-  // Falls back to a single 'default' screen when nothing is readable.
+  // dummy). Falls back to a single 'default' screen.
   function getScreenId() {
     try {
       const w = proto.contentWindow;
@@ -587,6 +610,9 @@
       const d = proto.contentDocument;
       const el = d && d.querySelector('.screen.active');
       if (el && el.id) return el.id;
+      // This site is multi-page (home + playbook pages navigated inside the
+      // iframe): use the current page's filename so each page keeps its own
+      // comment namespace.
       const path = w && w.location && w.location.pathname;
       if (path) {
         const file = path.split('/').pop().replace(/\.html?$/i, '');
@@ -886,23 +912,68 @@
   function setMode(on) {
     commentMode = on;
     stage.classList.toggle('cc-mode', on);
-    if (on) setRailCollapsed(false);   // open the comments panel on entry
     if (!on) closeThread();
     syncProtoReviewClass();
   }
 
-  // Tell the (same-origin) playbook page whether comment mode is on, so its
-  // own bottom-right chrome (Export PDF button, "Changes saved" toast) can
-  // lift clear of the overlay's FAB. Re-applied on every navigation.
+  fab.addEventListener('click', (e) => { e.stopPropagation(); setMode(!commentMode); });
+  closeModeBtn.addEventListener('click', (e) => { e.stopPropagation(); setMode(false); });
+
+  // ── Armed state: the overlay stays hidden until ACTIVATION_KEY ─────────
+  // Arming reveals the chrome and drops straight into comment mode; pressing
+  // the key again (or Esc) hides everything and returns the prototype to a
+  // clean, fully interactive state.
+  let armed = false;
+  function setArmed(on) {
+    armed = on;
+    stage.classList.toggle('cc-armed', on);
+    setMode(on);
+    if (!on) setRailCollapsed(true);
+  }
+  function toggleArmed() { setArmed(!armed); }
+
+  // Key pressed while focus is on the overlay chrome (this document).
+  window.addEventListener('keydown', (e) => {
+    if (e.key === ACTIVATION_KEY) { e.preventDefault(); toggleArmed(); }
+  });
+
+  // Messages from the prototype iframe: the activation key forwarded from
+  // inside the frame (where focus normally sits), and the frame's content
+  // height so we can size the iframe and keep pins anchored to the content.
+  window.addEventListener('message', (e) => {
+    const d = e.data;
+    if (!d || typeof d !== 'object') return;
+    if (d.type === 'cc-activate') {
+      toggleArmed();
+    } else if (d.type === 'cc-frame-height' && typeof d.height === 'number') {
+      proto.style.height = Math.max(d.height, 1) + 'px';
+    }
+  });
+
+  // This site is multi-page: the playbook pages live in the same-origin
+  // iframe and (unlike knomee-demo's app) don't post the activation key or a
+  // frame height. Bind the activation/exit keys inside the iframe document so
+  // F2 works wherever focus sits, and mirror comment-mode state onto the
+  // page's <body> so each page can hide its own Export PDF button. Re-applied
+  // on every in-iframe navigation.
   function syncProtoReviewClass() {
     try {
       const b = proto.contentDocument && proto.contentDocument.body;
       if (b) b.classList.toggle('cc-review-on', commentMode);
     } catch (e) { /* cross-origin or not ready */ }
   }
-
-  fab.addEventListener('click', (e) => { e.stopPropagation(); setMode(!commentMode); });
-  closeModeBtn.addEventListener('click', (e) => { e.stopPropagation(); setMode(false); });
+  function bindProtoFrame() {
+    try {
+      const d = proto.contentDocument;
+      if (d) d.addEventListener('keydown', (e) => {
+        if (e.key === ACTIVATION_KEY) { e.preventDefault(); toggleArmed(); }
+        else if (e.key === 'Escape' && armed) { e.preventDefault(); setArmed(false); }
+      }, true);
+    } catch (e) { /* cross-origin or not ready */ }
+    syncProtoReviewClass();
+  }
+  proto.addEventListener('load', bindProtoFrame);
+  bindProtoFrame();
 
   function setRailCollapsed(on) {
     rail.classList.toggle('cc-collapsed', on);
@@ -934,7 +1005,7 @@
     draft = t;
     openThread(t.id);
     // Thumbnail for the rail card. html2canvas' first phase clones the whole
-    // (potentially huge) playbook DOM synchronously, which would otherwise
+    // (potentially large) playbook DOM synchronously, which would otherwise
     // block the popover from painting. Defer it past two frames so the modal
     // shows instantly and the thumbnail fills in when ready.
     requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -962,39 +1033,15 @@
   // sits (reply input, a pin, the body). One Esc is a full retreat: it
   // dismisses any open card, exits comment mode, AND tucks the persistent
   // menu back to its slim tab — the prototype is left clean in one press.
-  function handleGlobalKey(e) {
-    // F2 toggles comment mode (F12 is left for devtools). Same action as the
-    // FAB, but reachable from the keyboard.
-    if (e.key === 'F2') {
-      e.preventDefault();
-      e.stopPropagation();
-      setMode(!commentMode);
-      return;
-    }
+  document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     const menuOpen = !rail.classList.contains('cc-collapsed');
-    if (!activeId && !commentMode && !menuOpen) return;
+    if (!activeId && !commentMode && !menuOpen && !armed) return;
     e.preventDefault();
     e.stopPropagation();
-    if (commentMode) setMode(false);   // setMode(false) also closes the open thread
-    else closeThread();                // a card opened from the rail, mode off
-    setRailCollapsed(true);            // full retreat: back to the slim tab
-  }
-  document.addEventListener('keydown', handleGlobalKey, true);
-
-  // The playbook pages live in the (same-origin) iframe, so a key pressed
-  // while the prototype has focus fires on the iframe's document, not this
-  // one. Bind the same handler inside the iframe, re-binding on every
-  // navigation (each page load replaces the iframe document).
-  function bindProtoKeys() {
-    try {
-      const d = proto.contentDocument;
-      if (d) d.addEventListener('keydown', handleGlobalKey, true);
-    } catch (e) { /* cross-origin or not ready */ }
-    syncProtoReviewClass();
-  }
-  proto.addEventListener('load', bindProtoKeys);
-  bindProtoKeys();
+    if (activeId) closeThread();       // dismiss any open card first
+    setArmed(false);                   // full retreat: hide the overlay entirely
+  }, true);
 
   // ── Clear all ────────────────────────────────────────────
   clearBtn.addEventListener('click', (e) => {
