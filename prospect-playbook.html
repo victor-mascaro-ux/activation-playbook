@@ -1823,6 +1823,20 @@ document.addEventListener('click',function(e){
         inner.appendChild(g2);
         cont.content.appendChild(inner);
         pageEl.parentNode.insertBefore(cont.page, pageEl.nextSibling);
+
+        /* if the moved sample is itself tall enough to reach the footer, let it
+           use the full width and flow its body into two columns as well */
+        var cc = cont.content;
+        if (cc && cc.scrollHeight > cc.clientHeight - 40) {
+          g2.style.maxWidth = 'none';
+          var mbody = move.querySelector('.email-body');
+          if (mbody) {
+            mbody.style.columnCount = '2';
+            mbody.style.columnGap = '34px';
+            var mcta = mbody.querySelector('.email-cta-btn');
+            if (mcta) mcta.style.columnSpan = 'all';
+          }
+        }
       });
       window.dispatchEvent(new Event('resize'));
     } catch (err) {
