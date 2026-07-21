@@ -386,6 +386,17 @@
   <!-- the prototype under review -->
   <div class="cc-frame" id="ccFrame">
     <iframe id="ccProto" src="home.html" title="Prototype"></iframe>
+    <script>
+      /* Let the shell comment on any page: index.html?page=<file> */
+      (function(){
+        var ok=['home.html','prospect-playbook.html','client-playbook.html','knomee_playbook.html'];
+        var pg=new URLSearchParams(location.search).get('page');
+        if(pg && ok.indexOf(pg)!==-1){
+          var f=document.getElementById('ccProto');
+          if(f && f.getAttribute('src')!==pg) f.src=pg;
+        }
+      })();
+    </script>
     <div class="cc-catcher" id="ccCatcher"></div>
     <div class="cc-pin-layer" id="ccPinLayer"></div>
     <!-- thread popover appended here -->
