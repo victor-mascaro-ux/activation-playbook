@@ -4,310 +4,271 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* review: open inside the Knomee commenting shell unless already framed or ?raw=1 */(function(){try{if(window.top===window.self&&!/[?&]raw=1/.test(location.search)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html'));}}catch(e){}})();</script>
-<title>Knomee — Deepening Relationships: The Client Playbook</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<title>Knomee — The Client Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --plum:        #086375;
-    --indigo:      #054F58;
-    --grape:       #086375;
-    --bright-purple:#2DD2B0;
-    --violet:      #7C6890;
-    --lavender:    #A56CCC;
-    --lilac:       #B98DDC;
-    --pale-lav:    #D9F2ED;
-    --ocean:       #086375;
-    --steel:       #6BA1AC;
-    --aqua:        #2DD2B0;
-    --mint:        #C0FFE7;
-    --light-mint:  #D9F2ED;
-    --snow:        #F8FAFA;
-    --slate:       #757575;
-    --ash:         #757575;
-    --silver:      #C8C8C8;
-    --light-mist:  #E8E8E8;
-    --pearl:       #EEEEEE;
-    --fog:         #F6F5FB;
-    --white:       #FFFFFF;
-    --ink:         #0B3D42;
-    --ink-2:       #1B4B48;
-    --muted:       #757575;
-    --border:      #D9F2ED;
-    --font: 'Poppins', system-ui, sans-serif;
-    --r: 14px;
-    --r-pill: 100px;
-}
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font); background: #1A1230; color: var(--ink); -webkit-font-smoothing: antialiased; }
-
-  /* ── PAGE ── */
-  .page {
-    width: 1920px;
-    height: 1080px;
-    position: relative;
-    overflow: hidden;
-    background: var(--white);
-    display: flex;
-    flex-direction: column;
-    page-break-after: always;
+  :root{
+    --plum:#240446; --indigo:#4A1C72; --grape:#7639A1; --aqua:#2DD2B0; --lilac:#B98DDC;
+    --ink:#221833; --ink-2:#463a57; --muted:#6d6478; --line:#ece7f2;
+    --snow:#f8fafa; --fog:#f6f5fb; --white:#fff;
+    --warm:#0C7263; --warm-tint:#D6F3EC;
+    --engaged:#0C7263; --engaged-tint:#D6F3EC;
+    --disengaged:#B45911; --disengaged-tint:#F7ECDE;
+    --fs-display:clamp(2.4rem,5.5vw,4.4rem);
+    --fs-h2:clamp(1.5rem,3vw,2.1rem);
+    --fs-h3:clamp(1.15rem,1.6vw,1.4rem);
+    --fs-lead:clamp(1.05rem,1.5vw,1.35rem);
+    --fs-body:1.0625rem; --fs-sm:.9375rem; --fs-eyebrow:.8rem;
+    --s2:1rem; --s3:1.5rem; --s4:2rem; --s6:3rem; --s8:4rem;
+    --pad:clamp(2.5rem,5vw,4.5rem);
+    --container:1180px; --r:16px; --r-lg:24px; --r-pill:999px;
+    --shadow-sm:0 2px 10px rgba(36,4,70,.06);
+    --shadow:0 14px 40px rgba(36,4,70,.10);
+    --shadow-lg:0 30px 70px rgba(36,4,70,.18);
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --font:'Poppins',system-ui,-apple-system,sans-serif;
+    --lead:var(--engaged); --lead-tint:var(--engaged-tint); --lead-ink:#0a5f53;
   }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--snow);color:var(--ink);font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  img,svg{display:block;max-width:100%}
+  ::selection{background:var(--aqua);color:var(--plum)}
+  .container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem)}
 
-  /* ── TOPBAR ── */
-  .topbar {
-    background: var(--plum);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 64px;
-    height: 56px;
-    flex-shrink: 0;
+  /* ── nav ── */
+  .nav{position:sticky;top:0;z-index:60;background:rgba(28,10,54,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav-inner{max-width:1320px;margin-inline:auto;padding:.6rem clamp(1rem,3vw,2rem);display:flex;align-items:center;gap:1.2rem}
+  .nav-logo{display:flex;align-items:center;gap:.5rem;flex-shrink:0;cursor:pointer}
+  .nav-logo svg{height:19px;width:auto}
+  .nav-links{display:flex;align-items:center;gap:.15rem;margin-left:auto}
+  .nav-links a{position:relative;font-size:.8rem;font-weight:500;color:rgba(255,255,255,.66);padding:.4rem .62rem;border-radius:var(--r-pill);white-space:nowrap;transition:color .25s,background .25s;cursor:pointer}
+  .nav-links a::after{content:"";position:absolute;left:.62rem;right:.62rem;bottom:.16rem;height:2px;background:var(--aqua);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+  .nav-links a:hover{color:#fff}.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+  .nav-links a.active{color:#fff}
+  .nav-menu-btn{display:none;margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-weight:600;font-size:.85rem;border-radius:var(--r-pill);padding:.5rem .9rem;cursor:pointer;align-items:center;gap:.5rem}
+  .nav-menu-btn svg{width:16px;height:16px}
+
+  /* ── mobile drawer ── */
+  .drawer{position:fixed;inset:0;z-index:80;background:rgba(20,6,40,.92);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);display:flex;flex-direction:column;padding:clamp(1.5rem,6vw,3.5rem)}
+  .drawer.open{opacity:1;pointer-events:auto}
+  .drawer-close{align-self:flex-end;background:none;border:none;color:#fff;cursor:pointer;padding:.5rem}
+  .drawer-close svg{width:26px;height:26px}
+  .drawer-list{margin-top:.5rem;display:flex;flex-direction:column;gap:.1rem;overflow-y:auto}
+  .drawer-list a{display:flex;align-items:baseline;gap:.9rem;color:#fff;padding:.7rem .3rem;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer;transform:translateY(12px);opacity:0}
+  .drawer.open .drawer-list a{animation:drawerIn .5s var(--ease) forwards}
+  .drawer-list a .n{font-size:.7rem;font-weight:700;color:var(--aqua);width:1.5rem}
+  .drawer-list a .t{font-size:1.3rem;font-weight:600}
+  .drawer-list a .d{margin-left:auto;font-size:.78rem;color:rgba(255,255,255,.5);font-weight:300;text-align:right;max-width:42%}
+  @keyframes drawerIn{to{transform:none;opacity:1}}
+
+  /* ── views (router) ── */
+  .view{display:none}
+  .view.active{display:block}
+  main{min-height:calc(100vh - 55px)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  .view.active .anim{animation:fadeUp .6s var(--ease) both}
+  .view.active .anim.d1{animation-delay:.06s}.view.active .anim.d2{animation-delay:.13s}.view.active .anim.d3{animation-delay:.2s}
+  .view.active .stagger>*{animation:fadeUp .55s var(--ease) both}
+  .view.active .stagger>*:nth-child(2){animation-delay:.07s}
+  .view.active .stagger>*:nth-child(3){animation-delay:.14s}
+  .view.active .stagger>*:nth-child(4){animation-delay:.21s}
+  .view.active .stagger>*:nth-child(5){animation-delay:.28s}
+
+  .section{padding-block:var(--pad)}
+  .eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lead-ink)}
+  .eyebrow::before{content:"";width:26px;height:2px;border-radius:2px;background:currentColor;opacity:.6}
+  .h2{font-size:var(--fs-h2);font-weight:700;line-height:1.12;letter-spacing:-.01em;color:var(--plum);margin-top:var(--s2)}
+  .intro{font-size:var(--fs-lead);font-weight:300;color:var(--ink-2);margin-top:var(--s3);max-width:62ch}
+  .head{margin-bottom:var(--s6)}
+
+  /* ── buttons ── */
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:1rem;padding:.8rem 1.4rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+  .btn .arw{transition:transform .3s var(--ease)}.btn:hover .arw{transform:translateX(4px)}
+  .btn-primary{background:var(--grape);color:#fff;box-shadow:0 8px 24px rgba(118,57,161,.32)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(118,57,161,.42)}
+
+  /* ── HOME hub ── */
+  .home-hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(130% 120% at 12% 8%,#125c55 0%,#0b3b47 55%,#071d2c 100%);padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem)}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px);z-index:0}
+  .blob.b1{width:460px;height:460px;background:#12a58f;opacity:.42;top:-120px;right:-60px;animation:float1 16s ease-in-out infinite}
+  .blob.b2{width:400px;height:400px;background:#c9702f;opacity:.32;bottom:-160px;left:-80px;animation:float2 20s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,34px)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-24px)}}
+  .home-hero .container{position:relative;z-index:1}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:.55rem;background:rgba(45,210,176,.16);border:1px solid rgba(45,210,176,.42);color:#a9f0e1;font-size:.76rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:var(--r-pill)}
+  .home-hero h1{font-size:var(--fs-display);font-weight:700;line-height:1.03;letter-spacing:-.02em;margin:1.3rem 0 0}
+  .home-hero h1 .accent{color:var(--aqua)}
+  .home-hero .tag{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.82);max-width:50ch;margin-top:1.2rem}
+  .intro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.4rem}
+  .intro-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:1.3rem 1.4rem;backdrop-filter:blur(4px)}
+  .intro-card .k{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua);margin-bottom:.5rem}
+  .intro-card h3{font-size:1.12rem;font-weight:600;margin-bottom:.35rem}
+  .intro-card p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.78)}
+
+  .choose{padding-block:clamp(3rem,6vw,5rem)}
+  .choose-label{text-align:center;margin-bottom:2.2rem}
+  .choose-label .eyebrow{color:var(--engaged);justify-content:center}
+  .choose-label h2{font-size:var(--fs-h2);font-weight:700;color:var(--plum);margin-top:.6rem}
+  .choose-label p{color:var(--muted);font-weight:300;margin-top:.4rem;max-width:56ch;margin-inline:auto}
+  .lead-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .lead-choices.two{grid-template-columns:repeat(2,1fr);max-width:780px;margin-inline:auto}
+  .lead-choice{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:1.9rem;color:#fff;cursor:pointer;min-height:250px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(155deg,var(--lc) 0%,color-mix(in srgb,var(--lc) 55%,var(--plum)) 100%);box-shadow:var(--shadow);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .lead-choice:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .lead-choice::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 85% 12%,rgba(255,255,255,.22),transparent 55%);pointer-events:none}
+  .lead-choice .emoji{font-size:2.6rem;position:absolute;top:1.3rem;right:1.5rem;transition:transform .4s var(--ease)}
+  .lead-choice:hover .emoji{transform:scale(1.15) rotate(-6deg)}
+  .lead-choice .tagword{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+  .lead-choice h3{font-size:1.9rem;font-weight:700;line-height:1;margin:.3rem 0 .5rem}
+  .lead-choice p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.9)}
+  .lead-choice .go{display:inline-flex;align-items:center;gap:.4rem;margin-top:1rem;font-weight:600;font-size:.95rem}
+  .lead-choice .go .arw{transition:transform .3s var(--ease)}.lead-choice:hover .go .arw{transform:translateX(5px)}
+  .lc-engaged{--lc:#0C7263}.lc-disengaged{--lc:#B45911}
+  .ref-row{margin-top:2.2rem}
+  .ref-row .k{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+  .ref-chips{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
+  .ref-chip{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:.6rem 1.15rem;font-weight:500;font-size:.95rem;color:var(--plum);cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
+  .ref-chip:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--engaged)}
+  .ref-chip .e{font-size:1.05rem}
+
+  /* ── lead view ── */
+  .lead-band{border-radius:var(--r-lg);padding:clamp(1.6rem,4vw,2.6rem);color:#fff;background:linear-gradient(120deg,var(--lead) 0%,color-mix(in srgb,var(--lead) 58%,var(--plum)) 100%);position:relative;overflow:hidden}
+  .lead-band::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 90% 10%,rgba(255,255,255,.18),transparent 55%)}
+  .lead-band .tagword{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem 1rem;border-radius:var(--r-pill);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+  .lead-band h2{font-size:clamp(1.9rem,5vw,3.1rem);font-weight:700;line-height:1;margin:.9rem 0 .5rem}
+  .lead-band p{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.92);max-width:54ch}
+  .backlink{display:inline-flex;align-items:center;gap:.4rem;color:var(--muted);font-weight:500;font-size:.9rem;cursor:pointer;margin-bottom:1.2rem;transition:color .2s,transform .2s}
+  .backlink:hover{color:var(--lead-ink);transform:translateX(-3px)}
+
+  /* tabs */
+  .tabs{display:flex;gap:.4rem;margin:1.6rem 0 2rem;flex-wrap:wrap;position:sticky;top:55px;z-index:20;background:var(--snow);padding:.5rem 0}
+  .tab{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);color:var(--ink-2);font-weight:600;font-size:.95rem;padding:.6rem 1.15rem;border-radius:var(--r-pill);cursor:pointer;transition:all .25s var(--ease)}
+  .tab .c{display:inline-flex;align-items:center;justify-content:center;min-width:1.3rem;height:1.3rem;padding:0 .35rem;border-radius:var(--r-pill);background:var(--lead-tint);color:var(--lead-ink);font-size:.72rem;font-weight:700}
+  .tab:hover{border-color:var(--lead);color:var(--lead-ink)}
+  .tab.active{background:var(--lead);color:#fff;border-color:var(--lead);box-shadow:0 8px 20px color-mix(in srgb,var(--lead) 35%,transparent)}
+  .tab.active .c{background:rgba(255,255,255,.25);color:#fff}
+  .tabpanel{display:none}
+  .tabpanel.active{display:block;animation:fadeUp .4s var(--ease) both}
+
+  /* ── dl ── */
+  .dl{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .dl>div{display:grid;grid-template-columns:210px 1fr;background:#fff}
+  .dl dt{background:var(--lead-tint);color:var(--lead-ink);font-weight:600;padding:1.1rem 1.4rem}
+  .dl dd{padding:1.1rem 1.4rem;color:var(--ink-2);font-weight:300}
+  .dl dd em{font-style:italic;color:var(--ink)}
+  .dl .rule dd strong{color:var(--plum);font-weight:600}
+
+  /* ── steps ── */
+  .steps{display:flex;flex-direction:column;gap:.9rem}
+  .step{display:flex;gap:1.1rem;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.2rem 1.4rem;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+  .step:hover{transform:translateX(6px);border-color:color-mix(in srgb,var(--lead) 45%,var(--line));box-shadow:var(--shadow)}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--lead);color:#fff;font-weight:700;flex-shrink:0}
+  .step-body{flex:1}.step-body strong{color:var(--plum);font-weight:600}.step-body p{color:var(--ink-2);font-weight:300;margin-top:.15rem}
+  .chip{display:inline-flex;align-items:center;gap:.35rem;margin-top:.7rem;background:var(--lead-tint);color:var(--lead-ink);font-size:.82rem;font-weight:600;padding:.3rem .8rem;border-radius:var(--r-pill)}
+
+  /* ── sample library grid ── */
+  .samples-note{color:var(--muted);font-weight:300;margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem}
+  .sample-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+  .scard{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.4rem;cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;display:flex;flex-direction:column;gap:.5rem}
+  .scard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--lead)}
+  .scard .type{display:inline-flex;align-self:flex-start;background:var(--lead-tint);color:var(--lead-ink);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.35rem .8rem;border-radius:var(--r-pill)}
+  .scard h4{font-size:1.15rem;font-weight:600;color:var(--plum);line-height:1.3}
+  .scard .prev{color:var(--muted);font-weight:300;font-size:.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .scard .open{margin-top:auto;display:inline-flex;align-items:center;gap:.4rem;color:var(--lead-ink);font-weight:600;font-size:.9rem}
+  .scard .open .arw{transition:transform .3s var(--ease)}.scard:hover .open .arw{transform:translateX(4px)}
+
+  /* ── email / frame mock ── */
+  .email{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .email-chrome{background:#eeeef0;padding:.55rem .9rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid #dcdce0}
+  .email-chrome .dots3{display:flex;gap:.3rem}.email-chrome i{width:10px;height:10px;border-radius:50%;display:block}
+  .email-chrome i:nth-child(1){background:#ff5f57}.email-chrome i:nth-child(2){background:#febc2e}.email-chrome i:nth-child(3){background:#28c840}
+  .email-chrome span{font-size:.8rem;color:#8a8a92;background:#fff;border:1px solid #d8d8de;border-radius:5px;padding:.15rem .6rem;flex:1}
+  .email-head{background:var(--snow);border-bottom:1px solid var(--line);padding:.9rem 1.2rem}
+  .email-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem}
+  .email-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--engaged),var(--aqua));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+  .email-from b{color:var(--plum);font-weight:600;font-size:.95rem}.email-from span{color:var(--muted);font-weight:300;font-size:.9rem}
+  .email-subj{font-size:1.15rem;font-weight:600;color:var(--plum)}
+  .email-body{padding:1.2rem 1.3rem}
+  .email-body p{color:var(--ink-2);font-weight:300;margin-bottom:.7rem}
+  .email-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.2rem;border-radius:9px;margin-top:.3rem}
+  .frame{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .frame-body{padding:1.2rem 1.3rem}
+  .kicker{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+  .frame-body h4{font-size:1.3rem;font-weight:700;color:var(--plum);margin-bottom:.5rem;line-height:1.25}
+  .frame-body p{color:var(--ink-2);font-weight:300;margin-bottom:.9rem}
+  .pairing{background:var(--lead-tint);border-radius:12px;padding:.9rem 1.1rem;font-size:.92rem;color:var(--ink-2);font-weight:300;margin-top:1rem}
+  .pairing b{color:var(--lead-ink);font-weight:700}
+
+  /* ── slide-over sheet ── */
+  .sheet-back{position:fixed;inset:0;z-index:90;background:rgba(20,6,40,.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+  .sheet-back.open{opacity:1;pointer-events:auto}
+  .sheet{position:fixed;top:0;right:0;bottom:0;z-index:95;width:min(560px,100%);background:var(--snow);box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .4s var(--ease);display:flex;flex-direction:column}
+  .sheet.open{transform:none}
+  .sheet-head{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;border-bottom:1px solid var(--line);background:#fff;flex-shrink:0}
+  .sheet-head .st{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--lead-ink);background:var(--lead-tint);padding:.35rem .8rem;border-radius:var(--r-pill)}
+  .sheet-x{margin-left:auto;background:var(--fog);border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;color:var(--ink-2);display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+  .sheet-x:hover{background:var(--line);transform:rotate(90deg)}
+  .sheet-body{padding:1.4rem;overflow-y:auto;flex:1}
+  .sheet-foot{padding:1rem 1.4rem;border-top:1px solid var(--line);background:#fff;display:flex;gap:.8rem;align-items:center;flex-shrink:0}
+  .copy-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--lead);color:#fff;font-weight:600;border:none;border-radius:var(--r-pill);padding:.75rem 1.4rem;cursor:pointer;transition:transform .2s,background .2s}
+  .copy-btn:hover{transform:translateY(-2px)}
+  .copy-btn.done{background:var(--engaged)}
+  .copy-hint{color:var(--muted);font-size:.85rem;font-weight:300}
+
+  /* ── tables / callout / cards (shared) ── */
+  .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm)}
+  table.t{width:100%;border-collapse:collapse;min-width:600px}
+  table.t thead th{background:var(--plum);color:rgba(255,255,255,.8);text-align:left;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.95rem 1.2rem}
+  table.t tbody td{padding:1rem 1.2rem;border-top:1px solid var(--line);color:var(--ink-2);font-weight:300;vertical-align:top}
+  table.t tbody tr{transition:background .25s}table.t tbody tr:hover{background:var(--lead-tint)}
+  table.t td .m{font-weight:600;color:var(--plum)}
+  .stage{display:inline-block;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--r-pill);margin:0 .2rem .2rem 0}
+  .stage.e{background:var(--engaged-tint);color:var(--engaged)}.stage.d{background:var(--disengaged-tint);color:#8f4610}
+  .fill{color:var(--muted);font-style:italic}
+  .vids{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+  .vids li{position:relative;padding-left:1.1rem;color:var(--ink-2);font-weight:300}
+  .vids li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--lead)}
+  .vids li em{font-style:italic;color:var(--muted)}
+  .callout{background:var(--lead-tint);border-radius:var(--r);border-left:4px solid var(--lead);padding:clamp(1.3rem,3vw,1.9rem)}
+  .callout h3{font-size:var(--fs-h3);font-weight:700;color:var(--lead-ink);margin-bottom:.5rem}
+  .callout p{color:var(--ink-2);font-weight:300}
+  .callout ul{margin:.7rem 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:.5rem}
+  .callout li{position:relative;padding-left:1.5rem;color:var(--ink-2);font-weight:300}
+  .callout li::before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--lead)}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.6rem;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--lead) 40%,var(--line))}
+  .card .ic{width:46px;height:46px;border-radius:13px;background:var(--lead-tint);color:var(--lead);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+  .card h3{font-size:var(--fs-h3);font-weight:600;color:var(--plum);margin-bottom:.45rem}.card p{color:var(--ink-2);font-weight:300}
+
+  .footer{background:var(--plum);color:rgba(255,255,255,.55);padding:2.4rem 0;margin-top:var(--s8)}
+  .footer .container{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+  .footer svg{width:150px}.footer a{color:var(--aqua)}
+
+  /* ── next-section flow button ── */
+  .view-next{margin-top:var(--s8);padding-top:var(--s6);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .vn-label{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .vn-btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--lead);color:#fff;font-weight:600;font-size:1.05rem;padding:.85rem 1.7rem;border-radius:var(--r-pill);border:none;cursor:pointer;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .25s var(--ease),box-shadow .25s}
+  .vn-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
+  .vn-btn .arw{transition:transform .3s var(--ease)}.vn-btn:hover .arw{transform:translateX(5px)}
+
+  .lead-engaged{--lead:var(--engaged);--lead-tint:var(--engaged-tint);--lead-ink:#0a5f53}
+  .lead-disengaged{--lead:var(--disengaged);--lead-tint:var(--disengaged-tint);--lead-ink:#8f4610}
+
+  @media(max-width:900px){
+    .nav-links{display:none}.nav-menu-btn{display:inline-flex}
+    .intro-cards,.lead-choices,.lead-choices.two,.grid-2,.grid-3,.sample-grid{grid-template-columns:1fr}
+    .dl>div{grid-template-columns:1fr}.dl dt{padding-bottom:.3rem}.dl dd{padding-top:.3rem}
+    .tabs{top:53px}
   }
-  .topbar-logo {
-    display: flex; align-items: center; gap: 10px;
-    color: var(--white); font-weight: 700; font-size: 18px; letter-spacing: 0.01em;
-  }
-  .topbar-label { color: rgba(255,255,255,0.62); font-size: 17px; font-weight: 500; letter-spacing: 0.10em; text-transform: uppercase; }
-
-  /* ── PAGE FOOTER ── */
-  .pg-footer {
-    background: var(--plum);
-    height: 44px;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 64px;
-    flex-shrink: 0;
-    margin-top: auto;
-  }
-  .pg-footer span { font-size: 17px; color: rgba(255,255,255,0.60); font-weight: 400; }
-  .pg-footer .pg-num { color: rgba(255,255,255,0.62); font-weight: 600; }
-
-  /* ── CONTENT AREA ── */
-  .content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-  .content-row { display: flex; flex: 1; overflow: hidden; }
-  .col { display: flex; flex-direction: column; overflow: hidden; }
-
-  /* ── SECTION LABEL PILL ── */
-  .section-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(45,210,176,0.12); border: 1px solid rgba(45,210,176,0.28);
-    border-radius: var(--r-pill); padding: 5px 15px;
-    font-size: 17px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--aqua);
-  }
-  .section-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--aqua); }
-
-  /* ── SECTION HEADER ── */
-  .sec-hdr { display: flex; align-items: flex-start; gap: 12px; }
-  .sec-icon {
-    width: 36px; height: 36px; border-radius: 10px; background: var(--pale-lav);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .sec-icon.teal { background: var(--light-mint); }
-  .sec-icon.dark { background: rgba(255,255,255,0.09); }
-  .sec-icon.red  { background: #FFF0F0; }
-  .sec-title { font-weight: 600; font-size: 28px; color: var(--plum); }
-  .sec-title.on-dark { color: var(--white); }
-
-  /* ── STEP ROWS ── */
-  .step {
-    display: flex; align-items: flex-start; gap: 14px;
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--r); padding: 18px 22px;
-  }
-  .step-num {
-    width: 30px; height: 30px; border-radius: 50%;
-    background: var(--grape); color: var(--white);
-    font-size: 17px; font-weight: 600;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .step-num.green { background: #1A8C78; }
-  .step-icon-wrap {
-    width: 30px; height: 30px; border-radius: 7px; background: var(--pale-lav);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .step-icon-wrap.teal { background: var(--light-mint); }
-  .step-text { font-size: 23px; font-weight: 500; color: var(--ink); flex: 1; }
-  .step-tag {
-    font-size: 17px; color: var(--slate); background: var(--fog);
-    border-radius: var(--r-pill); padding: 2px 10px; white-space: nowrap;
-  }
-
-  /* ── CHECK LIST ── */
-  .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--light-mist); }
-  .check-item:last-child { border-bottom: none; }
-  .check-icon {
-    width: 18px; height: 18px; border-radius: 50%;
-    background: var(--white); border: 1.5px solid #7639A1;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; }
-  .check-text { font-size: 20px; color: var(--ink-2); line-height: 1.55; }
-  .check-text strong { font-weight: 600; color: var(--plum); }
-
-  /* ── PILLS ── */
-  .meta-pill {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--pale-lav); color: var(--indigo);
-    border-radius: var(--r-pill); padding: 5px 14px;
-    font-size: 17px; font-weight: 500; margin: 3px 3px 3px 0;
-  }
-
-  /* ── EMAIL WINDOW ── */
-  .email-window { background: var(--white); border-radius: 12px; box-shadow: 0 8px 40px rgba(36,4,70,0.14); overflow: hidden; border: 1px solid var(--light-mist); }
-  .email-chrome { background: #EEEEF0; padding: 9px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #DDDDE0; }
-  .chrome-dots { display: flex; gap: 5px; }
-  .chrome-dot { width: 9px; height: 9px; border-radius: 50%; }
-  .chrome-dot.red   { background: #FF5F57; }
-  .chrome-dot.amber { background: #FEBC2E; }
-  .chrome-dot.green { background: #28C840; }
-  .chrome-bar { flex: 1; background: var(--white); border-radius: 5px; padding: 3px 10px; font-size: 17px; color: var(--ash); border: 1px solid var(--silver); }
-  .email-hdr { border-bottom: 1px solid var(--light-mist); padding: 12px 20px; background: var(--snow); }
-  .email-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,var(--grape),var(--aqua)); display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 17px; font-weight: 700; flex-shrink: 0; }
-  .email-subject { font-size: 22px; font-weight: 600; color: var(--plum); }
-  .email-body { padding: 18px 22px; }
-  .email-body p { font-size: 20px; font-weight: 400; line-height: 1.7; color: var(--ink-2); margin-bottom: 13px; }
-  .email-body p:last-child { margin-bottom: 0; }
-  .email-video { background: linear-gradient(130deg,var(--plum) 0%,var(--indigo) 100%); border-radius: 9px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; margin: 12px 0; }
-  .play-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--aqua); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .email-cta-btn { display: block; background: var(--grape); color: var(--white); text-align: center; border-radius: 7px; padding: 11px 20px; font-size: 18px; font-weight: 600; text-decoration: none; font-family: var(--font); margin: 10px 0 8px; }
-  .email-sign { font-size: 17px; color: var(--slate); border-top: 1px solid var(--light-mist); padding-top: 11px; margin-top: 11px; line-height: 1.7; }
-  .email-sign strong { color: var(--plum); font-weight: 600; }
-
-  /* ── TABLE ── */
-  .lc-table { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .lc-hdr { display: grid; grid-template-columns: 340px 1fr 0.7fr 1.02fr; background: var(--plum); }
-  .lc-hdr-cell { padding: 16px 24px; font-size: 18px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.72); border-right: 1px solid rgba(255,255,255,0.08); }
-  .lc-hdr-cell:last-child { border-right: none; }
-  .lc-row { display: grid; grid-template-columns: 340px 1fr 0.7fr 1.02fr; border-top: 1px solid var(--border); }
-  .lc-cell { padding: 18px 24px; font-size: 20px; font-weight: 400; color: var(--ink-2); line-height: 1.6; border-right: 1px solid var(--border); }
-  .lc-cell:last-child { border-right: none; }
-  .stage-pill { display: inline-flex; align-items: center; gap: 5px; border-radius: var(--r-pill); padding: 3px 10px; margin-bottom: 5px; }
-  .stage-pill.purple { background: var(--pale-lav); }
-  .stage-pill.green  { background: var(--light-mint); }
-  .stage-pill.red    { background: #FFF0F0; }
-  .stage-pill span { font-size: 17px; font-weight: 600; }
-  .stage-pill .dot { width: 5px; height: 5px; border-radius: 50%; }
-
-  /* ── METRIC CARDS ── */
-  .metric-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: var(--r); overflow: hidden; display: flex; flex-direction: column; }
-  .metric-accent { height: 3px; }
-  .metric-body { padding: 34px 30px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
-  .metric-goal { font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.80); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; line-height: 1.4; min-height: 48px; }
-  .metric-kpi-block { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 20px 22px; margin-bottom: 22px; }
-  .metric-kpi-eyebrow { font-size: 17px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--aqua); margin-bottom: 7px; }
-  .metric-kpi-value { font-size: 30px; font-weight: 700; color: var(--white); line-height: 1.2; min-height: 72px; }
-  .metric-sec-label { font-size: 17px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.70); margin-top: 6px; margin-bottom: 14px; }
-  .metric-sec-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
-  .metric-sec-list li { font-size: 20px; font-weight: 400; color: rgba(255,255,255,0.74); display: flex; align-items: flex-start; gap: 9px; line-height: 1.4; }
-  .metric-sec-list li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--aqua); opacity: 0.5; flex-shrink: 0; margin-top: 9px; }
-
-  /* ── UTM TABLE ── */
-  .utm-hdr { display: grid; grid-template-columns: 280px 170px 1fr; background: var(--plum); }
-  .utm-hdr-cell { padding: 13px 20px; font-size: 17px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.72); border-right: 1px solid rgba(255,255,255,0.08); }
-  .utm-hdr-cell:last-child { border-right: none; }
-  .utm-row { display: grid; grid-template-columns: 280px 170px 1fr; border-top: 1px solid var(--border); }
-  .utm-cell { padding: 14px 20px; font-size: 20px; color: var(--ink); border-right: 1px solid var(--border); }
-  .utm-cell:last-child { border-right: none; font-family: monospace; font-size: 17px; color: var(--grape); word-break: break-all; line-height: 1.6; }
-
-  /* ── IMPACT CARDS ── */
-  .impact-card { display: flex; align-items: flex-start; gap: 10px; background: var(--white); border-radius: 10px; padding: 14px 16px; border: 1px solid rgba(118,57,161,0.12); }
-  .impact-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--pale-lav); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-
-  /* ── NEWSLETTER FRAME ── */
-  .nl-chrome { background: #1A1A2A; padding: 9px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #2E2E40; }
-  .nl-bar { flex: 1; background: #2E2E40; border-radius: 5px; padding: 3px 10px; font-size: 17px; color: #9090A8; border: 1px solid #3E3E54; }
-  .nl-sender { background: #F7F5FF; border-bottom: 1px solid var(--light-mist); padding: 9px 20px; display: flex; align-items: center; gap: 9px; }
-  .nl-hero { padding: 30px 40px 24px; text-align: center; }
-  .nl-body { padding: 20px 40px; }
-  .nl-footer { background: var(--fog); border-top: 1px solid var(--light-mist); padding: 12px 40px; text-align: center; }
-
-  /* ── LANDING PAGE FRAME ── */
-  .lp-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 32px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .lp-hero { text-align: center; padding: 32px 60px 24px; }
-  .lp-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
-  .lp-tile { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 16px 14px; text-align: left; }
-
-  /* ── RESPONSIVE SCALE / PRINT ── */
-  html, body { overflow-x: hidden; }
-  .deck { transform-origin: top left; width: 1920px; }
-  @media print {
-    @page { size: 1920px 1080px; margin: 0; }
-    html, body { overflow-x: visible; height: auto !important; background: var(--white); margin: 0 !important; padding: 0 !important; }
-    .deck { transform: none !important; width: 1920px; height: auto !important; }
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .topbar, .topnav { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .page {
-      width: 1920px !important; height: 1080px !important;
-      page-break-after: always; break-after: page;
-      page-break-inside: avoid; break-inside: avoid;
-      overflow: hidden;
-    }
-    .page:last-child { page-break-after: avoid; break-after: avoid; }
-  }
-
-  /* ── METRIC KPI TARGET ── */
-  .metric-kpi-target { display: flex; align-items: baseline; gap: 8px; margin-top: 11px; padding-top: 11px; border-top: 1px solid rgba(255,255,255,0.12); }
-  .metric-kpi-target .t-label { font-size: 17px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: rgba(255,255,255,0.70); }
-  .metric-kpi-target .t-num { font-size: 24px; font-weight: 700; color: var(--aqua); line-height: 1; }
-
-  /* ── NUMBERED IMPACT CARDS ── */
-  .impact-num { width: 28px; height: 28px; border-radius: 50%; background: var(--grape); color: var(--white); font-size: 17px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .topnav { display:flex; align-items:center; gap:20px; flex-wrap:nowrap; }
-  .topnav a { font-size:17px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:rgba(255,255,255,0.60); text-decoration:none; padding:2px 0; border-bottom:2px solid transparent; white-space:nowrap; }
-  .topnav a:hover { color:var(--aqua); border-bottom-color:var(--aqua); }
-  .topnav a.active { color:var(--aqua); border-bottom-color:var(--aqua); font-weight:700; }
-
-  /* ── EDITABLE TEXT ── */
-  [contenteditable] { cursor: text; }
-  [contenteditable]:hover { outline: 1.5px dashed rgba(155,25,251,0.28); border-radius: 3px; }
-  [contenteditable]:focus { outline: 2px solid rgba(155,25,251,0.55); border-radius: 3px; box-shadow: 0 0 0 4px rgba(155,25,251,0.09); }
-
-  /* ── PDF FAB ── */
-  .pdf-fab {
-    position: fixed; bottom: 32px; right: 32px; z-index: 9999;
-    display: flex; align-items: center; gap: 9px;
-    background: #240446; color: #fff;
-    border: none; border-radius: 100px; padding: 15px 26px;
-    font-family: var(--font); font-size: 15px; font-weight: 600;
-    box-shadow: 0 4px 20px rgba(36,4,70,0.45), 0 1px 4px rgba(36,4,70,0.20);
-    cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    letter-spacing: 0.02em; user-select: none;
-  }
-  .pdf-fab:hover { background: #3D1166; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(36,4,70,0.55); }
-  .pdf-fab:active { transform: translateY(0); box-shadow: 0 3px 12px rgba(36,4,70,0.40); }
-  .pdf-fab-saved { position: fixed; bottom: 88px; right: 36px; z-index: 9998; font-family: var(--font); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.70); background: rgba(36,4,70,0.72); border-radius: 8px; padding: 5px 12px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
-  .pdf-fab-saved.show { opacity: 1; }
-  /* When the commenting overlay is active it stamps `cc-review-on` on
-     this page's <body>; hide the Export PDF button and its toast so the
-     overlay's bottom-right FAB owns the corner. */
-  body.cc-review-on .pdf-fab,
-  body.cc-review-on .pdf-fab-saved { display: none !important; }
-
-  /* ── SYNC STATUS BANNER (offline / back-online) ── */
-  .sync-banner {
-    position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-12px);
-    z-index: 10000; display: flex; align-items: flex-start; gap: 10px;
-    border-radius: 10px; padding: 11px 14px 11px 16px; max-width: 560px;
-    font-family: var(--font); font-size: 13.5px; font-weight: 500; line-height: 1.4;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
-    opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-  .sync-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
-  .sync-banner--offline { background: #47170D; color: #FFE3D6; border: 1px solid rgba(255,150,110,0.35); }
-  .sync-banner--online  { background: #0F3D24; color: #D6FCE8; border: 1px solid rgba(90,220,150,0.35); }
-  .sync-banner svg { flex: 0 0 auto; margin-top: 1px; }
-  .sync-banner .sync-banner-close {
-    flex: 0 0 auto; background: none; border: none; cursor: pointer;
-    padding: 2px; margin-left: 2px; margin-top: 1px; line-height: 0; border-radius: 4px;
-  }
-  .sync-banner--offline .sync-banner-close { color: rgba(255,227,214,0.75); }
-  .sync-banner--offline .sync-banner-close:hover { color: #FFE3D6; background: rgba(255,255,255,0.08); }
-  .sync-banner--online .sync-banner-close { color: rgba(214,252,232,0.75); }
-  .sync-banner--online .sync-banner-close:hover { color: #D6FCE8; background: rgba(255,255,255,0.08); }
-  @media print {
-    .pdf-fab, .pdf-fab-saved, .sync-banner { display: none !important; }
-    [contenteditable] { outline: none !important; box-shadow: none !important; }
-  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .sample-store{display:none}
 </style>
 </head>
 <body>
-<div class="deck">
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
 <path d="M151.664 17.7879H146.827L146.052 20.0771H142.748L147.437 7.11728H151.092L155.781 20.0771H152.44L151.664 17.7879ZM150.852 15.351L149.246 10.6065L147.658 15.351H150.852ZM161.879 7.11728C163.245 7.11728 164.439 7.38804 165.461 7.92958C166.482 8.47111 167.27 9.23418 167.824 10.2188C168.39 11.1911 168.673 12.3172 168.673 13.5972C168.673 14.8649 168.39 15.991 167.824 16.9756C167.27 17.9602 166.476 18.7233 165.442 19.2648C164.421 19.8064 163.233 20.0771 161.879 20.0771H157.024V7.11728H161.879ZM161.676 17.3449C162.87 17.3449 163.799 17.0187 164.464 16.3664C165.128 15.7141 165.461 14.791 165.461 13.5972C165.461 12.4034 165.128 11.4742 164.464 10.8095C163.799 10.1449 162.87 9.81263 161.676 9.81263H160.181V17.3449H161.676ZM182.419 7.11728L177.822 20.0771H173.871L169.274 7.11728H172.634L175.846 16.9018L179.077 7.11728H182.419ZM186.71 7.11728V20.0771H183.553V7.11728H186.71ZM193.503 20.2064C192.555 20.2064 191.706 20.0525 190.955 19.7448C190.204 19.4372 189.601 18.9818 189.146 18.3787C188.703 17.7756 188.469 17.0495 188.444 16.2003H191.804C191.853 16.6803 192.019 17.0495 192.303 17.3079C192.586 17.5541 192.955 17.6772 193.41 17.6772C193.878 17.6772 194.247 17.5726 194.518 17.3633C194.789 17.1418 194.924 16.8403 194.924 16.4587C194.924 16.1387 194.813 15.8741 194.592 15.6649C194.383 15.4557 194.118 15.2833 193.798 15.148C193.49 15.0126 193.047 14.8587 192.469 14.6864C191.632 14.428 190.949 14.1695 190.419 13.9111C189.89 13.6526 189.435 13.2711 189.053 12.7665C188.672 12.2618 188.481 11.6034 188.481 10.7911C188.481 9.58494 188.918 8.64342 189.792 7.9665C190.666 7.27728 191.804 6.93266 193.207 6.93266C194.635 6.93266 195.786 7.27728 196.659 7.9665C197.533 8.64342 198.001 9.5911 198.062 10.8095H194.647C194.623 10.3911 194.469 10.0649 194.186 9.8311C193.903 9.58494 193.539 9.46187 193.096 9.46187C192.715 9.46187 192.407 9.56648 192.173 9.77571C191.939 9.97263 191.823 10.2619 191.823 10.6434C191.823 11.0619 192.019 11.388 192.413 11.6218C192.807 11.8557 193.423 12.108 194.259 12.3788C195.096 12.6618 195.773 12.9326 196.29 13.1911C196.819 13.4495 197.275 13.8249 197.656 14.3172C198.038 14.8095 198.229 15.4433 198.229 16.2187C198.229 16.9572 198.038 17.6279 197.656 18.231C197.287 18.8341 196.746 19.3141 196.032 19.671C195.318 20.0279 194.475 20.2064 193.503 20.2064ZM206.116 20.2064C204.898 20.2064 203.778 19.9233 202.756 19.3572C201.747 18.791 200.941 18.0033 200.338 16.9941C199.747 15.9726 199.451 14.828 199.451 13.5603C199.451 12.2926 199.747 11.1542 200.338 10.1449C200.941 9.13572 201.747 8.34803 202.756 7.78189C203.778 7.21574 204.898 6.93266 206.116 6.93266C207.334 6.93266 208.448 7.21574 209.457 7.78189C210.479 8.34803 211.279 9.13572 211.857 10.1449C212.448 11.1542 212.744 12.2926 212.744 13.5603C212.744 14.828 212.448 15.9726 211.857 16.9941C211.267 18.0033 210.467 18.791 209.457 19.3572C208.448 19.9233 207.334 20.2064 206.116 20.2064ZM206.116 17.3264C207.15 17.3264 207.974 16.9818 208.59 16.2926C209.217 15.6033 209.531 14.6926 209.531 13.5603C209.531 12.4157 209.217 11.5049 208.59 10.828C207.974 10.1388 207.15 9.79417 206.116 9.79417C205.07 9.79417 204.233 10.1326 203.605 10.8095C202.99 11.4865 202.682 12.4034 202.682 13.5603C202.682 14.7049 202.99 15.6218 203.605 16.311C204.233 16.9879 205.07 17.3264 206.116 17.3264ZM220.924 20.0771L218.229 15.1849H217.472V20.0771H214.315V7.11728H219.614C220.635 7.11728 221.503 7.29574 222.217 7.65266C222.943 8.00958 223.484 8.50188 223.841 9.12956C224.198 9.74494 224.377 10.4342 224.377 11.1972C224.377 12.0588 224.131 12.828 223.638 13.5049C223.158 14.1818 222.444 14.6618 221.497 14.9449L224.487 20.0771H220.924ZM217.472 12.9511H219.429C220.008 12.9511 220.438 12.8095 220.721 12.5265C221.017 12.2434 221.164 11.8434 221.164 11.3265C221.164 10.8342 221.017 10.4465 220.721 10.1634C220.438 9.88033 220.008 9.73879 219.429 9.73879H217.472V12.9511Z" fill="white"></path>
 <g clip-path="url(#clip0_1164_57289)">
@@ -369,1026 +330,424 @@
 </clipPath>
 </defs>
 </symbol></svg>
-<div class="page" id="cover">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#engaged">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 100px;background:linear-gradient(135deg,var(--plum) 0%,var(--indigo) 100%);">
-      <div class="section-pill" style="width:fit-content;margin-bottom:22px;background:rgba(20,201,180,0.15);border-color:rgba(20,201,180,0.35);color:#7EEFDD;">KNOMEE ACTIVATION PLAYBOOK</div>
-      <h1 style="font-size:56px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:6px;">Deepening Relationships:</h1>
-      <h1 style="font-size:56px;font-weight:700;color:#5CE0C6;line-height:1.1;margin-bottom:24px;">The Client Playbook</h1>
-      <p style="font-size:24px;font-weight:300;color:rgba(255,255,255,0.82);max-width:820px;line-height:1.6;margin-bottom:34px;">How to use Knomee to keep engaged clients engaged — and win back the ones who are drifting.</p>
-      <div style="background:rgba(255,255,255,0.07);border-left:4px solid #5CE0C6;border-radius:10px;padding:20px 26px;max-width:720px;">
-        <div style="font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;">Built for your marketing team and advisors</div>
-        <div style="font-size:24px;color:rgba(255,255,255,0.78);line-height:1.6;margin-bottom:8px;">Everything in this playbook is copy-and-paste ready: check-in invitations, meeting follow-ups, life-event outreach, and re-engagement messages — organized by client type, each with a matching video or asset suggestion.</div>
-        <div style="font-size:24px;color:rgba(255,255,255,0.55);">Wealth Management Edition · V1 · 2026</div>
-      </div>
-    </div>
 
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="home.html" aria-label="Back to landing page"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg></a>
+    <div class="nav-links" id="navLinks">
+      <a data-go="home">Home</a>
+      <a data-go="how-to-use">How to Use</a>
+      <a data-go="what-is-knomee">The Check-In</a>
+      <a data-go="setup">Setup</a>
+      <a data-go="engaged">Engaged</a>
+      <a data-go="disengaged">Disengaged</a>
+      <a data-go="testing">Test</a>
+      <a data-go="appendix">Appendix</a>
+    </div>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menu</button>
   </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 1</span></div>
+</nav>
+
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawerClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <nav class="drawer-list" id="drawerList"></nav>
 </div>
 
-<div class="page" id="how-to-use">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#engaged">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-    <div style="padding:48px 80px 0;">
-    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#086375" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="#086375" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#086375;">How to Use This Playbook</div>
-    </div>
-    <p style="font-size:24px;font-weight:300;color:var(--ink-2);line-height:1.6;margin-bottom:24px;padding-left:48px;max-width:1500px;">This playbook covers existing clients only. With clients, Knomee isn't a marketing funnel; it's a relationship instrument: a simple, respectful way to ask &ldquo;what's changed?&rdquo; and actually use the answer. Every client falls into one of two types:</p>
-    <div style="padding-left:48px;"><div class="lc-table" style="margin-bottom:26px;">
-  <div class="lc-hdr" style="grid-template-columns:180px 1fr 1.3fr;">
-    <div class="lc-hdr-cell">Client Type</div><div class="lc-hdr-cell">Where They Are</div><div class="lc-hdr-cell">Your Job</div>
-  </div>
-  <div class="lc-row" style="grid-template-columns:180px 1fr 1.3fr;">
-    <div class="lc-cell" style="padding:14px 24px;"><span class="stage-pill" style="background:#D9F2ED;"><span class="dot" style="background:#6BA1AC;"></span><span style="color:#6BA1AC;">ENGAGED</span></span></div>
-    <div class="lc-cell" style="padding:14px 24px;">Responsive, open to guidance</div><div class="lc-cell" style="padding:14px 24px;">Deepen the relationship — grow share of wallet</div>
-  </div>
-  <div class="lc-row" style="grid-template-columns:180px 1fr 1.3fr;">
-    <div class="lc-cell" style="padding:14px 24px;"><span class="stage-pill" style="background:#E9D9F4;"><span class="dot" style="background:#7639A1;"></span><span style="color:#7639A1;">DISENGAGED</span></span></div>
-    <div class="lc-cell" style="padding:14px 24px;">Less responsive, declining meetings</div><div class="lc-cell" style="padding:14px 24px;">Reopen communication — retain the assets</div>
-  </div>
-</div></div>
-    </div>
+<main>
 
+<!-- ══ HOME ══ -->
+<section class="view" id="home">
+  <div class="home-hero">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="container">
+      <span class="hero-eyebrow anim">Knomee Activation Playbook</span>
+      <h1 class="anim d1">Deepening Relationships:<br><span class="accent">The Client Playbook</span></h1>
+      <p class="tag anim d2">How to use Knomee to keep engaged clients engaged — and win back the ones who are drifting. Ready-to-use check-ins, meeting follow-ups, and re-engagement messages, organized by client type.</p>
+      <div class="intro-cards stagger">
+        <div class="intro-card"><div class="k">What Knomee is</div><h3>A 10-minute check-in</h3><p>Your client completes it before a review — or any time life shifts — so every conversation starts with what matters now.</p></div>
+        <div class="intro-card"><div class="k">What this playbook is</div><h3>Copy-and-paste outreach</h3><p>Check-in invites, meeting follow-ups, and re-engagement messages, organized by client type — each with a matching video suggestion.</p></div>
+        <div class="intro-card"><div class="k">How to use it</div><h3>Pick a client type → go</h3><p>Open the section that matches your client. Read the strategy, follow the cadence, and open any sample to copy it.</p></div>
+      </div>
+    </div>
   </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 2</span></div>
-</div>
 
-<div class="page" id="how-to-use-steps">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#engaged">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-    <div style="padding:48px 80px 0;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
-      <div>
-        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M4 2v14" stroke="#086375" stroke-width="1.4" stroke-linecap="round"/><path d="M4 3h9l-2.5 3L13 9H4" stroke="#086375" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#086375;">Three Steps to Your First Campaign</div>
+  <div class="choose container">
+    <div class="choose-label anim">
+      <span class="eyebrow">Choose your path</span>
+      <h2>Which client are you working with?</h2>
+      <p>With clients, Knomee isn't a marketing funnel — it's a relationship instrument. Start with whichever client type needs your attention most right now.</p>
     </div>
-        <div style="padding-left:48px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">1</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6" r="2.3" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 14c0-2.5 2-4.3 4.5-4.3S11 11.5 11 14" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/><circle cx="12.5" cy="6.5" r="1.8" stroke="var(--grape)" stroke-width="1.2"/><path d="M13 9.7c1.7.4 3 1.8 3 3.8" stroke="var(--grape)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Segment your book.</strong> Which clients haven't had a meaningful touch in 6+ months? That's your Disengaged list.</span>
-          <span class="step-tag" style="font-size:20px;">📋 Segment</span>
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">2</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="9" cy="9" r="7" stroke="var(--grape)" stroke-width="1.4"/><circle cx="9" cy="9" r="3.5" stroke="var(--grape)" stroke-width="1.4"/><circle cx="9" cy="9" r="0.8" fill="var(--grape)"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Pick one play.</strong> The pre-review invite (Engaged) and the annual check-in (Disengaged) are the highest-impact starts.</span>
-          <span class="step-tag" style="font-size:20px;">🎯 Play</span>
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">3</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Copy, customize, send.</strong> These messages come from the advisor personally. Marketing prepares them; advisors send them.</span>
-          <span class="step-tag" style="font-size:20px;">✉️ Send</span>
-        </div></div></div>
+    <div class="lead-choices two stagger">
+      <div class="lead-choice lc-engaged" data-go="engaged">
+        <span class="emoji">🌱</span><span class="tagword">Engaged Client</span><h3>Engaged</h3>
+        <p>Responsive and open to guidance. Keep them engaged — and grow the relationship.</p>
+        <span class="go">Enter Engaged <span class="arw">→</span></span>
       </div>
-      <div style="margin-top:22px;background:var(--fog);border-left:4px solid var(--grape);border-radius:10px;padding:20px 26px;">
-      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--grape)" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="var(--grape)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:var(--grape);">Your Walkthrough Session</div>
+      <div class="lead-choice lc-disengaged" data-go="disengaged">
+        <span class="emoji">⏳</span><span class="tagword">Disengaged Client</span><h3>Disengaged</h3>
+        <p>Drifting — slower replies, declined reviews. Reopen the conversation before you lose them.</p>
+        <span class="go">Enter Disengaged <span class="arw">→</span></span>
+      </div>
     </div>
-      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">This playbook is designed to be walked through together. Your Knomee customer success contact will schedule a 45-minute working session:<ul style="margin:10px 0 10px 22px;padding:0;"><li style="margin-bottom:6px;">10 min &mdash; segment engaged vs. disengaged clients</li><li style="margin-bottom:6px;">15 min &mdash; choose your first play and customize the copy</li><li style="margin-bottom:6px;">10 min &mdash; set the annual cadence calendar</li><li>10 min &mdash; CRM sync, tracking, and success metrics</li></ul>You'll leave with your first client campaign ready to send.</div>
+    <div class="ref-row anim">
+      <div class="k">Guide &amp; reference</div>
+      <div class="ref-chips">
+        <button class="ref-chip" data-go="how-to-use"><span class="e">🧭</span> How to Use</button>
+        <button class="ref-chip" data-go="what-is-knomee"><span class="e">✨</span> The Check-In</button>
+        <button class="ref-chip" data-go="setup"><span class="e">⚙️</span> 5-Step Setup</button>
+        <button class="ref-chip" data-go="testing"><span class="e">🧪</span> Test &amp; Learn</button>
+        <button class="ref-chip" data-go="appendix"><span class="e">🎬</span> Video Appendix</button>
+      </div>
     </div>
-    </div>
-    </div>
+  </div>
+</section>
 
+<!-- ══ HOW TO USE ══ -->
+<section class="view" id="how-to-use">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Orientation</span><h2 class="h2">How to Use This Playbook</h2><p class="intro">This playbook covers <strong>existing clients only</strong>. Knomee here isn't a marketing funnel — it's a relationship instrument: a simple, respectful way to ask “what's changed?” and actually use the answer. Every client falls into one of two types.</p></div>
+    <div class="grid-2 stagger" style="margin-bottom:var(--s6)">
+      <div class="card lead-engaged" data-go="engaged" style="cursor:pointer"><div class="ic">🌱</div><h3>Engaged</h3><p><strong>Responsive, open to guidance.</strong> Deepen the relationship — grow share of wallet.</p></div>
+      <div class="card lead-disengaged" data-go="disengaged" style="cursor:pointer"><div class="ic">⏳</div><h3>Disengaged</h3><p><strong>Less responsive, declining meetings.</strong> Reopen communication — retain the assets.</p></div>
+    </div>
+    <div class="head anim" style="margin-bottom:var(--s4)"><h2 class="h2" style="font-size:var(--fs-h3)">Three Steps to Your First Campaign</h2></div>
+    <div class="steps stagger" style="margin-bottom:var(--s6)">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Segment your book.</strong><p>Which clients haven't had a meaningful touch in 6+ months? That's your Disengaged list.</p><span class="chip">📋 Segment</span></div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Pick one play.</strong><p>The pre-review invite (Engaged) and the annual check-in (Disengaged) are the highest-impact starts.</p><span class="chip">🎯 Play</span></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Copy, customize, send.</strong><p>These messages come from the advisor personally. Marketing prepares them; advisors send them.</p><span class="chip">✉️ Send</span></div></div>
+    </div>
+    <div class="callout anim">
+      <h3>Your Walkthrough Session</h3>
+      <p>This playbook is designed to be walked through together. Your Knomee customer success contact will schedule a <strong>45-minute working session</strong> to:</p>
+      <ul><li>10 min — segment engaged vs. disengaged clients</li><li>15 min — choose your first play and customize the copy</li><li>10 min — set the annual cadence calendar</li><li>10 min — CRM sync, tracking, and success metrics</li></ul>
+      <p style="margin-top:.9rem"><strong>You'll leave with your first client campaign ready to send.</strong></p>
+    </div>
   </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 3</span></div>
-</div>
+</section>
 
-<div class="page" id="what-is-knomee">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#engaged">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
+<!-- ══ WHAT IS KNOMEE ══ -->
+<section class="view" id="what-is-knomee">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Client Experiences</h2><p class="intro">Knomee is a <strong>10-minute guided check-in</strong> your clients complete before a review — or any time life shifts. It helps them articulate their current goals, priorities, and top money questions, so every conversation starts with what matters <em>now</em>, not what mattered at onboarding.</p></div>
+    <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
+      <div class="card"><span class="num">1</span><h3 style="margin-top:1rem">The client feels heard</h3><p>They get a personal summary — and reviews stop feeling like a portfolio report.</p></div>
+      <div class="card"><span class="num">2</span><h3 style="margin-top:1rem">The advisor sees what changed</h3><p>Knomee surfaces shifts in priorities and life events before the meeting.</p></div>
+      <div class="card"><span class="num">3</span><h3 style="margin-top:1rem">The firm keeps the relationship</h3><p>Knomee catches drift early and opens doors to the broader household.</p></div>
+    </div>
+    <div class="callout anim"><h3>Why This Matters Commercially</h3><p>Client use of Knomee drives <strong>retention, annual-review participation, household penetration, and share of wallet</strong> — different economics than prospect acquisition, and often a faster payoff. A single retained at-risk household typically covers the program.</p></div>
   </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-    <div style="padding:48px 80px 0;">
-    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M9 15s-6-3.6-6-8.2C3 4 5 2.5 7 2.5c1 0 2 .5 2 1.7 0-1.2 1-1.7 2-1.7 2 0 4 1.5 4 4.3C15 11.4 9 15 9 15z" stroke="#086375" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#086375;">What Is Knomee &mdash; for Clients</div>
-    </div>
-    <p style="font-size:24px;font-weight:300;line-height:1.5;color:var(--ink-2);margin-bottom:24px;padding-left:48px;max-width:1500px;">Knomee is a 10-minute guided check-in your clients complete before a review — or any time life shifts. It helps them articulate their current goals, priorities, and top money questions, so every conversation starts with what matters now, not what mattered at onboarding.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
-      <div>
-        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M9 2l1.9 3.8 4.2.6-3 3 .7 4.2L9 11.5l-3.8 2.1.7-4.2-3-3 4.2-.6z" stroke="#086375" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#086375;">3 Things That Happen</div>
-    </div>
-        <div style="padding-left:48px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">1</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M9 15s-6-3.6-6-8.2C3 4 5 2.5 7 2.5c1 0 2 .5 2 1.7 0-1.2 1-1.7 2-1.7 2 0 4 1.5 4 4.3C15 11.4 9 15 9 15z" stroke="var(--grape)" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>The client feels heard</strong> — they get a personal summary, and reviews stop feeling like a portfolio report.</span>
-          
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">2</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="var(--grape)" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>The advisor sees what changed</strong> — Knomee surfaces shifts in priorities and life events before the meeting.</span>
-          
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">3</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l6 2v4.5c0 4-2.5 6.5-6 7.5-3.5-1-6-3.5-6-7.5V3.5l6-2z" stroke="var(--grape)" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.5 8l1.8 1.8L11 6" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>The firm keeps the relationship</strong> — Knomee catches drift early and opens doors to the broader household.</span>
-          
-        </div></div></div>
-      </div>
-      <div>
-        <div style="margin-top:22px;background:var(--fog);border-left:4px solid var(--grape);border-radius:10px;padding:20px 26px;">
-      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--grape)" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="var(--grape)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:var(--grape);">Why This Matters Commercially</div>
-    </div>
-      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">Client use of Knomee drives retention, annual review participation, household penetration, and share of wallet — different economics than prospect acquisition, and often a faster payoff. A single retained at-risk household typically covers the program.</div>
-    </div>
-      </div>
-    </div>
-    </div>
+</section>
 
+<!-- ══ SETUP ══ -->
+<section class="view" id="setup">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Before You Launch</span><h2 class="h2">The 5-Step Setup</h2><p class="intro">Every campaign follows the same five setup steps. Work through them to prepare for your walkthrough session; your CS contact will help you complete each one.</p></div>
+    <div class="steps stagger">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Targeting</strong><p>Segment your book: engaged (upcoming reviews) vs. disengaged (6+ months quiet).</p></div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Cadence</strong><p>Map the plays to your review calendar (see the cadence table in Engaged).</p></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Copy</strong><p>Customize samples with the advisor's name and voice — 1:1 messages, not blasts.</p></div></div>
+      <div class="step"><span class="num">4</span><div class="step-body"><strong>Link</strong><p>Use your client invite URL from the Knomee dashboard (different from the prospect link).</p></div></div>
+      <div class="step"><span class="num">5</span><div class="step-body"><strong>CRM</strong><p>Sync completions to HubSpot / Redtail so advisors see responses before every meeting.</p></div></div>
+    </div>
   </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 4</span></div>
-</div>
+</section>
 
-<div class="page" id="what-is-knomee-setup">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#engaged">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
+<!-- ══════ ENGAGED ══════ -->
+<section class="view lead-engaged" id="engaged">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="lead-band anim"><span class="tagword">🌱 Engaged Client</span><h2>Engaged</h2><p>They're responsive and open to guidance. Keep it that way — and grow the relationship.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="cadence">Cadence <span class="c">5</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">3</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
+    </div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>Active clients who attend reviews, respond to outreach, and engage with their plan.</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I want to stay engaged and make sure my financial priorities are reflected in my plan.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Improve advisor preparation, strengthen the relationship, engage the broader family, and increase share of wallet.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>Every Knomee invite promises a payoff:</strong> “I'll review your responses and use them.” Then do it, visibly.</dd></div>
+      </dl>
+    </div>
+    <div class="tabpanel" data-panel="cadence">
+      <p class="samples-note">🗓 A repeatable rhythm across the client year — every touch comes from the advisor personally.</p>
+      <div class="table-wrap"><table class="t"><thead><tr><th>When</th><th>Play</th><th>Channel</th></tr></thead><tbody>
+        <tr><td class="m">2 weeks before each review</td><td>Pre-meeting Knomee invite</td><td>Email from advisor</td></tr>
+        <tr><td class="m">2 days before the review</td><td>Thank-you (if completed) or gentle nudge</td><td>Email from advisor</td></tr>
+        <tr><td class="m">1–2 days after the review</td><td>Meeting recap referencing their Knomee responses</td><td>Email from advisor</td></tr>
+        <tr><td class="m">Mid-year (between reviews)</td><td>Mid-year pulse check-in</td><td>Email from advisor</td></tr>
+        <tr><td class="m">Before family / estate conversations</td><td>Family &amp; household alignment prompt</td><td>Email from advisor</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="eng-1"><span class="type">Email · Pre-Meeting Invite · 2 weeks before</span><h4>A quick check-in before we connect</h4><span class="prev">Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="eng-2"><span class="type">Email · Mid-Year Pulse · between reviews</span><h4>A quick mid-year check-in</h4><span class="prev">A lot can change between reviews. I wanted to reach out with a quick mid-year check-in…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="eng-3"><span class="type">Email · Meeting Recap · 1–2 days after</span><h4>Great connecting today</h4><span class="prev">Thank you for meeting today. As a recap, the main areas we discussed…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
+        <tr><td class="m">Improve advisor preparation</td><td>Pre-meeting completion rate</td><td>Meeting satisfaction (advisor-reported)</td></tr>
+        <tr><td class="m">Strengthen the relationship</td><td>Response rate to check-ins</td><td>Referral rate</td></tr>
+        <tr><td class="m">Increase share of wallet</td><td>Household penetration rate</td><td>Assets under management growth</td></tr>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Engaged → Disengaged</h3><p>Watch for early drift signals — a skipped review, a slower response time, a declined meeting. Move them to the Disengaged cadence <strong>before six months of silence passes.</strong></p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--disengaged);box-shadow:0 8px 24px rgba(180,89,17,.32)" data-go="disengaged">Go to Disengaged <span class="arw">→</span></button></p></div>
+    </div>
   </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-    <div style="padding:48px 80px 0;">
-    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.4" stroke="#086375" stroke-width="1.3"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5" stroke="#086375" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#086375;">Before You Launch: The 5-Step Setup</div>
-    </div>
-    <div style="padding-left:48px;max-width:1100px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">1</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6" r="2.3" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 14c0-2.5 2-4.3 4.5-4.3S11 11.5 11 14" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/><circle cx="12.5" cy="6.5" r="1.8" stroke="var(--grape)" stroke-width="1.2"/><path d="M13 9.7c1.7.4 3 1.8 3 3.8" stroke="var(--grape)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Targeting</strong> — segment your book: engaged (upcoming reviews) vs. disengaged (6+ months quiet).</span>
-          
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">2</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--grape)" stroke-width="1.3"/><path d="M8 4.5V8l2.4 1.6" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Cadence</strong> — map the plays to your review calendar (see the cadence table in Engaged).</span>
-          
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">3</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Copy</strong> — customize samples with the advisor's name and voice — 1:1 messages, not blasts.</span>
-          
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">4</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="var(--grape)" stroke-width="1.4"/><path d="M2 7l7 4 7-4" stroke="var(--grape)" stroke-width="1.4"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Link</strong> — use your client invite URL from the Knomee dashboard (different from prospect's).</span>
-          
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">5</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.4" stroke="var(--grape)" stroke-width="1.3"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>CRM</strong> — sync completions to HubSpot / Redtail so advisors see responses before every meeting.</span>
-          
-        </div></div></div>
-    </div>
+</section>
 
+<!-- ══════ DISENGAGED ══════ -->
+<section class="view lead-disengaged" id="disengaged">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="lead-band anim"><span class="tagword">⏳ Disengaged Client</span><h2>Disengaged</h2><p>They're drifting — less responsive, declining meetings. Restart the conversation before you lose the relationship.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="play">Playbook <span class="c">4</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">2</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
+    </div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>At-risk clients: 6+ months without meaningful contact, declined reviews, reduced responsiveness.</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I don't feel my involvement is helpful or needed — and I'm considering switching advisors.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Reopen communication, rebuild trust, and retain assets.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>No pressure, no pitch, no guilt.</strong> Every message offers the client a low-effort way to be heard — that's it.</dd></div>
+      </dl>
+    </div>
+    <div class="tabpanel" data-panel="play">
+      <div class="steps">
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>Annual / personalization check-in</strong><p>The default re-opener for any quiet client.</p><span class="chip">📅 Annual</span></div></div>
+        <div class="step"><span class="num">2</span><div class="step-body"><strong>Life-event check-in</strong><p>When you know (or suspect) something changed.</p><span class="chip">🏡 Life event</span></div></div>
+        <div class="step"><span class="num">3</span><div class="step-body"><strong>Relationship refresh</strong><p>Invite the client to tell you how conversations could be more useful.</p><span class="chip">🔄 Refresh</span></div></div>
+        <div class="step"><span class="num">4</span><div class="step-body"><strong>Broader financial picture</strong><p>A share-of-wallet opener framed entirely around their needs.</p><span class="chip">💰 Wallet</span></div></div>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="dis-1"><span class="type">Email · Annual Check-In · the default re-opener</span><h4>A quick check-in to make sure we're focused on what matters</h4><span class="prev">It's been a while since we connected, and I wanted to reach out with a quick check-in…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="dis-2"><span class="type">Email · Life-Event Check-In · when something changed</span><h4>A quick check-in on changes in your financial picture</h4><span class="prev">I wanted to check in on whether anything has changed in your financial picture or planning needs…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
+        <tr><td class="m">Reopen communication</td><td>Reengagement rate</td><td>Meeting rate</td></tr>
+        <tr><td class="m">Increase responsiveness</td><td>Response rate</td><td>Meeting rate</td></tr>
+        <tr><td class="m">Rebuild trust</td><td>Participation rate</td><td>Retention rate</td></tr>
+        <tr><td class="m">Strengthen the relationship</td><td>Share-of-wallet growth</td><td>Retention rate</td></tr>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Disengaged → Engaged</h3><p>The moment a disengaged client completes Knomee, treat them as Engaged: the advisor reviews responses <strong>within 48 hours</strong>, sends the thank-you, and books the meeting. A re-engagement completion that sits unanswered does more harm than no campaign at all.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--engaged);box-shadow:0 8px 24px rgba(12,114,99,.32)" data-go="engaged">Go to Engaged <span class="arw">→</span></button></p></div>
+    </div>
   </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 5</span></div>
-</div>
+</section>
 
-<div class="page" id="engaged">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged" class="active">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-        <div style="padding:44px 80px 0;">
-        <div style="background:#6BA1AC;border-radius:12px;padding:20px 28px;margin-bottom:20px;">
-      <div style="font-size:34px;font-weight:700;color:#fff;letter-spacing:0.02em;margin-bottom:6px;">ENGAGED CLIENT</div>
-      <div style="font-size:24px;font-weight:400;color:rgba(255,255,255,0.88);line-height:1.4;">They're responsive and open to guidance. Keep it that way — and grow the relationship.</div>
+<!-- ══ TESTING ══ -->
+<section class="view" id="testing">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Optimize</span><h2 class="h2">Test Before You Launch</h2><p class="intro">Even 1:1 client outreach benefits from testing. Knomee supports UTM tags so you can see which message and timing drives completions — not just opens.</p></div>
+    <div class="steps stagger" style="--lead:var(--engaged);--lead-tint:var(--engaged-tint)">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Copy</strong> your client invite URL from the Knomee Advisor dashboard (different from the prospect URL).</div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Tag</strong> it with UTM parameters. <span style="font-family:ui-monospace,monospace;font-size:.9rem;color:var(--engaged);word-break:break-all">knomeeurl.com/?utm_source=email&amp;utm_campaign=midyear_pulse&amp;utm_content=option1</span></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Read</strong> Knomee's traffic report, then standardize on the winning message across the book.</div></div>
     </div>
-        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-      <div style="display:flex;border-top:none;">
-        <div style="width:260px;flex-shrink:0;background:#D9F2ED;padding:16px 22px;font-size:26px;font-weight:700;color:#6BA1AC;">Who this is</div>
-        <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Active clients who attend reviews, respond to outreach, and engage with their plan.</div>
-      </div>
-      <div style="display:flex;border-top:1px solid var(--border);">
-          <div style="width:260px;flex-shrink:0;background:#D9F2ED;padding:16px 22px;font-size:26px;font-weight:700;color:#6BA1AC;">They're thinking</div>
-          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">&ldquo;I want to stay engaged and make sure my financial priorities are reflected in my plan.&rdquo;</div>
-        </div><div style="display:flex;border-top:1px solid var(--border);">
-          <div style="width:260px;flex-shrink:0;background:#D9F2ED;padding:16px 22px;font-size:26px;font-weight:700;color:#6BA1AC;">Your goal</div>
-          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Improve advisor preparation, strengthen the relationship, engage the broader family, and increase share of wallet.</div>
-        </div><div style="display:flex;border-top:1px solid var(--border);">
-          <div style="width:260px;flex-shrink:0;background:#D9F2ED;padding:16px 22px;font-size:26px;font-weight:700;color:#6BA1AC;">The one rule</div>
-          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;"><strong>Every Knomee invite promises a payoff:</strong> &ldquo;I'll review your responses and use them.&rdquo; Then do it, visibly.</div>
-        </div>
-    </div>
-        </div>
-    
+    <div class="callout anim" style="--lead:var(--engaged);--lead-tint:var(--engaged-tint);margin-top:var(--s4)"><h3>The 10% Rule</h3><p>Pilot each play with a handful of advisors or <strong>10% of the target segment</strong> first. Once completion and response rates prove out, roll it out book-wide.</p></div>
   </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 6</span></div>
-</div>
+</section>
 
-<div class="page" id="engaged-cadence">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged" class="active">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-        <div style="padding:44px 80px 0;">
-          <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#D9F2ED;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#6BA1AC" stroke-width="1.3"/><path d="M8 4.5V8l2.4 1.6" stroke="#6BA1AC" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#6BA1AC;">Your Annual Cadence</div>
-    </div>
-          <div style="padding-left:48px;max-width:1500px;"><div class="lc-table">
-  <div class="lc-hdr" style="grid-template-columns:260px 1fr 220px;background:#6BA1AC;">
-    <div class="lc-hdr-cell">When</div><div class="lc-hdr-cell">Play</div><div class="lc-hdr-cell">Channel</div>
-  </div>
-  <div class="lc-row" style="grid-template-columns:260px 1fr 220px;"><div class="lc-cell" style="padding:14px 24px;">2 weeks before each review</div><div class="lc-cell" style="padding:14px 24px;">Pre-meeting Knomee invite</div><div class="lc-cell" style="padding:14px 24px;">Email from advisor</div></div>
-  <div class="lc-row" style="grid-template-columns:260px 1fr 220px;"><div class="lc-cell" style="padding:14px 24px;">2 days before the review</div><div class="lc-cell" style="padding:14px 24px;">Thank-you (if completed) or gentle nudge</div><div class="lc-cell" style="padding:14px 24px;">Email from advisor</div></div>
-  <div class="lc-row" style="grid-template-columns:260px 1fr 220px;"><div class="lc-cell" style="padding:14px 24px;">1&ndash;2 days after the review</div><div class="lc-cell" style="padding:14px 24px;">Meeting recap referencing their Knomee responses</div><div class="lc-cell" style="padding:14px 24px;">Email from advisor</div></div>
-  <div class="lc-row" style="grid-template-columns:260px 1fr 220px;"><div class="lc-cell" style="padding:14px 24px;">Mid-year (between reviews)</div><div class="lc-cell" style="padding:14px 24px;">Mid-year pulse check-in</div><div class="lc-cell" style="padding:14px 24px;">Email from advisor</div></div>
-  <div class="lc-row" style="grid-template-columns:260px 1fr 220px;"><div class="lc-cell" style="padding:14px 24px;">Before family / estate conversations</div><div class="lc-cell" style="padding:14px 24px;">Family &amp; household alignment prompt</div><div class="lc-cell" style="padding:14px 24px;">Email from advisor</div></div>
-</div></div>
-        </div>
-    
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 7</span></div>
-</div>
+<!-- ══ APPENDIX ══ -->
+<section class="view" id="appendix">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Videos for Clients</h2><p class="intro">From your library of <strong>~24 Knomee videos</strong>, a subset works well with existing clients — check-in explainers, family-conversation openers, and life-event themes. Match each use case to the right video, then pull the files from the Drive library.</p></div>
+    <div class="table-wrap anim"><table class="t"><thead><tr><th>Use case</th><th>Best video types</th><th>Where to embed</th></tr></thead><tbody>
+      <tr><td><span class="stage e">Engaged</span></td><td>“Why we check in” explainers, family conversation openers</td><td>Pre-meeting invites, mid-year pulse, family prompts</td></tr>
+      <tr><td><span class="stage d">Disengaged</span></td><td>Life-event themes (retirement, new home, family), human stories</td><td>Life-event check-ins, re-engagement emails</td></tr>
+    </tbody></table></div>
 
-<div class="page" id="engaged-copy-8">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged" class="active">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-            <div style="padding:40px 80px 0;">
-            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#D9F2ED;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#6BA1AC" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#6BA1AC" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#6BA1AC;">Sample Copy &mdash; Use As-Is or Adapt</div>
-    </div>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
-              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#6BA1AC;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Pre-Meeting Invite · Option 1 · 2 weeks before a review</span></div>
-    <div class="email-window">
-      <div class="email-chrome">
-        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
-        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
-      </div>
-      <div class="email-hdr">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
-          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
-          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
-        </div>
-        <div class="email-subject" style="font-size:30px;">A quick check-in before we connect</div>
-      </div>
-      <div class="email-body" style="font-size:24px;">
-        <p style="margin-bottom:11px;">Hi [Client First Name],</p><p style="margin-bottom:11px;">Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now.</p><p style="margin-bottom:11px;">Knomee is a brief experience that helps you reflect on your goals, priorities, and what's top of mind. If you have a few minutes, please complete it before we meet:</p>
-        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Access your Knomee experience here →</a>
-      </div>
-    </div>
-    <div style="background:#D9F2ED;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>PAIR IT WITH:</strong> A short &ldquo;why we check in&rdquo; explainer video.</div></div><div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#6BA1AC;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Mid-Year Pulse · Option 2 · Between reviews</span></div>
-    <div class="email-window">
-      <div class="email-chrome">
-        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
-        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
-      </div>
-      <div class="email-hdr">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
-          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
-          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
-        </div>
-        <div class="email-subject" style="font-size:30px;">A quick mid-year check-in</div>
-      </div>
-      <div class="email-body" style="font-size:24px;">
-        <p style="margin-bottom:11px;">A lot can change between reviews. I wanted to reach out with a quick mid-year check-in.</p><p style="margin-bottom:11px;">If anything has shifted, Knomee is a simple way to let me know before our next scheduled meeting.</p>
-        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Complete Knomee →</a>
-      </div>
-    </div>
-    <div style="background:#D9F2ED;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>PAIR IT WITH:</strong> A family-conversation opener video works well for household-alignment prompts.</div></div>
-            </div>
-            </div>
-        
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 8</span></div>
-</div>
-
-<div class="page" id="engaged-copy-9">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged" class="active">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-            <div style="padding:40px 80px 0;">
-            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#D9F2ED;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#6BA1AC" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#6BA1AC" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#6BA1AC;">Sample Copy &mdash; Use As-Is or Adapt</div>
-    </div>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
-              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#6BA1AC;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Meeting Recap · 1&ndash;2 days after the review</span></div>
-    <div class="email-window">
-      <div class="email-chrome">
-        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
-        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
-      </div>
-      <div class="email-hdr">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
-          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
-          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
-        </div>
-        <div class="email-subject" style="font-size:30px;">Great connecting today</div>
-      </div>
-      <div class="email-body" style="font-size:24px;">
-        <p style="margin-bottom:11px;">Thank you for meeting today. As a recap, the main areas we discussed: [Priority 1], [Priority 2], [Priority 3]. Next steps: [Next Step 1], [Next Step 2].</p><p style="margin-bottom:11px;">I'll keep your Knomee responses in mind as we continue working together.</p>
-        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">View your Knomee summary →</a>
-      </div>
-    </div>
-    <div style="background:#D9F2ED;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>PAIR IT WITH:</strong> No video needed — this is a personal recap, referencing their specific responses.</div></div><div><div style="background:#D9F2ED;border-radius:12px;padding:20px 24px;font-size:24px;color:var(--ink-2);line-height:1.5;height:100%;display:flex;align-items:center;">
-  <div><strong style="color:#6BA1AC;">The one rule:</strong> every Knomee invite promises a payoff — &ldquo;I'll review your responses and use them.&rdquo; Then do it, visibly.</div>
-</div></div>
-            </div>
-            </div>
-        
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 9</span></div>
-</div>
-
-<div class="page" id="engaged-metrics">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged" class="active">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-        <div style="padding:40px 80px 0;">
-        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#D9F2ED;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="#6BA1AC" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#6BA1AC;">How You'll Know It's Working</div>
-    </div>
-        <div style="padding-left:48px;">
-          <div class="lc-table">
-      <div class="lc-hdr" style="grid-template-columns:1fr 1fr 1fr;background:#6BA1AC;">
-        <div class="lc-hdr-cell" style="font-size:20px;">Your Goal</div><div class="lc-hdr-cell" style="font-size:20px;">Watch This First</div><div class="lc-hdr-cell" style="font-size:20px;">Then Watch</div>
-      </div>
-      <div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
-        <div class="lc-cell" style="font-size:24px;">Improve advisor preparation</div><div class="lc-cell" style="font-size:24px;">Pre-meeting completion rate</div><div class="lc-cell" style="font-size:24px;">Meeting satisfaction (advisor-reported)</div>
-      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
-        <div class="lc-cell" style="font-size:24px;">Strengthen the relationship</div><div class="lc-cell" style="font-size:24px;">Response rate to check-ins</div><div class="lc-cell" style="font-size:24px;">Referral rate</div>
-      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
-        <div class="lc-cell" style="font-size:24px;">Increase share of wallet</div><div class="lc-cell" style="font-size:24px;">Household penetration rate</div><div class="lc-cell" style="font-size:24px;">Assets under management growth</div>
-      </div>
-    </div>
-          <div style="margin-top:22px;background:#D9F2ED;border-left:4px solid #6BA1AC;border-radius:10px;padding:20px 26px;">
-      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#6BA1AC" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="#6BA1AC" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#6BA1AC;">The Handoff: Engaged &rarr; Disengaged</div>
-    </div>
-      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">Watch for early drift signals — a skipped review, a slower response time, a declined meeting. Move them to the Disengaged cadence before six months of silence passes.</div>
-    </div>
-        </div>
-        </div>
-    
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 10</span></div>
-</div>
-
-<div class="page" id="disengaged">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged">Engaged</a><a href="#disengaged" class="active">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-        <div style="padding:44px 80px 0;">
-        <div style="background:#7639A1;border-radius:12px;padding:20px 28px;margin-bottom:20px;">
-      <div style="font-size:34px;font-weight:700;color:#fff;letter-spacing:0.02em;margin-bottom:6px;">DISENGAGED CLIENT</div>
-      <div style="font-size:24px;font-weight:400;color:rgba(255,255,255,0.88);line-height:1.4;">They're drifting — less responsive, declining meetings. Restart the conversation before you lose the relationship.</div>
-    </div>
-        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-      <div style="display:flex;border-top:none;">
-        <div style="width:260px;flex-shrink:0;background:#E9D9F4;padding:16px 22px;font-size:26px;font-weight:700;color:#7639A1;">Who this is</div>
-        <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">At-risk clients: 6+ months without meaningful contact, declined reviews, reduced responsiveness.</div>
-      </div>
-      <div style="display:flex;border-top:1px solid var(--border);">
-          <div style="width:260px;flex-shrink:0;background:#E9D9F4;padding:16px 22px;font-size:26px;font-weight:700;color:#7639A1;">They're thinking</div>
-          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">&ldquo;I don't feel my involvement is helpful or needed &mdash; and I'm considering switching advisors.&rdquo;</div>
-        </div><div style="display:flex;border-top:1px solid var(--border);">
-          <div style="width:260px;flex-shrink:0;background:#E9D9F4;padding:16px 22px;font-size:26px;font-weight:700;color:#7639A1;">Your goal</div>
-          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Reopen communication, rebuild trust, and retain assets.</div>
-        </div><div style="display:flex;border-top:1px solid var(--border);">
-          <div style="width:260px;flex-shrink:0;background:#E9D9F4;padding:16px 22px;font-size:26px;font-weight:700;color:#7639A1;">The one rule</div>
-          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;"><strong>No pressure, no pitch, no guilt.</strong> Every message offers the client a low-effort way to be heard — that's it.</div>
-        </div>
-    </div>
-        </div>
-    
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 11</span></div>
-</div>
-
-<div class="page" id="disengaged-cadence">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged">Engaged</a><a href="#disengaged" class="active">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-        <div style="padding:44px 80px 0;">
-          <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#E9D9F4;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M4 2v14" stroke="#7639A1" stroke-width="1.4" stroke-linecap="round"/><path d="M4 3h9l-2.5 3L13 9H4" stroke="#7639A1" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#7639A1;">Your Campaign, Step by Step</div>
-    </div>
-          <div style="padding-left:48px;max-width:1500px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#7639A1;display:flex;align-items:center;justify-content:center;">1</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:#E9D9F4;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#7639A1" stroke-width="1.3"/><path d="M8 4.5V8l2.4 1.6" stroke="#7639A1" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Annual / personalization check-in</strong> &mdash; the default re-opener for any quiet client.</span>
-          <span class="step-tag" style="font-size:20px;">📅 Annual</span>
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#7639A1;display:flex;align-items:center;justify-content:center;">2</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:#E9D9F4;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M4 2v14" stroke="#7639A1" stroke-width="1.4" stroke-linecap="round"/><path d="M4 3h9l-2.5 3L13 9H4" stroke="#7639A1" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Life-event check-in</strong> &mdash; when you know (or suspect) something changed.</span>
-          <span class="step-tag" style="font-size:20px;">🏡 Life event</span>
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#7639A1;display:flex;align-items:center;justify-content:center;">3</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:#E9D9F4;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8a6 6 0 0110-4.2M15 8a6 6 0 01-10 4.2" stroke="#7639A1" stroke-width="1.4" stroke-linecap="round"/><path d="M13 2v3h-3M5 14v-3h3" stroke="#7639A1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Relationship refresh</strong> &mdash; invite the client to tell you how conversations could be more useful.</span>
-          <span class="step-tag" style="font-size:20px;">🔄 Refresh</span>
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#7639A1;display:flex;align-items:center;justify-content:center;">4</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:#E9D9F4;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="#7639A1" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Broader financial picture</strong> &mdash; a share-of-wallet opener framed entirely around their needs.</span>
-          <span class="step-tag" style="font-size:20px;">💰 Wallet</span>
-        </div></div></div>
-        </div>
-    
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 12</span></div>
-</div>
-
-<div class="page" id="disengaged-copy-13">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged">Engaged</a><a href="#disengaged" class="active">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-            <div style="padding:40px 80px 0;">
-            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#E9D9F4;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#7639A1" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#7639A1" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#7639A1;">Sample Copy &mdash; Use As-Is or Adapt</div>
-    </div>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
-              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#7639A1;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Annual Check-In · Option 1 · The default re-opener</span></div>
-    <div class="email-window">
-      <div class="email-chrome">
-        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
-        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
-      </div>
-      <div class="email-hdr">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
-          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
-          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
-        </div>
-        <div class="email-subject" style="font-size:30px;">A quick check-in to make sure we're focused on what matters</div>
-      </div>
-      <div class="email-body" style="font-size:24px;">
-        <p style="margin-bottom:11px;">Hi [Client First Name],</p><p style="margin-bottom:11px;">It's been a while since we connected, and I wanted to reach out with a quick check-in.</p><p style="margin-bottom:11px;">Rather than assume your priorities are the same, I'd like to give you a simple way to share what's top of mind. Knomee is a brief experience that helps you reflect on what may have changed.</p>
-        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Access your Knomee experience here →</a>
-      </div>
-    </div>
-    <div style="background:#E9D9F4;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>PAIR IT WITH:</strong> Send from the advisor's personal email, not a marketing address.</div></div><div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#7639A1;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Life-Event Check-In · Option 2 · When something may have changed</span></div>
-    <div class="email-window">
-      <div class="email-chrome">
-        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
-        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
-      </div>
-      <div class="email-hdr">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
-          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
-          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
-        </div>
-        <div class="email-subject" style="font-size:30px;">A quick check-in on changes in your financial picture</div>
-      </div>
-      <div class="email-body" style="font-size:24px;">
-        <p style="margin-bottom:11px;">I wanted to check in on whether anything has changed in your financial picture or planning needs since we last spoke.</p><p style="margin-bottom:11px;">If new responsibilities or questions have come up, I'd welcome the chance to understand them — Knomee is a helpful starting point.</p>
-        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Access your Knomee experience here →</a>
-      </div>
-    </div>
-    <div style="background:#E9D9F4;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>PAIR IT WITH:</strong> Never name products in this message — the Knomee responses tell you what to bring to the conversation.</div></div>
-            </div>
-            </div>
-        
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 13</span></div>
-</div>
-
-<div class="page" id="disengaged-metrics">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged">Engaged</a><a href="#disengaged" class="active">Disengaged</a><a href="#appendix">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-        <div style="padding:40px 80px 0;">
-        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#E9D9F4;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="#7639A1" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#7639A1;">How You'll Know It's Working</div>
-    </div>
-        <div style="padding-left:48px;">
-          <div class="lc-table">
-      <div class="lc-hdr" style="grid-template-columns:1fr 1fr 1fr;background:#7639A1;">
-        <div class="lc-hdr-cell" style="font-size:20px;">Your Goal</div><div class="lc-hdr-cell" style="font-size:20px;">Watch This First</div><div class="lc-hdr-cell" style="font-size:20px;">Then Watch</div>
-      </div>
-      <div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
-        <div class="lc-cell" style="font-size:24px;">Reopen communication</div><div class="lc-cell" style="font-size:24px;">Reengagement rate</div><div class="lc-cell" style="font-size:24px;">Meeting rate</div>
-      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
-        <div class="lc-cell" style="font-size:24px;">Increase responsiveness</div><div class="lc-cell" style="font-size:24px;">Response rate</div><div class="lc-cell" style="font-size:24px;">Meeting rate</div>
-      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
-        <div class="lc-cell" style="font-size:24px;">Rebuild trust</div><div class="lc-cell" style="font-size:24px;">Participation rate</div><div class="lc-cell" style="font-size:24px;">Retention rate</div>
-      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
-        <div class="lc-cell" style="font-size:24px;">Strengthen the relationship</div><div class="lc-cell" style="font-size:24px;">Share-of-wallet growth</div><div class="lc-cell" style="font-size:24px;">Retention rate</div>
-      </div>
-    </div>
-          <div style="margin-top:22px;background:#E9D9F4;border-left:4px solid #7639A1;border-radius:10px;padding:20px 26px;">
-      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#7639A1" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="#7639A1" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#7639A1;">The Handoff: Disengaged &rarr; Engaged</div>
-    </div>
-      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">The moment a disengaged client completes Knomee, treat them as Engaged: advisor reviews responses within 48 hours, sends the thank-you, and books the meeting. A re-engagement completion that sits unanswered does more harm than no campaign at all.</div>
-    </div>
-        </div>
-        </div>
-    
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 14</span></div>
-</div>
-
-<div class="page" id="test-launch">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix" class="active">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-    <div style="padding:40px 80px 0;">
-    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="9" cy="9" r="7" stroke="#086375" stroke-width="1.4"/><circle cx="9" cy="9" r="3.5" stroke="#086375" stroke-width="1.4"/><circle cx="9" cy="9" r="0.8" fill="#086375"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#086375;">Test Before You Launch</div>
-    </div>
-    <p style="font-size:24px;font-weight:300;line-height:1.6;color:var(--ink-2);margin-bottom:20px;padding-left:48px;max-width:1500px;">Even 1:1 client outreach benefits from testing. Knomee supports UTM tags so you can see which message and timing drives completions.</p>
-    <div style="padding-left:48px;max-width:1500px;">
-      <div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">1</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Copy</strong> your client invite URL from the Knomee Advisor dashboard (different from the prospect URL).</span>
-          
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">2</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.4" stroke="var(--grape)" stroke-width="1.3"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Tag</strong> it with UTM parameters. Example: knomeeurl.com/?utm_source=email&amp;utm_campaign=midyear_pulse&amp;utm_content=option1</span>
-          
-        </div><div class="step" style="padding:18px 22px;gap:16px;">
-          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">3</div>
-          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="var(--grape)" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-          <span class="step-text" style="font-size:24px;"><strong>Read</strong> Knomee's traffic report, then standardize on the winning message across the book.</span>
-          
-        </div></div>
-      <div style="margin-top:22px;background:var(--fog);border-left:4px solid var(--grape);border-radius:10px;padding:20px 26px;">
-      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--grape)" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="var(--grape)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:var(--grape);">The 10% Rule</div>
-    </div>
-      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">Pilot each play with a handful of advisors or 10% of the target segment first. Once completion and response rates prove out, roll it out book-wide.</div>
-    </div>
-    </div>
-    </div>
-
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 15</span></div>
-</div>
-
-<div class="page" id="appendix">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix" class="active">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-    <div style="padding:40px 80px 0;">
-    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="1" y="2.5" width="12" height="9" rx="2" stroke="#086375" stroke-width="1.3"/><path d="M5.5 5.5l4 2-4 2V5.5z" fill="#086375"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#086375;">Appendix &middot; Videos for Clients</div>
-    </div>
-    <p style="font-size:24px;font-weight:300;line-height:1.5;color:var(--ink-2);margin-bottom:18px;padding-left:48px;max-width:1500px;">From your library of 24 Knomee videos, a subset works well with existing clients — check-in explainers, family-conversation openers, and life-event themes:</p>
-    <div style="padding-left:48px;">
-      <div class="lc-table" style="margin-bottom:20px;">
-  <div class="lc-hdr" style="grid-template-columns:180px 1fr 1.2fr;">
-    <div class="lc-hdr-cell">Use Case</div><div class="lc-hdr-cell">Best Video Types</div><div class="lc-hdr-cell">Where to Embed</div>
-  </div>
-  <div class="lc-row" style="grid-template-columns:180px 1fr 1.2fr;">
-    <div class="lc-cell" style="padding:14px 24px;"><span class="stage-pill" style="background:#D9F2ED;"><span class="dot" style="background:#6BA1AC;"></span><span style="color:#6BA1AC;">ENGAGED</span></span></div>
-    <div class="lc-cell" style="padding:14px 24px;">&ldquo;Why we check in&rdquo; explainers, family conversation openers</div><div class="lc-cell" style="padding:14px 24px;">Pre-meeting invites, mid-year pulse, family prompts</div>
-  </div>
-  <div class="lc-row" style="grid-template-columns:180px 1fr 1.2fr;">
-    <div class="lc-cell" style="padding:14px 24px;"><span class="stage-pill" style="background:#E9D9F4;"><span class="dot" style="background:#7639A1;"></span><span style="color:#7639A1;">DISENGAGED</span></span></div>
-    <div class="lc-cell" style="padding:14px 24px;">Life-event themes (retirement, new home, family), human stories</div><div class="lc-cell" style="padding:14px 24px;">Life-event check-ins, re-engagement emails</div>
-  </div>
-</div>
-    </div>
-    </div>
-
-  </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 16</span></div>
-</div>
-
-<div class="page" id="video-planner">
-  <div class="topbar">
-    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
-    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#engaged">Engaged</a><a href="#disengaged">Disengaged</a><a href="#appendix" class="active">Appendix</a></nav>
-  </div>
-  <div class="content" style="display:flex;flex-direction:column;">
-    
-    <div style="padding:40px 80px 0;">
-    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
-      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="1" y="2.5" width="12" height="9" rx="2" stroke="#086375" stroke-width="1.3"/><path d="M5.5 5.5l4 2-4 2V5.5z" fill="#086375"/></svg></div>
-      <div class="sec-title" style="font-size:32px;color:#086375;">Your 8 Client Videos</div>
-    </div>
-    <div style="max-width:1500px;padding-left:48px;">
-      <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-      <div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;background:var(--plum);">
-        <div style="padding:13px 16px;font-size:24px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.72);">#</div>
-        <div style="padding:13px 16px;font-size:24px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.72);">Video Title</div>
-        <div style="padding:13px 16px;font-size:24px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.72);">Use Case</div>
-        <div style="padding:13px 16px;font-size:24px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.72);">Embed Link</div>
-      </div>
-      <div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;border-top:1px solid var(--border);">
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);white-space:nowrap;">1</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Why we check in, explained</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Engaged</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--grape);font-family:monospace;">knomeeurl.com/videos/1</div>
-        </div><div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;border-top:1px solid var(--border);">
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);white-space:nowrap;">2</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">A quick guide to your annual review</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Disengaged</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--grape);font-family:monospace;">knomeeurl.com/videos/2</div>
-        </div><div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;border-top:1px solid var(--border);">
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);white-space:nowrap;">3</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Family conversation starters</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Engaged</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--grape);font-family:monospace;">knomeeurl.com/videos/3</div>
-        </div><div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;border-top:1px solid var(--border);">
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);white-space:nowrap;">4</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">What changes, and why it matters</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Disengaged</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--grape);font-family:monospace;">knomeeurl.com/videos/4</div>
-        </div><div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;border-top:1px solid var(--border);">
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);white-space:nowrap;">5</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Meet [Advisor Name]</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Engaged</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--grape);font-family:monospace;">knomeeurl.com/videos/5</div>
-        </div><div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;border-top:1px solid var(--border);">
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);white-space:nowrap;">6</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Life events: what to tell your advisor</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Disengaged</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--grape);font-family:monospace;">knomeeurl.com/videos/6</div>
-        </div><div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;border-top:1px solid var(--border);">
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);white-space:nowrap;">7</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">The mid-year pulse, explained</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Engaged</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--grape);font-family:monospace;">knomeeurl.com/videos/7</div>
-        </div><div style="display:grid;grid-template-columns:50px 1fr 160px 1fr;border-top:1px solid var(--border);">
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);white-space:nowrap;">8</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Retirement, in their own words</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--ink-2);">Disengaged</div>
-          <div style="padding:12px 16px;font-size:24px;color:var(--grape);font-family:monospace;">knomeeurl.com/videos/8</div>
+    <div class="head anim" style="margin:var(--s6) 0 var(--s4)"><h2 class="h2" style="font-size:var(--fs-h3)">Your 8 Client Videos</h2></div>
+    <div class="grid-2">
+      <div class="lead-engaged">
+        <div class="callout anim" style="--lead:var(--engaged);--lead-tint:#fff;border:1px solid var(--line);border-left:4px solid var(--engaged)">
+          <h3 style="color:var(--engaged)">🌱 Engaged</h3>
+          <ul class="vids" style="margin-top:.5rem">
+            <li>Why we check in, explained <em>(video 1)</em></li>
+            <li>Family conversation starters <em>(video 3)</em></li>
+            <li>Meet [Advisor Name] <em>(video 5)</em></li>
+            <li>The mid-year pulse, explained <em>(video 7)</em></li>
+          </ul>
         </div>
       </div>
-      <p style="font-size:24px;font-style:italic;color:var(--slate);margin-top:18px;padding-left:48px;">Tip: tag every video link with utm_content=video[#] so the traffic report shows which videos drive completions.</p>
-    </div>
+      <div class="lead-disengaged">
+        <div class="callout anim" style="--lead:var(--disengaged);--lead-tint:#fff;border:1px solid var(--line);border-left:4px solid var(--disengaged)">
+          <h3 style="color:#8f4610">⏳ Disengaged</h3>
+          <ul class="vids" style="margin-top:.5rem">
+            <li>A quick guide to your annual review <em>(video 2)</em></li>
+            <li>What changes, and why it matters <em>(video 4)</em></li>
+            <li>Life events: what to tell your advisor <em>(video 6)</em></li>
+            <li>Retirement, in their own words <em>(video 8)</em></li>
+          </ul>
+        </div>
+      </div>
     </div>
 
+    <div class="callout anim" style="margin-top:var(--s4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;--lead:var(--grape);--lead-tint:#fff;border:1px solid var(--line)">
+      <div><h3 style="color:var(--plum)">Browse the full library in Google Drive</h3><p>All ~24 videos, ready to embed — open the folder and pick the files that fit the plan above.</p></div>
+      <a href="https://drive.google.com/" target="_blank" rel="noopener" class="btn btn-primary" style="background:var(--plum)">▶ Open the Video Library <span class="arw">→</span></a>
+    </div>
+    <p class="anim" style="margin-top:1.2rem;font-style:italic;color:var(--muted);font-size:.95rem">Tip: tag every video link with <code>utm_content=video[#]</code> so the traffic report shows which videos drive completions.</p>
   </div>
-  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Client Playbook · Page 17</span></div>
+</section>
+
+</main>
+
+<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Client Playbook · V1 · 2026 · <a data-go="home" style="cursor:pointer">Home</a> · <a href="client-playbook-pdf.html">Printable / PDF version →</a></div></div></footer>
+
+<!-- ── SLIDE-OVER ── -->
+<div class="sheet-back" id="sheetBack"></div>
+<aside class="sheet" id="sheet" aria-label="Sample">
+  <div class="sheet-head"><span class="st" id="sheetType">Sample</span><button class="sheet-x" id="sheetX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
+</aside>
+
+<!-- ── SAMPLE STORE (hidden source content) ── -->
+<div class="sample-store" id="sampleStore">
+  <div data-sample-id="eng-1" data-type="Email · Pre-Meeting Invite · 2 weeks before" class="lead-engaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in before we connect</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now.</p><p>Knomee is a brief experience that helps you reflect on your goals, priorities, and what's top of mind. If you have a few minutes, please complete it before we meet:</p><a class="email-cta">Access your Knomee experience here →</a></div></div>
+    <div class="pairing"><b>Pair it with:</b> a short “why we check in” explainer video, below the CTA.</div>
+  </div>
+  <div data-sample-id="eng-2" data-type="Email · Mid-Year Pulse · between reviews" class="lead-engaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick mid-year check-in</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>A lot can change between reviews. I wanted to reach out with a quick mid-year check-in.</p><p>If anything has shifted, Knomee is a simple way to let me know before our next scheduled meeting.</p><a class="email-cta">Complete Knomee →</a></div></div>
+    <div class="pairing"><b>Pair it with:</b> a family-conversation opener video works well for household-alignment prompts.</div>
+  </div>
+  <div data-sample-id="eng-3" data-type="Email · Meeting Recap · 1–2 days after" class="lead-engaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Great connecting today</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>Thank you for meeting today. As a recap, the main areas we discussed: [Priority 1], [Priority 2], [Priority 3]. Next steps: [Next Step 1], [Next Step 2].</p><p>I'll keep your Knomee responses in mind as we continue working together.</p><a class="email-cta">View your Knomee summary →</a></div></div>
+    <div class="pairing"><b>Pair it with:</b> no video needed — this is a personal recap, referencing their specific responses. Every message comes from the advisor personally.</div>
+  </div>
+  <div data-sample-id="dis-1" data-type="Email · Annual Check-In · the default re-opener" class="lead-disengaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in to make sure we're focused on what matters</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>It's been a while since we connected, and I wanted to reach out with a quick check-in.</p><p>Rather than assume your priorities are the same, I'd like to give you a simple way to share what's top of mind. Knomee is a brief experience that helps you reflect on what may have changed.</p><a class="email-cta">Access your Knomee experience here →</a></div></div>
+    <div class="pairing"><b>Pair it with:</b> send from the advisor's personal email, not a marketing address. No image needed on a re-opener.</div>
+  </div>
+  <div data-sample-id="dis-2" data-type="Email · Life-Event Check-In · when something changed" class="lead-disengaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in on changes in your financial picture</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>I wanted to check in on whether anything has changed in your financial picture or planning needs since we last spoke.</p><p>If new responsibilities or questions have come up, I'd welcome the chance to understand them — Knomee is a helpful starting point.</p><a class="email-cta">Access your Knomee experience here →</a></div></div>
+    <div class="pairing"><b>Pair it with:</b> never name products in this message — the Knomee responses tell you what to bring to the conversation.</div>
+  </div>
 </div>
 
-</div><!-- /deck -->
 <script>
 (function(){
-  var deck = document.querySelector('.deck');
-  var mq = window.matchMedia ? window.matchMedia('print') : null;
-  function reset(){ deck.style.transform='none'; document.body.style.height='auto'; }
-  function fit(){
-    if (mq && mq.matches) { reset(); return; }
-    var s = Math.min(1, window.innerWidth / 1920);
-    deck.style.transform = 'scale(' + s + ')';
-    document.body.style.height = (deck.offsetHeight * s) + 'px';
-  }
-  window.addEventListener('resize', fit);
-  window.addEventListener('load', fit);
-  window.addEventListener('beforeprint', reset);
-  window.addEventListener('afterprint', fit);
-  // Fire reset the instant print preview is entered (more reliable than beforeprint)
-  if (mq) {
-    var onMQ = function(e){ if (e.matches) reset(); else fit(); };
-    if (mq.addEventListener) mq.addEventListener('change', onMQ);
-    else if (mq.addListener) mq.addListener(onMQ);
-  }
-  fit();
-})();
-</script>
-<script>
-document.addEventListener('click',function(e){
-  if(e.target.closest&&e.target.closest('[contenteditable]'))return;
-  var a=e.target.closest&&e.target.closest('a[href^="#"]');
-  if(!a)return; var id=a.getAttribute('href').slice(1); if(!id)return;
-  e.preventDefault();
-  /* Wait for any pending saved-edits load to finish before computing the
-     scroll target — clicking while edits are still applying can shift page
-     heights mid-navigation, landing on unrelated content. */
-  var ready = window.__playbookContentReady || Promise.resolve();
-  ready.then(function () {
-    var el = document.getElementById(id); if (!el) return;
-    window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 4, behavior:'smooth'});
-  });
-});
-</script>
-<script>
-(function(){
-  var navTargets = ['engaged','disengaged','appendix'];
-  var introIds = ['how-to-use','what-is-knomee'];
-  var current = null;
-  document.querySelectorAll('.page').forEach(function(pg){
-    var id = pg.id;
-    if (navTargets.indexOf(id) !== -1) current = id;
-    else if (introIds.indexOf(id) !== -1) current = null;
-    var nav = pg.querySelector('.topnav');
-    if (!nav || !current) return;
-    var link = nav.querySelector('a[href="#'+current+'"]');
-    if (link) link.classList.add('active');
-  });
-})();
-</script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script>
-(function () {
-  var firebaseConfig = {
-    apiKey: "AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",
-    authDomain: "knomee-playbook.firebaseapp.com",
-    projectId: "knomee-playbook",
-    storageBucket: "knomee-playbook.firebasestorage.app",
-    messagingSenderId: "956493019959",
-    appId: "1:956493019959:web:13f099b4ea42ef948d78b2"
+  var meta = {
+    home:['','Home','Start here'],
+    'how-to-use':['01','How to Use','Client types & walkthrough'],
+    'what-is-knomee':['02','The Check-In','What clients experience'],
+    setup:['03','5-Step Setup','Before you launch'],
+    engaged:['04','Engaged','Deepen the relationship'],
+    disengaged:['05','Disengaged','Win them back'],
+    testing:['06','Test & Learn','UTM & the 10% rule'],
+    appendix:['07','Appendix','Client video library']
   };
-  firebase.initializeApp(firebaseConfig);
-  var docRef = firebase.firestore().collection('playbook').doc('client');
+  var views = {}; document.querySelectorAll('.view').forEach(function(v){ views[v.id]=v; });
+  var navLinks = {}; document.querySelectorAll('#navLinks a').forEach(function(a){ navLinks[a.getAttribute('data-go')]=a; });
 
-  var LOCAL_FALLBACK_KEY = 'knomee_client_local_fallback_v1';
-  var deck = document.querySelector('.deck');
-
-  /* ── Sync status banner (offline warning / back-online confirmation) ── */
-  var banner = document.createElement('div');
-  banner.className = 'sync-banner';
-  banner.innerHTML =
-    '<span class="sync-banner-icon"></span>' +
-    '<span class="sync-banner-text"></span>' +
-    '<button class="sync-banner-close" aria-label="Dismiss" type="button">' +
-      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
-    '</button>';
-  document.body.appendChild(banner);
-  var bannerIcon = banner.querySelector('.sync-banner-icon');
-  var bannerText = banner.querySelector('.sync-banner-text');
-  var bannerHideTimer = null;
-  var wasOffline = false;
-
-  var WARNING_ICON =
-    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
-    '</svg>';
-  var CHECK_ICON =
-    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-      '<circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9"/>' +
-    '</svg>';
-
-  function showSyncBanner() {
-    clearTimeout(bannerHideTimer);
-    banner.className = 'sync-banner sync-banner--offline show';
-    bannerIcon.innerHTML = WARNING_ICON;
-    bannerText.textContent = 'Server disconnected — changes are being saved locally only. Export PDF to keep your copy.';
-    wasOffline = true;
-  }
-
-  function showBackOnlineBanner() {
-    if (!wasOffline) return; // only announce recovery if we'd actually shown the offline warning
-    wasOffline = false;
-    clearTimeout(bannerHideTimer);
-    banner.className = 'sync-banner sync-banner--online show';
-    bannerIcon.innerHTML = CHECK_ICON;
-    bannerText.textContent = 'Back online — changes are syncing again.';
-    bannerHideTimer = setTimeout(function () { banner.classList.remove('show'); }, 5000);
-  }
-
-  banner.querySelector('.sync-banner-close').addEventListener('click', function () {
-    clearTimeout(bannerHideTimer);
-    banner.classList.remove('show');
+  var dl = document.getElementById('drawerList');
+  Object.keys(meta).forEach(function(id){
+    var m=meta[id]; var a=document.createElement('a'); a.setAttribute('data-go',id);
+    a.innerHTML='<span class="n">'+(m[0]||'◆')+'</span><span class="t">'+m[1]+'</span><span class="d">'+m[2]+'</span>';
+    dl.appendChild(a);
   });
 
-  /* Firestore promises never reject while offline (writes just queue silently),
-     so treat a slow response as "unreachable" too. */
-  function withTimeout(promise, ms) {
-    return Promise.race([
-      promise,
-      new Promise(function (_, reject) { setTimeout(function () { reject(new Error('timeout')); }, ms); })
-    ]);
-  }
-
-  /* ── EDITABLE: tags we never walk into ── */
-  var SKIP = new Set(['SCRIPT','STYLE','SVG','USE','PATH','DEFS','SYMBOL','CLIPPATH',
-                      'RECT','CIRCLE','G','POLYLINE','POLYGON','LINE','ELLIPSE','A']);
-  /* tags treated as inline (don't count as block children) */
-  var INLINE = new Set(['SPAN','STRONG','EM','B','I','BR','SMALL','SUB','SUP','CODE','ABBR','MARK']);
-
-  function isTextLeaf(el) {
-    var hasText = false, hasBlock = false;
-    for (var i = 0; i < el.childNodes.length; i++) {
-      var n = el.childNodes[i];
-      if (n.nodeType === 3 && n.textContent.trim()) hasText = true;
-      if (n.nodeType === 1 && !INLINE.has(n.tagName))  hasBlock = true;
-    }
-    return hasText && !hasBlock;
-  }
-
-  /* Only the text of each editable element is ever saved/synced — not the
-     surrounding page markup, and not the embedded portrait image. This keeps
-     synced payloads at a few KB instead of multiple MB, comfortably under
-     Firestore's 1 MiB per-document limit (the earlier full-HTML approach
-     exceeded it, which is why every single save had always silently failed).
-
-     Each editable leaf gets a stable id derived from its page + a hash of
-     its ORIGINAL baked-in content (not a sequential position counter).
-     A counter-based id would shift for every element that follows any time
-     new content is inserted into the deck, silently misapplying old saved
-     edits to the wrong elements. A content-hash id only changes for the
-     specific element whose baked-in text actually changed. */
-  function simpleHash(str) {
-    var hash = 5381;
-    for (var i = 0; i < str.length; i++) hash = ((hash << 5) + hash + str.charCodeAt(i)) | 0;
-    return (hash >>> 0).toString(36);
-  }
-  var editIdOccurrences = {};
-  function applyEditable(root) {
-    if (!root || SKIP.has(root.tagName)) return;
-    if (root.classList && root.classList.contains('topbar')) return; // header is never editable/synced
-    if (isTextLeaf(root)) {
-      root.contentEditable = 'true';
-      root.spellcheck = false;
-      var page = root.closest('.page');
-      var key = (page ? page.id : 'nopage') + ':' + simpleHash(root.innerHTML);
-      var occurrence = editIdOccurrences[key] = (editIdOccurrences[key] || 0) + 1;
-      root.setAttribute('data-edit-id', key + ':' + occurrence);
+  /* build a labeled "Next section" button at the bottom of every view */
+  var order = ['home','how-to-use','what-is-knomee','setup','engaged','disengaged','testing','appendix'];
+  order.forEach(function(id, i){
+    if(id==='home') return;
+    var v = views[id]; if(!v) return;
+    var host = v.querySelector('.container'); if(!host) return;
+    var next = order[i+1];
+    var el = document.createElement('div'); el.className='view-next';
+    if(next){
+      el.innerHTML = '<span class="vn-label">Up next</span><button class="vn-btn" data-go="'+next+'">Next: '+meta[next][1]+' <span class="arw">→</span></button>';
     } else {
-      for (var i = 0; i < root.children.length; i++) applyEditable(root.children[i]);
+      el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">↑ Back to Home</button>';
     }
-  }
-
-  /* ── SAVE: collect each editable element's HTML, keyed by its edit-id ── */
-  function collectEdits() {
-    var edits = {};
-    deck.querySelectorAll('[data-edit-id]').forEach(function (el) {
-      edits[el.getAttribute('data-edit-id')] = el.innerHTML;
-    });
-    return edits;
-  }
-
-  /* ── LOAD: overlay saved text onto the already-editable elements ── */
-  function applyEdits(edits) {
-    if (!edits) return;
-    deck.querySelectorAll('[data-edit-id]').forEach(function (el) {
-      var id = el.getAttribute('data-edit-id');
-      if (Object.prototype.hasOwnProperty.call(edits, id)) {
-        el.innerHTML = edits[id];
-      }
-    });
-    /* Edited text can be longer/shorter than the original, changing the
-       deck's real height after the page's one-time load-time fit() already
-       ran — recalculate it (fit() listens for 'resize') so nav scroll
-       targets stay accurate instead of landing on the wrong page. */
-    window.dispatchEvent(new Event('resize'));
-  }
-
-  /* local fallback is stored as {edits, savedAt} so we can tell whether it's
-     newer than whatever Firestore has (Firestore reads can succeed even
-     when a prior write silently failed, so "load succeeded" doesn't mean
-     "load has your latest edits"). */
-  function readLocalFallback() {
-    var raw = localStorage.getItem(LOCAL_FALLBACK_KEY);
-    if (!raw) return null;
-    try {
-      var parsed = JSON.parse(raw);
-      return parsed && parsed.edits ? parsed : null;
-    } catch (e) {
-      return null; // pre-existing value from an older version
-    }
-  }
-  function writeLocalFallback(edits) {
-    try {
-      localStorage.setItem(LOCAL_FALLBACK_KEY, JSON.stringify({ edits: edits, savedAt: Date.now() }));
-    } catch (e) {
-      /* Quota errors throw synchronously and would otherwise silently
-         swallow the whole catch handler, hiding the failure entirely. */
-      console.error('Knomee Client playbook: could not save local fallback (storage full or blocked)', e);
-    }
-  }
-
-  /* Editable ids must exist before we can apply saved text onto them. */
-  applyEditable(deck);
-
-  /* ── RESTORE saved content: use whichever of Firestore / local is newer ──
-     Exposed globally so the nav click handler (a separate, earlier script)
-     can wait for this to settle before computing scroll targets. */
-  window.__playbookContentReady = withTimeout(docRef.get({ source: 'server' }), 7000).then(function (snap) {
-    var local = readLocalFallback();
-    var remoteEdits = (snap.exists && snap.data().edits) ? JSON.parse(snap.data().edits) : null;
-    var remoteMs = (snap.exists && snap.data().updatedAt) ? snap.data().updatedAt.toMillis() : 0;
-    if (local && local.savedAt > remoteMs) {
-      applyEdits(local.edits);
-      showSyncBanner(); // local copy is ahead of the server — still not fully synced
-    } else if (remoteEdits) {
-      applyEdits(remoteEdits);
-      showBackOnlineBanner();
-    } else {
-      showBackOnlineBanner();
-    }
-  }).catch(function (err) {
-    console.warn('Knomee Client playbook: could not load shared content', err);
-    showSyncBanner();
-    var local = readLocalFallback();
-    if (local) applyEdits(local.edits);
+    host.appendChild(el);
   });
 
-  /* ── Auto-save (debounced 600 ms), with local fallback on failure ── */
-  var saveTimer = null;
-  var toast = null;
-  deck.addEventListener('input', function () {
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(function () {
-      var edits = collectEdits();
-      var editsJson = JSON.stringify(edits);
-      withTimeout(docRef.set({
-        edits: editsJson,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }), 6000).then(function () {
-        /* A resolved set() promise isn't airtight proof the write reached
-           the server under flaky conditions — confirm it with a forced
-           server-side read before trusting it and clearing local fallback. */
-        return withTimeout(docRef.get({ source: 'server' }), 6000);
-      }).then(function (verifySnap) {
-        if (!verifySnap.exists || verifySnap.data().edits !== editsJson) {
-          throw new Error('write did not verify against server');
-        }
-        if (toast) { toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1400); }
-        localStorage.removeItem(LOCAL_FALLBACK_KEY);
-        showBackOnlineBanner();
-      }).catch(function (err) {
-        console.warn('Knomee Client playbook: save failed, falling back to local storage', err);
-        writeLocalFallback(edits);
-        showSyncBanner();
-      });
-    }, 600);
+  function selectTab(group, name){
+    group.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-tab')===name); });
+    var view = group.closest('.view');
+    view.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-panel')===name); });
+  }
+  document.querySelectorAll('[data-tabs] .tab').forEach(function(t){
+    t.addEventListener('click', function(){ selectTab(t.closest('[data-tabs]'), t.getAttribute('data-tab')); });
   });
 
-  /* ── PDF FAB ── */
-  var fab = document.createElement('button');
-  fab.className = 'pdf-fab';
-  fab.innerHTML =
-    '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>' +
-      '<polyline points="14 2 14 8 20 8"/>' +
-      '<line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>' +
-      '<polyline points="10 9 9 9 8 9"/>' +
-    '</svg>' +
-    '<span>Export PDF</span>';
-  document.body.appendChild(fab);
+  function setView(id, push){
+    if(!views[id]) id='home';
+    Object.keys(views).forEach(function(k){ views[k].classList.toggle('active', k===id); });
+    Object.keys(navLinks).forEach(function(k){ navLinks[k].classList.toggle('active', k===id); });
+    var v=views[id]; var tg=v.querySelector('[data-tabs]');
+    if(tg){ selectTab(tg, tg.querySelector('.tab').getAttribute('data-tab')); }
+    window.scrollTo({top:0,behavior:'auto'});
+    if(push!==false && location.hash.slice(1)!==id){ history.pushState({v:id},'', '#'+id); }
+    document.title = (id==='home'?'':meta[id][1]+' · ')+'Knomee — The Client Playbook';
+  }
+  function go(id){ closeDrawer(); setView(id); }
 
-  /* saved toast */
-  toast = document.createElement('div');
-  toast.className = 'pdf-fab-saved';
-  toast.textContent = 'Changes saved';
-  document.body.appendChild(toast);
+  document.addEventListener('click', function(e){
+    var el = e.target.closest && e.target.closest('[data-go]');
+    if(el){ e.preventDefault(); go(el.getAttribute('data-go')); }
+  });
+  window.addEventListener('popstate', function(){ setView(location.hash.slice(1)||'home', false); });
 
-  fab.addEventListener('click', function () { window.print(); });
+  /* slide-over */
+  var store = document.getElementById('sampleStore');
+  var sheet=document.getElementById('sheet'), back=document.getElementById('sheetBack');
+  var sheetBody=document.getElementById('sheetBody'), sheetType=document.getElementById('sheetType');
+  var copyBtn=document.getElementById('copyBtn');
+  function openSheet(id){
+    var node = store.querySelector('[data-sample-id="'+id+'"]'); if(!node) return;
+    sheetBody.innerHTML = node.innerHTML;
+    sheetType.textContent = node.getAttribute('data-type');
+    sheet.classList.remove('lead-engaged','lead-disengaged');
+    (node.className.match(/lead-\w+/g)||[]).forEach(function(c){ sheet.classList.add(c); });
+    resetCopy();
+    back.classList.add('open'); sheet.classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeSheet(){ back.classList.remove('open'); sheet.classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('[data-sample]').forEach(function(c){ c.addEventListener('click', function(){ openSheet(c.getAttribute('data-sample')); }); });
+  document.getElementById('sheetX').addEventListener('click', closeSheet);
+  back.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
+
+  function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy text'; }
+  copyBtn.addEventListener('click', function(){
+    var src = sheetBody.querySelector('[data-copy]') || sheetBody;
+    var text = src.innerText.replace(/\n{3,}/g,'\n\n').trim();
+    var done=function(){ copyBtn.classList.add('done'); copyBtn.querySelector('span').textContent='Copied!'; setTimeout(resetCopy,1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); }
+    else fallback();
+    function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
+  });
+
+  /* mobile drawer */
+  var drawer=document.getElementById('drawer');
+  function openDrawer(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer(){ drawer.classList.remove('open'); if(!sheet.classList.contains('open')) document.body.style.overflow=''; }
+  document.getElementById('menuBtn').addEventListener('click', openDrawer);
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  drawer.addEventListener('click', function(e){ if(e.target===drawer) closeDrawer(); });
+
+  setView(location.hash.slice(1)||'home', false);
 })();
 </script>
 </body>
