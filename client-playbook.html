@@ -422,7 +422,7 @@
 <!-- ══ HOW TO USE ══ -->
 <section class="view" id="how-to-use">
   <div class="container section">
-    <span class="backlink" data-go="home">← Home</span>
+    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Orientation</span><h2 class="h2">How to Use This Playbook</h2><p class="intro">This playbook covers <strong>existing clients only</strong>. Knomee here isn't a marketing funnel — it's a relationship instrument: a simple, respectful way to ask “what's changed?” and actually use the answer. Every client falls into one of two types.</p></div>
     <div class="grid-2 stagger" style="margin-bottom:var(--s6)">
       <div class="card lead-engaged" data-go="engaged" style="cursor:pointer"><div class="ic">🌱</div><h3>Engaged</h3><p><strong>Responsive, open to guidance.</strong> Deepen the relationship — grow share of wallet.</p></div>
@@ -446,7 +446,7 @@
 <!-- ══ WHAT IS KNOMEE ══ -->
 <section class="view" id="what-is-knomee">
   <div class="container section">
-    <span class="backlink" data-go="home">← Home</span>
+    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Client Experiences</h2><p class="intro">Knomee is a <strong>10-minute guided check-in</strong> your clients complete before a review — or any time life shifts. It helps them articulate their current goals, priorities, and top money questions, so every conversation starts with what matters <em>now</em>, not what mattered at onboarding.</p></div>
     <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
       <div class="card"><span class="num">1</span><h3 style="margin-top:1rem">The client feels heard</h3><p>They get a personal summary — and reviews stop feeling like a portfolio report.</p></div>
@@ -460,7 +460,7 @@
 <!-- ══ SETUP ══ -->
 <section class="view" id="setup">
   <div class="container section">
-    <span class="backlink" data-go="home">← Home</span>
+    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Before You Launch</span><h2 class="h2">The 5-Step Setup</h2><p class="intro">Every campaign follows the same five setup steps. Work through them to prepare for your walkthrough session; your CS contact will help you complete each one.</p></div>
     <div class="steps stagger">
       <div class="step"><span class="num">1</span><div class="step-body"><strong>Targeting</strong><p>Segment your book: engaged (upcoming reviews) vs. disengaged (6+ months quiet).</p></div></div>
@@ -475,7 +475,7 @@
 <!-- ══════ ENGAGED ══════ -->
 <section class="view lead-engaged" id="engaged">
   <div class="container section">
-    <span class="backlink" data-go="home">← Home</span>
+    <span class="backlink" data-back>← Home</span>
     <div class="lead-band anim"><span class="tagword">🌱 Engaged Client</span><h2>Engaged</h2><p>They're responsive and open to guidance. Keep it that way — and grow the relationship.</p></div>
     <div class="tabs" data-tabs>
       <button class="tab active" data-tab="strategy">Strategy</button>
@@ -523,7 +523,7 @@
 <!-- ══════ DISENGAGED ══════ -->
 <section class="view lead-disengaged" id="disengaged">
   <div class="container section">
-    <span class="backlink" data-go="home">← Home</span>
+    <span class="backlink" data-back>← Home</span>
     <div class="lead-band anim"><span class="tagword">⏳ Disengaged Client</span><h2>Disengaged</h2><p>They're drifting — less responsive, declining meetings. Restart the conversation before you lose the relationship.</p></div>
     <div class="tabs" data-tabs>
       <button class="tab active" data-tab="strategy">Strategy</button>
@@ -569,7 +569,7 @@
 <!-- ══ TESTING ══ -->
 <section class="view" id="testing">
   <div class="container section">
-    <span class="backlink" data-go="home">← Home</span>
+    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Optimize</span><h2 class="h2">Test Before You Launch</h2><p class="intro">Even 1:1 client outreach benefits from testing. Knomee supports UTM tags so you can see which message and timing drives completions — not just opens.</p></div>
     <div class="steps stagger" style="--lead:var(--engaged);--lead-tint:var(--engaged-tint)">
       <div class="step"><span class="num">1</span><div class="step-body"><strong>Copy</strong> your client invite URL from the Knomee Advisor dashboard (different from the prospect URL).</div></div>
@@ -583,7 +583,7 @@
 <!-- ══ APPENDIX ══ -->
 <section class="view" id="appendix">
   <div class="container section">
-    <span class="backlink" data-go="home">← Home</span>
+    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Videos for Clients</h2><p class="intro">From your library of <strong>~24 Knomee videos</strong>, a subset works well with existing clients — check-in explainers, family-conversation openers, and life-event themes. Match each use case to the right video, then pull the files from the Drive library.</p></div>
     <div class="table-wrap anim"><table class="t"><thead><tr><th>Use case</th><th>Best video types</th><th>Where to embed</th></tr></thead><tbody>
       <tr><td><span class="stage e">Engaged</span></td><td>“Why we check in” explainers, family conversation openers</td><td>Pre-meeting invites, mid-year pulse, family prompts</td></tr>
@@ -707,6 +707,14 @@
     t.addEventListener('click', function(){ selectTab(t.closest('[data-tabs]'), t.getAttribute('data-tab')); });
   });
 
+  /* remembers the trail of views so "Back" returns where you came from */
+  var navStack=[]; var currentView=null;
+  function labelBack(id){
+    var v=views[id]; if(!v) return;
+    var bl=v.querySelector('.backlink[data-back]'); if(!bl) return;
+    var prev=navStack[navStack.length-1];
+    bl.textContent = (prev && prev!=='home' && meta[prev]) ? ('← Back to '+meta[prev][1]) : '← Home';
+  }
   function setView(id, push){
     if(!views[id]) id='home';
     Object.keys(views).forEach(function(k){ views[k].classList.toggle('active', k===id); });
@@ -715,15 +723,23 @@
     if(tg){ selectTab(tg, tg.querySelector('.tab').getAttribute('data-tab')); }
     window.scrollTo({top:0,behavior:'auto'});
     if(push!==false && location.hash.slice(1)!==id){ history.pushState({v:id},'', '#'+id); }
+    currentView=id; labelBack(id);
     document.title = (id==='home'?'':meta[id][1]+' · ')+'Knomee — The Client Playbook';
   }
-  function go(id){ closeDrawer(); setView(id); }
+  function go(id){ closeDrawer(); if(currentView && id!==currentView){ navStack.push(currentView); } setView(id); }
+  function goBack(){ closeDrawer(); setView(navStack.pop() || 'home'); }
 
   document.addEventListener('click', function(e){
+    var back = e.target.closest && e.target.closest('[data-back]');
+    if(back){ e.preventDefault(); goBack(); return; }
     var el = e.target.closest && e.target.closest('[data-go]');
     if(el){ e.preventDefault(); go(el.getAttribute('data-go')); }
   });
-  window.addEventListener('popstate', function(){ setView(location.hash.slice(1)||'home', false); });
+  window.addEventListener('popstate', function(){
+    var id = location.hash.slice(1)||'home';
+    if(navStack[navStack.length-1]===id){ navStack.pop(); }
+    setView(id, false);
+  });
 
   /* slide-over */
   var store = document.getElementById('sampleStore');
