@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knomee — Winning New Clients: The Prospect Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum:        #240446;
+    --indigo:      #4A1C72;
+    --grape:       #7639A1;
+    --bright-purple:#9B19FB;
+    --violet:      #7C6890;
+    --lavender:    #A56CCC;
+    --lilac:       #B98DDC;
+    --pale-lav:    #E9D9F4;
+    --ocean:       #086375;
+    --steel:       #6BA1AC;
+    --aqua:        #2DD2B0;
+    --mint:        #C0FFE7;
+    --light-mint:  #D9F2ED;
+    --snow:        #F8FAFA;
+    --slate:       #757575;
+    --ash:         #757575;
+    --silver:      #C8C8C8;
+    --light-mist:  #E8E8E8;
+    --pearl:       #EEEEEE;
+    --fog:         #F6F5FB;
+    --white:       #FFFFFF;
+    --ink:         #240446;
+    --ink-2:       #3D3050;
+    --muted:       #757575;
+    --border:      #E9D9F4;
+    --font: 'Poppins', system-ui, sans-serif;
+    --r: 14px;
+    --r-pill: 100px;
+}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: #1A1230; color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+  /* ── PAGE ── */
+  .page {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--plum);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 64px;
+    height: 56px;
+    flex-shrink: 0;
+  }
+  .topbar-logo {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--white); font-weight: 700; font-size: 18px; letter-spacing: 0.01em;
+  }
+  .topbar-label { color: rgba(255,255,255,0.62); font-size: 17px; font-weight: 500; letter-spacing: 0.10em; text-transform: uppercase; }
+
+  /* ── PAGE FOOTER ── */
+  .pg-footer {
+    background: var(--plum);
+    height: 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 64px;
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+  .pg-footer span { font-size: 17px; color: rgba(255,255,255,0.60); font-weight: 400; }
+  .pg-footer .pg-num { color: rgba(255,255,255,0.62); font-weight: 600; }
+
+  /* ── CONTENT AREA ── */
+  .content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+  .content-row { display: flex; flex: 1; overflow: hidden; }
+  .col { display: flex; flex-direction: column; overflow: hidden; }
+
+  /* ── SECTION LABEL PILL ── */
+  .section-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(45,210,176,0.12); border: 1px solid rgba(45,210,176,0.28);
+    border-radius: var(--r-pill); padding: 5px 15px;
+    font-size: 17px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--aqua);
+  }
+  .section-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--aqua); }
+
+  /* ── SECTION HEADER ── */
+  .sec-hdr { display: flex; align-items: flex-start; gap: 12px; }
+  .sec-icon {
+    width: 36px; height: 36px; border-radius: 10px; background: var(--pale-lav);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sec-icon.teal { background: var(--light-mint); }
+  .sec-icon.dark { background: rgba(255,255,255,0.09); }
+  .sec-icon.red  { background: #FFF0F0; }
+  .sec-title { font-weight: 600; font-size: 28px; color: var(--plum); }
+  .sec-title.on-dark { color: var(--white); }
+
+  /* ── STEP ROWS ── */
+  .step {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 18px 22px;
+  }
+  .step-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--grape); color: var(--white);
+    font-size: 17px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step-num.green { background: #1A8C78; }
+  .step-icon-wrap {
+    width: 30px; height: 30px; border-radius: 7px; background: var(--pale-lav);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step-icon-wrap.teal { background: var(--light-mint); }
+  .step-text { font-size: 23px; font-weight: 500; color: var(--ink); flex: 1; }
+  .step-tag {
+    font-size: 17px; color: var(--slate); background: var(--fog);
+    border-radius: var(--r-pill); padding: 2px 10px; white-space: nowrap;
+  }
+
+  /* ── CHECK LIST ── */
+  .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--light-mist); }
+  .check-item:last-child { border-bottom: none; }
+  .check-icon {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--white); border: 1.5px solid #7639A1;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; }
+  .check-text { font-size: 20px; color: var(--ink-2); line-height: 1.55; }
+  .check-text strong { font-weight: 600; color: var(--plum); }
+
+  /* ── PILLS ── */
+  .meta-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--pale-lav); color: var(--indigo);
+    border-radius: var(--r-pill); padding: 5px 14px;
+    font-size: 17px; font-weight: 500; margin: 3px 3px 3px 0;
+  }
+
+  /* ── EMAIL WINDOW ── */
+  .email-window { background: var(--white); border-radius: 12px; box-shadow: 0 8px 40px rgba(36,4,70,0.14); overflow: hidden; border: 1px solid var(--light-mist); }
+  .email-chrome { background: #EEEEF0; padding: 9px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #DDDDE0; }
+  .chrome-dots { display: flex; gap: 5px; }
+  .chrome-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .chrome-dot.red   { background: #FF5F57; }
+  .chrome-dot.amber { background: #FEBC2E; }
+  .chrome-dot.green { background: #28C840; }
+  .chrome-bar { flex: 1; background: var(--white); border-radius: 5px; padding: 3px 10px; font-size: 17px; color: var(--ash); border: 1px solid var(--silver); }
+  .email-hdr { border-bottom: 1px solid var(--light-mist); padding: 12px 20px; background: var(--snow); }
+  .email-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,var(--grape),var(--aqua)); display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 17px; font-weight: 700; flex-shrink: 0; }
+  .email-subject { font-size: 22px; font-weight: 600; color: var(--plum); }
+  .email-body { padding: 18px 22px; }
+  .email-body p { font-size: 20px; font-weight: 400; line-height: 1.7; color: var(--ink-2); margin-bottom: 13px; }
+  .email-body p:last-child { margin-bottom: 0; }
+  .email-video { background: linear-gradient(130deg,var(--plum) 0%,var(--indigo) 100%); border-radius: 9px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; margin: 12px 0; }
+  .play-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--aqua); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .email-cta-btn { display: block; background: var(--grape); color: var(--white); text-align: center; border-radius: 7px; padding: 11px 20px; font-size: 18px; font-weight: 600; text-decoration: none; font-family: var(--font); margin: 10px 0 8px; }
+  .email-sign { font-size: 17px; color: var(--slate); border-top: 1px solid var(--light-mist); padding-top: 11px; margin-top: 11px; line-height: 1.7; }
+  .email-sign strong { color: var(--plum); font-weight: 600; }
+
+  /* ── TABLE ── */
+  .lc-table { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .lc-hdr { display: grid; grid-template-columns: 340px 1fr 0.7fr 1.02fr; background: var(--plum); }
+  .lc-hdr-cell { padding: 16px 24px; font-size: 18px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.72); border-right: 1px solid rgba(255,255,255,0.08); }
+  .lc-hdr-cell:last-child { border-right: none; }
+  .lc-row { display: grid; grid-template-columns: 340px 1fr 0.7fr 1.02fr; border-top: 1px solid var(--border); }
+  .lc-cell { padding: 18px 24px; font-size: 20px; font-weight: 400; color: var(--ink-2); line-height: 1.6; border-right: 1px solid var(--border); }
+  .lc-cell:last-child { border-right: none; }
+  .stage-pill { display: inline-flex; align-items: center; gap: 5px; border-radius: var(--r-pill); padding: 3px 10px; margin-bottom: 5px; }
+  .stage-pill.purple { background: var(--pale-lav); }
+  .stage-pill.green  { background: var(--light-mint); }
+  .stage-pill.red    { background: #FFF0F0; }
+  .stage-pill span { font-size: 17px; font-weight: 600; }
+  .stage-pill .dot { width: 5px; height: 5px; border-radius: 50%; }
+
+  /* ── METRIC CARDS ── */
+  .metric-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: var(--r); overflow: hidden; display: flex; flex-direction: column; }
+  .metric-accent { height: 3px; }
+  .metric-body { padding: 34px 30px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
+  .metric-goal { font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.80); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; line-height: 1.4; min-height: 48px; }
+  .metric-kpi-block { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 20px 22px; margin-bottom: 22px; }
+  .metric-kpi-eyebrow { font-size: 17px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--aqua); margin-bottom: 7px; }
+  .metric-kpi-value { font-size: 30px; font-weight: 700; color: var(--white); line-height: 1.2; min-height: 72px; }
+  .metric-sec-label { font-size: 17px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.70); margin-top: 6px; margin-bottom: 14px; }
+  .metric-sec-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .metric-sec-list li { font-size: 20px; font-weight: 400; color: rgba(255,255,255,0.74); display: flex; align-items: flex-start; gap: 9px; line-height: 1.4; }
+  .metric-sec-list li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--aqua); opacity: 0.5; flex-shrink: 0; margin-top: 9px; }
+
+  /* ── UTM TABLE ── */
+  .utm-hdr { display: grid; grid-template-columns: 280px 170px 1fr; background: var(--plum); }
+  .utm-hdr-cell { padding: 13px 20px; font-size: 17px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.72); border-right: 1px solid rgba(255,255,255,0.08); }
+  .utm-hdr-cell:last-child { border-right: none; }
+  .utm-row { display: grid; grid-template-columns: 280px 170px 1fr; border-top: 1px solid var(--border); }
+  .utm-cell { padding: 14px 20px; font-size: 20px; color: var(--ink); border-right: 1px solid var(--border); }
+  .utm-cell:last-child { border-right: none; font-family: monospace; font-size: 17px; color: var(--grape); word-break: break-all; line-height: 1.6; }
+
+  /* ── IMPACT CARDS ── */
+  .impact-card { display: flex; align-items: flex-start; gap: 10px; background: var(--white); border-radius: 10px; padding: 14px 16px; border: 1px solid rgba(118,57,161,0.12); }
+  .impact-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--pale-lav); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── NEWSLETTER FRAME ── */
+  .nl-chrome { background: #1A1A2A; padding: 9px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #2E2E40; }
+  .nl-bar { flex: 1; background: #2E2E40; border-radius: 5px; padding: 3px 10px; font-size: 17px; color: #9090A8; border: 1px solid #3E3E54; }
+  .nl-sender { background: #F7F5FF; border-bottom: 1px solid var(--light-mist); padding: 9px 20px; display: flex; align-items: center; gap: 9px; }
+  .nl-hero { padding: 30px 40px 24px; text-align: center; }
+  .nl-body { padding: 20px 40px; }
+  .nl-footer { background: var(--fog); border-top: 1px solid var(--light-mist); padding: 12px 40px; text-align: center; }
+
+  /* ── LANDING PAGE FRAME ── */
+  .lp-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 32px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .lp-hero { text-align: center; padding: 32px 60px 24px; }
+  .lp-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
+  .lp-tile { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 16px 14px; text-align: left; }
+
+  /* ── RESPONSIVE SCALE / PRINT ── */
+  html, body { overflow-x: hidden; }
+  .deck { transform-origin: top left; width: 1920px; }
+  @media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    html, body { overflow-x: visible; height: auto !important; background: var(--white); margin: 0 !important; padding: 0 !important; }
+    .deck { transform: none !important; width: 1920px; height: auto !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .topbar, .topnav { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .page {
+      width: 1920px !important; height: 1080px !important;
+      page-break-after: always; break-after: page;
+      page-break-inside: avoid; break-inside: avoid;
+      overflow: hidden;
+    }
+    .page:last-child { page-break-after: avoid; break-after: avoid; }
+  }
+
+  /* ── METRIC KPI TARGET ── */
+  .metric-kpi-target { display: flex; align-items: baseline; gap: 8px; margin-top: 11px; padding-top: 11px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .metric-kpi-target .t-label { font-size: 17px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: rgba(255,255,255,0.70); }
+  .metric-kpi-target .t-num { font-size: 24px; font-weight: 700; color: var(--aqua); line-height: 1; }
+
+  /* ── NUMBERED IMPACT CARDS ── */
+  .impact-num { width: 28px; height: 28px; border-radius: 50%; background: var(--grape); color: var(--white); font-size: 17px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .topnav { display:flex; align-items:center; gap:20px; flex-wrap:nowrap; }
+  .topnav a { font-size:17px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:rgba(255,255,255,0.60); text-decoration:none; padding:2px 0; border-bottom:2px solid transparent; white-space:nowrap; }
+  .topnav a:hover { color:var(--aqua); border-bottom-color:var(--aqua); }
+  .topnav a.active { color:var(--aqua); border-bottom-color:var(--aqua); font-weight:700; }
+
+  /* ── EDITABLE TEXT ── */
+  [contenteditable] { cursor: text; }
+  [contenteditable]:hover { outline: 1.5px dashed rgba(155,25,251,0.28); border-radius: 3px; }
+  [contenteditable]:focus { outline: 2px solid rgba(155,25,251,0.55); border-radius: 3px; box-shadow: 0 0 0 4px rgba(155,25,251,0.09); }
+
+  /* ── PDF FAB ── */
+  .pdf-fab {
+    position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+    display: flex; align-items: center; gap: 9px;
+    background: #240446; color: #fff;
+    border: none; border-radius: 100px; padding: 15px 26px;
+    font-family: var(--font); font-size: 15px; font-weight: 600;
+    box-shadow: 0 4px 20px rgba(36,4,70,0.45), 0 1px 4px rgba(36,4,70,0.20);
+    cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    letter-spacing: 0.02em; user-select: none;
+  }
+  .pdf-fab:hover { background: #3D1166; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(36,4,70,0.55); }
+  .pdf-fab:active { transform: translateY(0); box-shadow: 0 3px 12px rgba(36,4,70,0.40); }
+  .pdf-fab-saved { position: fixed; bottom: 88px; right: 36px; z-index: 9998; font-family: var(--font); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.70); background: rgba(36,4,70,0.72); border-radius: 8px; padding: 5px 12px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
+  .pdf-fab-saved.show { opacity: 1; }
+
+  /* ── SYNC STATUS BANNER (offline / back-online) ── */
+  .sync-banner {
+    position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-12px);
+    z-index: 10000; display: flex; align-items: flex-start; gap: 10px;
+    border-radius: 10px; padding: 11px 14px 11px 16px; max-width: 560px;
+    font-family: var(--font); font-size: 13.5px; font-weight: 500; line-height: 1.4;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .sync-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+  .sync-banner--offline { background: #47170D; color: #FFE3D6; border: 1px solid rgba(255,150,110,0.35); }
+  .sync-banner--online  { background: #0F3D24; color: #D6FCE8; border: 1px solid rgba(90,220,150,0.35); }
+  .sync-banner svg { flex: 0 0 auto; margin-top: 1px; }
+  .sync-banner .sync-banner-close {
+    flex: 0 0 auto; background: none; border: none; cursor: pointer;
+    padding: 2px; margin-left: 2px; margin-top: 1px; line-height: 0; border-radius: 4px;
+  }
+  .sync-banner--offline .sync-banner-close { color: rgba(255,227,214,0.75); }
+  .sync-banner--offline .sync-banner-close:hover { color: #FFE3D6; background: rgba(255,255,255,0.08); }
+  .sync-banner--online .sync-banner-close { color: rgba(214,252,232,0.75); }
+  .sync-banner--online .sync-banner-close:hover { color: #D6FCE8; background: rgba(255,255,255,0.08); }
+  @media print {
+    .pdf-fab, .pdf-fab-saved, .sync-banner { display: none !important; }
+    [contenteditable] { outline: none !important; box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
+<path d="M151.664 17.7879H146.827L146.052 20.0771H142.748L147.437 7.11728H151.092L155.781 20.0771H152.44L151.664 17.7879ZM150.852 15.351L149.246 10.6065L147.658 15.351H150.852ZM161.879 7.11728C163.245 7.11728 164.439 7.38804 165.461 7.92958C166.482 8.47111 167.27 9.23418 167.824 10.2188C168.39 11.1911 168.673 12.3172 168.673 13.5972C168.673 14.8649 168.39 15.991 167.824 16.9756C167.27 17.9602 166.476 18.7233 165.442 19.2648C164.421 19.8064 163.233 20.0771 161.879 20.0771H157.024V7.11728H161.879ZM161.676 17.3449C162.87 17.3449 163.799 17.0187 164.464 16.3664C165.128 15.7141 165.461 14.791 165.461 13.5972C165.461 12.4034 165.128 11.4742 164.464 10.8095C163.799 10.1449 162.87 9.81263 161.676 9.81263H160.181V17.3449H161.676ZM182.419 7.11728L177.822 20.0771H173.871L169.274 7.11728H172.634L175.846 16.9018L179.077 7.11728H182.419ZM186.71 7.11728V20.0771H183.553V7.11728H186.71ZM193.503 20.2064C192.555 20.2064 191.706 20.0525 190.955 19.7448C190.204 19.4372 189.601 18.9818 189.146 18.3787C188.703 17.7756 188.469 17.0495 188.444 16.2003H191.804C191.853 16.6803 192.019 17.0495 192.303 17.3079C192.586 17.5541 192.955 17.6772 193.41 17.6772C193.878 17.6772 194.247 17.5726 194.518 17.3633C194.789 17.1418 194.924 16.8403 194.924 16.4587C194.924 16.1387 194.813 15.8741 194.592 15.6649C194.383 15.4557 194.118 15.2833 193.798 15.148C193.49 15.0126 193.047 14.8587 192.469 14.6864C191.632 14.428 190.949 14.1695 190.419 13.9111C189.89 13.6526 189.435 13.2711 189.053 12.7665C188.672 12.2618 188.481 11.6034 188.481 10.7911C188.481 9.58494 188.918 8.64342 189.792 7.9665C190.666 7.27728 191.804 6.93266 193.207 6.93266C194.635 6.93266 195.786 7.27728 196.659 7.9665C197.533 8.64342 198.001 9.5911 198.062 10.8095H194.647C194.623 10.3911 194.469 10.0649 194.186 9.8311C193.903 9.58494 193.539 9.46187 193.096 9.46187C192.715 9.46187 192.407 9.56648 192.173 9.77571C191.939 9.97263 191.823 10.2619 191.823 10.6434C191.823 11.0619 192.019 11.388 192.413 11.6218C192.807 11.8557 193.423 12.108 194.259 12.3788C195.096 12.6618 195.773 12.9326 196.29 13.1911C196.819 13.4495 197.275 13.8249 197.656 14.3172C198.038 14.8095 198.229 15.4433 198.229 16.2187C198.229 16.9572 198.038 17.6279 197.656 18.231C197.287 18.8341 196.746 19.3141 196.032 19.671C195.318 20.0279 194.475 20.2064 193.503 20.2064ZM206.116 20.2064C204.898 20.2064 203.778 19.9233 202.756 19.3572C201.747 18.791 200.941 18.0033 200.338 16.9941C199.747 15.9726 199.451 14.828 199.451 13.5603C199.451 12.2926 199.747 11.1542 200.338 10.1449C200.941 9.13572 201.747 8.34803 202.756 7.78189C203.778 7.21574 204.898 6.93266 206.116 6.93266C207.334 6.93266 208.448 7.21574 209.457 7.78189C210.479 8.34803 211.279 9.13572 211.857 10.1449C212.448 11.1542 212.744 12.2926 212.744 13.5603C212.744 14.828 212.448 15.9726 211.857 16.9941C211.267 18.0033 210.467 18.791 209.457 19.3572C208.448 19.9233 207.334 20.2064 206.116 20.2064ZM206.116 17.3264C207.15 17.3264 207.974 16.9818 208.59 16.2926C209.217 15.6033 209.531 14.6926 209.531 13.5603C209.531 12.4157 209.217 11.5049 208.59 10.828C207.974 10.1388 207.15 9.79417 206.116 9.79417C205.07 9.79417 204.233 10.1326 203.605 10.8095C202.99 11.4865 202.682 12.4034 202.682 13.5603C202.682 14.7049 202.99 15.6218 203.605 16.311C204.233 16.9879 205.07 17.3264 206.116 17.3264ZM220.924 20.0771L218.229 15.1849H217.472V20.0771H214.315V7.11728H219.614C220.635 7.11728 221.503 7.29574 222.217 7.65266C222.943 8.00958 223.484 8.50188 223.841 9.12956C224.198 9.74494 224.377 10.4342 224.377 11.1972C224.377 12.0588 224.131 12.828 223.638 13.5049C223.158 14.1818 222.444 14.6618 221.497 14.9449L224.487 20.0771H220.924ZM217.472 12.9511H219.429C220.008 12.9511 220.438 12.8095 220.721 12.5265C221.017 12.2434 221.164 11.8434 221.164 11.3265C221.164 10.8342 221.017 10.4465 220.721 10.1634C220.438 9.88033 220.008 9.73879 219.429 9.73879H217.472V12.9511Z" fill="white"></path>
+<g clip-path="url(#clip0_1164_57289)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="white"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="white"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="white"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="white"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="white"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="white"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="white"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="white"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="white"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="white"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="white"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="white"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="white"></path>
+</g>
+<defs>
+<clipPath id="clip0_1164_57289">
+<rect width="134.564" height="22.77" fill="white"></rect>
+</clipPath>
+</defs>
+</symbol><symbol id="knomee-logo" viewBox="0 0 135 24"><g clip-path="url(#clip0_1164_57289)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="white"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="white"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="white"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="white"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="white"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="white"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="white"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="white"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="white"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="white"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="white"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="white"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="white"></path>
+</g><defs>
+<clipPath id="clip0_1164_57289">
+<rect width="134.564" height="22.77" fill="white"></rect>
+</clipPath>
+</defs>
+</symbol><symbol id="knomee-logo-plum" viewBox="0 0 135 24"><g clip-path="url(#clip0_plum)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="#240446"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="#240446"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="#240446"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="#240446"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="#240446"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="#240446"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="#240446"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="#240446"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="#240446"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="#240446"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="#240446"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="#240446"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="#240446"></path>
+</g><defs>
+<clipPath id="clip0_plum">
+<rect width="134.564" height="22.77" fill="#240446"></rect>
+</clipPath>
+</defs>
+</symbol></svg>
+<div class="page" id="cover">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 100px;background:linear-gradient(135deg,var(--plum) 0%,var(--indigo) 100%);">
+      <div class="section-pill" style="width:fit-content;margin-bottom:22px;background:rgba(155,25,251,0.15);border-color:rgba(155,25,251,0.35);color:#D7AEFF;">KNOMEE ACTIVATION PLAYBOOK</div>
+      <h1 style="font-size:56px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:6px;">Winning New Clients:</h1>
+      <h1 style="font-size:56px;font-weight:700;color:var(--lilac);line-height:1.1;margin-bottom:24px;">The Prospect Playbook</h1>
+      <p style="font-size:24px;font-weight:300;color:rgba(255,255,255,0.82);max-width:820px;line-height:1.6;margin-bottom:34px;">How to use Knomee to turn cold, warm, and hot leads into first meetings — and first meetings into clients.</p>
+      <div style="background:rgba(255,255,255,0.07);border-left:4px solid var(--lilac);border-radius:10px;padding:20px 26px;max-width:720px;">
+        <div style="font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;">Built for your marketing team</div>
+        <div style="font-size:24px;color:rgba(255,255,255,0.78);line-height:1.6;margin-bottom:8px;">Everything in this playbook is copy-and-paste ready: emails, ads, event invitations, direct mail, and landing page language — organized by lead type, each with a matching video or image suggestion.</div>
+        <div style="font-size:24px;color:rgba(255,255,255,0.55);">Wealth Management Edition · V1 · 2026</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 1</span></div>
+</div>
+
+<div class="page" id="how-to-use">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+    <div style="padding:48px 80px 0;">
+    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#7639A1" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="#7639A1" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">How to Use This Playbook</div>
+    </div>
+    <p style="font-size:24px;font-weight:300;color:var(--ink-2);line-height:1.6;margin-bottom:24px;padding-left:48px;max-width:1500px;">This playbook covers prospects only — people who are not yet clients of your firm. Every prospect falls into one of three lead types. Each has its own color, its own section, and its own ready-to-use campaign materials:</p>
+    <div style="padding-left:48px;"><div class="lc-table" style="margin-bottom:14px;">
+  <div class="lc-hdr" style="grid-template-columns:180px 1fr 1.3fr;">
+    <div class="lc-hdr-cell">Lead Type</div><div class="lc-hdr-cell">Where They Are</div><div class="lc-hdr-cell">Your Job</div>
+  </div>
+  <div class="lc-row" style="grid-template-columns:180px 1fr 1.3fr;">
+    <div class="lc-cell"><span class="stage-pill" style="background:#EAEAEC;"><span class="dot" style="background:#55555F;"></span><span style="color:#55555F;">COLD</span></span></div>
+    <div class="lc-cell">Doesn't know your firm yet</div><div class="lc-cell">Spark curiosity — earn a first response</div>
+  </div>
+  <div class="lc-row" style="grid-template-columns:180px 1fr 1.3fr;">
+    <div class="lc-cell"><span class="stage-pill" style="background:#D6F3EC;"><span class="dot" style="background:#0C7263;"></span><span style="color:#0C7263;">WARM</span></span></div>
+    <div class="lc-cell">Knows you, but isn't ready to act</div><div class="lc-cell">Deliver value early — earn the meeting</div>
+  </div>
+  <div class="lc-row" style="grid-template-columns:180px 1fr 1.3fr;">
+    <div class="lc-cell"><span class="stage-pill" style="background:#F1E4FE;"><span class="dot" style="background:#8B33D9;"></span><span style="color:#8B33D9;">HOT</span></span></div>
+    <div class="lc-cell">Agreed to meet, not yet convinced</div><div class="lc-cell">Build trust — close the relationship</div>
+  </div>
+</div></div>
+    <div style="margin:22px 0 0 48px;max-width:1500px;background:var(--fog);border-left:4px solid var(--grape);border-radius:10px;padding:20px 26px;">
+      <div class="sec-hdr" style="margin-bottom:16px;align-items:center;">
+        <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--grape)" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="var(--grape)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="sec-title" style="font-size:32px;color:var(--grape);">Your Walkthrough Session</div>
+      </div>
+      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">This playbook is designed to be walked through together. Your Knomee customer success contact will schedule a 45-minute working session to:<ul style="margin:10px 0 10px 22px;padding:0;"><li style="margin-bottom:6px;">Pick your priority lead type and target list</li><li style="margin-bottom:6px;">Choose channels and customize the sample copy</li><li style="margin-bottom:6px;">Set up your landing page and tracking links</li><li>Agree on success metrics</li></ul>You'll leave with your first campaign ready to send.</div>
+    </div>
+    </div>
+
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 2</span></div>
+</div>
+
+<div class="page" id="what-is-knomee">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+    <div style="padding:48px 80px 0;">
+    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#7639A1" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="#7639A1" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">What Your Prospect Experiences</div>
+    </div>
+    <p style="font-size:24px;font-weight:300;line-height:1.5;color:var(--ink-2);margin-bottom:24px;padding-left:48px;max-width:1500px;">Knomee is a 10-minute guided experience your prospects complete on their own, before they ever sit down with an advisor.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
+      <div>
+        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M9 2l1.9 3.8 4.2.6-3 3 .7 4.2L9 11.5l-3.8 2.1.7-4.2-3-3 4.2-.6z" stroke="#7639A1" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">3 Things That Happen</div>
+    </div>
+        <div style="padding-left:48px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">1</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M9 2l1.9 3.8 4.2.6-3 3 .7 4.2L9 11.5l-3.8 2.1.7-4.2-3-3 4.2-.6z" stroke="var(--grape)" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>The prospect gets immediate value</strong> — a personal summary of what's driving their decisions and top 3 money questions.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">2</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="var(--grape)" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Your firm gets a signal</strong> — a 0&ndash;100 Advisor Readiness Score that tells you who is high-intent right now.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">3</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M4 2v14" stroke="var(--grape)" stroke-width="1.4" stroke-linecap="round"/><path d="M4 3h9l-2.5 3L13 9H4" stroke="var(--grape)" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Your advisor gets a playbook</strong> — conversation starters, words to use (and avoid), and answers to their top questions.</span>
+          
+        </div></div></div>
+      </div>
+      <div>
+        <div style="margin-top:22px;background:var(--fog);border-left:4px solid var(--grape);border-radius:10px;padding:20px 26px;">
+      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--grape)" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="var(--grape)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:var(--grape);">One Call to Action</div>
+    </div>
+      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">Every campaign in this playbook uses the same call to action — the <strong>10-minute Knomee experience</strong> — never &ldquo;book a meeting.&rdquo; Keep it consistent across every channel and every lead type, so prospects always know exactly what the next step is.</div>
+    </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 3</span></div>
+</div>
+
+<div class="page" id="what-is-knomee-setup">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+    <div style="padding:48px 80px 0;">
+    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.4" stroke="#7639A1" stroke-width="1.3"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5" stroke="#7639A1" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">Before You Launch: The 5-Step Setup</div>
+    </div>
+    <p style="font-size:24px;font-weight:300;line-height:1.5;color:var(--ink-2);margin-bottom:20px;padding-left:48px;max-width:1500px;">Every campaign in this playbook follows the same five setup steps — this is the one framework to know. Work through them to prepare for your walkthrough session; your Knomee customer success contact will help you complete each one.</p>
+    <div style="padding-left:48px;max-width:1100px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">1</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6" r="2.3" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 14c0-2.5 2-4.3 4.5-4.3S11 11.5 11 14" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/><circle cx="12.5" cy="6.5" r="1.8" stroke="var(--grape)" stroke-width="1.2"/><path d="M13 9.7c1.7.4 3 1.8 3 3.8" stroke="var(--grape)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Targeting</strong> — identify the list of prospects for this campaign (and which lead type they are).</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">2</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M2 7v4h2.5L10 14V2L4.5 7H2z" stroke="var(--grape)" stroke-width="1.3" stroke-linejoin="round"/><path d="M12.5 6.5a3 3 0 010 5" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Channel</strong> — choose email, ads, events, direct mail, or a mix, using the channel guide.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">3</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Copy</strong> — customize the sample copy with your firm name, advisor name, and voice.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">4</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 6.5h14" stroke="var(--grape)" stroke-width="1.3"/><path d="M6.5 6.5V16" stroke="var(--grape)" stroke-width="1.3"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Landing page</strong> — set up or link to your firm-branded Knomee landing page.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">5</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.4" stroke="var(--grape)" stroke-width="1.3"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>CRM</strong> — sync Knomee to HubSpot / Redtail so completions and scores flow to advisors.</span>
+          
+        </div></div></div>
+    </div>
+
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 4</span></div>
+</div>
+
+<div class="page" id="know-your-starting-point">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover" class="active">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+
+    <div style="padding:48px 80px 0;">
+    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M2 14h12" stroke="#7639A1" stroke-width="1.4" stroke-linecap="round"/><path d="M4 14V9M8 14V4M12 14V7" stroke="#7639A1" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="3" r="1.4" fill="#7639A1"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">Know Your Starting Point</div>
+    </div>
+    <p style="font-size:24px;font-weight:300;line-height:1.5;color:var(--ink-2);margin-bottom:24px;padding-left:48px;max-width:1500px;">Before you launch anything, capture where you are today. These baselines are the reference point for the &ldquo;How You'll Know It's Working&rdquo; tables later in this playbook — without them, you can't tell what's improving. If your firm doesn't currently track a metric, flag it now with your Knomee customer success contact; setting up that tracking is part of setup.</p>
+    <div style="padding-left:48px;max-width:1500px;">
+      <div class="lc-table">
+        <div class="lc-hdr" style="grid-template-columns:1fr 0.7fr 1fr;">
+          <div class="lc-hdr-cell">Metric</div><div class="lc-hdr-cell">Current Baseline</div><div class="lc-hdr-cell">Where to Find It</div>
+        </div>
+        <div class="lc-row" style="grid-template-columns:1fr 0.7fr 1fr;">
+          <div class="lc-cell" style="font-weight:600;color:var(--plum);">Email open rate</div><div class="lc-cell" style="color:var(--slate);">%</div><div class="lc-cell">Email platform (Mailchimp, HubSpot, etc.)</div>
+        </div>
+        <div class="lc-row" style="grid-template-columns:1fr 0.7fr 1fr;">
+          <div class="lc-cell" style="font-weight:600;color:var(--plum);">Email click rate</div><div class="lc-cell" style="color:var(--slate);">%</div><div class="lc-cell">Email platform campaign reports</div>
+        </div>
+        <div class="lc-row" style="grid-template-columns:1fr 0.7fr 1fr;">
+          <div class="lc-cell" style="font-weight:600;color:var(--plum);">Email signups per month</div><div class="lc-cell" style="color:var(--slate);"># / mo</div><div class="lc-cell">Email platform list growth</div>
+        </div>
+        <div class="lc-row" style="grid-template-columns:1fr 0.7fr 1fr;">
+          <div class="lc-cell" style="font-weight:600;color:var(--plum);">Lead-to-MQL rate (ads)</div><div class="lc-cell" style="color:var(--slate);">%</div><div class="lc-cell">CRM + ad platform (HubSpot, Meta, LinkedIn)</div>
+        </div>
+        <div class="lc-row" style="grid-template-columns:1fr 0.7fr 1fr;">
+          <div class="lc-cell" style="font-weight:600;color:var(--plum);">Lead-to-MQL rate (email)</div><div class="lc-cell" style="color:var(--slate);">%</div><div class="lc-cell">CRM lifecycle reporting</div>
+        </div>
+        <div class="lc-row" style="grid-template-columns:1fr 0.7fr 1fr;">
+          <div class="lc-cell" style="font-weight:600;color:var(--plum);">Lead-to-meeting conversion rate</div><div class="lc-cell" style="color:var(--slate);">%</div><div class="lc-cell">CRM deal / meeting stage reporting</div>
+        </div>
+        <div class="lc-row" style="grid-template-columns:1fr 0.7fr 1fr;">
+          <div class="lc-cell" style="font-weight:600;color:var(--plum);">Avg. landing page time-on-page</div><div class="lc-cell" style="color:var(--slate);">mm:ss</div><div class="lc-cell">Web analytics (GA4, Fathom, etc.)</div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 5</span></div>
+</div>
+
+<div class="page" id="cold">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold" class="active">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:44px 80px 0;">
+        <div style="background:#55555F;border-radius:12px;padding:20px 28px;margin-bottom:20px;">
+      <div style="font-size:34px;font-weight:700;color:#fff;letter-spacing:0.02em;margin-bottom:6px;">COLD LEAD</div>
+      <div style="font-size:24px;font-weight:400;color:rgba(255,255,255,0.88);line-height:1.4;">They don't know you yet. Don't ask for a meeting — ask for ten minutes of curiosity.</div>
+    </div>
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="display:flex;border-top:none;">
+        <div style="width:260px;flex-shrink:0;background:#EAEAEC;padding:16px 22px;font-size:26px;font-weight:700;color:#55555F;">Who this is</div>
+        <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Purchased or rented lists, paid social audiences, employer or association partnerships, cold referrals.</div>
+      </div>
+      <div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#EAEAEC;padding:16px 22px;font-size:26px;font-weight:700;color:#55555F;">They're thinking</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">&ldquo;I don't know this advisor. I'm not looking for a new one right now &mdash; and I get outreach like this all the time.&rdquo;</div>
+        </div><div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#EAEAEC;padding:16px 22px;font-size:26px;font-weight:700;color:#55555F;">Your goal</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Generate awareness. Earn a first response. Convert an unknown name into a self-identified warm prospect.</div>
+        </div><div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#EAEAEC;padding:16px 22px;font-size:26px;font-weight:700;color:#55555F;">The one rule</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;"><strong>Every cold touchpoint routes to one low-friction action</strong> — completing Knomee. Never ask a cold lead for a meeting.</div>
+        </div>
+    </div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 6</span></div>
+</div>
+
+<div class="page" id="cold-steps">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold" class="active">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:44px 80px 0;">
+          <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#EAEAEC;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M4 2v14" stroke="#55555F" stroke-width="1.4" stroke-linecap="round"/><path d="M4 3h9l-2.5 3L13 9H4" stroke="#55555F" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#55555F;">Your Campaign, Step by Step</div>
+    </div>
+          <div style="padding-left:48px;max-width:1500px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#55555F;display:flex;align-items:center;justify-content:center;">1</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#EAEAEC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#55555F" stroke-width="1.3"/><path d="M1.5 4l6.5 5 6.5-5" stroke="#55555F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Cold email</strong> &mdash; lead with curiosity, not a pitch.</span>
+          <span class="step-tag" style="font-size:20px;">📧 Email</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#55555F;display:flex;align-items:center;justify-content:center;">2</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#EAEAEC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M2 7v4h2.5L10 14V2L4.5 7H2z" stroke="#55555F" stroke-width="1.3" stroke-linejoin="round"/><path d="M12.5 6.5a3 3 0 010 5" stroke="#55555F" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Paid social / display ad</strong> &mdash; route clicks to your Knomee landing page, not your homepage.</span>
+          <span class="step-tag" style="font-size:20px;">📢 Ads</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#55555F;display:flex;align-items:center;justify-content:center;">3</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#EAEAEC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#55555F" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#55555F" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Direct mail with QR code</strong> &mdash; a physical touchpoint into a digital experience.</span>
+          <span class="step-tag" style="font-size:20px;">✉️ Mail</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#55555F;display:flex;align-items:center;justify-content:center;">4</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#EAEAEC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6" r="2.3" stroke="#55555F" stroke-width="1.3"/><path d="M2 14c0-2.5 2-4.3 4.5-4.3S11 11.5 11 14" stroke="#55555F" stroke-width="1.3" stroke-linecap="round"/><circle cx="12.5" cy="6.5" r="1.8" stroke="#55555F" stroke-width="1.2"/><path d="M13 9.7c1.7.4 3 1.8 3 3.8" stroke="#55555F" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Partner or association co-branded invite</strong> &mdash; borrow trust from a group your prospect already belongs to.</span>
+          <span class="step-tag" style="font-size:20px;">🤝 Partner</span>
+        </div></div></div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 7</span></div>
+</div>
+
+<div class="page" id="cold-copy-8">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold" class="active">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+            <div style="padding:40px 80px 30px;">
+            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#EAEAEC;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#55555F" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#55555F" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#55555F;">Sample Copy &mdash; Use As-Is or Adapt</div>
+    </div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
+              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#55555F;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Option 1 · Curiosity · First touch</span></div>
+    <div class="email-window">
+      <div class="email-chrome">
+        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
+        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
+      </div>
+      <div class="email-hdr">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
+          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
+        </div>
+        <div class="email-subject" style="font-size:30px;">A different kind of financial question</div>
+      </div>
+      <div class="email-body" style="font-size:24px;">
+        <p style="margin-bottom:11px;">Hi [First Name],</p><p style="margin-bottom:11px;">Most financial outreach starts with a pitch. This one starts with a question: what do you actually want your money to do for you?</p><p style="margin-bottom:11px;">We built Knomee, a free 10-minute experience, to help you find out — no meeting required, no obligation.</p><p style="margin-bottom:11px;">Best, [Advisor Name], [Firm Name]</p>
+        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Start your Knomee experience →</a>
+      </div>
+    </div>
+    <div style="background:#EAEAEC;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> Consider a short awareness Video from the Appendix library &mdash; e.g. &lsquo;Meaning over Returns&rsquo; or &lsquo;The Questions You Never Ask.&rsquo; Optional; the final call is yours.</div></div><div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#55555F;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Option 2 · No strings · First touch (alternative)</span></div>
+    <div class="email-window">
+      <div class="email-chrome">
+        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
+        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
+      </div>
+      <div class="email-hdr">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
+          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
+        </div>
+        <div class="email-subject" style="font-size:30px;">What matters more than the market?</div>
+      </div>
+      <div class="email-body" style="font-size:24px;">
+        <p style="margin-bottom:11px;">Hi [First Name],</p><p style="margin-bottom:11px;">I don't know if you're looking for an advisor — most people who get this email aren't. But I wanted to share something worth 10 minutes of your time regardless: Knomee, a free tool to help you gain clarity on your financial goals and values.</p><p style="margin-bottom:11px;">No strings attached.</p><p style="margin-bottom:11px;">Best, [Advisor Name], [Firm Name]</p>
+        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Try it here →</a>
+      </div>
+    </div>
+    <div style="background:#EAEAEC;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> We&rsquo;d suggest no image here &mdash; a plain, personal-looking email tends to land best on a first touch. Entirely your call.</div></div>
+            </div>
+            </div>
+        
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 8</span></div>
+</div>
+
+<div class="page" id="cold-copy-9">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold" class="active">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+            <div style="padding:40px 80px 30px;">
+            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#EAEAEC;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#55555F" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#55555F" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#55555F;">Sample Copy &mdash; Use As-Is or Adapt</div>
+    </div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
+              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#55555F;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Paid Social / Display Ad</span></div><div style="background:#fff;border:1px solid #e2e2e2;border-radius:12px;box-shadow:0 4px 20px rgba(36,4,70,0.10);overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#55555F 0%,var(--indigo) 100%);height:130px;display:flex;align-items:center;justify-content:center;">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.2" stroke="#fff" stroke-width="1.4" opacity="0.9"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/></svg>
+      </div>
+      <div style="padding:20px 22px;">
+        <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);margin-bottom:8px;">Sponsored</div>
+        <div style="font-size:30px;font-weight:700;color:var(--plum);margin-bottom:8px;line-height:1.3;">What is your money really for?</div>
+        <div style="font-size:24px;color:var(--ink-2);line-height:1.5;margin-bottom:14px;">For most of our lives, we trade our time for money — yet we spend almost none of it getting clear on what that money is actually for. In about 10 minutes, Knomee helps you find out. Free, no obligation.</div>
+        <div style="background:#55555F;color:#fff;text-align:center;border-radius:8px;padding:13px 22px;font-size:22px;font-weight:600;">Discover Financial Joy</div>
+      </div>
+    </div><div style="background:#EAEAEC;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> A short awareness Video such as &lsquo;Financial Joy&rsquo; or &lsquo;When Life Changes, Money Changes,&rsquo; or a real, editorial human face. Imagery is a suggestion &mdash; use what fits your brand.</div></div><div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#55555F;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Direct Mail · Postcard</span></div><div style="background:#FDFCFA;border:1.5px dashed #D8D2CC;border-radius:10px;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1.5px dashed #D8D2CC;">
+        <span style="font-size:18px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);">Postcard</span>
+        <svg width="30" height="23" viewBox="0 0 26 20" fill="none"><rect x="1" y="1" width="24" height="18" rx="2" stroke="#55555F" stroke-width="1.3"/><path d="M6 6l7 5 7-5" stroke="#55555F" stroke-width="1.2"/></svg>
+      </div>
+      <div style="padding:20px 22px;">
+        <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);margin-bottom:8px;">Front</div>
+        <div style="font-size:30px;font-weight:600;color:var(--plum);font-style:italic;line-height:1.4;margin-bottom:18px;">&ldquo;Most financial advice starts with your money. This starts with you.&rdquo;</div>
+        <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);margin-bottom:8px;">Back</div>
+        <div style="font-size:24px;color:var(--ink-2);line-height:1.5;">Ten minutes. No cost. No sales call. Knomee helps you get clear on your goals and values before you ever talk to anyone. Scan to begin. <br><strong>[QR CODE &rarr; Knomee landing page, direct-mail UTM tag]</strong></div>
+      </div>
+    </div><div style="background:#EAEAEC;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> A life-stage moment your audience recognizes (family dinner, handing over the car keys) over a product shot &mdash; or link the &lsquo;Transitions Scramble What You Thought You Wanted&rsquo; Video by QR. Your call on imagery.</div></div>
+            </div>
+            </div>
+        
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 9</span></div>
+</div>
+
+<div class="page" id="cold-metrics">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold" class="active">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:40px 80px 30px;">
+        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#EAEAEC;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="#55555F" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#55555F;">How You'll Know It's Working</div>
+    </div>
+        <div style="padding-left:48px;">
+          <div class="lc-table">
+      <div class="lc-hdr" style="grid-template-columns:1fr 1fr 1fr;background:#55555F;">
+        <div class="lc-hdr-cell" style="font-size:20px;">Your Goal</div><div class="lc-hdr-cell" style="font-size:20px;">Watch This First</div><div class="lc-hdr-cell" style="font-size:20px;">Then Watch</div>
+      </div>
+      <div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Generate awareness</div><div class="lc-cell" style="font-size:24px;">Click-through rate</div><div class="lc-cell" style="font-size:24px;">Impressions, landing page visits</div>
+      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Earn first engagement</div><div class="lc-cell" style="font-size:24px;">Knomee completion rate (cold traffic)</div><div class="lc-cell" style="font-size:24px;">Email open rate, time on landing page</div>
+      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Convert cold &rarr; warm</div><div class="lc-cell" style="font-size:24px;">Cold-to-warm conversion rate</div><div class="lc-cell" style="font-size:24px;">Opt-in rate, follow-on content engagement</div>
+      </div>
+    </div>
+          <div style="margin-top:22px;background:#EAEAEC;border-left:4px solid #55555F;border-radius:10px;padding:20px 26px;">
+      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#55555F" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="#55555F" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#55555F;">The Handoff: Cold &rarr; Warm</div>
+    </div>
+      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">Cold outreach converts at a lower rate than warm or hot — that's expected. The win isn't a meeting; it's a completion. The moment someone completes Knomee, they've moved themselves to Warm. From there, the Warm Lead section takes over with a follow-up cadence.</div>
+    </div>
+        </div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 10</span></div>
+</div>
+
+<div class="page" id="warm">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm" class="active">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:44px 80px 0;">
+        <div style="background:#0C7263;border-radius:12px;padding:20px 28px;margin-bottom:20px;">
+      <div style="font-size:34px;font-weight:700;color:#fff;letter-spacing:0.02em;margin-bottom:6px;">WARM LEAD</div>
+      <div style="font-size:24px;font-weight:400;color:rgba(255,255,255,0.88);line-height:1.4;">They know you, but they're not ready to act. Earn the meeting by delivering value first.</div>
+    </div>
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="display:flex;border-top:none;">
+        <div style="width:260px;flex-shrink:0;background:#D6F3EC;padding:16px 22px;font-size:26px;font-weight:700;color:#0C7263;">Who this is</div>
+        <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Newsletter subscribers, event attendees, website visitors, social followers — anyone who has engaged but hasn't booked.</div>
+      </div>
+      <div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#D6F3EC;padding:16px 22px;font-size:26px;font-weight:700;color:#0C7263;">They're thinking</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">&ldquo;I'm researching, but I'm not ready to act yet.&rdquo;</div>
+        </div><div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#D6F3EC;padding:16px 22px;font-size:26px;font-weight:700;color:#0C7263;">Your goal</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Increase engagement and schedule a meeting — by giving them something valuable before you ask for anything.</div>
+        </div><div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#D6F3EC;padding:16px 22px;font-size:26px;font-weight:700;color:#0C7263;">The one rule</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;"><strong>One call to action per touchpoint: the Knomee experience.</strong> No competing asks.</div>
+        </div>
+    </div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 11</span></div>
+</div>
+
+<div class="page" id="warm-steps">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm" class="active">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:44px 80px 0;">
+          <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M4 2v14" stroke="#0C7263" stroke-width="1.4" stroke-linecap="round"/><path d="M4 3h9l-2.5 3L13 9H4" stroke="#0C7263" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#0C7263;">Your Campaign, Step by Step</div>
+    </div>
+          <div style="padding-left:48px;max-width:1500px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#0C7263;display:flex;align-items:center;justify-content:center;">1</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#0C7263" stroke-width="1.3"/><path d="M1.5 4l6.5 5 6.5-5" stroke="#0C7263" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Email nurture</strong> &mdash; a short sequence introducing Knomee as a complimentary experience.</span>
+          <span class="step-tag" style="font-size:20px;">📧 Email</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#0C7263;display:flex;align-items:center;justify-content:center;">2</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#0C7263" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#0C7263" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Newsletter feature</strong> &mdash; a recurring Knomee block in your existing non-client newsletter.</span>
+          <span class="step-tag" style="font-size:20px;">📰 Newsletter</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#0C7263;display:flex;align-items:center;justify-content:center;">3</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M4 2v14" stroke="#0C7263" stroke-width="1.4" stroke-linecap="round"/><path d="M4 3h9l-2.5 3L13 9H4" stroke="#0C7263" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Events</strong> &mdash; invite registrants to complete Knomee before your talk; follow up after.</span>
+          <span class="step-tag" style="font-size:20px;">🎟 Event</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#0C7263;display:flex;align-items:center;justify-content:center;">4</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6" r="2.3" stroke="#0C7263" stroke-width="1.3"/><path d="M2 14c0-2.5 2-4.3 4.5-4.3S11 11.5 11 14" stroke="#0C7263" stroke-width="1.3" stroke-linecap="round"/><circle cx="12.5" cy="6.5" r="1.8" stroke="#0C7263" stroke-width="1.2"/><path d="M13 9.7c1.7.4 3 1.8 3 3.8" stroke="#0C7263" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>LinkedIn / social</strong> &mdash; posts that lead with a human truth and route to one Knomee link.</span>
+          <span class="step-tag" style="font-size:20px;">💼 Social</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#0C7263;display:flex;align-items:center;justify-content:center;">5</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="#0C7263" stroke-width="1.3"/><path d="M2 6.5h14" stroke="#0C7263" stroke-width="1.3"/><path d="M6.5 6.5V16" stroke="#0C7263" stroke-width="1.3"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Website landing page</strong> &mdash; the destination for every CTA above.</span>
+          <span class="step-tag" style="font-size:20px;">🔗 Web</span>
+        </div></div></div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 12</span></div>
+</div>
+
+<div class="page" id="warm-copy-13">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm" class="active">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+            <div style="padding:40px 80px 30px;">
+            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#0C7263" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#0C7263" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#0C7263;">Sample Copy &mdash; Use As-Is or Adapt</div>
+    </div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
+              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#0C7263;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Nurture · Option 1 · Send to engaged non-clients</span></div>
+    <div class="email-window">
+      <div class="email-chrome">
+        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
+        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
+      </div>
+      <div class="email-hdr">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
+          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
+        </div>
+        <div class="email-subject" style="font-size:30px;">Financial planning should start with you</div>
+      </div>
+      <div class="email-body" style="font-size:24px;">
+        <p style="margin-bottom:11px;">Hi [First Name],</p><p style="margin-bottom:11px;">At [Firm Name], we believe great financial advice starts with understanding what matters most to you — not just your assets, but your goals, priorities, and the life you want to build.</p><p style="margin-bottom:11px;">That's why we've introduced a complimentary experience powered by Knomee, designed to help you gain clarity about what matters most. It takes about 10 minutes.</p><p style="margin-bottom:11px;">Best, [Advisor Name], [Firm Name]</p>
+        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Start your Knomee experience →</a>
+      </div>
+    </div>
+    <div style="background:#D6F3EC;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> A Theme video like &lsquo;Prepare for the Conversation&rsquo; or &lsquo;Smart People, Emotional Decisions,&rsquo; embedded or linked below the CTA. A suggestion &mdash; swap in whichever fits.</div></div><div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#0C7263;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Newsletter Feature · Option 2 · Recurring block</span></div>
+    <div class="email-window">
+      <div class="email-chrome">
+        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
+        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
+      </div>
+      <div class="email-hdr">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
+          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
+        </div>
+        <div class="email-subject" style="font-size:30px;">A new way to get clear on your goals</div>
+      </div>
+      <div class="email-body" style="font-size:24px;">
+        <p style="margin-bottom:11px;">We're excited to introduce Knomee, a research-backed experience to help you gain clarity on what you want your wealth to make possible.</p><p style="margin-bottom:11px;">It takes about 10 minutes, and there's no cost or obligation.</p>
+        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Try it here →</a>
+      </div>
+    </div>
+    <div style="background:#D6F3EC;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> An Interview such as &lsquo;Nobody Ever Asked Me That,&rsquo; or an Adventure Teaching Script from the series. Your call which one.</div></div>
+            </div>
+            </div>
+        
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 13</span></div>
+</div>
+
+<div class="page" id="warm-copy-14">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm" class="active">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+            <div style="padding:40px 80px 30px;">
+            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#0C7263" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#0C7263" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#0C7263;">Sample Copy &mdash; Use As-Is or Adapt</div>
+    </div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
+              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#0C7263;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Event Invite · Pre- and post-event</span></div><div style="background:#fff;border:1px solid #e2e2e2;border-radius:12px;box-shadow:0 4px 20px rgba(36,4,70,0.10);overflow:hidden;">
+      <div style="background:#0C7263;color:#fff;padding:16px 20px;display:flex;align-items:center;gap:12px;">
+        <svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5" stroke="#fff" stroke-width="1.3"/><path d="M1.5 6h13M5 1.5v2M11 1.5v2" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span style="font-size:28px;font-weight:700;">Advisor Event</span>
+      </div>
+      <div style="padding:20px 22px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+          <div>
+            <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);margin-bottom:7px;">Before the event</div>
+            <div style="font-size:22px;color:var(--ink-2);line-height:1.5;">Invite registrants to complete Knomee before your talk — it helps you tailor the room and gives them a head start on the topic.</div>
+          </div>
+          <div>
+            <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);margin-bottom:7px;">After the event</div>
+            <div style="font-size:22px;color:var(--ink-2);line-height:1.5;">
+              <p style="margin-bottom:9px;">Thanks for joining us! If today's discussion sparked new ideas or questions, I'd encourage you to spend about 10 minutes with the complimentary Knomee experience.</p>
+              <p style="margin-bottom:9px;">It will help you uncover your three most important money questions, and identify the topics you'd like to explore further.</p>
+              <p style="margin-bottom:0;">It's a meaningful next step whether you're ready to speak with an advisor or simply want greater clarity for yourself.</p>
+            </div>
+            <a href="#" style="display:inline-block;margin-top:12px;background:#0C7263;color:#fff;text-decoration:none;border-radius:7px;padding:10px 20px;font-size:20px;font-weight:600;font-family:var(--font);">Start your experience →</a>
+          </div>
+        </div>
+      </div>
+    </div><div style="background:#D6F3EC;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> A recap from a past event if you have one, or a Theme like &lsquo;Years in the Making / The Rigor.&rsquo; Optional &mdash; choose what suits.</div></div><div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#0C7263;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">LinkedIn / Social</span></div><div style="background:#fff;border:1px solid #e2e2e2;border-radius:12px;box-shadow:0 4px 20px rgba(36,4,70,0.10);overflow:hidden;">
+      <div style="display:flex;align-items:center;gap:13px;padding:18px 20px 10px;">
+        <div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#0C7263,var(--aqua));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:22px;flex-shrink:0;">A</div>
+        <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:#1d1d1f;">Acme Financial Advisors</div><div style="font-size:18px;color:#00000099;">3,418 followers &middot; Promoted</div></div>
+      </div>
+      <div style="padding:0 20px 16px;font-size:24px;color:#1d1d1f;line-height:1.5;">Most people spend more time planning a vacation than getting clear on what their money is really for. Here's a 10-minute way to change that. <span style='color:#00000088;'>&hellip;more</span></div>
+      <div style="background:linear-gradient(135deg,#0C7263 0%,var(--indigo) 100%);height:110px;display:flex;align-items:center;justify-content:center;">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="#fff" stroke-width="1.4" opacity="0.85"/><path d="M9 8l7 4-7 4V8z" fill="#fff" opacity="0.85"/></svg>
+      </div>
+    </div><div style="background:#D6F3EC;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> A short, editorial Theme or Interview clip (e.g. &lsquo;Money Personality&rsquo;) over a stock finance photo. Imagery is your call.</div></div>
+            </div>
+            </div>
+        
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 14</span></div>
+</div>
+
+<div class="page" id="warm-metrics">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm" class="active">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:40px 80px 30px;">
+        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#D6F3EC;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="#0C7263" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#0C7263;">How You'll Know It's Working</div>
+    </div>
+        <div style="padding-left:48px;">
+          <div class="lc-table">
+      <div class="lc-hdr" style="grid-template-columns:1fr 1fr 1fr;background:#0C7263;">
+        <div class="lc-hdr-cell" style="font-size:20px;">Your Goal</div><div class="lc-hdr-cell" style="font-size:20px;">Watch This First</div><div class="lc-hdr-cell" style="font-size:20px;">Then Watch</div>
+      </div>
+      <div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Increase engagement</div><div class="lc-cell" style="font-size:24px;">Newsletter/email open &amp; click rate</div><div class="lc-cell" style="font-size:24px;">Knomee completion rate (warm traffic)</div>
+      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Earn the meeting</div><div class="lc-cell" style="font-size:24px;">Meeting-request rate post-completion</div><div class="lc-cell" style="font-size:24px;">Time from completion to booked meeting</div>
+      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Deliver early value</div><div class="lc-cell" style="font-size:24px;">Landing page time-on-page</div><div class="lc-cell" style="font-size:24px;">Repeat visits to Knomee content</div>
+      </div>
+    </div>
+          <div style="margin-top:22px;background:#D6F3EC;border-left:4px solid #0C7263;border-radius:10px;padding:20px 26px;">
+      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0C7263" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="#0C7263" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#0C7263;">The Handoff: Warm &rarr; Hot</div>
+    </div>
+      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">A warm prospect who books a meeting becomes Hot the moment the meeting is on the calendar. Move them to the Hot Lead cadence immediately — the meeting-confirmation email should go out within the same day.</div>
+    </div>
+        </div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 15</span></div>
+</div>
+
+<div class="page" id="hot">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot" class="active">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:44px 80px 0;">
+        <div style="background:#8B33D9;border-radius:12px;padding:20px 28px;margin-bottom:20px;">
+      <div style="font-size:34px;font-weight:700;color:#fff;letter-spacing:0.02em;margin-bottom:6px;">HOT LEAD</div>
+      <div style="font-size:24px;font-weight:400;color:rgba(255,255,255,0.88);line-height:1.4;">They've agreed to meet — but they're not convinced yet. Make the first meeting feel like the tenth.</div>
+    </div>
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="display:flex;border-top:none;">
+        <div style="width:260px;flex-shrink:0;background:#F1E4FE;padding:16px 22px;font-size:26px;font-weight:700;color:#8B33D9;">Who this is</div>
+        <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Referrals, direct inquiries, prospects with a meeting on the calendar — from email, your website, or a current client.</div>
+      </div>
+      <div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#F1E4FE;padding:16px 22px;font-size:26px;font-weight:700;color:#8B33D9;">They're thinking</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">&ldquo;I've requested information or agreed to meet, but I'm not convinced this advisor is the one yet.&rdquo;</div>
+        </div><div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#F1E4FE;padding:16px 22px;font-size:26px;font-weight:700;color:#8B33D9;">Your goal</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;">Build trust before the meeting, differentiate your firm, and accelerate the close.</div>
+        </div><div style="display:flex;border-top:1px solid var(--border);">
+          <div style="width:260px;flex-shrink:0;background:#F1E4FE;padding:16px 22px;font-size:26px;font-weight:700;color:#8B33D9;">The one rule</div>
+          <div style="flex:1;padding:16px 22px;font-size:24px;color:var(--ink-2);line-height:1.5;"><strong>This is a 1:1 channel.</strong> Every message comes from the advisor, personally — not from marketing.</div>
+        </div>
+    </div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 16</span></div>
+</div>
+
+<div class="page" id="hot-steps">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot" class="active">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:44px 80px 0;">
+          <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#F1E4FE;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M4 2v14" stroke="#8B33D9" stroke-width="1.4" stroke-linecap="round"/><path d="M4 3h9l-2.5 3L13 9H4" stroke="#8B33D9" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#8B33D9;">Your Campaign, Step by Step</div>
+    </div>
+          <div style="padding-left:48px;max-width:1500px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#8B33D9;display:flex;align-items:center;justify-content:center;">1</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#F1E4FE;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#8B33D9" stroke-width="1.3"/><path d="M1.5 4l6.5 5 6.5-5" stroke="#8B33D9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Meeting confirmation email</strong> &mdash; invite the prospect to complete Knomee before you meet.</span>
+          <span class="step-tag" style="font-size:20px;">📧 Email</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#8B33D9;display:flex;align-items:center;justify-content:center;">2</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#F1E4FE;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#8B33D9" stroke-width="1.3"/><path d="M8 4.5V8l2.4 1.6" stroke="#8B33D9" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Reminder, 2 days before</strong> &mdash; one version if they haven't completed Knomee, another if they have.</span>
+          <span class="step-tag" style="font-size:20px;">⏰ Reminder</span>
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:#8B33D9;display:flex;align-items:center;justify-content:center;">3</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:#F1E4FE;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8a6 6 0 0110-4.2M15 8a6 6 0 01-10 4.2" stroke="#8B33D9" stroke-width="1.4" stroke-linecap="round"/><path d="M13 2v3h-3M5 14v-3h3" stroke="#8B33D9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Meeting follow-up</strong> &mdash; keep the conversation open if the prospect hasn't signed yet.</span>
+          <span class="step-tag" style="font-size:20px;">🔁 Follow-up</span>
+        </div></div></div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 17</span></div>
+</div>
+
+<div class="page" id="hot-copy-18">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot" class="active">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+            <div style="padding:40px 80px 30px;">
+            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#F1E4FE;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#8B33D9" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#8B33D9" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#8B33D9;">Sample Copy &mdash; Use As-Is or Adapt</div>
+    </div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
+              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#8B33D9;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Confirmation · Option 1 · Immediately after the meeting is booked</span></div>
+    <div class="email-window">
+      <div class="email-chrome">
+        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
+        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
+      </div>
+      <div class="email-hdr">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
+          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
+        </div>
+        <div class="email-subject" style="font-size:30px;">Looking forward to meeting</div>
+      </div>
+      <div class="email-body" style="font-size:24px;">
+        <p style="margin-bottom:11px;">Hi [First Name],</p><p style="margin-bottom:11px;">I'm looking forward to our meeting. Before we get together, I'd like to invite you to spend 10 minutes with Knomee — a guided experience that helps clarify what matters most to you and identify your top financial questions.</p><p style="margin-bottom:11px;">Most financial conversations start with your money. This one starts with you.</p><p style="margin-bottom:11px;">I'll review your responses so our time together stays focused on what matters most.</p>
+        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Access your Knomee experience here →</a>
+      </div>
+    </div>
+    <div style="background:#F1E4FE;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> An Interview such as &lsquo;Context&rsquo; or &lsquo;What Wealth Doesn&rsquo;t Solve,&rsquo; linked under the CTA. A suggestion &mdash; use it or skip it.</div></div><div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#8B33D9;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Email · Reminder · Option 2 · 2 days before the meeting</span></div>
+    <div class="email-window">
+      <div class="email-chrome">
+        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
+        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
+      </div>
+      <div class="email-hdr">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
+          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
+        </div>
+        <div class="email-subject" style="font-size:30px;">A quick reminder before we meet</div>
+      </div>
+      <div class="email-body" style="font-size:24px;">
+        <p style="margin-bottom:11px;">Before our meeting on [Day], a quick reminder about Knomee.</p><p style="margin-bottom:11px;">It takes about 10 minutes and helps you reflect on what you want your wealth to make possible. Many people tell us it gives them real clarity.</p><p style="margin-bottom:11px;">I hope you'll have a chance to complete it before we meet.</p>
+        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Complete Knomee →</a>
+      </div>
+    </div>
+    <div style="background:#F1E4FE;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> The same Interview as the confirmation email, or a brief personal note from the advisor. Your call.</div></div>
+            </div>
+            </div>
+        
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 18</span></div>
+</div>
+
+<div class="page" id="hot-copy-19">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot" class="active">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+            <div style="padding:40px 80px 30px;">
+            <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#F1E4FE;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="#8B33D9" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="#8B33D9" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#8B33D9;">Sample Copy &mdash; Use As-Is or Adapt</div>
+    </div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding-left:48px;">
+              <div><div style="margin-bottom:10px;"><span style="display:inline-flex;align-items:center;background:#8B33D9;color:#fff;border-radius:var(--r-pill);padding:6px 18px;font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Meeting Follow-Up · Prospect not closed yet</span></div>
+    <div class="email-window">
+      <div class="email-chrome">
+        <div class="chrome-dots"><div class="chrome-dot red"></div><div class="chrome-dot amber"></div><div class="chrome-dot green"></div></div>
+        <div class="chrome-bar" style="font-size:20px;">Mail — Inbox</div>
+      </div>
+      <div class="email-hdr">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+          <div class="email-avatar" style="width:38px;height:38px;font-size:20px;">A</div>
+          <div style="flex:1;"><div style="font-size:22px;font-weight:600;color:var(--plum);">Advisor Name <span style="font-weight:300;color:var(--ash);">&lt;advisor@acme.com&gt;</span></div></div>
+        </div>
+        <div class="email-subject" style="font-size:30px;">Continuing our conversation</div>
+      </div>
+      <div class="email-body" style="font-size:24px;">
+        <p style="margin-bottom:11px;">Thank you again for meeting with me — I really enjoyed our conversation.</p><p style="margin-bottom:11px;">As you consider your next steps, I'm happy to answer any questions or continue the conversation. I look forward to hearing from you.</p>
+        <a class="email-cta-btn" href="#" style="font-size:22px;padding:11px 24px;display:inline-block;">Continue the conversation →</a>
+      </div>
+    </div>
+    <div style="background:#F1E4FE;padding:12px 18px;font-size:24px;color:var(--ink-2);line-height:1.4;border-radius:9px;margin-top:10px;"><strong>SUGGESTED PAIRING:</strong> We&rsquo;d suggest no image or video here &mdash; this is a 1:1, personal message. Entirely your call.</div></div><div><div style="background:#F1E4FE;border-radius:12px;padding:20px 24px;font-size:24px;color:var(--ink-2);line-height:1.5;height:100%;display:flex;align-items:center;">
+  <div><strong style="color:#8B33D9;">Remember the one rule:</strong> this is a 1:1 channel. Every message in this section comes from the advisor personally — never from a marketing address.</div>
+</div></div>
+            </div>
+            </div>
+        
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 19</span></div>
+</div>
+
+<div class="page" id="hot-metrics">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot" class="active">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+        <div style="padding:40px 80px 30px;">
+        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#F1E4FE;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="#8B33D9" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#8B33D9;">How You'll Know It's Working</div>
+    </div>
+        <div style="padding-left:48px;">
+          <div class="lc-table">
+      <div class="lc-hdr" style="grid-template-columns:1fr 1fr 1fr;background:#8B33D9;">
+        <div class="lc-hdr-cell" style="font-size:20px;">Your Goal</div><div class="lc-hdr-cell" style="font-size:20px;">Watch This First</div><div class="lc-hdr-cell" style="font-size:20px;">Then Watch</div>
+      </div>
+      <div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Build trust before the meeting</div><div class="lc-cell" style="font-size:24px;">Knomee completion rate (hot traffic)</div><div class="lc-cell" style="font-size:24px;">Time from invite to completion</div>
+      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Differentiate your firm</div><div class="lc-cell" style="font-size:24px;">Meeting show-rate</div><div class="lc-cell" style="font-size:24px;">Prospect engagement in-meeting (advisor-reported)</div>
+      </div><div class="lc-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="lc-cell" style="font-size:24px;">Accelerate the close</div><div class="lc-cell" style="font-size:24px;">Close rate post-Knomee vs. baseline</div><div class="lc-cell" style="font-size:24px;">Time from first meeting to signed client</div>
+      </div>
+    </div>
+          <div style="margin-top:22px;background:#F1E4FE;border-left:4px solid #8B33D9;border-radius:10px;padding:20px 26px;">
+      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#8B33D9" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="#8B33D9" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#8B33D9;">The Handoff: Hot &rarr; Client</div>
+    </div>
+      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">The moment a hot prospect signs, they become a client — and a completely different playbook takes over. See the companion Client Playbook (teal) for how to keep them engaged from day one.</div>
+    </div>
+        </div>
+        </div>
+    
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 20</span></div>
+</div>
+
+<div class="page" id="landing">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+    <div style="padding:44px 80px 0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+      <div>
+        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="#7639A1" stroke-width="1.4"/><path d="M2 7l7 4 7-4" stroke="#7639A1" stroke-width="1.4"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">Your Landing Page</div>
+    </div>
+        <p style="font-size:24px;font-weight:300;line-height:1.5;color:var(--ink-2);margin-bottom:16px;padding-left:48px;">Every channel in this playbook points to one destination: your firm-branded Knomee landing page. Fully brandable for your firm.</p>
+        <div style="padding-left:48px;">
+          <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #ECE7F2;">
+          <div style="background:var(--plum);padding:10px 20px;display:flex;align-items:center;justify-content:center;position:relative;">
+            <div style="position:absolute;left:16px;display:flex;align-items:center;"><svg height="14" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+            <div style="font-family:var(--font);font-size:15px;font-weight:700;letter-spacing:0.13em;color:#fff;">ACME ADVISORS</div>
+          </div>
+          <div style="padding:16px 24px;text-align:center;">
+            <div style="font-size:19px;font-weight:700;color:var(--plum);line-height:1.1;margin-bottom:3px;">Welcome!</div>
+            <div style="font-size:19px;font-weight:700;color:var(--plum);line-height:1.2;margin-bottom:9px;">Wealth is about experiencing life fully.</div>
+            <div style="font-size:15px;font-weight:300;color:var(--slate);max-width:460px;margin:0 auto 11px;line-height:1.35;">Take a few minutes to get clear on what matters most and what your money is really for.</div>
+            <div style="text-align:left;max-width:520px;margin:0 auto;">
+              <div style="font-size:16px;font-weight:700;color:var(--plum);margin-bottom:7px;">What you'll get:</div>
+              <div style="background:var(--fog);border-radius:11px;padding:11px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+                <div style="background:#fff;border-radius:9px;padding:11px 11px 0;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(36,4,70,0.06);">
+            <div style="font-size:17px;margin-bottom:4px;">&#9889;</div>
+            <div style="font-size:15px;font-weight:700;color:var(--plum);margin-bottom:4px;line-height:1.2;">Discover What Matters Most</div>
+            <div style="font-size:14px;font-weight:300;color:var(--slate);line-height:1.3;margin-bottom:8px;">A quick, guided experience that clarifies your values, goals, and priorities.</div>
+            <div style="height:4px;background:var(--bright-purple);border-radius:100px;margin-top:auto;"></div>
+          </div><div style="background:#fff;border-radius:9px;padding:11px 11px 0;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(36,4,70,0.06);">
+            <div style="font-size:17px;margin-bottom:4px;">&#128161;</div>
+            <div style="font-size:15px;font-weight:700;color:var(--plum);margin-bottom:4px;line-height:1.2;">See Your Personal Insights</div>
+            <div style="font-size:14px;font-weight:300;color:var(--slate);line-height:1.3;margin-bottom:8px;">Receive a personalized summary of what's driving your financial decisions.</div>
+            <div style="height:4px;background:var(--bright-purple);border-radius:100px;margin-top:auto;"></div>
+          </div><div style="background:#fff;border-radius:9px;padding:11px 11px 0;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(36,4,70,0.06);">
+            <div style="font-size:17px;margin-bottom:4px;">&#10024;</div>
+            <div style="font-size:15px;font-weight:700;color:var(--plum);margin-bottom:4px;line-height:1.2;">Your Top 3 Money Questions</div>
+            <div style="font-size:14px;font-weight:300;color:var(--slate);line-height:1.3;margin-bottom:8px;">Walk away with questions to help you think, plan, and prepare for what's next.</div>
+            <div style="height:4px;background:var(--bright-purple);border-radius:100px;margin-top:auto;"></div>
+          </div>
+              </div>
+            </div>
+            <a href="#" style="display:inline-block;background:var(--plum);color:#fff;font-family:var(--font);font-size:15px;font-weight:600;padding:8px 22px;border-radius:100px;text-decoration:none;margin-top:12px;">Discover Financial Joy</a>
+            <div style="margin-top:7px;font-size:14px;color:var(--slate);display:flex;align-items:center;justify-content:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.4" stroke="#757575" stroke-width="1.3"/><path d="M8 4.5V8l2.4 1.6" stroke="#757575" stroke-width="1.3" stroke-linecap="round"/></svg>Est time: 8 min</div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l6 2v4.5c0 4-2.5 6.5-6 7.5-3.5-1-6-3.5-6-7.5V3.5l6-2z" stroke="#7639A1" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.5 8l1.8 1.8L11 6" stroke="#7639A1" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">Four Rules for the Page</div>
+    </div>
+        <div style="padding-left:48px;"><div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">1</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M9 15s-6-3.6-6-8.2C3 4 5 2.5 7 2.5c1 0 2 .5 2 1.7 0-1.2 1-1.7 2-1.7 2 0 4 1.5 4 4.3C15 11.4 9 15 9 15z" stroke="var(--grape)" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Lead with the person, not the product.</strong> Prospects should never feel this is a pitch to buy something.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">2</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.4" stroke="var(--grape)" stroke-width="1.3"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Reduce friction.</strong> State the time commitment up front, make clear it's free, and show what they get immediately.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">3</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="9" cy="9" r="7" stroke="var(--grape)" stroke-width="1.4"/><circle cx="9" cy="9" r="3.5" stroke="var(--grape)" stroke-width="1.4"/><circle cx="9" cy="9" r="0.8" fill="var(--grape)"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>One primary CTA.</strong> One path, no competing buttons.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">4</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l6 2v4.5c0 4-2.5 6.5-6 7.5-3.5-1-6-3.5-6-7.5V3.5l6-2z" stroke="var(--grape)" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.5 8l1.8 1.8L11 6" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Show your firm.</strong> Your logo, brand colors, and a real advisor photo. Familiarity is a trust signal.</span>
+          
+        </div></div></div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 21</span></div>
+</div>
+
+<div class="page" id="test-before-launch">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix" class="active">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+    <div style="padding:40px 80px 30px;">
+    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="9" cy="9" r="7" stroke="#7639A1" stroke-width="1.4"/><circle cx="9" cy="9" r="3.5" stroke="#7639A1" stroke-width="1.4"/><circle cx="9" cy="9" r="0.8" fill="#7639A1"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">Test Before You Launch</div>
+    </div>
+    <p style="font-size:24px;font-weight:300;line-height:1.6;color:var(--ink-2);margin-bottom:16px;padding-left:48px;max-width:1500px;">Don't guess which message will land — test it. Knomee supports UTM tags so you can see exactly which channel, campaign, and message drives completions (not just clicks).</p>
+    <div style="padding-left:48px;max-width:1500px;">
+      <div style="display:flex;flex-direction:column;gap:14px;"><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">1</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="9" height="10" rx="1.5" stroke="var(--grape)" stroke-width="1.3"/><path d="M2 10.5V3a1.5 1.5 0 011.5-1.5H10" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Copy</strong> your prospect invite URL from the Knomee Advisor dashboard.</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">2</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.4" stroke="var(--grape)" stroke-width="1.3"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5" stroke="var(--grape)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Tag</strong> it with UTM parameters. Example: knomeeurl.com/?utm_source=email&amp;utm_campaign=cold_email&amp;utm_content=option1</span>
+          
+        </div><div class="step" style="padding:18px 22px;gap:16px;">
+          <div class="step-num" style="width:38px;height:38px;font-size:20px;background:var(--grape);display:flex;align-items:center;justify-content:center;">3</div>
+          <div class="step-icon-wrap" style="width:38px;height:38px;background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 14V9M6.5 14V5M10 14V3M13.5 14V7" stroke="var(--grape)" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <span class="step-text" style="font-size:24px;"><strong>Read</strong> Knomee's traffic report to find your most effective channel and message — then adapt.</span>
+          
+        </div></div>
+      <div style="margin-top:22px;background:var(--fog);border-left:4px solid var(--grape);border-radius:10px;padding:20px 26px;">
+      <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--grape)" stroke-width="1.4"/><path d="M8 5.3v4.4M8 11.3v.5" stroke="var(--grape)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:var(--grape);">The 10% Rule</div>
+    </div>
+      <div style="font-size:24px;color:var(--ink-2);line-height:1.55;padding-left:48px;">Send each new campaign to 10% of your list first, with 2&ndash;3 message variants. Once you know what works, launch the winner to the rest. This playbook's Option 1 / Option 2 samples are built to be your first A/B test.</div>
+    </div>
+    </div>
+    </div>
+
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 22</span></div>
+</div>
+
+<div class="page" id="appendix">
+  <div class="topbar">
+    <div class="topbar-logo"><svg height="22" viewBox="0 0 236 24" fill="none" style="display:block;"><use href="#pb-logo"></use></svg></div>
+    <nav class="topnav" style="font-size: 17px"><a href="#cover">Home</a><a href="#cold">Cold</a><a href="#warm">Warm</a><a href="#hot">Hot</a><a href="#appendix" class="active">Appendix</a></nav>
+  </div>
+  <div class="content" style="display:flex;flex-direction:column;">
+    
+    <div style="padding:40px 80px 30px;">
+    <div class="sec-hdr" style="margin-bottom:20px;align-items:center;">
+      <div class="sec-icon" style="background:var(--pale-lav);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><rect x="1" y="2.5" width="12" height="9" rx="2" stroke="#7639A1" stroke-width="1.3"/><path d="M5.5 5.5l4 2-4 2V5.5z" fill="#7639A1"/></svg></div>
+      <div class="sec-title" style="font-size:32px;color:#7639A1;">Appendix &middot; Video Library &amp; Planner</div>
+    </div>
+    <p style="font-size:22px;font-weight:300;line-height:1.4;color:var(--ink-2);margin-bottom:14px;padding-left:48px;max-width:1560px;">Your firm has access to a library of ~28 Knomee videos across four categories — Videos, Themes, Interviews, and Adventure Teaching Scripts. Use this planner to match each category to the right stage and channel, then pull the specific files you need from the Google Drive library linked below.</p>
+    <div style="padding-left:48px;max-width:1720px;">
+      <div class="lc-table">
+        <div class="lc-hdr" style="grid-template-columns:0.9fr 150px 1.7fr 1fr;">
+          <div class="lc-hdr-cell">Category</div><div class="lc-hdr-cell">Stage</div><div class="lc-hdr-cell">What's Inside</div><div class="lc-hdr-cell">Where to Embed</div>
+        </div>
+        <div class="lc-row" style="grid-template-columns:0.9fr 150px 1.7fr 1fr;">
+    <div class="lc-cell" style="padding:14px 24px;"><span style="font-weight:700;color:var(--plum);">Videos</span><br><span style="font-size:17px;color:var(--slate);">6 short concept pieces</span></div>
+    <div class="lc-cell" style="padding:14px 24px;"><span class="stage-pill" style="background:#EAEAEC;"><span class="dot" style="background:#55555F;"></span><span style="color:#55555F;">COLD</span></span></div>
+    <div class="lc-cell" style="padding:14px 24px;font-size:18px;line-height:1.5;">Financial Joy &middot; Meaning over Returns &middot; The Questions You Never Ask &middot; The Thinking Partner &middot; Transitions Scramble What You Thought You Wanted &middot; When Life Changes, Money Changes</div>
+    <div class="lc-cell" style="padding:14px 24px;">Paid social, display, landing page hero</div>
+  </div><div class="lc-row" style="grid-template-columns:0.9fr 150px 1.7fr 1fr;">
+    <div class="lc-cell" style="padding:14px 24px;"><span style="font-weight:700;color:var(--plum);">Themes</span><br><span style="font-size:17px;color:var(--slate);">12 value / explainer pieces</span></div>
+    <div class="lc-cell" style="padding:14px 24px;"><span class="stage-pill" style="background:#D6F3EC;"><span class="dot" style="background:#0C7263;"></span><span style="color:#0C7263;">WARM</span></span></div>
+    <div class="lc-cell" style="padding:14px 24px;font-size:18px;line-height:1.5;">Years in the Making / The Rigor &middot; Wealth Creates More Decisions, Not Fewer &middot; Smart People, Emotional Decisions &middot; Prepare for the Conversation &middot; Money Personality &middot; Money Anxiety &middot; Financial Joy / Your &ldquo;Why&rdquo; — several available in v1/v2 cuts for A/B testing</div>
+    <div class="lc-cell" style="padding:14px 24px;">Nurture emails, newsletter, LinkedIn</div>
+  </div><div class="lc-row" style="grid-template-columns:0.9fr 150px 1.7fr 1fr;">
+    <div class="lc-cell" style="padding:14px 24px;"><span style="font-weight:700;color:var(--plum);">Interviews</span><br><span style="font-size:17px;color:var(--slate);">4 first-person stories</span></div>
+    <div class="lc-cell" style="padding:14px 24px;"><span style="display:inline-flex;flex-direction:column;gap:5px;align-items:flex-start;"><span class="stage-pill" style="background:#D6F3EC;"><span class="dot" style="background:#0C7263;"></span><span style="color:#0C7263;">WARM</span></span><span class="stage-pill" style="background:#F1E4FE;"><span class="dot" style="background:#8B33D9;"></span><span style="color:#8B33D9;">HOT</span></span></span></div>
+    <div class="lc-cell" style="padding:14px 24px;font-size:18px;line-height:1.5;">Context &middot; Nobody Ever Asked Me That &middot; The Most Expensive Mistake &middot; What Wealth Doesn't Solve</div>
+    <div class="lc-cell" style="padding:14px 24px;">Newsletter features, pre-meeting emails</div>
+  </div><div class="lc-row" style="grid-template-columns:0.9fr 150px 1.7fr 1fr;">
+    <div class="lc-cell" style="padding:14px 24px;"><span style="font-weight:700;color:var(--plum);">Adventure Teaching Scripts</span><br><span style="font-size:17px;color:var(--slate);">6-part educational series</span></div>
+    <div class="lc-cell" style="padding:14px 24px;"><span class="stage-pill" style="background:#D6F3EC;"><span class="dot" style="background:#0C7263;"></span><span style="color:#0C7263;">WARM</span></span></div>
+    <div class="lc-cell" style="padding:14px 24px;font-size:18px;line-height:1.5;">Financial Joy &middot; Confidence &middot; Outlook &middot; Future You &middot; Goals &middot; What Wealth Doesn't Solve</div>
+    <div class="lc-cell" style="padding:14px 24px;">Recurring newsletter block or drip sequence</div>
+  </div>
+      </div>
+      <div style="margin-top:18px;background:var(--fog);border-left:4px solid var(--grape);border-radius:10px;padding:20px 26px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:23px;font-weight:600;color:var(--plum);margin-bottom:5px;">Browse the full library in Google Drive</div>
+          <div style="font-size:20px;font-weight:300;color:var(--ink-2);">All ~28 videos, ready to embed — open the folder and pick the files that fit the plan above.</div>
+        </div>
+        <a href="https://drive.google.com/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:var(--plum);color:var(--white);text-decoration:none;border-radius:100px;padding:13px 26px;font-size:21px;font-weight:600;font-family:var(--font);white-space:nowrap;flex-shrink:0;"><svg width="22" height="22" viewBox="0 0 16 16" fill="none"><rect x="1" y="2.5" width="12" height="9" rx="2" stroke="#fff" stroke-width="1.3"/><path d="M5.5 5.5l4 2-4 2V5.5z" fill="#fff"/></svg>Open the Video Library</a>
+      </div>
+      <p style="font-size:20px;font-style:italic;color:var(--slate);margin-top:14px;line-height:1.5;">The v1/v2 Theme cuts are built for the 10% A/B test in &ldquo;Test Before You Launch&rdquo; — send both variants to your test group, then roll the winner out. Tip: tag every video link with utm_content= so the traffic report shows which videos actually drive completions.</p>
+    </div>
+    </div>
+
+  </div>
+  <div class="pg-footer"><span>© Knomee | Confidential</span><span class="pg-num">Prospect Playbook · Page 23</span></div>
+</div>
+
+</div><!-- /deck -->
+<script>
+(function(){
+  var deck = document.querySelector('.deck');
+  var mq = window.matchMedia ? window.matchMedia('print') : null;
+  function reset(){ deck.style.transform='none'; document.body.style.height='auto'; }
+  function fit(){
+    if (mq && mq.matches) { reset(); return; }
+    var s = Math.min(1, window.innerWidth / 1920);
+    deck.style.transform = 'scale(' + s + ')';
+    document.body.style.height = (deck.offsetHeight * s) + 'px';
+  }
+  window.addEventListener('resize', fit);
+  window.addEventListener('load', fit);
+  window.addEventListener('beforeprint', reset);
+  window.addEventListener('afterprint', fit);
+  // Fire reset the instant print preview is entered (more reliable than beforeprint)
+  if (mq) {
+    var onMQ = function(e){ if (e.matches) reset(); else fit(); };
+    if (mq.addEventListener) mq.addEventListener('change', onMQ);
+    else if (mq.addListener) mq.addListener(onMQ);
+  }
+  fit();
+})();
+</script>
+<script>
+document.addEventListener('click',function(e){
+  if(e.target.closest&&e.target.closest('[contenteditable]'))return;
+  var a=e.target.closest&&e.target.closest('a[href^="#"]');
+  if(!a)return; var id=a.getAttribute('href').slice(1); if(!id)return;
+  e.preventDefault();
+  /* Wait for any pending saved-edits load to finish before computing the
+     scroll target — clicking while edits are still applying can shift page
+     heights mid-navigation, landing on unrelated content. But never let a
+     slow or failed Firestore load block navigation: cap the wait and ignore
+     rejection so nav always works even offline. */
+  var ready = window.__playbookContentReady || Promise.resolve();
+  var settled = Promise.race([
+    Promise.resolve(ready).catch(function () {}),
+    new Promise(function (res) { setTimeout(res, 2000); })
+  ]);
+  settled.then(function () {
+    var el = document.getElementById(id); if (!el) return;
+    window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 4, behavior:'smooth'});
+  });
+});
+</script>
+<script>
+(function(){
+  /* 'landing' is intentionally omitted — the landing page is part of the Hot
+     section, so it keeps 'hot' as the active nav item. 'test-before-launch'
+     has no nav item of its own and sits in the Appendix section, so it maps
+     to the 'appendix' highlight. */
+  var navTargets = ['cold','warm','hot','appendix'];
+  var appendixGroup = ['test-before-launch'];
+  var introIds = ['how-to-use','what-is-knomee'];
+  var current = null;
+  document.querySelectorAll('.page').forEach(function(pg){
+    var id = pg.id;
+    if (navTargets.indexOf(id) !== -1) current = id;
+    else if (appendixGroup.indexOf(id) !== -1) current = 'appendix';
+    else if (introIds.indexOf(id) !== -1) current = null;
+    var nav = pg.querySelector('.topnav');
+    if (!nav || !current) return;
+    var link = nav.querySelector('a[href="#'+current+'"]');
+    if (link) link.classList.add('active');
+  });
+})();
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script>
+(function () {
+  var firebaseConfig = {
+    apiKey: "AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",
+    authDomain: "knomee-playbook.firebaseapp.com",
+    projectId: "knomee-playbook",
+    storageBucket: "knomee-playbook.firebasestorage.app",
+    messagingSenderId: "956493019959",
+    appId: "1:956493019959:web:13f099b4ea42ef948d78b2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var docRef = firebase.firestore().collection('playbook').doc('prospect');
+
+  var LOCAL_FALLBACK_KEY = 'knomee_prospect_local_fallback_v1';
+  var deck = document.querySelector('.deck');
+
+  /* ── Sync status banner (offline warning / back-online confirmation) ── */
+  var banner = document.createElement('div');
+  banner.className = 'sync-banner';
+  banner.innerHTML =
+    '<span class="sync-banner-icon"></span>' +
+    '<span class="sync-banner-text"></span>' +
+    '<button class="sync-banner-close" aria-label="Dismiss" type="button">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+    '</button>';
+  document.body.appendChild(banner);
+  var bannerIcon = banner.querySelector('.sync-banner-icon');
+  var bannerText = banner.querySelector('.sync-banner-text');
+  var bannerHideTimer = null;
+  var wasOffline = false;
+
+  var WARNING_ICON =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
+    '</svg>';
+  var CHECK_ICON =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9"/>' +
+    '</svg>';
+
+  function showSyncBanner() {
+    clearTimeout(bannerHideTimer);
+    banner.className = 'sync-banner sync-banner--offline show';
+    bannerIcon.innerHTML = WARNING_ICON;
+    bannerText.textContent = 'Server disconnected — changes are being saved locally only. Export PDF to keep your copy.';
+    wasOffline = true;
+  }
+
+  function showBackOnlineBanner() {
+    if (!wasOffline) return; // only announce recovery if we'd actually shown the offline warning
+    wasOffline = false;
+    clearTimeout(bannerHideTimer);
+    banner.className = 'sync-banner sync-banner--online show';
+    bannerIcon.innerHTML = CHECK_ICON;
+    bannerText.textContent = 'Back online — changes are syncing again.';
+    bannerHideTimer = setTimeout(function () { banner.classList.remove('show'); }, 5000);
+  }
+
+  banner.querySelector('.sync-banner-close').addEventListener('click', function () {
+    clearTimeout(bannerHideTimer);
+    banner.classList.remove('show');
+  });
+
+  /* Firestore promises never reject while offline (writes just queue silently),
+     so treat a slow response as "unreachable" too. */
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise(function (_, reject) { setTimeout(function () { reject(new Error('timeout')); }, ms); })
+    ]);
+  }
+
+  /* ── EDITABLE: tags we never walk into ── */
+  var SKIP = new Set(['SCRIPT','STYLE','SVG','USE','PATH','DEFS','SYMBOL','CLIPPATH',
+                      'RECT','CIRCLE','G','POLYLINE','POLYGON','LINE','ELLIPSE','A']);
+  /* tags treated as inline (don't count as block children) */
+  var INLINE = new Set(['SPAN','STRONG','EM','B','I','BR','SMALL','SUB','SUP','CODE','ABBR','MARK']);
+
+  function isTextLeaf(el) {
+    var hasText = false, hasBlock = false;
+    for (var i = 0; i < el.childNodes.length; i++) {
+      var n = el.childNodes[i];
+      if (n.nodeType === 3 && n.textContent.trim()) hasText = true;
+      if (n.nodeType === 1 && !INLINE.has(n.tagName))  hasBlock = true;
+    }
+    return hasText && !hasBlock;
+  }
+
+  /* Only the text of each editable element is ever saved/synced — not the
+     surrounding page markup, and not the embedded portrait image. This keeps
+     synced payloads at a few KB instead of multiple MB, comfortably under
+     Firestore's 1 MiB per-document limit (the earlier full-HTML approach
+     exceeded it, which is why every single save had always silently failed).
+
+     Each editable leaf gets a stable id derived from its page + a hash of
+     its ORIGINAL baked-in content (not a sequential position counter).
+     A counter-based id would shift for every element that follows any time
+     new content is inserted into the deck, silently misapplying old saved
+     edits to the wrong elements. A content-hash id only changes for the
+     specific element whose baked-in text actually changed. */
+  function simpleHash(str) {
+    var hash = 5381;
+    for (var i = 0; i < str.length; i++) hash = ((hash << 5) + hash + str.charCodeAt(i)) | 0;
+    return (hash >>> 0).toString(36);
+  }
+  var editIdOccurrences = {};
+  function applyEditable(root) {
+    if (!root || SKIP.has(root.tagName)) return;
+    if (root.classList && root.classList.contains('topbar')) return; // header is never editable/synced
+    if (isTextLeaf(root)) {
+      root.contentEditable = 'true';
+      root.spellcheck = false;
+      var page = root.closest('.page');
+      var key = (page ? page.id : 'nopage') + ':' + simpleHash(root.innerHTML);
+      var occurrence = editIdOccurrences[key] = (editIdOccurrences[key] || 0) + 1;
+      root.setAttribute('data-edit-id', key + ':' + occurrence);
+    } else {
+      for (var i = 0; i < root.children.length; i++) applyEditable(root.children[i]);
+    }
+  }
+
+  /* ── SAVE: collect each editable element's HTML, keyed by its edit-id ── */
+  function collectEdits() {
+    var edits = {};
+    deck.querySelectorAll('[data-edit-id]').forEach(function (el) {
+      edits[el.getAttribute('data-edit-id')] = el.innerHTML;
+    });
+    return edits;
+  }
+
+  /* Pasted rich text (Word/Docs/web) carries inline font-size / font-family /
+     line-height that override the template and make edited emails render at the
+     wrong size. Strip those so edited copy always inherits the deck's typography. */
+  function stripPastedTypography(root) {
+    if (!root) return;
+    var styled = root.querySelectorAll('[style]');
+    for (var i = 0; i < styled.length; i++) {
+      var st = styled[i].style;
+      st.removeProperty('font-size');
+      st.removeProperty('font-family');
+      st.removeProperty('line-height');
+      if (!styled[i].getAttribute('style')) styled[i].removeAttribute('style');
+    }
+  }
+
+  /* ── LOAD: overlay saved text onto the already-editable elements ── */
+  function applyEdits(edits) {
+    if (!edits) return;
+    deck.querySelectorAll('[data-edit-id]').forEach(function (el) {
+      var id = el.getAttribute('data-edit-id');
+      if (Object.prototype.hasOwnProperty.call(edits, id)) {
+        el.innerHTML = edits[id];
+        stripPastedTypography(el);
+      }
+    });
+    /* Edited text can be longer/shorter than the original, changing the
+       deck's real height after the page's one-time load-time fit() already
+       ran — recalculate it (fit() listens for 'resize') so nav scroll
+       targets stay accurate instead of landing on the wrong page. */
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  /* local fallback is stored as {edits, savedAt} so we can tell whether it's
+     newer than whatever Firestore has (Firestore reads can succeed even
+     when a prior write silently failed, so "load succeeded" doesn't mean
+     "load has your latest edits"). */
+  function readLocalFallback() {
+    var raw = localStorage.getItem(LOCAL_FALLBACK_KEY);
+    if (!raw) return null;
+    try {
+      var parsed = JSON.parse(raw);
+      return parsed && parsed.edits ? parsed : null;
+    } catch (e) {
+      return null; // pre-existing value from an older version
+    }
+  }
+  function writeLocalFallback(edits) {
+    try {
+      localStorage.setItem(LOCAL_FALLBACK_KEY, JSON.stringify({ edits: edits, savedAt: Date.now() }));
+    } catch (e) {
+      /* Quota errors throw synchronously and would otherwise silently
+         swallow the whole catch handler, hiding the failure entirely. */
+      console.error('Knomee Prospect playbook: could not save local fallback (storage full or blocked)', e);
+    }
+  }
+
+  /* Editable ids must exist before we can apply saved text onto them. */
+  applyEditable(deck);
+
+  /* ── RESTORE saved content: use whichever of Firestore / local is newer ──
+     Exposed globally so the nav click handler (a separate, earlier script)
+     can wait for this to settle before computing scroll targets. */
+  window.__playbookContentReady = withTimeout(docRef.get({ source: 'server' }), 7000).then(function (snap) {
+    var local = readLocalFallback();
+    var remoteEdits = (snap.exists && snap.data().edits) ? JSON.parse(snap.data().edits) : null;
+    var remoteMs = (snap.exists && snap.data().updatedAt) ? snap.data().updatedAt.toMillis() : 0;
+    if (local && local.savedAt > remoteMs) {
+      applyEdits(local.edits);
+      showSyncBanner(); // local copy is ahead of the server — still not fully synced
+    } else if (remoteEdits) {
+      applyEdits(remoteEdits);
+      showBackOnlineBanner();
+    } else {
+      showBackOnlineBanner();
+    }
+  }).catch(function (err) {
+    console.warn('Knomee Prospect playbook: could not load shared content', err);
+    showSyncBanner();
+    var local = readLocalFallback();
+    if (local) applyEdits(local.edits);
+  });
+
+  /* ── Auto-save (debounced 600 ms), with local fallback on failure ── */
+  var saveTimer = null;
+  var toast = null;
+  deck.addEventListener('input', function (e) {
+    var leaf = e && e.target && e.target.closest && e.target.closest('[data-edit-id]');
+    if (leaf) stripPastedTypography(leaf);
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      var edits = collectEdits();
+      var editsJson = JSON.stringify(edits);
+      withTimeout(docRef.set({
+        edits: editsJson,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }), 6000).then(function () {
+        /* A resolved set() promise isn't airtight proof the write reached
+           the server under flaky conditions — confirm it with a forced
+           server-side read before trusting it and clearing local fallback. */
+        return withTimeout(docRef.get({ source: 'server' }), 6000);
+      }).then(function (verifySnap) {
+        if (!verifySnap.exists || verifySnap.data().edits !== editsJson) {
+          throw new Error('write did not verify against server');
+        }
+        if (toast) { toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1400); }
+        localStorage.removeItem(LOCAL_FALLBACK_KEY);
+        showBackOnlineBanner();
+      }).catch(function (err) {
+        console.warn('Knomee Prospect playbook: save failed, falling back to local storage', err);
+        writeLocalFallback(edits);
+        showSyncBanner();
+      });
+    }, 600);
+  });
+
+  /* Paste as plain text so foreign formatting (fonts/sizes) never enters an edit. */
+  deck.addEventListener('paste', function (e) {
+    var ed = e.target && e.target.closest && e.target.closest('[contenteditable="true"]');
+    if (!ed) return;
+    e.preventDefault();
+    var cd = e.clipboardData || window.clipboardData;
+    var text = cd ? cd.getData('text/plain') : '';
+    try { document.execCommand('insertText', false, text); }
+    catch (_) { ed.appendChild(document.createTextNode(text)); ed.dispatchEvent(new Event('input', { bubbles: true })); }
+  });
+
+  /* ── PDF FAB ── */
+  var fab = document.createElement('button');
+  fab.className = 'pdf-fab';
+  fab.innerHTML =
+    '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>' +
+      '<polyline points="14 2 14 8 20 8"/>' +
+      '<line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>' +
+      '<polyline points="10 9 9 9 8 9"/>' +
+    '</svg>' +
+    '<span>Export PDF</span>';
+  document.body.appendChild(fab);
+
+  /* saved toast */
+  toast = document.createElement('div');
+  toast.className = 'pdf-fab-saved';
+  toast.textContent = 'Changes saved';
+  document.body.appendChild(toast);
+
+  fab.addEventListener('click', function () { window.print(); });
+})();
+</script>
+<script>
+/* ── SAMPLE OVERFLOW REFLOW ──────────────────────────────────────────────
+   Sample-copy pages lay two samples side by side. When an email is edited to
+   realistic (longer) copy it can outgrow its column and get clipped by the
+   fixed page height. When that happens: give the overflowing email the full
+   page width and flow its body into two columns ("continue on the column at
+   its right"), and move the other sample onto a new continuation page that
+   follows ("send the next sample to the next page"). Runs once after saved
+   content settles; a no-op when nothing overflows, so the clean deck is
+   untouched. Fully guarded so it can never break the page. */
+(function () {
+  var deck = document.querySelector('.deck');
+  if (!deck) return;
+
+  function contentOverflows(pageEl) {
+    var c = pageEl.querySelector('.content');
+    return c && c.scrollHeight > c.clientHeight + 4;
+  }
+
+  function continuationPage(srcPage) {
+    var np = document.createElement('div');
+    np.className = 'page';
+    np.setAttribute('data-continuation', '1');
+    var bar = srcPage.querySelector('.topbar');
+    if (bar) np.appendChild(bar.cloneNode(true));
+    var content = document.createElement('div');
+    content.className = 'content';
+    content.style.cssText = 'display:flex;flex-direction:column;';
+    np.appendChild(content);
+    var footer = srcPage.querySelector('.pg-footer');
+    if (footer) {
+      var f = footer.cloneNode(true);
+      var num = f.querySelector('.pg-num');
+      if (num && !/continued/.test(num.textContent)) num.textContent = num.textContent + ' · continued';
+      np.appendChild(f);
+    }
+    return { page: np, content: content };
+  }
+
+  function reflow() {
+    try {
+      var pages = Array.prototype.slice.call(deck.querySelectorAll('.page'));
+      pages.forEach(function (pageEl) {
+        if (pageEl.getAttribute('data-flowed')) return;
+        var grid = pageEl.querySelector('.content div[style*="grid-template-columns:repeat(2,1fr)"]');
+        if (!grid || grid.children.length !== 2) return;
+        if (!contentOverflows(pageEl)) return;
+        pageEl.setAttribute('data-flowed', '1');
+
+        var colA = grid.children[0], colB = grid.children[1];
+        var keep = colA.scrollHeight >= colB.scrollHeight ? colA : colB;
+        var move = keep === colA ? colB : colA;
+
+        /* full-width overflowing sample, body flows into two columns */
+        grid.style.gridTemplateColumns = '1fr';
+        if (move.parentNode === grid) grid.removeChild(move);
+        var body = keep.querySelector('.email-body');
+        if (body) {
+          body.style.columnCount = '2';
+          body.style.columnGap = '34px';
+          var cta = body.querySelector('.email-cta-btn');
+          if (cta) cta.style.columnSpan = 'all';
+        }
+
+        /* move the other sample onto a following continuation page */
+        var cont = continuationPage(pageEl);
+        var inner = document.createElement('div');
+        inner.style.cssText = 'padding:40px 80px 30px;';
+        var g2 = document.createElement('div');
+        g2.style.cssText = 'display:grid;grid-template-columns:1fr;gap:26px;padding-left:48px;max-width:900px;';
+        g2.appendChild(move);
+        inner.appendChild(g2);
+        cont.content.appendChild(inner);
+        pageEl.parentNode.insertBefore(cont.page, pageEl.nextSibling);
+
+        /* if the moved sample is itself tall enough to reach the footer, let it
+           use the full width and flow its body into two columns as well */
+        var cc = cont.content;
+        if (cc && cc.scrollHeight > cc.clientHeight - 40) {
+          g2.style.maxWidth = 'none';
+          var mbody = move.querySelector('.email-body');
+          if (mbody) {
+            mbody.style.columnCount = '2';
+            mbody.style.columnGap = '34px';
+            var mcta = mbody.querySelector('.email-cta-btn');
+            if (mcta) mcta.style.columnSpan = 'all';
+          }
+        }
+      });
+      window.dispatchEvent(new Event('resize'));
+    } catch (err) {
+      if (window.console) console.warn('sample reflow skipped:', err);
+    }
+  }
+
+  window.__reflowSamples = reflow;
+  var ready = window.__playbookContentReady || Promise.resolve();
+  Promise.resolve(ready).catch(function () {}).then(function () { setTimeout(reflow, 80); });
+})();
+</script>
+</body>
+</html>
