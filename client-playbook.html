@@ -14,7 +14,7 @@
     --snow:#f8fafa; --fog:#f6f5fb; --white:#fff;
     --warm:#0C7263; --warm-tint:#D6F3EC;
     --engaged:#0C7263; --engaged-tint:#D6F3EC;
-    --disengaged:#B45911; --disengaged-tint:#F7ECDE;
+    --disengaged:#55555F; --disengaged-tint:#EAEAEC;
     --fs-display:clamp(2.4rem,5.5vw,4.4rem);
     --fs-h2:clamp(1.5rem,3vw,2.1rem);
     --fs-h3:clamp(1.15rem,1.6vw,1.4rem);
@@ -94,7 +94,7 @@
   .home-hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(130% 120% at 12% 8%,#125c55 0%,#0b3b47 55%,#071d2c 100%);padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem)}
   .blob{position:absolute;border-radius:50%;filter:blur(70px);z-index:0}
   .blob.b1{width:460px;height:460px;background:#12a58f;opacity:.42;top:-120px;right:-60px;animation:float1 16s ease-in-out infinite}
-  .blob.b2{width:400px;height:400px;background:#c9702f;opacity:.32;bottom:-160px;left:-80px;animation:float2 20s ease-in-out infinite}
+  .blob.b2{width:400px;height:400px;background:#5b5b66;opacity:.32;bottom:-160px;left:-80px;animation:float2 20s ease-in-out infinite}
   @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,34px)}}
   @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-24px)}}
   .home-hero .container{position:relative;z-index:1}
@@ -125,7 +125,7 @@
   .lead-choice p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.9)}
   .lead-choice .go{display:inline-flex;align-items:center;gap:.4rem;margin-top:1rem;font-weight:600;font-size:.95rem}
   .lead-choice .go .arw{transition:transform .3s var(--ease)}.lead-choice:hover .go .arw{transform:translateX(5px)}
-  .lc-engaged{--lc:#0C7263}.lc-disengaged{--lc:#B45911}
+  .lc-engaged{--lc:#0C7263}.lc-disengaged{--lc:#55555F}
   .ref-row{margin-top:2.2rem}
   .ref-row .k{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
   .ref-chips{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
@@ -225,7 +225,7 @@
   table.t tbody tr{transition:background .25s}table.t tbody tr:hover{background:var(--lead-tint)}
   table.t td .m{font-weight:600;color:var(--plum)}
   .stage{display:inline-block;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--r-pill);margin:0 .2rem .2rem 0}
-  .stage.e{background:var(--engaged-tint);color:var(--engaged)}.stage.d{background:var(--disengaged-tint);color:#8f4610}
+  .stage.e{background:var(--engaged-tint);color:var(--engaged)}.stage.d{background:var(--disengaged-tint);color:#3f3f47}
   .fill{color:var(--muted);font-style:italic}
   .vids{list-style:none;display:flex;flex-direction:column;gap:.35rem}
   .vids li{position:relative;padding-left:1.1rem;color:var(--ink-2);font-weight:300}
@@ -256,7 +256,7 @@
   .vn-btn .arw{transition:transform .3s var(--ease)}.vn-btn:hover .arw{transform:translateX(5px)}
 
   .lead-engaged{--lead:var(--engaged);--lead-tint:var(--engaged-tint);--lead-ink:#0a5f53}
-  .lead-disengaged{--lead:var(--disengaged);--lead-tint:var(--disengaged-tint);--lead-ink:#8f4610}
+  .lead-disengaged{--lead:var(--disengaged);--lead-tint:var(--disengaged-tint);--lead-ink:#3d3d45}
 
   @media(max-width:900px){
     .nav-links{display:none}.nav-menu-btn{display:inline-flex}
@@ -498,7 +498,7 @@
         <tr><td class="m">Strengthen the relationship</td><td>Response rate to check-ins</td><td>Referral rate</td></tr>
         <tr><td class="m">Increase share of wallet</td><td>Household penetration rate</td><td>Assets under management growth</td></tr>
       </tbody></table></div>
-      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Engaged → Disengaged</h3><p>Watch for early drift signals — a skipped review, a slower response time, a declined meeting. Move them to the Disengaged cadence <strong>before six months of silence passes.</strong></p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--disengaged);box-shadow:0 8px 24px rgba(180,89,17,.32)" data-go="disengaged">Go to Disengaged <span class="arw">→</span></button></p></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Engaged → Disengaged</h3><p>Watch for early drift signals — a skipped review, a slower response time, a declined meeting. Move them to the Disengaged cadence <strong>before six months of silence passes.</strong></p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--disengaged);box-shadow:0 8px 24px rgba(85,85,95,.32)" data-go="disengaged">Go to Disengaged <span class="arw">→</span></button></p></div>
     </div>
   </div>
 </section>
@@ -588,7 +588,7 @@
       </div>
       <div class="lead-disengaged">
         <div class="callout anim" style="--lead:var(--disengaged);--lead-tint:#fff;border:1px solid var(--line);border-left:4px solid var(--disengaged)">
-          <h3 style="color:#8f4610">⏳ Disengaged</h3>
+          <h3 style="color:#3d3d45">⏳ Disengaged</h3>
           <ul class="vids" style="margin-top:.5rem">
             <li>A quick guide to your annual review <em>(video 2)</em></li>
             <li>What changes, and why it matters <em>(video 4)</em></li>
