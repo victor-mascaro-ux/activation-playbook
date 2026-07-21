@@ -116,7 +116,7 @@
   .lead-choice{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:1.8rem;color:#fff;cursor:pointer;min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(155deg,var(--lc) 0%,color-mix(in srgb,var(--lc) 55%,var(--plum)) 100%);box-shadow:var(--shadow);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
   .lead-choice:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
   .lead-choice::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 85% 12%,rgba(255,255,255,.22),transparent 55%);pointer-events:none}
-  .lead-choice .emoji{font-size:2.6rem;position:absolute;top:1.4rem;left:1.6rem;transition:transform .4s var(--ease)}
+  .lead-choice .emoji{font-size:2.6rem;position:absolute;top:1.3rem;right:1.5rem;transition:transform .4s var(--ease)}
   .lead-choice:hover .emoji{transform:scale(1.15) rotate(-6deg)}
   .lead-choice .tagword{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
   .lead-choice h3{font-size:1.9rem;font-weight:700;line-height:1;margin:.3rem 0 .5rem}
@@ -228,6 +228,10 @@
   .stage{display:inline-block;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--r-pill);margin:0 .2rem .2rem 0}
   .stage.c{background:var(--cold-tint);color:#3f3f47}.stage.w{background:var(--warm-tint);color:var(--warm)}.stage.h{background:var(--hot-tint);color:var(--hot)}
   .fill{color:var(--muted);font-style:italic}
+  .vids{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+  .vids li{position:relative;padding-left:1.1rem;color:var(--ink-2);font-weight:300}
+  .vids li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--grape)}
+  .vids li em{font-style:italic;color:var(--muted)}
   .callout{background:var(--lead-tint);border-radius:var(--r);border-left:4px solid var(--lead);padding:clamp(1.3rem,3vw,1.9rem)}
   .callout h3{font-size:var(--fs-h3);font-weight:700;color:var(--lead-ink);margin-bottom:.5rem}
   .callout p{color:var(--ink-2);font-weight:300}
@@ -255,6 +259,13 @@
   .footer{background:var(--plum);color:rgba(255,255,255,.55);padding:2.4rem 0;margin-top:var(--s8)}
   .footer .container{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
   .footer svg{width:150px}.footer a{color:var(--aqua)}
+
+  /* ── next-section flow button ── */
+  .view-next{margin-top:var(--s8);padding-top:var(--s6);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .vn-label{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .vn-btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--lead);color:#fff;font-weight:600;font-size:1.05rem;padding:.85rem 1.7rem;border-radius:var(--r-pill);border:none;cursor:pointer;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .25s var(--ease),box-shadow .25s}
+  .vn-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
+  .vn-btn .arw{transition:transform .3s var(--ease)}.vn-btn:hover .arw{transform:translateX(5px)}
 
   .lead-cold{--lead:var(--cold);--lead-tint:var(--cold-tint);--lead-ink:#3d3d45}
   .lead-warm{--lead:var(--warm);--lead-tint:var(--warm-tint);--lead-ink:#0a5f53}
@@ -671,10 +682,10 @@
     <span class="backlink" data-go="home">← Home</span>
     <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Video Library &amp; Planner</h2><p class="intro">Your firm has access to <strong>~28 Knomee videos</strong> across four categories. Match each category to the right stage and channel, then pull the files you need from the Drive library.</p></div>
     <div class="table-wrap anim"><table class="t"><thead><tr><th>Category</th><th>Stage</th><th>What's inside</th><th>Where to embed</th></tr></thead><tbody>
-      <tr><td><span class="m">Videos</span><br><span style="font-size:.82rem;color:var(--muted)">6 short concept pieces</span></td><td><span class="stage c">Cold</span></td><td>Financial Joy · Meaning over Returns · The Questions You Never Ask · The Thinking Partner · Transitions Scramble What You Thought You Wanted · When Life Changes, Money Changes</td><td>Paid social, display, landing page hero</td></tr>
-      <tr><td><span class="m">Themes</span><br><span style="font-size:.82rem;color:var(--muted)">12 value / explainer pieces</span></td><td><span class="stage w">Warm</span></td><td>Years in the Making / The Rigor · Wealth Creates More Decisions, Not Fewer · Smart People, Emotional Decisions · Prepare for the Conversation · Money Personality · Money Anxiety · Financial Joy / Your “Why” — several in v1/v2 cuts</td><td>Nurture emails, newsletter, LinkedIn</td></tr>
-      <tr><td><span class="m">Interviews</span><br><span style="font-size:.82rem;color:var(--muted)">4 first-person stories</span></td><td><span class="stage w">Warm</span><span class="stage h">Hot</span></td><td>Context · Nobody Ever Asked Me That · The Most Expensive Mistake · What Wealth Doesn't Solve</td><td>Newsletter features, pre-meeting emails</td></tr>
-      <tr><td><span class="m">Adventure Teaching Scripts</span><br><span style="font-size:.82rem;color:var(--muted)">6-part educational series</span></td><td><span class="stage w">Warm</span></td><td>Financial Joy · Confidence · Outlook · Future You · Goals · What Wealth Doesn't Solve</td><td>Recurring newsletter block or drip sequence</td></tr>
+      <tr><td><span class="m">Videos</span><br><span style="font-size:.82rem;color:var(--muted)">6 short concept pieces</span></td><td><span class="stage c">Cold</span></td><td><ul class="vids"><li>Financial Joy</li><li>Meaning over Returns</li><li>The Questions You Never Ask</li><li>The Thinking Partner</li><li>Transitions Scramble What You Thought You Wanted</li><li>When Life Changes, Money Changes</li></ul></td><td>Paid social, display, landing page hero</td></tr>
+      <tr><td><span class="m">Themes</span><br><span style="font-size:.82rem;color:var(--muted)">12 value / explainer pieces</span></td><td><span class="stage w">Warm</span></td><td><ul class="vids"><li>Years in the Making / The Rigor</li><li>Wealth Creates More Decisions, Not Fewer</li><li>Smart People, Emotional Decisions</li><li>Prepare for the Conversation</li><li>Money Personality</li><li>Money Anxiety</li><li>Financial Joy / Your “Why” <em>(several in v1/v2 cuts)</em></li></ul></td><td>Nurture emails, newsletter, LinkedIn</td></tr>
+      <tr><td><span class="m">Interviews</span><br><span style="font-size:.82rem;color:var(--muted)">4 first-person stories</span></td><td><span class="stage w">Warm</span><span class="stage h">Hot</span></td><td><ul class="vids"><li>Context</li><li>Nobody Ever Asked Me That</li><li>The Most Expensive Mistake</li><li>What Wealth Doesn't Solve</li></ul></td><td>Newsletter features, pre-meeting emails</td></tr>
+      <tr><td><span class="m">Adventure Teaching Scripts</span><br><span style="font-size:.82rem;color:var(--muted)">6-part educational series</span></td><td><span class="stage w">Warm</span></td><td><ul class="vids"><li>Financial Joy</li><li>Confidence</li><li>Outlook</li><li>Future You</li><li>Goals</li><li>What Wealth Doesn't Solve</li></ul></td><td>Recurring newsletter block or drip sequence</td></tr>
     </tbody></table></div>
     <div class="callout anim" style="margin-top:var(--s4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;--lead:var(--grape);--lead-tint:#fff;border:1px solid var(--line)">
       <div><h3 style="color:var(--plum)">Browse the full library in Google Drive</h3><p>All ~28 videos, ready to embed — open the folder and pick the files that fit the plan above.</p></div>
@@ -767,6 +778,22 @@
     var m=meta[id]; var a=document.createElement('a'); a.setAttribute('data-go',id);
     a.innerHTML='<span class="n">'+(m[0]||'◆')+'</span><span class="t">'+m[1]+'</span><span class="d">'+m[2]+'</span>';
     dl.appendChild(a);
+  });
+
+  /* build a labeled "Next section" button at the bottom of every view */
+  var order = ['home','how-to-use','experience','setup','baseline','cold','warm','hot','landing','testing','appendix'];
+  order.forEach(function(id, i){
+    if(id==='home') return;
+    var v = views[id]; if(!v) return;
+    var host = v.querySelector('.container'); if(!host) return;
+    var next = order[i+1];
+    var el = document.createElement('div'); el.className='view-next';
+    if(next){
+      el.innerHTML = '<span class="vn-label">Up next</span><button class="vn-btn" data-go="'+next+'">Next: '+meta[next][1]+' <span class="arw">→</span></button>';
+    } else {
+      el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">↑ Back to Home</button>';
+    }
+    host.appendChild(el);
   });
 
   function selectTab(group, name){
