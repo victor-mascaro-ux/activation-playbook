@@ -3,281 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Knomee — Winning New Clients: The Prospect Playbook</title>
+<title>Knomee — The Prospect Playbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* ── palette ── */
-    --plum:#240446; --indigo:#4A1C72; --grape:#7639A1; --aqua:#2DD2B0; --aqua-deep:#12b394;
+    --plum:#240446; --indigo:#4A1C72; --grape:#7639A1; --aqua:#2DD2B0; --lilac:#B98DDC;
     --ink:#221833; --ink-2:#463a57; --muted:#6d6478; --line:#ece7f2;
-    --snow:#f8fafa; --fog:#f6f5fb; --white:#fff; --lilac:#B98DDC;
-    /* lead identities (Silver · Aqua · Bolt) */
+    --snow:#f8fafa; --fog:#f6f5fb; --white:#fff;
     --cold:#55555F; --cold-tint:#EAEAEC;
     --warm:#0C7263; --warm-tint:#D6F3EC;
     --hot:#8B33D9;  --hot-tint:#F1E4FE;
-    /* type scale */
-    --fs-display:clamp(2.6rem,6vw,5rem);
-    --fs-h1:clamp(2rem,4vw,3.1rem);
-    --fs-h2:clamp(1.5rem,3vw,2.15rem);
-    --fs-h3:clamp(1.2rem,1.6vw,1.45rem);
-    --fs-lead:clamp(1.1rem,1.5vw,1.4rem);
-    --fs-body:1.0625rem;
-    --fs-sm:0.9375rem;
-    --fs-eyebrow:0.8rem;
-    /* spacing scale (8pt) */
-    --s1:.5rem; --s2:1rem; --s3:1.5rem; --s4:2rem; --s5:2.5rem; --s6:3rem; --s8:4rem; --s10:5rem; --s12:6rem;
-    --section-y:clamp(4.5rem,9vw,8rem);
-    --container:1160px;
-    --r:16px; --r-lg:24px; --r-pill:999px;
+    --fs-display:clamp(2.4rem,5.5vw,4.4rem);
+    --fs-h2:clamp(1.5rem,3vw,2.1rem);
+    --fs-h3:clamp(1.15rem,1.6vw,1.4rem);
+    --fs-lead:clamp(1.05rem,1.5vw,1.35rem);
+    --fs-body:1.0625rem; --fs-sm:.9375rem; --fs-eyebrow:.8rem;
+    --s2:1rem; --s3:1.5rem; --s4:2rem; --s6:3rem; --s8:4rem;
+    --pad:clamp(2.5rem,5vw,4.5rem);
+    --container:1180px; --r:16px; --r-lg:24px; --r-pill:999px;
     --shadow-sm:0 2px 10px rgba(36,4,70,.06);
     --shadow:0 14px 40px rgba(36,4,70,.10);
-    --shadow-lg:0 30px 70px rgba(36,4,70,.16);
+    --shadow-lg:0 30px 70px rgba(36,4,70,.18);
     --ease:cubic-bezier(.22,.61,.36,1);
     --font:'Poppins',system-ui,-apple-system,sans-serif;
     --lead:var(--grape); --lead-tint:var(--fog); --lead-ink:var(--grape);
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:var(--font);background:var(--snow);color:var(--ink);font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{font-family:var(--font);background:var(--snow);color:var(--ink);font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
   img,svg{display:block;max-width:100%}
   ::selection{background:var(--aqua);color:var(--plum)}
-
-  /* ── layout ── */
   .container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem)}
-  .section{padding-block:var(--section-y);position:relative}
-  .section--fog{background:var(--fog)}
-  .section--plum{background:radial-gradient(120% 120% at 10% 0%,var(--indigo) 0%,var(--plum) 60%);color:#fff}
-  .eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--grape)}
-  .eyebrow::before{content:"";width:26px;height:2px;border-radius:2px;background:currentColor;opacity:.6}
-  .section-title{font-size:var(--fs-h2);font-weight:700;line-height:1.12;letter-spacing:-.01em;color:var(--plum);margin-top:var(--s2);max-width:20ch}
-  .section-intro{font-size:var(--fs-lead);font-weight:300;color:var(--ink-2);margin-top:var(--s3);max-width:60ch}
-  .head{margin-bottom:var(--s8)}
 
-  /* ── nav bar ── */
-  .nav{position:fixed;inset:0 0 auto 0;z-index:60;background:rgba(28,10,54,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08);transition:background .3s var(--ease)}
-  .nav-inner{max-width:1320px;margin-inline:auto;padding:.7rem clamp(1rem,3vw,2rem);display:flex;align-items:center;gap:1.5rem}
-  .nav-logo{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
-  .nav-logo svg{height:20px;width:auto}
-  .nav-links{display:flex;align-items:center;gap:.25rem;margin-left:auto;flex-wrap:nowrap;overflow:hidden}
-  .nav-links a{position:relative;font-size:.82rem;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.66);padding:.4rem .6rem;border-radius:var(--r-pill);white-space:nowrap;transition:color .25s var(--ease),background .25s var(--ease)}
-  .nav-links a::after{content:"";position:absolute;left:.6rem;right:.6rem;bottom:.18rem;height:2px;background:var(--aqua);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
-  .nav-links a:hover{color:#fff}
-  .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+  /* ── nav ── */
+  .nav{position:sticky;top:0;z-index:60;background:rgba(28,10,54,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav-inner{max-width:1320px;margin-inline:auto;padding:.6rem clamp(1rem,3vw,2rem);display:flex;align-items:center;gap:1.2rem}
+  .nav-logo{display:flex;align-items:center;gap:.5rem;flex-shrink:0;cursor:pointer}
+  .nav-logo svg{height:19px;width:auto}
+  .nav-links{display:flex;align-items:center;gap:.15rem;margin-left:auto}
+  .nav-links a{position:relative;font-size:.8rem;font-weight:500;color:rgba(255,255,255,.66);padding:.4rem .62rem;border-radius:var(--r-pill);white-space:nowrap;transition:color .25s,background .25s;cursor:pointer}
+  .nav-links a::after{content:"";position:absolute;left:.62rem;right:.62rem;bottom:.16rem;height:2px;background:var(--aqua);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+  .nav-links a:hover{color:#fff}.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
   .nav-links a.active{color:#fff}
-  .nav-menu-btn{display:none;margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-family:var(--font);font-weight:600;font-size:.85rem;border-radius:var(--r-pill);padding:.5rem .9rem;cursor:pointer;align-items:center;gap:.5rem}
+  .nav-menu-btn{display:none;margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-weight:600;font-size:.85rem;border-radius:var(--r-pill);padding:.5rem .9rem;cursor:pointer;align-items:center;gap:.5rem}
   .nav-menu-btn svg{width:16px;height:16px}
-  /* progress */
-  .progress{position:absolute;left:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--aqua),var(--lilac));width:0;transition:width .1s linear}
 
   /* ── mobile drawer ── */
-  .drawer{position:fixed;inset:0;z-index:70;background:rgba(20,6,40,.86);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);display:flex;flex-direction:column;padding:clamp(1.5rem,6vw,4rem)}
+  .drawer{position:fixed;inset:0;z-index:80;background:rgba(20,6,40,.92);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);display:flex;flex-direction:column;padding:clamp(1.5rem,6vw,3.5rem)}
   .drawer.open{opacity:1;pointer-events:auto}
   .drawer-close{align-self:flex-end;background:none;border:none;color:#fff;cursor:pointer;padding:.5rem}
   .drawer-close svg{width:26px;height:26px}
-  .drawer-list{margin-top:1rem;display:flex;flex-direction:column;gap:.2rem;overflow-y:auto}
-  .drawer-list a{display:flex;align-items:baseline;gap:.9rem;color:#fff;padding:.7rem .4rem;border-bottom:1px solid rgba(255,255,255,.08);transform:translateY(14px);opacity:0}
+  .drawer-list{margin-top:.5rem;display:flex;flex-direction:column;gap:.1rem;overflow-y:auto}
+  .drawer-list a{display:flex;align-items:baseline;gap:.9rem;color:#fff;padding:.7rem .3rem;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer;transform:translateY(12px);opacity:0}
   .drawer.open .drawer-list a{animation:drawerIn .5s var(--ease) forwards}
-  .drawer-list a .n{font-size:.72rem;font-weight:700;color:var(--aqua);width:1.6rem;letter-spacing:.1em}
-  .drawer-list a .t{font-size:1.35rem;font-weight:600}
-  .drawer-list a .d{margin-left:auto;font-size:.8rem;color:rgba(255,255,255,.5);font-weight:300;text-align:right;max-width:40%}
-  @keyframes drawerIn{to{transform:translateY(0);opacity:1}}
+  .drawer-list a .n{font-size:.7rem;font-weight:700;color:var(--aqua);width:1.5rem}
+  .drawer-list a .t{font-size:1.3rem;font-weight:600}
+  .drawer-list a .d{margin-left:auto;font-size:.78rem;color:rgba(255,255,255,.5);font-weight:300;text-align:right;max-width:42%}
+  @keyframes drawerIn{to{transform:none;opacity:1}}
 
-  /* ── side dot nav ── */
-  .dots{position:fixed;right:1.4rem;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:.85rem}
-  .dots button{position:relative;width:11px;height:11px;border-radius:50%;border:2px solid rgba(118,57,161,.35);background:transparent;cursor:pointer;padding:0;transition:transform .3s var(--ease),border-color .3s,background .3s}
-  .dots button:hover{transform:scale(1.35);border-color:var(--grape)}
-  .dots button.active{background:var(--grape);border-color:var(--grape);transform:scale(1.15)}
-  .dots button .lbl{position:absolute;right:150%;top:50%;transform:translateY(-50%) translateX(6px);background:var(--plum);color:#fff;font-size:.72rem;font-weight:600;padding:.25rem .6rem;border-radius:var(--r-pill);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
-  .dots button:hover .lbl{opacity:1;transform:translateY(-50%) translateX(0)}
+  /* ── views (router) ── */
+  .view{display:none}
+  .view.active{display:block}
+  main{min-height:calc(100vh - 55px)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  .view.active .anim{animation:fadeUp .6s var(--ease) both}
+  .view.active .anim.d1{animation-delay:.06s}.view.active .anim.d2{animation-delay:.13s}.view.active .anim.d3{animation-delay:.2s}
+  .view.active .stagger>*{animation:fadeUp .55s var(--ease) both}
+  .view.active .stagger>*:nth-child(2){animation-delay:.07s}
+  .view.active .stagger>*:nth-child(3){animation-delay:.14s}
+  .view.active .stagger>*:nth-child(4){animation-delay:.21s}
+  .view.active .stagger>*:nth-child(5){animation-delay:.28s}
 
-  /* ── reveal animation ── */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-  .reveal.in{opacity:1;transform:none}
-  .stagger>*{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-  .stagger.in>*{opacity:1;transform:none}
-  .stagger.in>*:nth-child(2){transition-delay:.08s}
-  .stagger.in>*:nth-child(3){transition-delay:.16s}
-  .stagger.in>*:nth-child(4){transition-delay:.24s}
-  .stagger.in>*:nth-child(5){transition-delay:.32s}
-  .stagger.in>*:nth-child(6){transition-delay:.40s}
-
-  /* ── hero ── */
-  .hero{min-height:100svh;display:flex;align-items:center;position:relative;overflow:hidden;color:#fff;background:radial-gradient(130% 120% at 15% 10%,#3a1266 0%,var(--plum) 55%,#1a0a30 100%)}
-  .hero .container{position:relative;z-index:2;padding-block:8rem 5rem}
-  .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;z-index:1}
-  .blob.b1{width:520px;height:520px;background:#7c2bd6;top:-120px;right:-80px;animation:float1 16s ease-in-out infinite}
-  .blob.b2{width:440px;height:440px;background:#0f8f7a;bottom:-140px;left:-100px;animation:float2 20s ease-in-out infinite}
-  .blob.b3{width:300px;height:300px;background:#b33bff;top:40%;left:55%;opacity:.3;animation:float1 24s ease-in-out infinite reverse}
-  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,40px)}}
-  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,-30px)}}
-  .hero-eyebrow{display:inline-flex;align-items:center;gap:.55rem;background:rgba(155,25,251,.16);border:1px solid rgba(180,120,255,.4);color:#e3c9ff;font-size:.78rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:var(--r-pill)}
-  .hero h1{font-size:var(--fs-display);font-weight:700;line-height:1.02;letter-spacing:-.02em;margin:1.6rem 0 .1rem}
-  .hero h1 .accent{color:var(--lilac)}
-  .hero p.tag{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.82);max-width:44ch;margin-top:1.4rem}
-  .hero-card{margin-top:2.4rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-left:4px solid var(--lilac);border-radius:var(--r);padding:1.4rem 1.6rem;max-width:640px;backdrop-filter:blur(4px)}
-  .hero-card h3{font-size:1.25rem;font-weight:700;margin-bottom:.4rem}
-  .hero-card p{font-size:1rem;font-weight:300;color:rgba(255,255,255,.8)}
-  .hero-card .meta{margin-top:.6rem;font-size:.85rem;color:rgba(255,255,255,.5)}
-  .hero-cues{margin-top:2.6rem;display:flex;gap:1.4rem;flex-wrap:wrap}
-  .hero-scroll{position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);z-index:2;color:rgba(255,255,255,.6);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:.5rem}
-  .hero-scroll .mouse{width:22px;height:34px;border:2px solid rgba(255,255,255,.4);border-radius:12px;position:relative}
-  .hero-scroll .mouse::after{content:"";position:absolute;left:50%;top:6px;width:3px;height:6px;background:#fff;border-radius:2px;transform:translateX(-50%);animation:scrolldot 1.6s infinite}
-  @keyframes scrolldot{0%{opacity:1;top:6px}70%{opacity:0;top:16px}100%{opacity:0}}
+  .section{padding-block:var(--pad)}
+  .eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lead-ink)}
+  .eyebrow::before{content:"";width:26px;height:2px;border-radius:2px;background:currentColor;opacity:.6}
+  .h2{font-size:var(--fs-h2);font-weight:700;line-height:1.12;letter-spacing:-.01em;color:var(--plum);margin-top:var(--s2)}
+  .intro{font-size:var(--fs-lead);font-weight:300;color:var(--ink-2);margin-top:var(--s3);max-width:60ch}
+  .head{margin-bottom:var(--s6)}
 
   /* ── buttons ── */
-  .btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font);font-weight:600;font-size:1rem;padding:.85rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
-  .btn .arw{transition:transform .3s var(--ease)}
-  .btn:hover .arw{transform:translateX(4px)}
-  .btn-primary{background:var(--grape);color:#fff;box-shadow:0 8px 24px rgba(118,57,161,.35)}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(118,57,161,.45)}
-  .btn-light{background:#fff;color:var(--plum)}
-  .btn-light:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-  .btn-lead{background:var(--lead);color:#fff}
-  .btn-lead:hover{transform:translateY(-2px);box-shadow:0 12px 30px color-mix(in srgb,var(--lead) 40%,transparent)}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:1rem;padding:.8rem 1.4rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+  .btn .arw{transition:transform .3s var(--ease)}.btn:hover .arw{transform:translateX(4px)}
+  .btn-primary{background:var(--grape);color:#fff;box-shadow:0 8px 24px rgba(118,57,161,.32)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(118,57,161,.42)}
 
-  /* ── cards / grids ── */
-  .grid{display:grid;gap:clamp(1rem,2vw,1.6rem)}
-  .grid-2{grid-template-columns:repeat(2,1fr)}
-  .grid-3{grid-template-columns:repeat(3,1fr)}
-  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.4rem,2.5vw,2rem);box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
-  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--lead) 40%,var(--line))}
-  .card .ic{width:46px;height:46px;border-radius:13px;background:var(--lead-tint);color:var(--lead);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem;transition:transform .35s var(--ease)}
-  .card:hover .ic{transform:scale(1.08) rotate(-4deg)}
-  .card h3{font-size:var(--fs-h3);font-weight:600;color:var(--plum);margin-bottom:.45rem}
-  .card p{color:var(--ink-2);font-weight:300}
-  .num-badge{display:inline-flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--lead);color:#fff;font-weight:700;font-size:1.05rem;flex-shrink:0}
+  /* ── HOME hub ── */
+  .home-hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(130% 120% at 12% 8%,#3a1266 0%,var(--plum) 55%,#180a2e 100%);padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem)}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px);z-index:0}
+  .blob.b1{width:460px;height:460px;background:#7c2bd6;opacity:.45;top:-120px;right:-60px;animation:float1 16s ease-in-out infinite}
+  .blob.b2{width:400px;height:400px;background:#0f8f7a;opacity:.4;bottom:-160px;left:-80px;animation:float2 20s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,34px)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-24px)}}
+  .home-hero .container{position:relative;z-index:1}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:.55rem;background:rgba(155,25,251,.16);border:1px solid rgba(180,120,255,.4);color:#e3c9ff;font-size:.76rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:var(--r-pill)}
+  .home-hero h1{font-size:var(--fs-display);font-weight:700;line-height:1.03;letter-spacing:-.02em;margin:1.3rem 0 0}
+  .home-hero h1 .accent{color:var(--lilac)}
+  .home-hero .tag{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.82);max-width:46ch;margin-top:1.2rem}
+  .intro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.4rem}
+  .intro-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:1.3rem 1.4rem;backdrop-filter:blur(4px)}
+  .intro-card .k{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua);margin-bottom:.5rem}
+  .intro-card h3{font-size:1.12rem;font-weight:600;margin-bottom:.35rem}
+  .intro-card p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.78)}
 
-  /* ── numbered steps (timeline) ── */
-  .steps{display:flex;flex-direction:column;gap:1rem;position:relative}
-  .step{display:flex;gap:1.2rem;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.5rem;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s}
-  .step:hover{transform:translateX(6px);border-color:color-mix(in srgb,var(--lead) 45%,var(--line));box-shadow:var(--shadow)}
-  .step-body{flex:1}
-  .step-body strong{color:var(--plum);font-weight:600}
-  .step-body p{color:var(--ink-2);font-weight:300;margin-top:.15rem}
-  .chip{display:inline-flex;align-items:center;gap:.35rem;margin-top:.7rem;background:var(--lead-tint);color:var(--lead-ink);font-size:.82rem;font-weight:600;padding:.3rem .8rem;border-radius:var(--r-pill)}
+  .choose{padding-block:clamp(3rem,6vw,5rem)}
+  .choose-label{text-align:center;margin-bottom:2.2rem}
+  .choose-label .eyebrow{color:var(--grape);justify-content:center}
+  .choose-label h2{font-size:var(--fs-h2);font-weight:700;color:var(--plum);margin-top:.6rem}
+  .choose-label p{color:var(--muted);font-weight:300;margin-top:.4rem}
+  .lead-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .lead-choice{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:1.8rem;color:#fff;cursor:pointer;min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(155deg,var(--lc) 0%,color-mix(in srgb,var(--lc) 55%,var(--plum)) 100%);box-shadow:var(--shadow);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .lead-choice:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .lead-choice::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 85% 12%,rgba(255,255,255,.22),transparent 55%);pointer-events:none}
+  .lead-choice .emoji{font-size:2.6rem;position:absolute;top:1.4rem;left:1.6rem;transition:transform .4s var(--ease)}
+  .lead-choice:hover .emoji{transform:scale(1.15) rotate(-6deg)}
+  .lead-choice .tagword{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+  .lead-choice h3{font-size:1.9rem;font-weight:700;line-height:1;margin:.3rem 0 .5rem}
+  .lead-choice p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.9)}
+  .lead-choice .go{display:inline-flex;align-items:center;gap:.4rem;margin-top:1rem;font-weight:600;font-size:.95rem}
+  .lead-choice .go .arw{transition:transform .3s var(--ease)}.lead-choice:hover .go .arw{transform:translateX(5px)}
+  .lc-cold{--lc:#55555F}.lc-warm{--lc:#0C7263}.lc-hot{--lc:#8B33D9}
+  .ref-row{margin-top:2.2rem}
+  .ref-row .k{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+  .ref-chips{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
+  .ref-chip{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:.6rem 1.15rem;font-weight:500;font-size:.95rem;color:var(--plum);cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
+  .ref-chip:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--grape)}
+  .ref-chip .e{font-size:1.05rem}
 
-  /* ── definition rows (who / thinking / goal / rule) ── */
+  /* ── lead view ── */
+  .lead-band{border-radius:var(--r-lg);padding:clamp(1.6rem,4vw,2.6rem);color:#fff;background:linear-gradient(120deg,var(--lead) 0%,color-mix(in srgb,var(--lead) 58%,var(--plum)) 100%);position:relative;overflow:hidden}
+  .lead-band::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 90% 10%,rgba(255,255,255,.18),transparent 55%)}
+  .lead-band .tagword{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem 1rem;border-radius:var(--r-pill);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+  .lead-band h2{font-size:clamp(1.9rem,5vw,3.1rem);font-weight:700;line-height:1;margin:.9rem 0 .5rem}
+  .lead-band p{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.92);max-width:52ch}
+  .backlink{display:inline-flex;align-items:center;gap:.4rem;color:var(--muted);font-weight:500;font-size:.9rem;cursor:pointer;margin-bottom:1.2rem;transition:color .2s,transform .2s}
+  .backlink:hover{color:var(--lead-ink);transform:translateX(-3px)}
+
+  /* tabs */
+  .tabs{display:flex;gap:.4rem;margin:1.6rem 0 2rem;flex-wrap:wrap;position:sticky;top:55px;z-index:20;background:var(--snow);padding:.5rem 0}
+  .tab{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);color:var(--ink-2);font-weight:600;font-size:.95rem;padding:.6rem 1.15rem;border-radius:var(--r-pill);cursor:pointer;transition:all .25s var(--ease)}
+  .tab .c{display:inline-flex;align-items:center;justify-content:center;min-width:1.3rem;height:1.3rem;padding:0 .35rem;border-radius:var(--r-pill);background:var(--lead-tint);color:var(--lead-ink);font-size:.72rem;font-weight:700}
+  .tab:hover{border-color:var(--lead);color:var(--lead-ink)}
+  .tab.active{background:var(--lead);color:#fff;border-color:var(--lead);box-shadow:0 8px 20px color-mix(in srgb,var(--lead) 35%,transparent)}
+  .tab.active .c{background:rgba(255,255,255,.25);color:#fff}
+  .tabpanel{display:none}
+  .tabpanel.active{display:block;animation:fadeUp .4s var(--ease) both}
+
+  /* ── dl ── */
   .dl{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
   .dl>div{display:grid;grid-template-columns:210px 1fr;background:#fff}
-  .dl dt{background:var(--lead-tint);color:var(--lead-ink);font-weight:600;padding:1.1rem 1.4rem;font-size:1.02rem}
+  .dl dt{background:var(--lead-tint);color:var(--lead-ink);font-weight:600;padding:1.1rem 1.4rem}
   .dl dd{padding:1.1rem 1.4rem;color:var(--ink-2);font-weight:300}
   .dl dd em{font-style:italic;color:var(--ink)}
   .dl .rule dd strong{color:var(--plum);font-weight:600}
 
-  /* ── lead hero band ── */
-  .lead-band{border-radius:var(--r-lg);padding:clamp(1.8rem,4vw,3rem);color:#fff;background:linear-gradient(120deg,var(--lead) 0%,color-mix(in srgb,var(--lead) 60%,var(--plum)) 100%);position:relative;overflow:hidden}
-  .lead-band::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 90% 10%,rgba(255,255,255,.18),transparent 55%);pointer-events:none}
-  .lead-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem 1rem;border-radius:var(--r-pill);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-  .lead-band h2{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;line-height:1;margin:1rem 0 .6rem;letter-spacing:-.01em}
-  .lead-band p{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.9);max-width:52ch}
+  /* ── steps ── */
+  .steps{display:flex;flex-direction:column;gap:.9rem}
+  .step{display:flex;gap:1.1rem;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.2rem 1.4rem;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+  .step:hover{transform:translateX(6px);border-color:color-mix(in srgb,var(--lead) 45%,var(--line));box-shadow:var(--shadow)}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--lead);color:#fff;font-weight:700;flex-shrink:0}
+  .step-body{flex:1}.step-body strong{color:var(--plum);font-weight:600}.step-body p{color:var(--ink-2);font-weight:300;margin-top:.15rem}
+  .chip{display:inline-flex;align-items:center;gap:.35rem;margin-top:.7rem;background:var(--lead-tint);color:var(--lead-ink);font-size:.82rem;font-weight:600;padding:.3rem .8rem;border-radius:var(--r-pill)}
 
-  /* subsection label */
-  .sub{display:flex;align-items:center;gap:.8rem;margin:var(--s8) 0 var(--s4)}
-  .sub .line{flex:1;height:1px;background:var(--line)}
-  .sub h3{font-size:1.15rem;font-weight:700;color:var(--lead-ink);letter-spacing:.02em}
-  .sub .k{font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  /* ── sample library grid ── */
+  .samples-note{color:var(--muted);font-weight:300;margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem}
+  .sample-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+  .scard{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.4rem;cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;display:flex;flex-direction:column;gap:.5rem}
+  .scard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--lead)}
+  .scard .type{display:inline-flex;align-self:flex-start;background:var(--lead-tint);color:var(--lead-ink);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.35rem .8rem;border-radius:var(--r-pill)}
+  .scard h4{font-size:1.15rem;font-weight:600;color:var(--plum);line-height:1.3}
+  .scard .prev{color:var(--muted);font-weight:300;font-size:.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .scard .open{margin-top:auto;display:inline-flex;align-items:center;gap:.4rem;color:var(--lead-ink);font-weight:600;font-size:.9rem}
+  .scard .open .arw{transition:transform .3s var(--ease)}.scard:hover .open .arw{transform:translateX(4px)}
 
-  /* ── email mockup ── */
-  .mock{display:flex;flex-direction:column;gap:.7rem}
-  .mock-label{display:inline-flex;align-self:flex-start;background:var(--lead);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.45rem 1rem;border-radius:var(--r-pill)}
-  .email{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
-  .email:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  /* ── email / frame mock ── */
+  .email{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
   .email-chrome{background:#eeeef0;padding:.55rem .9rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid #dcdce0}
-  .email-chrome .dots3{display:flex;gap:.3rem}
-  .email-chrome i{width:10px;height:10px;border-radius:50%;display:block}
+  .email-chrome .dots3{display:flex;gap:.3rem}.email-chrome i{width:10px;height:10px;border-radius:50%;display:block}
   .email-chrome i:nth-child(1){background:#ff5f57}.email-chrome i:nth-child(2){background:#febc2e}.email-chrome i:nth-child(3){background:#28c840}
   .email-chrome span{font-size:.8rem;color:#8a8a92;background:#fff;border:1px solid #d8d8de;border-radius:5px;padding:.15rem .6rem;flex:1}
   .email-head{background:var(--snow);border-bottom:1px solid var(--line);padding:.9rem 1.2rem}
   .email-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem}
   .email-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--grape),var(--aqua));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
-  .email-from b{color:var(--plum);font-weight:600;font-size:.95rem}
-  .email-from span{color:var(--muted);font-weight:300;font-size:.9rem}
+  .email-from b{color:var(--plum);font-weight:600;font-size:.95rem}.email-from span{color:var(--muted);font-weight:300;font-size:.9rem}
   .email-subj{font-size:1.15rem;font-weight:600;color:var(--plum)}
-  .email-body{padding:1.2rem 1.3rem;font-size:1rem}
+  .email-body{padding:1.2rem 1.3rem}
   .email-body p{color:var(--ink-2);font-weight:300;margin-bottom:.7rem}
-  .email-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.2rem;border-radius:9px;margin-top:.3rem;transition:transform .25s var(--ease)}
-  .email-cta:hover{transform:translateX(3px)}
-  .pairing{background:var(--lead-tint);border-radius:12px;padding:.9rem 1.1rem;font-size:.92rem;color:var(--ink-2);font-weight:300}
-  .pairing b{color:var(--lead-ink);font-weight:700;letter-spacing:.02em}
-
-  /* generic mock (ad / postcard / social) */
-  .frame{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
-  .frame:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-  .frame-banner{height:120px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--lead),var(--indigo));color:rgba(255,255,255,.85)}
+  .email-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.2rem;border-radius:9px;margin-top:.3rem}
+  .frame{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .frame-banner{height:120px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:linear-gradient(135deg,var(--lead),var(--indigo));color:rgba(255,255,255,.85)}
   .frame-body{padding:1.2rem 1.3rem}
   .kicker{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
   .frame-body h4{font-size:1.3rem;font-weight:700;color:var(--plum);margin-bottom:.5rem;line-height:1.25}
   .frame-body p{color:var(--ink-2);font-weight:300;margin-bottom:.9rem}
-  .pill-cta{display:inline-block;background:var(--lead);color:#fff;font-weight:600;text-align:center;border-radius:9px;padding:.65rem 1.2rem}
+  .pill-cta{display:inline-block;background:var(--lead);color:#fff;font-weight:600;border-radius:9px;padding:.65rem 1.2rem}
   .quote{font-size:1.35rem;font-weight:500;font-style:italic;color:var(--plum);line-height:1.35}
+  .pairing{background:var(--lead-tint);border-radius:12px;padding:.9rem 1.1rem;font-size:.92rem;color:var(--ink-2);font-weight:300;margin-top:1rem}
+  .pairing b{color:var(--lead-ink);font-weight:700}
 
-  /* ── tables ── */
+  /* ── slide-over sheet ── */
+  .sheet-back{position:fixed;inset:0;z-index:90;background:rgba(20,6,40,.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+  .sheet-back.open{opacity:1;pointer-events:auto}
+  .sheet{position:fixed;top:0;right:0;bottom:0;z-index:95;width:min(560px,100%);background:var(--snow);box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .4s var(--ease);display:flex;flex-direction:column}
+  .sheet.open{transform:none}
+  .sheet-head{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;border-bottom:1px solid var(--line);background:#fff;flex-shrink:0}
+  .sheet-head .st{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--lead-ink);background:var(--lead-tint);padding:.35rem .8rem;border-radius:var(--r-pill)}
+  .sheet-x{margin-left:auto;background:var(--fog);border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;color:var(--ink-2);display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+  .sheet-x:hover{background:var(--line);transform:rotate(90deg)}
+  .sheet-body{padding:1.4rem;overflow-y:auto;flex:1}
+  .sheet-foot{padding:1rem 1.4rem;border-top:1px solid var(--line);background:#fff;display:flex;gap:.8rem;align-items:center;flex-shrink:0}
+  .copy-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--lead);color:#fff;font-weight:600;border:none;border-radius:var(--r-pill);padding:.75rem 1.4rem;cursor:pointer;transition:transform .2s,background .2s}
+  .copy-btn:hover{transform:translateY(-2px)}
+  .copy-btn.done{background:var(--warm)}
+  .copy-hint{color:var(--muted);font-size:.85rem;font-weight:300}
+
+  /* ── tables / callout / cards (shared) ── */
   .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm)}
-  table.t{width:100%;border-collapse:collapse;min-width:640px}
-  table.t thead th{background:var(--plum);color:rgba(255,255,255,.8);text-align:left;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:1rem 1.3rem}
-  table.t tbody td{padding:1.05rem 1.3rem;border-top:1px solid var(--line);color:var(--ink-2);font-weight:300;vertical-align:top}
-  table.t tbody tr{transition:background .25s}
-  table.t tbody tr:hover{background:var(--lead-tint)}
+  table.t{width:100%;border-collapse:collapse;min-width:600px}
+  table.t thead th{background:var(--plum);color:rgba(255,255,255,.8);text-align:left;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.95rem 1.2rem}
+  table.t tbody td{padding:1rem 1.2rem;border-top:1px solid var(--line);color:var(--ink-2);font-weight:300;vertical-align:top}
+  table.t tbody tr{transition:background .25s}table.t tbody tr:hover{background:var(--lead-tint)}
   table.t td .m{font-weight:600;color:var(--plum)}
-  .stage{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.05em;padding:.2rem .6rem;border-radius:var(--r-pill);margin:0 .2rem .2rem 0}
+  .stage{display:inline-block;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--r-pill);margin:0 .2rem .2rem 0}
   .stage.c{background:var(--cold-tint);color:#3f3f47}.stage.w{background:var(--warm-tint);color:var(--warm)}.stage.h{background:var(--hot-tint);color:var(--hot)}
   .fill{color:var(--muted);font-style:italic}
-
-  /* ── callout ── */
-  .callout{background:var(--lead-tint);border-radius:var(--r);border-left:4px solid var(--lead);padding:clamp(1.3rem,3vw,2rem)}
+  .callout{background:var(--lead-tint);border-radius:var(--r);border-left:4px solid var(--lead);padding:clamp(1.3rem,3vw,1.9rem)}
   .callout h3{font-size:var(--fs-h3);font-weight:700;color:var(--lead-ink);margin-bottom:.5rem}
   .callout p{color:var(--ink-2);font-weight:300}
-  .callout ul{margin:.7rem 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:.55rem}
-  .callout li{position:relative;padding-left:1.6rem;color:var(--ink-2);font-weight:300}
+  .callout ul{margin:.7rem 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:.5rem}
+  .callout li{position:relative;padding-left:1.5rem;color:var(--ink-2);font-weight:300}
   .callout li::before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--lead)}
-
-  /* landing mockup */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.6rem;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--lead) 40%,var(--line))}
+  .card .ic{width:46px;height:46px;border-radius:13px;background:var(--lead-tint);color:var(--lead);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+  .card h3{font-size:var(--fs-h3);font-weight:600;color:var(--plum);margin-bottom:.45rem}.card p{color:var(--ink-2);font-weight:300}
   .lp{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
   .lp-top{background:var(--plum);color:#fff;padding:.9rem 1.5rem;text-align:center;position:relative;font-weight:700;letter-spacing:.14em;font-size:.9rem}
   .lp-top svg{position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);height:14px}
-  .lp-hero{text-align:center;padding:2rem 1.5rem 1rem}
-  .lp-hero h3{font-size:clamp(1.4rem,3vw,2rem);color:var(--plum);font-weight:700;line-height:1.15}
+  .lp-hero{text-align:center;padding:1.8rem 1.5rem 1rem}
+  .lp-hero h3{font-size:clamp(1.3rem,3vw,1.9rem);color:var(--plum);font-weight:700;line-height:1.15}
   .lp-hero p{color:var(--muted);font-weight:300;max-width:46ch;margin:.6rem auto 0}
   .lp-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;background:var(--fog);border-radius:14px;padding:1rem;max-width:620px;margin:1.4rem auto 0}
   .lp-tile{background:#fff;border-radius:11px;padding:1rem;box-shadow:var(--shadow-sm);text-align:left}
-  .lp-tile .e{font-size:1.4rem}
-  .lp-tile b{display:block;color:var(--plum);font-size:.95rem;margin:.4rem 0 .3rem}
-  .lp-tile p{font-size:.82rem;color:var(--muted);font-weight:300}
+  .lp-tile .e{font-size:1.4rem}.lp-tile b{display:block;color:var(--plum);font-size:.95rem;margin:.4rem 0 .3rem}.lp-tile p{font-size:.82rem;color:var(--muted);font-weight:300}
   .lp-tile .bar{height:4px;border-radius:4px;background:var(--hot);margin-top:.8rem}
   .lp-foot{text-align:center;padding:1.4rem}
+  .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(1.5rem,3vw,2.5rem);align-items:start}
 
-  /* footer */
-  .footer{background:var(--plum);color:rgba(255,255,255,.6);padding:3rem 0}
+  .footer{background:var(--plum);color:rgba(255,255,255,.55);padding:2.4rem 0;margin-top:var(--s8)}
   .footer .container{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
-  .footer svg{height:20px}
-  .footer a{color:var(--aqua)}
-  .backtop{position:fixed;right:1.4rem;bottom:1.4rem;z-index:45;width:46px;height:46px;border-radius:50%;background:var(--grape);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s var(--ease),transform .3s var(--ease),background .25s}
-  .backtop.show{opacity:1;pointer-events:auto;transform:none}
-  .backtop:hover{background:var(--plum)}
+  .footer svg{width:150px}.footer a{color:var(--aqua)}
 
-  /* theming hooks */
   .lead-cold{--lead:var(--cold);--lead-tint:var(--cold-tint);--lead-ink:#3d3d45}
   .lead-warm{--lead:var(--warm);--lead-tint:var(--warm-tint);--lead-ink:#0a5f53}
   .lead-hot{--lead:var(--hot);--lead-tint:var(--hot-tint);--lead-ink:#7226b8}
 
-  /* ── responsive ── */
-  @media(max-width:920px){
-    .nav-links{display:none}
-    .nav-menu-btn{display:inline-flex}
-    .dots{display:none}
-    .grid-3{grid-template-columns:1fr}
-    .grid-2{grid-template-columns:1fr}
-    .dl>div{grid-template-columns:1fr}
-    .dl dt{padding-bottom:.4rem}
-    .dl dd{padding-top:.4rem}
-    .lp-tiles{grid-template-columns:1fr}
+  @media(max-width:900px){
+    .nav-links{display:none}.nav-menu-btn{display:inline-flex}
+    .intro-cards,.lead-choices,.grid-3,.sample-grid,.lp-tiles,.two-col{grid-template-columns:1fr}
+    .dl>div{grid-template-columns:1fr}.dl dt{padding-bottom:.3rem}.dl dd{padding-top:.3rem}
+    .tabs{top:53px}
   }
-  @media(prefers-reduced-motion:reduce){
-    *{animation:none!important;scroll-behavior:auto!important}
-    .reveal,.stagger>*{opacity:1!important;transform:none!important;transition:none!important}
-  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .sample-store{display:none}
 </style>
 </head>
 <body>
@@ -343,401 +333,301 @@
 </defs>
 </symbol></svg>
 
-<!-- ── NAV ── -->
-<nav class="nav" id="nav">
+<nav class="nav">
   <div class="nav-inner">
-    <a href="#home" class="nav-logo" aria-label="Knomee"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg></a>
+    <div class="nav-logo" data-go="home" aria-label="Home"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg></div>
     <div class="nav-links" id="navLinks">
-      <a href="#how-to-use">How to Use</a>
-      <a href="#experience">Experience</a>
-      <a href="#setup">Setup</a>
-      <a href="#baseline">Baseline</a>
-      <a href="#cold">Cold</a>
-      <a href="#warm">Warm</a>
-      <a href="#hot">Hot</a>
-      <a href="#landing">Landing</a>
-      <a href="#testing">Test &amp; Learn</a>
-      <a href="#appendix">Appendix</a>
+      <a data-go="home">Home</a>
+      <a data-go="how-to-use">How to Use</a>
+      <a data-go="experience">Experience</a>
+      <a data-go="setup">Setup</a>
+      <a data-go="baseline">Baseline</a>
+      <a data-go="cold">Cold</a>
+      <a data-go="warm">Warm</a>
+      <a data-go="hot">Hot</a>
+      <a data-go="landing">Landing</a>
+      <a data-go="testing">Test</a>
+      <a data-go="appendix">Appendix</a>
     </div>
-    <button class="nav-menu-btn" id="menuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menu</button>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menu</button>
   </div>
-  <div class="progress" id="progress"></div>
 </nav>
 
-<!-- ── MOBILE DRAWER ── -->
 <div class="drawer" id="drawer">
-  <button class="drawer-close" id="drawerClose" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="drawer-close" id="drawerClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   <nav class="drawer-list" id="drawerList"></nav>
 </div>
 
-<!-- ── SIDE DOTS ── -->
-<div class="dots" id="dots"></div>
+<main>
 
-<button class="backtop" id="backtop" aria-label="Back to top"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
-
-<!-- ══ HERO ══ -->
-<header class="hero" id="home">
-  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
-  <div class="container">
-    <span class="hero-eyebrow reveal">Knomee Activation Playbook</span>
-    <h1 class="reveal">Winning New Clients:<br><span class="accent">The Prospect Playbook</span></h1>
-    <p class="tag reveal">How to use Knomee to turn cold, warm, and hot leads into first meetings — and first meetings into clients.</p>
-    <div class="hero-card reveal">
-      <h3>Built for your marketing team</h3>
-      <p>Everything here is copy-and-paste ready: emails, ads, event invitations, direct mail, and landing-page language — organized by lead type, each with a matching video or image suggestion.</p>
-      <div class="meta">Wealth Management Edition · V1 · 2026</div>
-    </div>
-    <div class="hero-cues reveal">
-      <a href="#how-to-use" class="btn btn-light">Start reading <span class="arw">→</span></a>
-      <a href="#appendix" class="btn" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Jump to Appendix <span class="arw">→</span></a>
+<!-- ══ HOME ══ -->
+<section class="view" id="home">
+  <div class="home-hero">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="container">
+      <span class="hero-eyebrow anim">Knomee Activation Playbook</span>
+      <h1 class="anim d1">Winning New Clients:<br><span class="accent">The Prospect Playbook</span></h1>
+      <p class="tag anim d2">Ready-to-use campaigns that turn cold, warm, and hot leads into first meetings — and first meetings into clients. Pick a lead type below and go straight to what you need.</p>
+      <div class="intro-cards stagger">
+        <div class="intro-card"><div class="k">What Knomee is</div><h3>A 10-minute experience</h3><p>Your prospect completes it on their own — and gets a personal summary, while your firm gets a 0–100 readiness score.</p></div>
+        <div class="intro-card"><div class="k">What this playbook is</div><h3>Copy-and-paste campaigns</h3><p>Emails, ads, events, and landing-page language, organized by lead type — each with a matching video suggestion.</p></div>
+        <div class="intro-card"><div class="k">How to use it</div><h3>Pick a lead type → go</h3><p>Open the section that matches your prospect. Read the strategy, follow the play, and open any sample to copy it.</p></div>
+      </div>
     </div>
   </div>
-  <a href="#how-to-use" class="hero-scroll">Scroll<span class="mouse"></span></a>
-</header>
+
+  <div class="choose container">
+    <div class="choose-label anim">
+      <span class="eyebrow">Choose your path</span>
+      <h2>Where do you want to go?</h2>
+      <p>Every prospect is Cold, Warm, or Hot. Start with wherever most of your pipeline lives right now.</p>
+    </div>
+    <div class="lead-choices stagger">
+      <div class="lead-choice lc-cold" data-go="cold">
+        <span class="emoji">❄️</span><span class="tagword">Cold Lead</span><h3>Cold</h3>
+        <p>They don't know you yet. Spark curiosity — earn a first response.</p>
+        <span class="go">Enter Cold <span class="arw">→</span></span>
+      </div>
+      <div class="lead-choice lc-warm" data-go="warm">
+        <span class="emoji">🌤️</span><span class="tagword">Warm Lead</span><h3>Warm</h3>
+        <p>They know you but aren't ready. Deliver value first — earn the meeting.</p>
+        <span class="go">Enter Warm <span class="arw">→</span></span>
+      </div>
+      <div class="lead-choice lc-hot" data-go="hot">
+        <span class="emoji">🔥</span><span class="tagword">Hot Lead</span><h3>Hot</h3>
+        <p>They've agreed to meet, but aren't convinced. Build trust — close it.</p>
+        <span class="go">Enter Hot <span class="arw">→</span></span>
+      </div>
+    </div>
+    <div class="ref-row anim">
+      <div class="k">Guide &amp; reference</div>
+      <div class="ref-chips">
+        <button class="ref-chip" data-go="how-to-use"><span class="e">🧭</span> How to Use</button>
+        <button class="ref-chip" data-go="experience"><span class="e">✨</span> The Experience</button>
+        <button class="ref-chip" data-go="setup"><span class="e">⚙️</span> 5-Step Setup</button>
+        <button class="ref-chip" data-go="baseline"><span class="e">📊</span> Know Your Baseline</button>
+        <button class="ref-chip" data-go="landing"><span class="e">🔗</span> Landing Page</button>
+        <button class="ref-chip" data-go="testing"><span class="e">🧪</span> Test &amp; Learn</button>
+        <button class="ref-chip" data-go="appendix"><span class="e">🎬</span> Video Appendix</button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ══ HOW TO USE ══ -->
-<section class="section" id="how-to-use">
-  <div class="container">
-    <div class="head reveal">
-      <span class="eyebrow">Orientation</span>
-      <h2 class="section-title">How to Use This Playbook</h2>
-      <p class="section-intro">This playbook covers <strong>prospects only</strong> — people who are not yet clients of your firm. Every prospect falls into one of three lead types, each with its own color, section, and ready-to-use materials.</p>
+<section class="view" id="how-to-use">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Orientation</span><h2 class="h2">How to Use This Playbook</h2><p class="intro">This playbook covers <strong>prospects only</strong> — people who are not yet clients. Every prospect is one of three lead types, each with its own section and ready-to-use materials.</p></div>
+    <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
+      <div class="card lead-cold" data-go="cold" style="cursor:pointer"><div class="ic">❄️</div><h3>Cold</h3><p><strong>Doesn't know your firm yet.</strong> Spark curiosity — earn a first response.</p></div>
+      <div class="card lead-warm" data-go="warm" style="cursor:pointer"><div class="ic">🌤️</div><h3>Warm</h3><p><strong>Knows you, but isn't ready.</strong> Deliver value early — earn the meeting.</p></div>
+      <div class="card lead-hot" data-go="hot" style="cursor:pointer"><div class="ic">🔥</div><h3>Hot</h3><p><strong>Agreed to meet, not convinced.</strong> Build trust — close the relationship.</p></div>
     </div>
-    <div class="grid grid-3 stagger reveal" style="margin-bottom:var(--s8)">
-      <div class="card lead-cold"><div class="ic">❄️</div><h3>Cold</h3><p><strong>Doesn't know your firm yet.</strong><br>Spark curiosity — earn a first response.</p></div>
-      <div class="card lead-warm"><div class="ic">🌤️</div><h3>Warm</h3><p><strong>Knows you, but isn't ready to act.</strong><br>Deliver value early — earn the meeting.</p></div>
-      <div class="card lead-hot"><div class="ic">🔥</div><h3>Hot</h3><p><strong>Agreed to meet, not yet convinced.</strong><br>Build trust — close the relationship.</p></div>
-    </div>
-    <div class="callout reveal">
+    <div class="callout anim">
       <h3>Your Walkthrough Session</h3>
       <p>This playbook is designed to be walked through together. Your Knomee customer success contact will schedule a <strong>45-minute working session</strong> to:</p>
-      <ul>
-        <li>Pick your priority lead type and target list</li>
-        <li>Choose channels and customize the sample copy</li>
-        <li>Set up your landing page and tracking links</li>
-        <li>Agree on success metrics</li>
-      </ul>
+      <ul><li>Pick your priority lead type and target list</li><li>Choose channels and customize the sample copy</li><li>Set up your landing page and tracking links</li><li>Agree on success metrics</li></ul>
       <p style="margin-top:.9rem"><strong>You'll leave with your first campaign ready to send.</strong></p>
     </div>
   </div>
 </section>
 
 <!-- ══ EXPERIENCE ══ -->
-<section class="section section--fog" id="experience">
-  <div class="container">
-    <div class="head reveal">
-      <span class="eyebrow">The Product</span>
-      <h2 class="section-title">What Your Prospect Experiences</h2>
-      <p class="section-intro">Knomee is a <strong>10-minute guided experience</strong> your prospects complete on their own, before they ever sit down with an advisor.</p>
+<section class="view" id="experience">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Prospect Experiences</h2><p class="intro">Knomee is a <strong>10-minute guided experience</strong> your prospects complete on their own, before they ever sit down with an advisor.</p></div>
+    <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
+      <div class="card"><span class="num">1</span><h3 style="margin-top:1rem">The prospect gets value</h3><p>A personal summary of what's driving their decisions and their top 3 money questions.</p></div>
+      <div class="card"><span class="num">2</span><h3 style="margin-top:1rem">Your firm gets a signal</h3><p>A 0–100 Advisor Readiness Score that tells you who is high-intent right now.</p></div>
+      <div class="card"><span class="num">3</span><h3 style="margin-top:1rem">Your advisor gets a playbook</h3><p>Conversation starters, words to use (and avoid), and answers to their top questions.</p></div>
     </div>
-    <div class="grid grid-3 stagger reveal" style="margin-bottom:var(--s8)">
-      <div class="card"><span class="num-badge">1</span><h3 style="margin-top:1rem">The prospect gets value</h3><p>A personal summary of what's driving their decisions and their top 3 money questions.</p></div>
-      <div class="card"><span class="num-badge">2</span><h3 style="margin-top:1rem">Your firm gets a signal</h3><p>A 0–100 Advisor Readiness Score that tells you who is high-intent right now.</p></div>
-      <div class="card"><span class="num-badge">3</span><h3 style="margin-top:1rem">Your advisor gets a playbook</h3><p>Conversation starters, words to use (and avoid), and answers to their top questions.</p></div>
-    </div>
-    <div class="callout reveal">
-      <h3>One Call to Action</h3>
-      <p>Every campaign in this playbook uses the same call to action — the <strong>10-minute Knomee experience</strong> — never “book a meeting.” Keep it consistent across every channel and every lead type, so prospects always know exactly what the next step is.</p>
-    </div>
+    <div class="callout anim"><h3>One Call to Action</h3><p>Every campaign uses the same call to action — the <strong>10-minute Knomee experience</strong> — never “book a meeting.” Keep it consistent across every channel and lead type, so prospects always know the next step.</p></div>
   </div>
 </section>
 
 <!-- ══ SETUP ══ -->
-<section class="section" id="setup">
-  <div class="container">
-    <div class="head reveal">
-      <span class="eyebrow">Before You Launch</span>
-      <h2 class="section-title">The 5-Step Setup</h2>
-      <p class="section-intro">Every campaign follows the same five setup steps — this is the one framework to know. Work through them to prepare for your walkthrough session; your CS contact will help you complete each one.</p>
-    </div>
-    <div class="steps stagger reveal">
-      <div class="step"><span class="num-badge">1</span><div class="step-body"><strong>Targeting</strong><p>Identify the list of prospects for this campaign (and which lead type they are).</p></div></div>
-      <div class="step"><span class="num-badge">2</span><div class="step-body"><strong>Channel</strong><p>Choose email, ads, events, direct mail, or a mix, using the channel guide.</p></div></div>
-      <div class="step"><span class="num-badge">3</span><div class="step-body"><strong>Copy</strong><p>Customize the sample copy with your firm name, advisor name, and voice.</p></div></div>
-      <div class="step"><span class="num-badge">4</span><div class="step-body"><strong>Landing page</strong><p>Set up or link to your firm-branded Knomee landing page.</p></div></div>
-      <div class="step"><span class="num-badge">5</span><div class="step-body"><strong>CRM</strong><p>Sync Knomee to HubSpot / Redtail so completions and scores flow to advisors.</p></div></div>
+<section class="view" id="setup">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Before You Launch</span><h2 class="h2">The 5-Step Setup</h2><p class="intro">Every campaign follows the same five setup steps. Work through them to prepare for your walkthrough session; your CS contact will help you complete each one.</p></div>
+    <div class="steps stagger">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Targeting</strong><p>Identify the list of prospects for this campaign (and which lead type they are).</p></div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Channel</strong><p>Choose email, ads, events, direct mail, or a mix, using the channel guide.</p></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Copy</strong><p>Customize the sample copy with your firm name, advisor name, and voice.</p></div></div>
+      <div class="step"><span class="num">4</span><div class="step-body"><strong>Landing page</strong><p>Set up or link to your firm-branded Knomee landing page.</p></div></div>
+      <div class="step"><span class="num">5</span><div class="step-body"><strong>CRM</strong><p>Sync Knomee to HubSpot / Redtail so completions and scores flow to advisors.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- ══ BASELINE ══ -->
-<section class="section section--fog" id="baseline">
-  <div class="container">
-    <div class="head reveal">
-      <span class="eyebrow">Measure First</span>
-      <h2 class="section-title">Know Your Starting Point</h2>
-      <p class="section-intro">Capture where you are today. These baselines are the reference point for the “How You'll Know It's Working” tables in each lead section. If you don't track a metric, flag it now with your CS contact — setting up that tracking is part of setup.</p>
-    </div>
-    <div class="table-wrap reveal">
-      <table class="t">
-        <thead><tr><th>Metric</th><th>Current Baseline</th><th>Where to Find It</th></tr></thead>
-        <tbody>
-          <tr><td><span class="m">Email open rate</span></td><td class="fill">___ %</td><td>Email platform (Mailchimp, HubSpot, etc.)</td></tr>
-          <tr><td><span class="m">Email click rate</span></td><td class="fill">___ %</td><td>Email platform campaign reports</td></tr>
-          <tr><td><span class="m">Email signups per month</span></td><td class="fill">___ / mo</td><td>Email platform list growth</td></tr>
-          <tr><td><span class="m">Lead-to-MQL rate (ads)</span></td><td class="fill">___ %</td><td>CRM + ad platform (HubSpot, Meta, LinkedIn)</td></tr>
-          <tr><td><span class="m">Lead-to-MQL rate (email)</span></td><td class="fill">___ %</td><td>CRM lifecycle reporting</td></tr>
-          <tr><td><span class="m">Lead-to-meeting conversion rate</span></td><td class="fill">___ %</td><td>CRM deal / meeting stage reporting</td></tr>
-          <tr><td><span class="m">Avg. landing page time-on-page</span></td><td class="fill">__:__</td><td>Web analytics (GA4, Fathom, etc.)</td></tr>
-        </tbody>
-      </table>
+<section class="view" id="baseline">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Measure First</span><h2 class="h2">Know Your Starting Point</h2><p class="intro">Capture where you are today — these baselines are the reference point for the “How you'll know it's working” tables in each lead section. If you don't track a metric, flag it now with your CS contact.</p></div>
+    <div class="table-wrap anim">
+      <table class="t"><thead><tr><th>Metric</th><th>Current Baseline</th><th>Where to Find It</th></tr></thead><tbody>
+        <tr><td><span class="m">Email open rate</span></td><td class="fill">___ %</td><td>Email platform (Mailchimp, HubSpot, etc.)</td></tr>
+        <tr><td><span class="m">Email click rate</span></td><td class="fill">___ %</td><td>Email platform campaign reports</td></tr>
+        <tr><td><span class="m">Email signups per month</span></td><td class="fill">___ / mo</td><td>Email platform list growth</td></tr>
+        <tr><td><span class="m">Lead-to-MQL rate (ads)</span></td><td class="fill">___ %</td><td>CRM + ad platform (HubSpot, Meta, LinkedIn)</td></tr>
+        <tr><td><span class="m">Lead-to-MQL rate (email)</span></td><td class="fill">___ %</td><td>CRM lifecycle reporting</td></tr>
+        <tr><td><span class="m">Lead-to-meeting conversion rate</span></td><td class="fill">___ %</td><td>CRM deal / meeting stage reporting</td></tr>
+        <tr><td><span class="m">Avg. landing page time-on-page</span></td><td class="fill">__:__</td><td>Web analytics (GA4, Fathom, etc.)</td></tr>
+      </tbody></table>
     </div>
   </div>
 </section>
 
-<!-- ══════════ COLD ══════════ -->
-<section class="section lead-cold" id="cold">
-  <div class="container">
-    <div class="lead-band reveal">
-      <span class="lead-tag">❄️ Cold Lead</span>
-      <h2>Cold</h2>
-      <p>They don't know you yet. Don't ask for a meeting — ask for ten minutes of curiosity.</p>
+<!-- ══════ COLD ══════ -->
+<section class="view lead-cold" id="cold">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="lead-band anim"><span class="tagword">❄️ Cold Lead</span><h2>Cold</h2><p>They don't know you yet. Don't ask for a meeting — ask for ten minutes of curiosity.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="play">Playbook <span class="c">4</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">4</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
     </div>
-
-    <dl class="dl reveal" style="margin-top:var(--s6)">
-      <div><dt>Who this is</dt><dd>Purchased or rented lists, paid social audiences, employer or association partnerships, cold referrals.</dd></div>
-      <div><dt>They're thinking</dt><dd><em>“I don't know this advisor. I'm not looking for a new one right now — and I get outreach like this all the time.”</em></dd></div>
-      <div><dt>Your goal</dt><dd>Generate awareness. Earn a first response. Convert an unknown name into a self-identified warm prospect.</dd></div>
-      <div class="rule"><dt>The one rule</dt><dd><strong>Every cold touchpoint routes to one low-friction action</strong> — completing Knomee. Never ask a cold lead for a meeting.</dd></div>
-    </dl>
-
-    <div class="sub reveal"><span class="k">Play</span><h3>Your Campaign, Step by Step</h3><span class="line"></span></div>
-    <div class="steps stagger reveal">
-      <div class="step"><span class="num-badge">1</span><div class="step-body"><strong>Cold email</strong><p>Lead with curiosity, not a pitch.</p><span class="chip">📧 Email</span></div></div>
-      <div class="step"><span class="num-badge">2</span><div class="step-body"><strong>Paid social / display ad</strong><p>Route clicks to your Knomee landing page, not your homepage.</p><span class="chip">📢 Ads</span></div></div>
-      <div class="step"><span class="num-badge">3</span><div class="step-body"><strong>Direct mail with QR code</strong><p>A physical touchpoint into a digital experience.</p><span class="chip">✉️ Mail</span></div></div>
-      <div class="step"><span class="num-badge">4</span><div class="step-body"><strong>Partner or association co-branded invite</strong><p>Borrow trust from a group your prospect already belongs to.</p><span class="chip">🤝 Partner</span></div></div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>Purchased or rented lists, paid social audiences, employer or association partnerships, cold referrals.</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I don't know this advisor. I'm not looking for a new one right now — and I get outreach like this all the time.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Generate awareness. Earn a first response. Convert an unknown name into a self-identified warm prospect.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>Every cold touchpoint routes to one low-friction action</strong> — completing Knomee. Never ask a cold lead for a meeting.</dd></div>
+      </dl>
     </div>
-
-    <div class="sub reveal"><span class="k">Copy</span><h3>Sample Copy — Use As-Is or Adapt</h3><span class="line"></span></div>
-    <div class="grid grid-2 reveal">
-      <div class="mock">
-        <span class="mock-label">Email · Option 1 · Curiosity · First touch</span>
-        <div class="email">
-          <div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div>
-          <div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A different kind of financial question</div></div>
-          <div class="email-body"><p>Hi [First Name],</p><p>Most financial outreach starts with a pitch. This one starts with a question: what do you actually want your money to do for you?</p><p>We built Knomee, a free 10-minute experience, to help you find out — no meeting required, no obligation.</p><p>Best, [Advisor Name], [Firm Name]</p><a class="email-cta">Start your Knomee experience →</a></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> a short awareness Video from the Appendix library — e.g. ‘Meaning over Returns’ or ‘The Questions You Never Ask.’ Optional; the final call is yours.</div>
-      </div>
-      <div class="mock">
-        <span class="mock-label">Email · Option 2 · No strings · First touch</span>
-        <div class="email">
-          <div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div>
-          <div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">What matters more than the market?</div></div>
-          <div class="email-body"><p>Hi [First Name],</p><p>I don't know if you're looking for an advisor — most people who get this email aren't. But I wanted to share something worth 10 minutes of your time regardless: Knomee, a free tool to help you gain clarity on your financial goals and values.</p><p>No strings attached.</p><p>Best, [Advisor Name], [Firm Name]</p><a class="email-cta">Try it here →</a></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> we'd suggest no image here — a plain, personal-looking email tends to land best on a first touch. Entirely your call.</div>
+    <div class="tabpanel" data-panel="play">
+      <div class="steps">
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>Cold email</strong><p>Lead with curiosity, not a pitch.</p><span class="chip">📧 Email</span></div></div>
+        <div class="step"><span class="num">2</span><div class="step-body"><strong>Paid social / display ad</strong><p>Route clicks to your Knomee landing page, not your homepage.</p><span class="chip">📢 Ads</span></div></div>
+        <div class="step"><span class="num">3</span><div class="step-body"><strong>Direct mail with QR code</strong><p>A physical touchpoint into a digital experience.</p><span class="chip">✉️ Mail</span></div></div>
+        <div class="step"><span class="num">4</span><div class="step-body"><strong>Partner or association co-branded invite</strong><p>Borrow trust from a group your prospect already belongs to.</p><span class="chip">🤝 Partner</span></div></div>
       </div>
     </div>
-    <div class="grid grid-2 reveal" style="margin-top:var(--s4)">
-      <div class="mock">
-        <span class="mock-label">Paid Social / Display Ad</span>
-        <div class="frame">
-          <div class="frame-banner">👤</div>
-          <div class="frame-body"><div class="kicker">Sponsored</div><h4>What is your money really for?</h4><p>For most of our lives, we trade our time for money — yet we spend almost none of it getting clear on what that money is actually for. In about 10 minutes, Knomee helps you find out. Free, no obligation.</p><span class="pill-cta">Discover Financial Joy</span></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> a short awareness Video such as ‘Financial Joy’ or ‘When Life Changes, Money Changes,’ or a real, editorial human face. Imagery is your call.</div>
-      </div>
-      <div class="mock">
-        <span class="mock-label">Direct Mail · Postcard</span>
-        <div class="frame">
-          <div class="frame-body"><div class="kicker">Front</div><p class="quote">“Most financial advice starts with your money. This starts with you.”</p><div class="kicker" style="margin-top:1.2rem">Back</div><p>Ten minutes. No cost. No sales call. Knomee helps you get clear on your goals and values before you ever talk to anyone. Scan to begin.</p><p style="color:var(--plum);font-weight:600">[QR CODE → Knomee landing page, direct-mail UTM tag]</p></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> a life-stage moment your audience recognizes (family dinner, handing over the car keys) over a product shot — or link the ‘Transitions Scramble What You Thought You Wanted’ Video by QR.</div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="cold-1"><span class="type">Email · Option 1 · Curiosity</span><h4>A different kind of financial question</h4><span class="prev">Most financial outreach starts with a pitch. This one starts with a question…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="cold-2"><span class="type">Email · Option 2 · No strings</span><h4>What matters more than the market?</h4><span class="prev">I don't know if you're looking for an advisor — most people who get this aren't…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="cold-3"><span class="type">Paid Social / Display Ad</span><h4>What is your money really for?</h4><span class="prev">We trade our time for money — yet spend almost none of it getting clear on what it's for…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="cold-4"><span class="type">Direct Mail · Postcard</span><h4>“Most advice starts with your money…”</h4><span class="prev">Ten minutes. No cost. No sales call. Get clear on your goals before you talk to anyone…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
       </div>
     </div>
-
-    <div class="sub reveal"><span class="k">Measure</span><h3>How You'll Know It's Working</h3><span class="line"></span></div>
-    <div class="table-wrap reveal">
-      <table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead>
-      <tbody>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
         <tr><td class="m">Generate awareness</td><td>Click-through rate</td><td>Impressions, landing page visits</td></tr>
         <tr><td class="m">Earn first engagement</td><td>Knomee completion rate (cold traffic)</td><td>Email open rate, time on landing page</td></tr>
         <tr><td class="m">Convert cold → warm</td><td>Cold-to-warm conversion rate</td><td>Opt-in rate, follow-on content engagement</td></tr>
-      </tbody></table>
-    </div>
-    <div class="callout reveal" style="margin-top:var(--s4)">
-      <h3>The Handoff: Cold → Warm</h3>
-      <p>Cold outreach converts at a lower rate than warm or hot — that's expected. The win isn't a meeting; it's a completion. The moment someone completes Knomee, they've moved themselves to Warm, where the next section takes over with a follow-up cadence.</p>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Cold → Warm</h3><p>The win isn't a meeting; it's a completion. The moment someone completes Knomee, they've moved themselves to Warm — where the Warm section takes over with a follow-up cadence.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--warm)" data-go="warm">Go to Warm <span class="arw">→</span></button></p></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ WARM ══════════ -->
-<section class="section section--fog lead-warm" id="warm">
-  <div class="container">
-    <div class="lead-band reveal">
-      <span class="lead-tag">🌤️ Warm Lead</span>
-      <h2>Warm</h2>
-      <p>They know you, but they're not ready to act. Earn the meeting by delivering value first.</p>
+<!-- ══════ WARM ══════ -->
+<section class="view lead-warm" id="warm">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="lead-band anim"><span class="tagword">🌤️ Warm Lead</span><h2>Warm</h2><p>They know you, but they're not ready to act. Earn the meeting by delivering value first.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="play">Playbook <span class="c">5</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">4</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
     </div>
-
-    <dl class="dl reveal" style="margin-top:var(--s6)">
-      <div><dt>Who this is</dt><dd>Newsletter subscribers, event attendees, website visitors, social followers — anyone who has engaged but hasn't booked.</dd></div>
-      <div><dt>They're thinking</dt><dd><em>“I'm researching, but I'm not ready to act yet.”</em></dd></div>
-      <div><dt>Your goal</dt><dd>Increase engagement and schedule a meeting — by giving them something valuable before you ask for anything.</dd></div>
-      <div class="rule"><dt>The one rule</dt><dd><strong>One call to action per touchpoint:</strong> the Knomee experience. No competing asks.</dd></div>
-    </dl>
-
-    <div class="sub reveal"><span class="k">Play</span><h3>Your Campaign, Step by Step</h3><span class="line"></span></div>
-    <div class="steps stagger reveal">
-      <div class="step"><span class="num-badge">1</span><div class="step-body"><strong>Email nurture</strong><p>A short sequence introducing Knomee as a complimentary experience.</p><span class="chip">📧 Email</span></div></div>
-      <div class="step"><span class="num-badge">2</span><div class="step-body"><strong>Newsletter feature</strong><p>A recurring Knomee block in your existing non-client newsletter.</p><span class="chip">📰 Newsletter</span></div></div>
-      <div class="step"><span class="num-badge">3</span><div class="step-body"><strong>Events</strong><p>Invite registrants to complete Knomee before your talk; follow up after.</p><span class="chip">🎟 Event</span></div></div>
-      <div class="step"><span class="num-badge">4</span><div class="step-body"><strong>LinkedIn / social</strong><p>Posts that lead with a human truth and route to one Knomee link.</p><span class="chip">💼 Social</span></div></div>
-      <div class="step"><span class="num-badge">5</span><div class="step-body"><strong>Website landing page</strong><p>The destination for every CTA above.</p><span class="chip">🔗 Web</span></div></div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>Newsletter subscribers, event attendees, website visitors, social followers — anyone who has engaged but hasn't booked.</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I'm researching, but I'm not ready to act yet.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Increase engagement and schedule a meeting — by giving them something valuable before you ask for anything.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>One call to action per touchpoint:</strong> the Knomee experience. No competing asks.</dd></div>
+      </dl>
     </div>
-
-    <div class="sub reveal"><span class="k">Copy</span><h3>Sample Copy — Use As-Is or Adapt</h3><span class="line"></span></div>
-    <div class="grid grid-2 reveal">
-      <div class="mock">
-        <span class="mock-label">Email · Nurture · Option 1</span>
-        <div class="email">
-          <div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div>
-          <div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Financial planning should start with you</div></div>
-          <div class="email-body"><p>Hi [First Name],</p><p>At [Firm Name], we believe great financial advice starts with understanding what matters most to you — not just your assets, but your goals, priorities, and the life you want to build.</p><p>That's why we've introduced a complimentary experience powered by Knomee, designed to help you gain clarity about what matters most. It takes about 10 minutes.</p><p>Best, [Advisor Name], [Firm Name]</p><a class="email-cta">Start your Knomee experience →</a></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> a Theme video like ‘Prepare for the Conversation’ or ‘Smart People, Emotional Decisions,’ embedded or linked below the CTA. Swap in whichever fits.</div>
-      </div>
-      <div class="mock">
-        <span class="mock-label">Email · Newsletter Feature · Option 2</span>
-        <div class="email">
-          <div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div>
-          <div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A new way to get clear on your goals</div></div>
-          <div class="email-body"><p>We're excited to introduce Knomee, a research-backed experience to help you gain clarity on what you want your wealth to make possible.</p><p>It takes about 10 minutes, and there's no cost or obligation.</p><a class="email-cta">Try it here →</a></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> an Interview such as ‘Nobody Ever Asked Me That,’ or an Adventure Teaching Script from the series. Your call which one.</div>
+    <div class="tabpanel" data-panel="play">
+      <div class="steps">
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>Email nurture</strong><p>A short sequence introducing Knomee as a complimentary experience.</p><span class="chip">📧 Email</span></div></div>
+        <div class="step"><span class="num">2</span><div class="step-body"><strong>Newsletter feature</strong><p>A recurring Knomee block in your existing non-client newsletter.</p><span class="chip">📰 Newsletter</span></div></div>
+        <div class="step"><span class="num">3</span><div class="step-body"><strong>Events</strong><p>Invite registrants to complete Knomee before your talk; follow up after.</p><span class="chip">🎟 Event</span></div></div>
+        <div class="step"><span class="num">4</span><div class="step-body"><strong>LinkedIn / social</strong><p>Posts that lead with a human truth and route to one Knomee link.</p><span class="chip">💼 Social</span></div></div>
+        <div class="step"><span class="num">5</span><div class="step-body"><strong>Website landing page</strong><p>The destination for every CTA above.</p><span class="chip">🔗 Web</span></div></div>
       </div>
     </div>
-
-    <div class="grid grid-2 reveal" style="margin-top:var(--s4)">
-      <div class="mock">
-        <span class="mock-label">Event Invite · Pre- and post-event</span>
-        <div class="frame">
-          <div style="background:var(--warm);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem;display:flex;align-items:center;gap:.6rem">🗓 Advisor Event</div>
-          <div class="frame-body" style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem">
-            <div><div class="kicker">Before the event</div><p style="margin:0">Invite registrants to complete Knomee before your talk — it helps you tailor the room and gives them a head start on the topic.</p></div>
-            <div><div class="kicker">After the event</div><p style="margin-bottom:.5rem">Thanks for joining us! If today's discussion sparked new ideas or questions, I'd encourage you to spend about 10 minutes with the complimentary Knomee experience.</p><p style="margin-bottom:.5rem">It will help you uncover your three most important money questions, and identify the topics you'd like to explore further.</p><p style="margin-bottom:.7rem">It's a meaningful next step whether you're ready to speak with an advisor or simply want greater clarity.</p><span class="pill-cta">Start your experience →</span></div>
-          </div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> a recap from a past event if you have one, or a Theme like ‘Years in the Making / The Rigor.’ Optional — choose what suits.</div>
-      </div>
-      <div class="mock">
-        <span class="mock-label">LinkedIn / Social</span>
-        <div class="frame">
-          <div class="frame-body">
-            <div class="email-from" style="margin-bottom:.6rem"><div class="email-av">A</div><div><b style="color:var(--plum)">Acme Financial Advisors</b><br><span style="color:var(--muted);font-size:.82rem">3,418 followers · Promoted</span></div></div>
-            <p>Most people spend more time planning a vacation than getting clear on what their money is really for. Here's a 10-minute way to change that. <span style="color:var(--muted)">…more</span></p>
-          </div>
-          <div class="frame-banner" style="height:150px">▶</div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> a short, editorial Theme or Interview clip (e.g. ‘Money Personality’) over a stock finance photo. Imagery is your call.</div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="warm-1"><span class="type">Email · Nurture · Option 1</span><h4>Financial planning should start with you</h4><span class="prev">We believe great financial advice starts with understanding what matters most to you…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="warm-2"><span class="type">Email · Newsletter Feature</span><h4>A new way to get clear on your goals</h4><span class="prev">A research-backed experience to help you gain clarity on what you want your wealth to make possible…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="warm-3"><span class="type">Event Invite · Pre &amp; Post</span><h4>Advisor event — before &amp; after</h4><span class="prev">Invite registrants to complete Knomee before your talk; follow up with a warm thank-you after…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="warm-4"><span class="type">LinkedIn / Social</span><h4>Planning a vacation vs. your money</h4><span class="prev">Most people spend more time planning a vacation than getting clear on what their money is for…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
       </div>
     </div>
-
-    <div class="sub reveal"><span class="k">Measure</span><h3>How You'll Know It's Working</h3><span class="line"></span></div>
-    <div class="table-wrap reveal">
-      <table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead>
-      <tbody>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
         <tr><td class="m">Increase engagement</td><td>Newsletter/email open &amp; click rate</td><td>Knomee completion rate (warm traffic)</td></tr>
         <tr><td class="m">Earn the meeting</td><td>Meeting-request rate post-completion</td><td>Time from completion to booked meeting</td></tr>
         <tr><td class="m">Deliver early value</td><td>Landing page time-on-page</td><td>Repeat visits to Knomee content</td></tr>
-      </tbody></table>
-    </div>
-    <div class="callout reveal" style="margin-top:var(--s4)">
-      <h3>The Handoff: Warm → Hot</h3>
-      <p>A warm prospect who books a meeting becomes Hot the moment the meeting is on the calendar. Move them to the Hot Lead cadence immediately — the meeting-confirmation email should go out within the same day.</p>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Warm → Hot</h3><p>A warm prospect who books a meeting becomes Hot the moment the meeting is on the calendar. Move them to the Hot cadence immediately — the confirmation email should go out the same day.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--hot)" data-go="hot">Go to Hot <span class="arw">→</span></button></p></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ HOT ══════════ -->
-<section class="section lead-hot" id="hot">
-  <div class="container">
-    <div class="lead-band reveal">
-      <span class="lead-tag">🔥 Hot Lead</span>
-      <h2>Hot</h2>
-      <p>They've agreed to meet — but they're not convinced yet. Make the first meeting feel like the tenth.</p>
+<!-- ══════ HOT ══════ -->
+<section class="view lead-hot" id="hot">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="lead-band anim"><span class="tagword">🔥 Hot Lead</span><h2>Hot</h2><p>They've agreed to meet — but they're not convinced yet. Make the first meeting feel like the tenth.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="play">Playbook <span class="c">3</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">3</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
     </div>
-
-    <dl class="dl reveal" style="margin-top:var(--s6)">
-      <div><dt>Who this is</dt><dd>Referrals, direct inquiries, prospects with a meeting on the calendar — from email, your website, or a current client.</dd></div>
-      <div><dt>They're thinking</dt><dd><em>“I've requested information or agreed to meet, but I'm not convinced this advisor is the one yet.”</em></dd></div>
-      <div><dt>Your goal</dt><dd>Build trust before the meeting, differentiate your firm, and accelerate the close.</dd></div>
-      <div class="rule"><dt>The one rule</dt><dd><strong>This is a 1:1 channel.</strong> Every message comes from the advisor, personally — not from marketing.</dd></div>
-    </dl>
-
-    <div class="sub reveal"><span class="k">Play</span><h3>Your Campaign, Step by Step</h3><span class="line"></span></div>
-    <div class="steps stagger reveal">
-      <div class="step"><span class="num-badge">1</span><div class="step-body"><strong>Meeting confirmation email</strong><p>Invite the prospect to complete Knomee before you meet.</p><span class="chip">📧 Email</span></div></div>
-      <div class="step"><span class="num-badge">2</span><div class="step-body"><strong>Reminder, 2 days before</strong><p>One version if they haven't completed Knomee, another if they have.</p><span class="chip">⏰ Reminder</span></div></div>
-      <div class="step"><span class="num-badge">3</span><div class="step-body"><strong>Meeting follow-up</strong><p>Keep the conversation open if the prospect hasn't signed yet.</p><span class="chip">🔁 Follow-up</span></div></div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>Referrals, direct inquiries, prospects with a meeting on the calendar — from email, your website, or a current client.</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I've requested information or agreed to meet, but I'm not convinced this advisor is the one yet.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Build trust before the meeting, differentiate your firm, and accelerate the close.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>This is a 1:1 channel.</strong> Every message comes from the advisor, personally — not from marketing.</dd></div>
+      </dl>
     </div>
-
-    <div class="sub reveal"><span class="k">Copy</span><h3>Sample Copy — Use As-Is or Adapt</h3><span class="line"></span></div>
-    <div class="grid grid-2 reveal">
-      <div class="mock">
-        <span class="mock-label">Email · Confirmation · Option 1</span>
-        <div class="email">
-          <div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div>
-          <div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Looking forward to meeting</div></div>
-          <div class="email-body"><p>Hi [First Name],</p><p>I'm looking forward to our meeting. Before we get together, I'd like to invite you to spend 10 minutes with Knomee — a guided experience that helps clarify what matters most to you and identify your top financial questions.</p><p>Most financial conversations start with your money. This one starts with you.</p><p>I'll review your responses so our time together stays focused on what matters most.</p><a class="email-cta">Access your Knomee experience here →</a></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> an Interview such as ‘Context’ or ‘What Wealth Doesn't Solve,’ linked under the CTA. Use it or skip it.</div>
-      </div>
-      <div class="mock">
-        <span class="mock-label">Email · Reminder · Option 2 · 2 days before</span>
-        <div class="email">
-          <div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div>
-          <div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick reminder before we meet</div></div>
-          <div class="email-body"><p>Before our meeting on [Day], a quick reminder about Knomee.</p><p>It takes about 10 minutes and helps you reflect on what you want your wealth to make possible. Many people tell us it gives them real clarity.</p><p>I hope you'll have a chance to complete it before we meet.</p><a class="email-cta">Complete Knomee →</a></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> the same Interview as the confirmation email, or a brief personal note from the advisor. Your call.</div>
+    <div class="tabpanel" data-panel="play">
+      <div class="steps">
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>Meeting confirmation email</strong><p>Invite the prospect to complete Knomee before you meet.</p><span class="chip">📧 Email</span></div></div>
+        <div class="step"><span class="num">2</span><div class="step-body"><strong>Reminder, 2 days before</strong><p>One version if they haven't completed Knomee, another if they have.</p><span class="chip">⏰ Reminder</span></div></div>
+        <div class="step"><span class="num">3</span><div class="step-body"><strong>Meeting follow-up</strong><p>Keep the conversation open if the prospect hasn't signed yet.</p><span class="chip">🔁 Follow-up</span></div></div>
       </div>
     </div>
-    <div class="grid grid-2 reveal" style="margin-top:var(--s4)">
-      <div class="mock">
-        <span class="mock-label">Meeting Follow-Up · Prospect not closed yet</span>
-        <div class="email">
-          <div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div>
-          <div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Continuing our conversation</div></div>
-          <div class="email-body"><p>Thank you again for meeting with me — I really enjoyed our conversation.</p><p>As you consider your next steps, I'm happy to answer any questions or continue the conversation. I look forward to hearing from you.</p><a class="email-cta">Continue the conversation →</a></div>
-        </div>
-        <div class="pairing"><b>Suggested pairing:</b> no image or video here — this is a 1:1, personal message. Entirely your call.</div>
-      </div>
-      <div class="callout" style="align-self:start">
-        <h3>Remember the one rule</h3>
-        <p>This is a 1:1 channel. Every message in this section comes from the advisor personally — never from a marketing address.</p>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="hot-1"><span class="type">Email · Confirmation</span><h4>Looking forward to meeting</h4><span class="prev">Before we get together, I'd like to invite you to spend 10 minutes with Knomee…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="hot-2"><span class="type">Email · Reminder · 2 days before</span><h4>A quick reminder before we meet</h4><span class="prev">It takes about 10 minutes and helps you reflect on what you want your wealth to make possible…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="hot-3"><span class="type">Meeting Follow-Up</span><h4>Continuing our conversation</h4><span class="prev">Thank you again for meeting with me — I really enjoyed our conversation…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
       </div>
     </div>
-
-    <div class="sub reveal"><span class="k">Measure</span><h3>How You'll Know It's Working</h3><span class="line"></span></div>
-    <div class="table-wrap reveal">
-      <table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead>
-      <tbody>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
         <tr><td class="m">Build trust before the meeting</td><td>Knomee completion rate (hot traffic)</td><td>Time from invite to completion</td></tr>
-        <tr><td class="m">Differentiate your firm</td><td>Meeting show-rate</td><td>Prospect engagement in-meeting (advisor-reported)</td></tr>
+        <tr><td class="m">Differentiate your firm</td><td>Meeting show-rate</td><td>Prospect engagement in-meeting</td></tr>
         <tr><td class="m">Accelerate the close</td><td>Close rate post-Knomee vs. baseline</td><td>Time from first meeting to signed client</td></tr>
-      </tbody></table>
-    </div>
-    <div class="callout reveal" style="margin-top:var(--s4)">
-      <h3>The Handoff: Hot → Client</h3>
-      <p>The moment a hot prospect signs, they become a client — and a completely different playbook takes over. See the companion <strong>Client Playbook</strong> for how to keep them engaged from day one.</p>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Hot → Client</h3><p>The moment a hot prospect signs, they become a client — and a completely different playbook takes over. See the companion <strong>Client Playbook</strong> for how to keep them engaged from day one.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ══ LANDING ══ -->
-<section class="section section--fog" id="landing">
-  <div class="container">
-    <div class="head reveal">
-      <span class="eyebrow">The Destination</span>
-      <h2 class="section-title">Your Landing Page</h2>
-      <p class="section-intro">Every channel in this playbook points to one destination: your firm-branded Knomee landing page. Fully brandable for your firm.</p>
-    </div>
-    <div class="grid" style="grid-template-columns:1.1fr .9fr;gap:clamp(1.5rem,3vw,2.5rem);align-items:start">
-      <div class="lp reveal">
+<section class="view" id="landing">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">The Destination</span><h2 class="h2">Your Landing Page</h2><p class="intro">Every channel in this playbook points to one destination: your firm-branded Knomee landing page. Fully brandable for your firm.</p></div>
+    <div class="two-col">
+      <div class="lp anim">
         <div class="lp-top"><svg viewBox="0 0 135 24" fill="none"><use href="#knomee-logo"></use></svg>ACME ADVISORS</div>
         <div class="lp-hero"><h3>Welcome!<br>Wealth is about experiencing life fully.</h3><p>Take a few minutes to get clear on what matters most and what your money is really for.</p>
           <div class="lp-tiles">
@@ -748,13 +638,13 @@
         </div>
         <div class="lp-foot"><span class="btn btn-primary" style="background:var(--plum)">Discover Financial Joy</span><div style="margin-top:.6rem;color:var(--muted);font-size:.85rem">⏱ Est time: 8 min</div></div>
       </div>
-      <div class="reveal">
+      <div class="anim d1">
         <h3 style="font-size:var(--fs-h3);color:var(--plum);font-weight:700;margin-bottom:1.2rem">Four Rules for the Page</h3>
-        <div class="steps stagger">
-          <div class="step" style="--lead:var(--grape);--lead-tint:var(--fog)"><span class="num-badge">1</span><div class="step-body"><strong>Lead with the person, not the product.</strong><p>Prospects should never feel this is a pitch to buy something.</p></div></div>
-          <div class="step" style="--lead:var(--grape);--lead-tint:var(--fog)"><span class="num-badge">2</span><div class="step-body"><strong>Reduce friction.</strong><p>State the time commitment up front, make clear it's free, and show what they get immediately.</p></div></div>
-          <div class="step" style="--lead:var(--grape);--lead-tint:var(--fog)"><span class="num-badge">3</span><div class="step-body"><strong>One primary CTA.</strong><p>One path, no competing buttons.</p></div></div>
-          <div class="step" style="--lead:var(--grape);--lead-tint:var(--fog)"><span class="num-badge">4</span><div class="step-body"><strong>Show your firm.</strong><p>Your logo, brand colors, and a real advisor photo. Familiarity is a trust signal.</p></div></div>
+        <div class="steps" style="--lead:var(--grape);--lead-tint:var(--fog)">
+          <div class="step"><span class="num">1</span><div class="step-body"><strong>Lead with the person, not the product.</strong><p>Prospects should never feel this is a pitch to buy something.</p></div></div>
+          <div class="step"><span class="num">2</span><div class="step-body"><strong>Reduce friction.</strong><p>State the time commitment up front, make clear it's free, and show what they get immediately.</p></div></div>
+          <div class="step"><span class="num">3</span><div class="step-body"><strong>One primary CTA.</strong><p>One path, no competing buttons.</p></div></div>
+          <div class="step"><span class="num">4</span><div class="step-body"><strong>Show your firm.</strong><p>Your logo, brand colors, and a real advisor photo. Familiarity is a trust signal.</p></div></div>
         </div>
       </div>
     </div>
@@ -762,145 +652,190 @@
 </section>
 
 <!-- ══ TESTING ══ -->
-<section class="section" id="testing">
-  <div class="container">
-    <div class="head reveal">
-      <span class="eyebrow">Optimize</span>
-      <h2 class="section-title">Test Before You Launch</h2>
-      <p class="section-intro">Don't guess which message will land — test it. Knomee supports UTM tags so you can see exactly which channel, campaign, and message drives completions (not just clicks).</p>
+<section class="view" id="testing">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Optimize</span><h2 class="h2">Test Before You Launch</h2><p class="intro">Don't guess which message will land — test it. Knomee supports UTM tags so you can see exactly which channel, campaign, and message drives completions (not just clicks).</p></div>
+    <div class="steps stagger" style="--lead:var(--grape);--lead-tint:var(--fog)">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Copy</strong> your prospect invite URL from the Knomee Advisor dashboard.</div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Tag</strong> it with UTM parameters. <span style="font-family:ui-monospace,monospace;font-size:.9rem;color:var(--grape);word-break:break-all">knomeeurl.com/?utm_source=email&amp;utm_campaign=cold_email&amp;utm_content=option1</span></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Read</strong> Knomee's traffic report to find your most effective channel and message — then adapt.</div></div>
     </div>
-    <div class="steps stagger reveal" style="--lead:var(--grape);--lead-tint:var(--fog)">
-      <div class="step"><span class="num-badge">1</span><div class="step-body"><strong>Copy</strong> your prospect invite URL from the Knomee Advisor dashboard.</div></div>
-      <div class="step"><span class="num-badge">2</span><div class="step-body"><strong>Tag</strong> it with UTM parameters. <span style="font-family:ui-monospace,monospace;font-size:.9rem;color:var(--grape);word-break:break-all">knomeeurl.com/?utm_source=email&amp;utm_campaign=cold_email&amp;utm_content=option1</span></div></div>
-      <div class="step"><span class="num-badge">3</span><div class="step-body"><strong>Read</strong> Knomee's traffic report to find your most effective channel and message — then adapt.</div></div>
-    </div>
-    <div class="callout reveal" style="--lead:var(--grape);--lead-tint:var(--fog);margin-top:var(--s4)">
-      <h3>The 10% Rule</h3>
-      <p>Send each new campaign to 10% of your list first, with 2–3 message variants. Once you know what works, launch the winner to the rest. This playbook's Option 1 / Option 2 samples are built to be your first A/B test.</p>
-    </div>
+    <div class="callout anim" style="--lead:var(--grape);--lead-tint:var(--fog);margin-top:var(--s4)"><h3>The 10% Rule</h3><p>Send each new campaign to 10% of your list first, with 2–3 message variants. Once you know what works, launch the winner to the rest. This playbook's Option 1 / Option 2 samples are built to be your first A/B test.</p></div>
   </div>
 </section>
 
 <!-- ══ APPENDIX ══ -->
-<section class="section section--fog" id="appendix">
-  <div class="container">
-    <div class="head reveal">
-      <span class="eyebrow">Reference</span>
-      <h2 class="section-title">Appendix · Video Library &amp; Planner</h2>
-      <p class="section-intro">Your firm has access to a library of <strong>~28 Knomee videos</strong> across four categories. Use this planner to match each category to the right stage and channel, then pull the files you need from the Drive library below.</p>
-    </div>
-    <div class="table-wrap reveal">
-      <table class="t"><thead><tr><th>Category</th><th>Stage</th><th>What's inside</th><th>Where to embed</th></tr></thead>
-      <tbody>
-        <tr><td><span class="m">Videos</span><br><span style="font-size:.82rem;color:var(--muted)">6 short concept pieces</span></td><td><span class="stage c">Cold</span></td><td>Financial Joy · Meaning over Returns · The Questions You Never Ask · The Thinking Partner · Transitions Scramble What You Thought You Wanted · When Life Changes, Money Changes</td><td>Paid social, display, landing page hero</td></tr>
-        <tr><td><span class="m">Themes</span><br><span style="font-size:.82rem;color:var(--muted)">12 value / explainer pieces</span></td><td><span class="stage w">Warm</span></td><td>Years in the Making / The Rigor · Wealth Creates More Decisions, Not Fewer · Smart People, Emotional Decisions · Prepare for the Conversation · Money Personality · Money Anxiety · Financial Joy / Your “Why” — several in v1/v2 cuts for A/B testing</td><td>Nurture emails, newsletter, LinkedIn</td></tr>
-        <tr><td><span class="m">Interviews</span><br><span style="font-size:.82rem;color:var(--muted)">4 first-person stories</span></td><td><span class="stage w">Warm</span><span class="stage h">Hot</span></td><td>Context · Nobody Ever Asked Me That · The Most Expensive Mistake · What Wealth Doesn't Solve</td><td>Newsletter features, pre-meeting emails</td></tr>
-        <tr><td><span class="m">Adventure Teaching Scripts</span><br><span style="font-size:.82rem;color:var(--muted)">6-part educational series</span></td><td><span class="stage w">Warm</span></td><td>Financial Joy · Confidence · Outlook · Future You · Goals · What Wealth Doesn't Solve</td><td>Recurring newsletter block or drip sequence</td></tr>
-      </tbody></table>
-    </div>
-    <div class="callout reveal" style="margin-top:var(--s4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;--lead:var(--grape);--lead-tint:#fff;border:1px solid var(--line)">
+<section class="view" id="appendix">
+  <div class="container section">
+    <span class="backlink" data-go="home">← Home</span>
+    <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Video Library &amp; Planner</h2><p class="intro">Your firm has access to <strong>~28 Knomee videos</strong> across four categories. Match each category to the right stage and channel, then pull the files you need from the Drive library.</p></div>
+    <div class="table-wrap anim"><table class="t"><thead><tr><th>Category</th><th>Stage</th><th>What's inside</th><th>Where to embed</th></tr></thead><tbody>
+      <tr><td><span class="m">Videos</span><br><span style="font-size:.82rem;color:var(--muted)">6 short concept pieces</span></td><td><span class="stage c">Cold</span></td><td>Financial Joy · Meaning over Returns · The Questions You Never Ask · The Thinking Partner · Transitions Scramble What You Thought You Wanted · When Life Changes, Money Changes</td><td>Paid social, display, landing page hero</td></tr>
+      <tr><td><span class="m">Themes</span><br><span style="font-size:.82rem;color:var(--muted)">12 value / explainer pieces</span></td><td><span class="stage w">Warm</span></td><td>Years in the Making / The Rigor · Wealth Creates More Decisions, Not Fewer · Smart People, Emotional Decisions · Prepare for the Conversation · Money Personality · Money Anxiety · Financial Joy / Your “Why” — several in v1/v2 cuts</td><td>Nurture emails, newsletter, LinkedIn</td></tr>
+      <tr><td><span class="m">Interviews</span><br><span style="font-size:.82rem;color:var(--muted)">4 first-person stories</span></td><td><span class="stage w">Warm</span><span class="stage h">Hot</span></td><td>Context · Nobody Ever Asked Me That · The Most Expensive Mistake · What Wealth Doesn't Solve</td><td>Newsletter features, pre-meeting emails</td></tr>
+      <tr><td><span class="m">Adventure Teaching Scripts</span><br><span style="font-size:.82rem;color:var(--muted)">6-part educational series</span></td><td><span class="stage w">Warm</span></td><td>Financial Joy · Confidence · Outlook · Future You · Goals · What Wealth Doesn't Solve</td><td>Recurring newsletter block or drip sequence</td></tr>
+    </tbody></table></div>
+    <div class="callout anim" style="margin-top:var(--s4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;--lead:var(--grape);--lead-tint:#fff;border:1px solid var(--line)">
       <div><h3 style="color:var(--plum)">Browse the full library in Google Drive</h3><p>All ~28 videos, ready to embed — open the folder and pick the files that fit the plan above.</p></div>
       <a href="https://drive.google.com/" target="_blank" rel="noopener" class="btn btn-primary" style="background:var(--plum)">▶ Open the Video Library <span class="arw">→</span></a>
     </div>
-    <p class="reveal" style="margin-top:1.2rem;font-style:italic;color:var(--muted);font-size:.95rem">The v1/v2 Theme cuts are built for the 10% A/B test in “Test Before You Launch” — send both variants to your test group, then roll the winner out. Tip: tag every video link with <code>utm_content=</code> so the traffic report shows which videos actually drive completions.</p>
+    <p class="anim" style="margin-top:1.2rem;font-style:italic;color:var(--muted);font-size:.95rem">The v1/v2 Theme cuts are built for the 10% A/B test in “Test &amp; Learn.” Tip: tag every video link with <code>utm_content=</code> so the traffic report shows which videos drive completions.</p>
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
-<footer class="footer">
-  <div class="container">
-    <div style="display:flex;align-items:center;gap:1rem"><svg viewBox="0 0 236 24" fill="none" style="width:150px"><use href="#pb-logo"></use></svg></div>
-    <div style="font-size:.85rem">© Knomee | Confidential · Prospect Playbook · Wealth Management Edition · V1 · 2026 · <a href="prospect-playbook-pdf.html">Printable / PDF version →</a></div>
+</main>
+
+<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Prospect Playbook · V1 · 2026 · <a data-go="home" style="cursor:pointer">Home</a> · <a href="prospect-playbook-pdf.html">Printable / PDF version →</a></div></div></footer>
+
+<!-- ── SLIDE-OVER ── -->
+<div class="sheet-back" id="sheetBack"></div>
+<aside class="sheet" id="sheet" aria-label="Sample">
+  <div class="sheet-head"><span class="st" id="sheetType">Sample</span><button class="sheet-x" id="sheetX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
+</aside>
+
+<!-- ── SAMPLE STORE (hidden source content) ── -->
+<div class="sample-store" id="sampleStore">
+  <div data-sample-id="cold-1" data-type="Email · Option 1 · Curiosity" class="lead-cold">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A different kind of financial question</div></div><div class="email-body" data-copy><p>Hi [First Name],</p><p>Most financial outreach starts with a pitch. This one starts with a question: what do you actually want your money to do for you?</p><p>We built Knomee, a free 10-minute experience, to help you find out — no meeting required, no obligation.</p><p>Best, [Advisor Name], [Firm Name]</p><a class="email-cta">Start your Knomee experience →</a></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a short awareness Video from the Appendix library — e.g. ‘Meaning over Returns’ or ‘The Questions You Never Ask.’ Optional.</div>
   </div>
-</footer>
+  <div data-sample-id="cold-2" data-type="Email · Option 2 · No strings" class="lead-cold">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">What matters more than the market?</div></div><div class="email-body" data-copy><p>Hi [First Name],</p><p>I don't know if you're looking for an advisor — most people who get this email aren't. But I wanted to share something worth 10 minutes of your time regardless: Knomee, a free tool to help you gain clarity on your financial goals and values.</p><p>No strings attached.</p><p>Best, [Advisor Name], [Firm Name]</p><a class="email-cta">Try it here →</a></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> no image here — a plain, personal-looking email tends to land best on a first touch. Your call.</div>
+  </div>
+  <div data-sample-id="cold-3" data-type="Paid Social / Display Ad" class="lead-cold">
+    <div class="frame"><div class="frame-banner">👤</div><div class="frame-body" data-copy><div class="kicker">Sponsored</div><h4>What is your money really for?</h4><p>For most of our lives, we trade our time for money — yet we spend almost none of it getting clear on what that money is actually for. In about 10 minutes, Knomee helps you find out. Free, no obligation.</p><span class="pill-cta">Discover Financial Joy</span></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a short awareness Video such as ‘Financial Joy’ or ‘When Life Changes, Money Changes,’ or a real, editorial human face.</div>
+  </div>
+  <div data-sample-id="cold-4" data-type="Direct Mail · Postcard" class="lead-cold">
+    <div class="frame"><div class="frame-body" data-copy><div class="kicker">Front</div><p class="quote">“Most financial advice starts with your money. This starts with you.”</p><div class="kicker" style="margin-top:1.2rem">Back</div><p>Ten minutes. No cost. No sales call. Knomee helps you get clear on your goals and values before you ever talk to anyone. Scan to begin.</p><p style="color:var(--plum);font-weight:600">[QR CODE → Knomee landing page, direct-mail UTM tag]</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a life-stage moment your audience recognizes (family dinner, handing over the car keys) over a product shot.</div>
+  </div>
+  <div data-sample-id="warm-1" data-type="Email · Nurture · Option 1" class="lead-warm">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Financial planning should start with you</div></div><div class="email-body" data-copy><p>Hi [First Name],</p><p>At [Firm Name], we believe great financial advice starts with understanding what matters most to you — not just your assets, but your goals, priorities, and the life you want to build.</p><p>That's why we've introduced a complimentary experience powered by Knomee, designed to help you gain clarity about what matters most. It takes about 10 minutes.</p><p>Best, [Advisor Name], [Firm Name]</p><a class="email-cta">Start your Knomee experience →</a></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a Theme video like ‘Prepare for the Conversation’ or ‘Smart People, Emotional Decisions,’ below the CTA.</div>
+  </div>
+  <div data-sample-id="warm-2" data-type="Email · Newsletter Feature" class="lead-warm">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A new way to get clear on your goals</div></div><div class="email-body" data-copy><p>We're excited to introduce Knomee, a research-backed experience to help you gain clarity on what you want your wealth to make possible.</p><p>It takes about 10 minutes, and there's no cost or obligation.</p><a class="email-cta">Try it here →</a></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> an Interview such as ‘Nobody Ever Asked Me That,’ or an Adventure Teaching Script from the series.</div>
+  </div>
+  <div data-sample-id="warm-3" data-type="Event Invite · Pre & Post" class="lead-warm">
+    <div class="frame"><div style="background:var(--warm);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem">🗓 Advisor Event</div><div class="frame-body" data-copy><div class="kicker">Before the event</div><p>Invite registrants to complete Knomee before your talk — it helps you tailor the room and gives them a head start on the topic.</p><div class="kicker" style="margin-top:1rem">After the event</div><p>Thanks for joining us! If today's discussion sparked new ideas or questions, I'd encourage you to spend about 10 minutes with the complimentary Knomee experience.</p><p>It will help you uncover your three most important money questions, and identify the topics you'd like to explore further.</p><p>It's a meaningful next step whether you're ready to speak with an advisor or simply want greater clarity.</p><span class="pill-cta">Start your experience →</span></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a recap from a past event, or a Theme like ‘Years in the Making / The Rigor.’</div>
+  </div>
+  <div data-sample-id="warm-4" data-type="LinkedIn / Social" class="lead-warm">
+    <div class="frame"><div class="frame-body" data-copy><div class="email-from" style="margin-bottom:.6rem"><div class="email-av">A</div><div><b style="color:var(--plum)">Acme Financial Advisors</b><br><span style="color:var(--muted);font-size:.82rem">3,418 followers · Promoted</span></div></div><p>Most people spend more time planning a vacation than getting clear on what their money is really for. Here's a 10-minute way to change that.</p></div><div class="frame-banner" style="height:150px">▶</div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a short, editorial Theme or Interview clip (e.g. ‘Money Personality’) over a stock finance photo.</div>
+  </div>
+  <div data-sample-id="hot-1" data-type="Email · Confirmation" class="lead-hot">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Looking forward to meeting</div></div><div class="email-body" data-copy><p>Hi [First Name],</p><p>I'm looking forward to our meeting. Before we get together, I'd like to invite you to spend 10 minutes with Knomee — a guided experience that helps clarify what matters most to you and identify your top financial questions.</p><p>Most financial conversations start with your money. This one starts with you.</p><p>I'll review your responses so our time together stays focused on what matters most.</p><a class="email-cta">Access your Knomee experience here →</a></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> an Interview such as ‘Context’ or ‘What Wealth Doesn't Solve,’ linked under the CTA.</div>
+  </div>
+  <div data-sample-id="hot-2" data-type="Email · Reminder · 2 days before" class="lead-hot">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick reminder before we meet</div></div><div class="email-body" data-copy><p>Before our meeting on [Day], a quick reminder about Knomee.</p><p>It takes about 10 minutes and helps you reflect on what you want your wealth to make possible. Many people tell us it gives them real clarity.</p><p>I hope you'll have a chance to complete it before we meet.</p><a class="email-cta">Complete Knomee →</a></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> the same Interview as the confirmation email, or a brief personal note from the advisor.</div>
+  </div>
+  <div data-sample-id="hot-3" data-type="Meeting Follow-Up" class="lead-hot">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Continuing our conversation</div></div><div class="email-body" data-copy><p>Thank you again for meeting with me — I really enjoyed our conversation.</p><p>As you consider your next steps, I'm happy to answer any questions or continue the conversation. I look forward to hearing from you.</p><a class="email-cta">Continue the conversation →</a></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> no image or video here — this is a 1:1, personal message. Every message comes from the advisor personally, never a marketing address.</div>
+  </div>
+</div>
 
 <script>
 (function(){
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var sections = Array.prototype.slice.call(document.querySelectorAll('section[id], header[id]'));
   var meta = {
-    home:['01','Top','Cover & welcome'],
-    'how-to-use':['02','How to Use','Lead types & walkthrough'],
-    experience:['03','The Experience','What prospects go through'],
-    setup:['04','5-Step Setup','The one framework'],
-    baseline:['05','Baseline','Know your starting point'],
-    cold:['06','Cold','Spark curiosity'],
-    warm:['07','Warm','Deliver value first'],
-    hot:['08','Hot','Build trust, close'],
-    landing:['09','Landing Page','One destination'],
-    testing:['10','Test & Learn','UTM & the 10% rule'],
-    appendix:['11','Appendix','Video library & planner']
+    home:['','Home','Start here'],
+    'how-to-use':['01','How to Use','Lead types & walkthrough'],
+    experience:['02','The Experience','What prospects go through'],
+    setup:['03','5-Step Setup','The one framework'],
+    baseline:['04','Baseline','Know your starting point'],
+    cold:['05','Cold','Spark curiosity'],
+    warm:['06','Warm','Deliver value first'],
+    hot:['07','Hot','Build trust, close'],
+    landing:['08','Landing Page','One destination'],
+    testing:['09','Test & Learn','UTM & the 10% rule'],
+    appendix:['10','Appendix','Video library & planner']
   };
+  var views = {}; document.querySelectorAll('.view').forEach(function(v){ views[v.id]=v; });
+  var navLinks = {}; document.querySelectorAll('#navLinks a').forEach(function(a){ navLinks[a.getAttribute('data-go')]=a; });
 
-  /* build side dots + mobile drawer from sections */
-  var dots = document.getElementById('dots');
-  var drawerList = document.getElementById('drawerList');
-  sections.forEach(function(s){
-    var m = meta[s.id]; if(!m) return;
-    var b = document.createElement('button');
-    b.setAttribute('data-target', s.id);
-    b.innerHTML = '<span class="lbl">'+m[1]+'</span>';
-    b.addEventListener('click', function(){ jump(s.id); });
-    dots.appendChild(b);
-    var a = document.createElement('a');
-    a.href = '#'+s.id;
-    a.innerHTML = '<span class="n">'+m[0]+'</span><span class="t">'+m[1]+'</span><span class="d">'+m[2]+'</span>';
-    a.addEventListener('click', function(){ closeDrawer(); });
-    drawerList.appendChild(a);
+  var dl = document.getElementById('drawerList');
+  Object.keys(meta).forEach(function(id){
+    var m=meta[id]; var a=document.createElement('a'); a.setAttribute('data-go',id);
+    a.innerHTML='<span class="n">'+(m[0]||'◆')+'</span><span class="t">'+m[1]+'</span><span class="d">'+m[2]+'</span>';
+    dl.appendChild(a);
   });
 
-  var NAV_H = 58;
-  function jump(id){
-    var el = document.getElementById(id); if(!el) return;
-    var y = el.getBoundingClientRect().top + window.scrollY - NAV_H;
-    window.scrollTo({top:y, behavior: reduce ? 'auto':'smooth'});
+  function selectTab(group, name){
+    group.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-tab')===name); });
+    var view = group.closest('.view');
+    view.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-panel')===name); });
   }
-  /* offset-aware anchor clicks */
+  document.querySelectorAll('[data-tabs] .tab').forEach(function(t){
+    t.addEventListener('click', function(){ selectTab(t.closest('[data-tabs]'), t.getAttribute('data-tab')); });
+  });
+
+  function setView(id, push){
+    if(!views[id]) id='home';
+    Object.keys(views).forEach(function(k){ views[k].classList.toggle('active', k===id); });
+    Object.keys(navLinks).forEach(function(k){ navLinks[k].classList.toggle('active', k===id); });
+    var v=views[id]; var tg=v.querySelector('[data-tabs]');
+    if(tg){ selectTab(tg, tg.querySelector('.tab').getAttribute('data-tab')); }
+    window.scrollTo({top:0,behavior:'auto'});
+    if(push!==false && location.hash.slice(1)!==id){ history.pushState({v:id},'', '#'+id); }
+    document.title = (id==='home'?'':meta[id][1]+' · ')+'Knomee — The Prospect Playbook';
+  }
+  function go(id){ closeDrawer(); setView(id); }
+
   document.addEventListener('click', function(e){
-    var a = e.target.closest && e.target.closest('a[href^="#"]');
-    if(!a) return; var id = a.getAttribute('href').slice(1); if(!id || !document.getElementById(id)) return;
-    e.preventDefault(); jump(id); history.replaceState(null,'','#'+id);
+    var el = e.target.closest && e.target.closest('[data-go]');
+    if(el){ e.preventDefault(); go(el.getAttribute('data-go')); }
   });
+  window.addEventListener('popstate', function(){ setView(location.hash.slice(1)||'home', false); });
 
-  /* scroll reveal */
-  if('IntersectionObserver' in window && !reduce){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
-    document.querySelectorAll('.reveal,.stagger').forEach(function(el){ io.observe(el); });
-  } else {
-    document.querySelectorAll('.reveal,.stagger').forEach(function(el){ el.classList.add('in'); });
+  /* slide-over */
+  var store = document.getElementById('sampleStore');
+  var sheet=document.getElementById('sheet'), back=document.getElementById('sheetBack');
+  var sheetBody=document.getElementById('sheetBody'), sheetType=document.getElementById('sheetType');
+  var copyBtn=document.getElementById('copyBtn');
+  function openSheet(id){
+    var node = store.querySelector('[data-sample-id="'+id+'"]'); if(!node) return;
+    sheetBody.innerHTML = node.innerHTML;
+    sheetType.textContent = node.getAttribute('data-type');
+    sheet.classList.remove('lead-cold','lead-warm','lead-hot');
+    (node.className.match(/lead-\w+/g)||[]).forEach(function(c){ sheet.classList.add(c); });
+    resetCopy();
+    back.classList.add('open'); sheet.classList.add('open');
+    document.body.style.overflow='hidden';
   }
+  function closeSheet(){ back.classList.remove('open'); sheet.classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('[data-sample]').forEach(function(c){ c.addEventListener('click', function(){ openSheet(c.getAttribute('data-sample')); }); });
+  document.getElementById('sheetX').addEventListener('click', closeSheet);
+  back.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
 
-  /* active section + progress + backtop */
-  var navA = {}; document.querySelectorAll('#navLinks a').forEach(function(a){ navA[a.getAttribute('href').slice(1)]=a; });
-  var dotB = {}; dots.querySelectorAll('button').forEach(function(b){ dotB[b.getAttribute('data-target')]=b; });
-  var progress = document.getElementById('progress');
-  var backtop = document.getElementById('backtop');
-  var current = null;
-  function onScroll(){
-    var sc = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.width = (h>0 ? (sc/h*100):0) + '%';
-    backtop.classList.toggle('show', sc > window.innerHeight*0.6);
-    var mid = sc + window.innerHeight*0.35, act = sections[0].id;
-    for(var i=0;i<sections.length;i++){ if(sections[i].offsetTop <= mid) act = sections[i].id; }
-    if(act!==current){
-      current = act;
-      Object.keys(navA).forEach(function(k){ navA[k].classList.toggle('active', k===act); });
-      Object.keys(dotB).forEach(function(k){ dotB[k].classList.toggle('active', k===act); });
-    }
-  }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  window.addEventListener('resize', onScroll); onScroll();
+  function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy text'; }
+  copyBtn.addEventListener('click', function(){
+    var src = sheetBody.querySelector('[data-copy]') || sheetBody;
+    var text = src.innerText.replace(/\n{3,}/g,'\n\n').trim();
+    var done=function(){ copyBtn.classList.add('done'); copyBtn.querySelector('span').textContent='Copied!'; setTimeout(resetCopy,1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); }
+    else fallback();
+    function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
+  });
 
   /* mobile drawer */
-  var drawer = document.getElementById('drawer');
+  var drawer=document.getElementById('drawer');
   function openDrawer(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; }
-  function closeDrawer(){ drawer.classList.remove('open'); document.body.style.overflow=''; }
+  function closeDrawer(){ drawer.classList.remove('open'); if(!sheet.classList.contains('open')) document.body.style.overflow=''; }
   document.getElementById('menuBtn').addEventListener('click', openDrawer);
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
   drawer.addEventListener('click', function(e){ if(e.target===drawer) closeDrawer(); });
-  document.getElementById('backtop').addEventListener('click', function(){ jump('home'); });
+
+  setView(location.hash.slice(1)||'home', false);
 })();
 </script>
 </body>
