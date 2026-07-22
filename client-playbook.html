@@ -736,6 +736,9 @@
     if(el){ e.preventDefault(); go(el.getAttribute('data-go')); }
   });
   window.addEventListener('popstate', function(){
+    /* if a sample tray is open, Back should close it — not change the page */
+    if(sheetBackPending){ sheetBackPending=false; return; }
+    if(sheet.classList.contains('open')){ closeSheet(true); return; }
     var id = location.hash.slice(1)||'home';
     if(navStack[navStack.length-1]===id){ navStack.pop(); }
     setView(id, false);
@@ -746,6 +749,7 @@
   var sheet=document.getElementById('sheet'), back=document.getElementById('sheetBack');
   var sheetBody=document.getElementById('sheetBody'), sheetType=document.getElementById('sheetType');
   var copyBtn=document.getElementById('copyBtn');
+  var sheetBackPending=false; /* true while a manual close consumes its own history entry */
   function openSheet(id){
     var node = store.querySelector('[data-sample-id="'+id+'"]'); if(!node) return;
     sheetBody.innerHTML = node.innerHTML;
@@ -753,13 +757,21 @@
     sheet.classList.remove('lead-engaged','lead-disengaged');
     (node.className.match(/lead-\w+/g)||[]).forEach(function(c){ sheet.classList.add(c); });
     resetCopy();
+    var wasOpen = sheet.classList.contains('open');
     back.classList.add('open'); sheet.classList.add('open');
     document.body.style.overflow='hidden';
+    /* push a history entry so the Back button closes the tray, not the page */
+    if(!wasOpen){ history.pushState({sheet:true},'',location.href); }
   }
-  function closeSheet(){ back.classList.remove('open'); sheet.classList.remove('open'); document.body.style.overflow=''; }
+  function closeSheet(fromPop){
+    if(!sheet.classList.contains('open')) return;
+    back.classList.remove('open'); sheet.classList.remove('open'); document.body.style.overflow='';
+    /* if closed by the user (not the Back button), consume the tray's history entry */
+    if(!fromPop){ sheetBackPending=true; history.back(); }
+  }
   document.querySelectorAll('[data-sample]').forEach(function(c){ c.addEventListener('click', function(){ openSheet(c.getAttribute('data-sample')); }); });
-  document.getElementById('sheetX').addEventListener('click', closeSheet);
-  back.addEventListener('click', closeSheet);
+  document.getElementById('sheetX').addEventListener('click', function(){ closeSheet(); });
+  back.addEventListener('click', function(){ closeSheet(); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
 
   function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy text'; }
