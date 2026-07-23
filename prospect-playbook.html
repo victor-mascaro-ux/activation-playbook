@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>/* review: open inside the Knomee commenting shell unless already framed or ?raw=1 */(function(){try{if(window.top===window.self&&!/[?&](raw|edit)=1/.test(location.search)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html'));}}catch(e){}})();</script>
+<script>/* Live pages load directly (no commenting). The editor (?edit=1) runs inside the commenting shell. */(function(){try{if(window.top!==window.self)return;var s=location.search;if(/[?&]raw=1/.test(s))return;if(/[?&]edit=1/.test(s)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html')+'&edit=1');}}catch(e){}})();</script>
 <title>Knomee — The Prospect Playbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">

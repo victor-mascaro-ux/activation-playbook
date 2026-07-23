@@ -387,13 +387,16 @@
   <div class="cc-frame" id="ccFrame">
     <iframe id="ccProto" src="home.html" title="Prototype"></iframe>
     <script>
-      /* Let the shell comment on any page: index.html?page=<file> */
+      /* Let the shell comment on any page: index.html?page=<file>
+         (&edit=1 loads that page in its editable mode inside the shell). */
       (function(){
         var ok=['home.html','prospect-playbook.html','client-playbook.html','knomee_playbook.html'];
-        var pg=new URLSearchParams(location.search).get('page');
+        var qs=new URLSearchParams(location.search);
+        var pg=qs.get('page');
         if(pg && ok.indexOf(pg)!==-1){
+          var src=pg+(qs.get('edit')==='1'?'?edit=1':'');
           var f=document.getElementById('ccProto');
-          if(f && f.getAttribute('src')!==pg) f.src=pg;
+          if(f && f.getAttribute('src')!==src) f.src=src;
         }
       })();
     </script>
