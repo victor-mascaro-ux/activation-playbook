@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>/* review: open inside the Knomee commenting shell unless already framed or ?raw=1 */(function(){try{if(window.top===window.self&&!/[?&]raw=1/.test(location.search)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html'));}}catch(e){}})();</script>
+<script>/* review: open inside the Knomee commenting shell unless already framed or ?raw=1 */(function(){try{if(window.top===window.self&&!/[?&](raw|edit)=1/.test(location.search)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html'));}}catch(e){}})();</script>
 <title>Knomee — The Prospect Playbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
@@ -297,7 +297,23 @@
   }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   .sample-store{display:none}
+
+  /* ── live content editor (?edit=1) ── */
+  .ce-bar{display:none}
+  body.ce-on{padding-bottom:66px}
+  body.ce-on .ce-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:200;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--plum);color:#fff;padding:.7rem clamp(1rem,3vw,1.4rem);box-shadow:0 -6px 24px rgba(0,0,0,.28)}
+  .ce-bar .ce-badge{font-weight:700;background:var(--aqua);color:var(--plum);padding:.32rem .85rem;border-radius:999px;font-size:.82rem;letter-spacing:.02em}
+  .ce-bar .ce-hint{font-size:.85rem;color:rgba(255,255,255,.72);font-weight:300}
+  .ce-bar .ce-status{margin-left:auto;font-size:.82rem;color:var(--aqua);font-weight:600;min-width:5.5rem;text-align:right}
+  .ce-bar .ce-live{font-size:.82rem;color:#fff;border:1px solid rgba(255,255,255,.32);padding:.42rem .95rem;border-radius:999px;transition:background .2s}
+  .ce-bar .ce-live:hover{background:rgba(255,255,255,.14)}
+  body.ce-on [data-k]{border-radius:5px;transition:outline .15s,background .15s}
+  body.ce-on [data-k]:hover{outline:1px dashed color-mix(in srgb,var(--aqua) 70%,transparent);outline-offset:2px;cursor:text}
+  body.ce-on [data-k]:focus{outline:2px solid var(--aqua);outline-offset:2px;background:color-mix(in srgb,var(--aqua) 9%,transparent)}
+  body.ce-on .sheet [contenteditable="true"]:focus{outline:2px solid var(--aqua);outline-offset:1px}
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
@@ -868,7 +884,8 @@
   var sheetBackPending=false; /* true while a manual close consumes its own history entry */
   function openSheet(id){
     var node = store.querySelector('[data-sample-id="'+id+'"]'); if(!node) return;
-    sheetBody.innerHTML = node.innerHTML;
+    ceCurrentSample = id;
+    sheetBody.innerHTML = ceSampleOverride(id) || node.innerHTML;
     sheetType.textContent = node.getAttribute('data-type');
     sheet.classList.remove('lead-cold','lead-warm','lead-hot');
     (node.className.match(/lead-\w+/g)||[]).forEach(function(c){ sheet.classList.add(c); });
@@ -878,6 +895,7 @@
     document.body.style.overflow='hidden';
     /* push a history entry so the Back button closes the tray, not the page */
     if(!wasOpen){ history.pushState({sheet:true},'',location.href); }
+    ceEnableSheetEdit();
   }
   function closeSheet(fromPop){
     if(!sheet.classList.contains('open')) return;
@@ -909,7 +927,82 @@
   drawer.addEventListener('click', function(e){ if(e.target===drawer) closeDrawer(); });
 
   setView(location.hash.slice(1)||'home', false);
+
+  /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
+  var CE_ID='prospect';
+  var ceEDIT=/[?&]edit=1/.test(location.search);
+  var ceOverrides={}, ceSamples={}, ceKeyed=[], ceCurrentSample=null, ceDocRef=null;
+  function ceSampleOverride(id){ return ceSamples['sample::'+id] || null; }
+  function ceStatus(t){ var s=document.getElementById('ceStatus'); if(s) s.textContent=t; }
+  function ceCollect(){
+    var sel='h1,h2,h3,h4,p,dt,dd,li,th,td,.eyebrow,.hero-eyebrow,.tagword,.kick,.k,.sub,.samples-note,.prev,.type,.chip';
+    document.querySelectorAll('.view').forEach(function(view){
+      var vid=view.id;
+      var nodes=Array.prototype.slice.call(view.querySelectorAll(sel)).filter(function(el){
+        if(el.closest('.nav,.drawer,.tabs,.footer,.sheet,.sample-store,.view-next,.backlink,.email-chrome')) return false;
+        if(el.querySelector('[data-go],button,a[href]')) return false;
+        return true;
+      });
+      nodes=nodes.filter(function(el){ return !nodes.some(function(o){ return o!==el && el.contains(o); }); });
+      var i=0; nodes.forEach(function(el){ el.setAttribute('data-k', vid+'::'+(i++)); ceKeyed.push(el); });
+    });
+  }
+  function ceApply(){
+    ceKeyed.forEach(function(el){
+      var k=el.getAttribute('data-k');
+      if(Object.prototype.hasOwnProperty.call(ceOverrides,k) && document.activeElement!==el && el.innerHTML!==ceOverrides[k]){ el.innerHTML=ceOverrides[k]; }
+    });
+    if(ceCurrentSample && sheet.classList.contains('open') && document.activeElement!==sheetBody){
+      var ov=ceSamples['sample::'+ceCurrentSample];
+      if(ov && sheetBody.innerHTML!==ov) sheetBody.innerHTML=ov;
+    }
+  }
+  function ceSplit(data){
+    ceOverrides={}; ceSamples={};
+    Object.keys(data||{}).forEach(function(k){ if(k.indexOf('sample::')===0) ceSamples[k]=data[k]; else ceOverrides[k]=data[k]; });
+  }
+  function ceInit(){
+    try{
+      var cfg={apiKey:"AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",authDomain:"knomee-playbook.firebaseapp.com",projectId:"knomee-playbook",storageBucket:"knomee-playbook.firebasestorage.app",messagingSenderId:"956493019959",appId:"1:956493019959:web:13f099b4ea42ef948d78b2"};
+      if(!firebase.apps.length) firebase.initializeApp(cfg);
+      ceDocRef=firebase.firestore().collection('video-feedback').doc('activation-playbook').collection('content').doc(CE_ID);
+      ceDocRef.onSnapshot(function(snap){ ceSplit(snap.exists?snap.data():{}); ceApply(); }, function(err){ console.warn('content sync error',err); ceStatus('Offline'); });
+    }catch(e){ console.warn('content editor unavailable',e); ceStatus('Offline'); }
+  }
+  function ceSave(key,html){
+    if(!ceDocRef){ ceStatus('Save failed'); return; }
+    ceStatus('Saving…');
+    var o={}; o[key]=html;
+    ceDocRef.set(o,{merge:true}).then(function(){ ceStatus('Saved ✓'); }, function(err){ console.warn('save failed',err); ceStatus('Save failed'); });
+  }
+  function cePlainPaste(e){ e.preventDefault(); var t=((e.clipboardData||window.clipboardData).getData('text/plain')||''); document.execCommand('insertText',false,t); }
+  function ceWire(el){
+    el.setAttribute('contenteditable','true');
+    el.addEventListener('mousedown',function(e){ e.stopPropagation(); });
+    el.addEventListener('click',function(e){ e.stopPropagation(); });
+    el.addEventListener('paste',cePlainPaste);
+    el.addEventListener('blur',function(){ ceSave(el.getAttribute('data-k'), el.innerHTML); });
+  }
+  function ceEnableSheetEdit(){
+    if(!ceEDIT) return;
+    sheetBody.setAttribute('contenteditable','true');
+    sheetBody.onpaste=cePlainPaste;
+    sheetBody.onblur=function(){ if(ceCurrentSample!=null) ceSave('sample::'+ceCurrentSample, sheetBody.innerHTML); };
+  }
+  function ceStart(){
+    document.body.classList.add('ce-on');
+    ceKeyed.forEach(ceWire);
+    var live=document.getElementById('ceLive'); if(live) live.href=location.pathname;
+  }
+  ceCollect(); ceInit(); if(ceEDIT) ceStart();
 })();
 </script>
+
+<div class="ce-bar" id="ceBar">
+  <span class="ce-badge">✏️ Editing</span>
+  <span class="ce-hint">Click any text to edit — changes save automatically and go live for everyone.</span>
+  <span class="ce-status" id="ceStatus">Ready</span>
+  <a class="ce-live" id="ceLive" href="#" target="_blank" rel="noopener">View live ↗</a>
+</div>
 </body>
 </html>
