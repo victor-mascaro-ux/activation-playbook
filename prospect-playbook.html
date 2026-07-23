@@ -300,8 +300,10 @@
 
   /* ── live content editor (?edit=1) ── */
   .ce-bar{display:none}
-  .cc-hint{display:none}
-  body.ce-on .cc-hint{display:inline;color:var(--aqua);font-weight:600}
+  .cc-hint{display:none;color:var(--aqua);font-weight:600}
+  body.ce-on .cc-hint-f2{display:inline}
+  body.ce-on.cc-review-on .cc-hint-f2{display:none}
+  body.ce-on.cc-review-on .cc-hint-esc{display:inline}
   body.ce-on{padding-bottom:66px}
   body.ce-on .ce-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:200;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--plum);color:#fff;padding:.7rem clamp(1rem,3vw,1.4rem);box-shadow:0 -6px 24px rgba(0,0,0,.28)}
   .ce-bar .ce-badge{font-weight:700;background:var(--aqua);color:var(--plum);padding:.32rem .85rem;border-radius:999px;font-size:.82rem;letter-spacing:.02em}
@@ -733,7 +735,7 @@
 
 </main>
 
-<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Prospect Playbook · V1 · 2026 · <a data-go="home" style="cursor:pointer">Home</a> · <a href="prospect-playbook-pdf.html">Printable / PDF version →</a><span class="cc-hint"> · Press F2 to comment.</span></div></div></footer>
+<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Prospect Playbook · V1 · 2026 · <a data-go="home" style="cursor:pointer">Home</a> · <a href="prospect-playbook-pdf.html">Printable / PDF version →</a><span class="cc-hint cc-hint-f2"> · Press F2 to comment.</span><span class="cc-hint cc-hint-esc"> · Press Esc to exit commenting mode.</span></div></div></footer>
 
 <!-- ── SLIDE-OVER ── -->
 <div class="sheet-back" id="sheetBack"></div>
@@ -993,6 +995,9 @@
   }
   function ceStart(){
     document.body.classList.add('ce-on');
+    /* keep the header logo pointing at the editable landing while editing */
+    var logo=document.querySelector('.nav-logo');
+    if(logo){ var lh=logo.getAttribute('href'); if(lh && !/[?&]edit=1/.test(lh)){ logo.setAttribute('href', lh+(lh.indexOf('?')>=0?'&':'?')+'edit=1'); } }
     ceKeyed.forEach(ceWire);
     var live=document.getElementById('ceLive'); if(live) live.href=location.pathname;
   }

@@ -296,6 +296,12 @@
   }
   .cc-esc b { color: #fff; font-weight: 800; }
   .cc-stage.cc-mode .cc-esc { display: block; }
+  /* FAB and floating Esc pill removed — the page's own footer shows the
+     instruction instead ("Press F2 to comment" / "Press Esc to exit
+     commenting mode"), driven by the cc-review-on class we mirror onto
+     the framed page's <body>. */
+  .cc-fab { display: none !important; }
+  .cc-esc { display: none !important; }
 
   /* ── error toast (persist failures / namespace conflicts) ── */
   .cc-warning {
