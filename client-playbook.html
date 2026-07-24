@@ -401,7 +401,7 @@
       <h1 class="anim d1">Deepening Relationships:<br><span class="accent">The Client Playbook</span></h1>
       <p class="tag anim d2">How to use Knomee to keep engaged clients engaged — and win back the ones who are drifting. Ready-to-use check-ins, meeting follow-ups, and re-engagement messages, organized by client type.</p>
       <div class="intro-cards stagger">
-        <div class="intro-card"><div class="k">What Knomee is</div><h3>A 10-minute check-in</h3><p>Your client completes it before a review — or any time life shifts — so every conversation starts with what matters now.</p></div>
+        <div class="intro-card"><div class="k">What Knomee is</div><h3>An 8-minute check-in</h3><p>Your client completes it before a review — or any time life shifts — so every conversation starts with what matters now.</p></div>
         <div class="intro-card"><div class="k">What this playbook is</div><h3>Copy-and-paste outreach</h3><p>Check-in invites, meeting follow-ups, and re-engagement messages, organized by client type — each with a matching video suggestion.</p></div>
         <div class="intro-card"><div class="k">How to use it</div><h3>Pick a client type → go</h3><p>Open the section that matches your client. Read the strategy, follow the cadence, and open any sample to copy it.</p></div>
       </div>
@@ -467,7 +467,7 @@
 <section class="view" id="what-is-knomee">
   <div class="container section">
     <span class="backlink" data-back>← Home</span>
-    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Client Experiences</h2><p class="intro">Knomee is a <strong>10-minute guided check-in</strong> your clients complete before a review — or any time life shifts. It helps them articulate their current goals, priorities, and top money questions, so every conversation starts with what matters <em>now</em>, not what mattered at onboarding.</p></div>
+    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Client Experiences</h2><p class="intro">Knomee is a <strong>8-minute guided check-in</strong> your clients complete before a review — or any time life shifts. It helps them articulate their current goals, priorities, and top money questions, so every conversation starts with what matters <em>now</em>, not what mattered at onboarding.</p></div>
     <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
       <div class="card"><span class="num">1</span><h3 style="margin-top:1rem">The client feels heard</h3><p>They get a personal summary — and reviews stop feeling like a portfolio report.</p></div>
       <div class="card"><span class="num">2</span><h3 style="margin-top:1rem">The advisor sees what changed</h3><p>Knomee surfaces shifts in priorities and life events before the meeting.</p></div>
@@ -825,14 +825,18 @@
   function ceStatus(t){ var s=document.getElementById('ceStatus'); if(s) s.textContent=t; }
   function ceCollect(){
     var sel='h1,h2,h3,h4,p,dt,dd,li,th,td,.eyebrow,.hero-eyebrow,.tagword,.kick,.k,.sub,.samples-note,.prev,.type,.chip';
+    function ok(el){
+      if(el.closest('.nav,.drawer,.tabs,.footer,.sheet,.sample-store,.view-next,.backlink,.email-chrome')) return false;
+      if(el.querySelector('[data-go],button,a[href]')) return false;
+      return true;
+    }
     document.querySelectorAll('.view').forEach(function(view){
       var vid=view.id;
-      var nodes=Array.prototype.slice.call(view.querySelectorAll(sel)).filter(function(el){
-        if(el.closest('.nav,.drawer,.tabs,.footer,.sheet,.sample-store,.view-next,.backlink,.email-chrome')) return false;
-        if(el.querySelector('[data-go],button,a[href]')) return false;
-        return true;
-      });
-      nodes=nodes.filter(function(el){ return !nodes.some(function(o){ return o!==el && el.contains(o); }); });
+      var base=Array.prototype.slice.call(view.querySelectorAll(sel)).filter(ok);
+      base=base.filter(function(el){ return !base.some(function(o){ return o!==el && el.contains(o); }); });
+      /* step titles appended AFTER the base set so existing edit slots keep their keys */
+      var extra=Array.prototype.slice.call(view.querySelectorAll('.step-body strong')).filter(function(el){ return ok(el) && base.indexOf(el)===-1; });
+      var nodes=base.concat(extra);
       var i=0; nodes.forEach(function(el){ el.setAttribute('data-k', vid+'::'+(i++)); ceKeyed.push(el); });
     });
   }
