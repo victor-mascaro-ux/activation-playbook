@@ -81,7 +81,7 @@
 
   /* ── live content editor (?edit=1) ── */
   .ce-bar{display:none}
-  .cc-hint{display:none;color:var(--aqua);font-weight:600;font-size:.8rem}
+  .cc-hint{display:none;font-size:.85rem;color:rgba(255,255,255,.72);font-weight:300}
   body.ce-on .cc-hint-f2{display:inline}
   body.ce-on.cc-review-on .cc-hint-f2{display:none}
   body.ce-on.cc-review-on .cc-hint-esc{display:inline}
@@ -265,7 +265,7 @@
       a.addEventListener('click',function(e){ if(!(e.target.closest && e.target.closest('.enter'))) e.preventDefault(); });
     });
     ceKeyed.forEach(ceWire);
-    var live=document.getElementById('ceLive'); if(live) live.href=location.pathname;
+    (function setLive(){ var l=document.getElementById('ceLive'); if(l){ l.href=location.pathname; } else { document.addEventListener('DOMContentLoaded', setLive); } })();
   }
   ceCollect(); ceInit(); if(ceEDIT) ceStart();
 })();
