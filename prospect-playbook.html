@@ -134,7 +134,7 @@
 
   /* ── lead view ── */
   .lead-band{border-radius:var(--r-lg);padding:clamp(1.6rem,4vw,2.6rem);color:#fff;background:linear-gradient(120deg,var(--lead) 0%,color-mix(in srgb,var(--lead) 58%,var(--plum)) 100%);position:relative;overflow:hidden}
-  .lead-band::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 90% 10%,rgba(255,255,255,.18),transparent 55%)}
+  .lead-band::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 90% 10%,rgba(255,255,255,.18),transparent 55%);pointer-events:none}
   .lead-band .tagword{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem 1rem;border-radius:var(--r-pill);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
   .lead-band h2{font-size:clamp(1.9rem,5vw,3.1rem);font-weight:700;line-height:1;margin:.9rem 0 .5rem}
   .lead-band p{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.92);max-width:52ch}
@@ -820,6 +820,7 @@
 
   /* build a labeled "Next section" button at the bottom of every view */
   var order = ['home','how-to-use','experience','setup','baseline','cold','warm','hot','landing','testing','appendix'];
+  var vnColor = {cold:'--cold',warm:'--warm',hot:'--hot'};  /* Next button takes the destination section's color */
   order.forEach(function(id, i){
     if(id==='home') return;
     var v = views[id]; if(!v) return;
@@ -827,7 +828,7 @@
     var next = order[i+1];
     var el = document.createElement('div'); el.className='view-next';
     if(next){
-      el.innerHTML = '<span class="vn-label">Up next</span><button class="vn-btn" data-go="'+next+'">Next: '+meta[next][1]+' <span class="arw">→</span></button>';
+      el.innerHTML = '<span class="vn-label">Up next</span><button class="vn-btn" data-go="'+next+'" style="--lead:var('+(vnColor[next]||'--grape')+')">Next: '+meta[next][1]+' <span class="arw">→</span></button>';
     } else {
       el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">↑ Back to Home</button>';
     }
