@@ -957,16 +957,16 @@
   }
   function toggleArmed() { setArmed(!armed); }
 
-  // "c"/"C" also opens comment mode — but never while typing in a field or
-  // editing text (contenteditable), and never as a copy/other shortcut
-  // (Cmd/Ctrl/Alt held). It only opens; F2 or Esc still close.
+  // "c"/"C" toggles comment mode (like F2) — but never while typing in a
+  // field or editing text (contenteditable), and never as a copy/other
+  // shortcut (Cmd/Ctrl/Alt held).
   function ccTypingIn(doc){ try{ var el=doc && doc.activeElement; if(!el) return false; var t=el.tagName; return t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||el.isContentEditable; }catch(e){ return false; } }
   function ccIsCommentKey(e){ return (e.key==='c'||e.key==='C') && !e.metaKey && !e.ctrlKey && !e.altKey && !e.repeat; }
 
   // Key pressed while focus is on the overlay chrome (this document).
   window.addEventListener('keydown', (e) => {
     if (e.key === ACTIVATION_KEY) { e.preventDefault(); toggleArmed(); }
-    else if (ccIsCommentKey(e) && !ccTypingIn(document)) { e.preventDefault(); setArmed(true); }
+    else if (ccIsCommentKey(e) && !ccTypingIn(document)) { e.preventDefault(); toggleArmed(); }
   });
 
   // Messages from the prototype iframe: the activation key forwarded from
@@ -1000,7 +1000,7 @@
       if (d) d.addEventListener('keydown', (e) => {
         if (e.key === ACTIVATION_KEY) { e.preventDefault(); toggleArmed(); }
         else if (e.key === 'Escape' && armed) { e.preventDefault(); setArmed(false); }
-        else if (ccIsCommentKey(e) && !ccTypingIn(d)) { e.preventDefault(); setArmed(true); }
+        else if (ccIsCommentKey(e) && !ccTypingIn(d)) { e.preventDefault(); toggleArmed(); }
       }, true);
     } catch (e) { /* cross-origin or not ready */ }
     syncProtoReviewClass();
