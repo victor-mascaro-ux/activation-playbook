@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>/* The commenting shell is internal-only. Any non-editor visit (e.g. the bare domain root) goes straight to the clean, comment-free page. */(function(){try{var q=new URLSearchParams(location.search);if(q.get('edit')!=='1'){location.replace(q.get('page')||'home.html');}}catch(e){}})();</script>
-<title>Knomee — Activation Playbooks</title>
+<title>Knomee — Activation Toolkits</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -635,7 +635,7 @@
       const d = proto.contentDocument;
       const el = d && d.querySelector('.screen.active');
       if (el && el.id) return el.id;
-      // This site is multi-page (home + playbook pages navigated inside the
+      // This site is multi-page (home + toolkit pages navigated inside the
       // iframe): use the current page's filename so each page keeps its own
       // comment namespace.
       const path = w && w.location && w.location.pathname;
@@ -982,7 +982,7 @@
     }
   });
 
-  // This site is multi-page: the playbook pages live in the same-origin
+  // This site is multi-page: the toolkit pages live in the same-origin
   // iframe and (unlike knomee-demo's app) don't post the activation key or a
   // frame height. Bind the activation/exit keys inside the iframe document so
   // F2 works wherever focus sits, and mirror comment-mode state onto the
@@ -1038,7 +1038,7 @@
     draft = t;
     openThread(t.id);
     // Thumbnail for the rail card. html2canvas' first phase clones the whole
-    // (potentially large) playbook DOM synchronously, which would otherwise
+    // (potentially large) toolkit DOM synchronously, which would otherwise
     // block the popover from painting. Defer it past two frames so the modal
     // shows instantly and the thumbnail fills in when ready.
     requestAnimationFrame(() => requestAnimationFrame(() => {
