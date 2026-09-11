@@ -115,7 +115,7 @@
   </div>
 
   <div class="hero">
-    <span class="eyebrow">Knomee Activation Toolkits</span>
+    <span class="eyebrow">Knomee Activation Toolkit</span>
     <h1>Two toolkits.<br><span class="g">One client lifecycle.</span></h1>
     <p class="lede">Ready-to-use campaigns for every stage — from a prospect's first spark of curiosity to a lifelong client relationship. Choose where you're working today.</p>
 
@@ -222,7 +222,7 @@
 <script>
 (function(){
   /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
-  var CE_ID='home';
+  var CE_ID='home-v2'; /* content baked into this page; the pre-bake 'home' doc is retained but no longer applied */
   var ceEDIT=/[?&]edit=1/.test(location.search);
   var ceOverrides={}, ceKeyed=[], ceDocRef=null;
   function ceStatus(t){ var s=document.getElementById('ceStatus'); if(s) s.textContent=t; }
