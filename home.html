@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <script>/* Live pages load directly (no commenting). The editor (?edit=1) runs inside the commenting shell. */(function(){try{if(window.top!==window.self)return;var s=location.search;if(/[?&]raw=1/.test(s))return;if(/[?&]edit=1/.test(s)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html')+'&edit=1');}}catch(e){}})();</script>
-<title>Knomee — Activation Playbooks</title>
+<title>Knomee — Activation Toolkits</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
 <style>
@@ -115,8 +115,8 @@
   </div>
 
   <div class="hero">
-    <span class="eyebrow">Knomee Activation Playbooks</span>
-    <h1>Two playbooks.<br><span class="g">One client lifecycle.</span></h1>
+    <span class="eyebrow">Knomee Activation Toolkits</span>
+    <h1>Two toolkits.<br><span class="g">One client lifecycle.</span></h1>
     <p class="lede">Ready-to-use campaigns for every stage — from a prospect's first spark of curiosity to a lifelong client relationship. Choose where you're working today.</p>
 
     <div class="choices">
@@ -125,10 +125,10 @@
         <span class="emoji">🎯</span>
         <div class="body">
           <div class="kick">Prospects</div>
-          <h2>The Prospect Playbook</h2>
+          <h2>The Prospect Toolkit</h2>
           <div class="sub">Winning New Clients</div>
           <p>Cold, warm &amp; hot lead campaigns — copy-and-paste emails, ads, events, and landing-page language, each with a matching video.</p>
-          <span class="enter">Enter Playbook <span class="arw">→</span></span>
+          <span class="enter">Enter Toolkit <span class="arw">→</span></span>
         </div>
       </a>
       <a class="choice c2" href="client-playbook.html">
@@ -136,10 +136,10 @@
         <span class="emoji">🤝</span>
         <div class="body">
           <div class="kick">Clients</div>
-          <h2>The Client Playbook</h2>
+          <h2>The Client Toolkit</h2>
           <div class="sub">Deepening Relationships</div>
           <p>Keep engaged clients engaged, and win back the ones who are drifting — organized by client type, ready to send.</p>
-          <span class="enter">Enter Playbook <span class="arw">→</span></span>
+          <span class="enter">Enter Toolkit <span class="arw">→</span></span>
         </div>
       </a>
     </div>
@@ -261,8 +261,8 @@
   }
   function ceStart(){
     document.body.classList.add('ce-on');
-    /* keep the cards navigable: the "Enter Playbook" button goes to the editable
-       playbook; clicking anywhere else on the card just edits (no accidental nav). */
+    /* keep the cards navigable: the "Enter Toolkit" button goes to the editable
+       toolkit; clicking anywhere else on the card just edits (no accidental nav). */
     document.querySelectorAll('.choice').forEach(function(a){
       var href=a.getAttribute('href');
       if(href && !/[?&]edit=1/.test(href)){ a.setAttribute('href', href+(href.indexOf('?')>=0?'&':'?')+'edit=1'); }
