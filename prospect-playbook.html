@@ -89,10 +89,10 @@
   .head{margin-bottom:var(--s6)}
 
   /* ── buttons ── */
-  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:1rem;padding:.8rem 1.4rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:1rem;padding:.8rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
   .btn .arw{transition:transform .3s var(--ease)}.btn:hover .arw{transform:translateX(4px)}
-  .btn-primary{background:var(--grape);color:#fff;box-shadow:0 8px 24px rgba(118,57,161,.32)}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(118,57,161,.42)}
+  .btn-primary{background:var(--lead);color:#fff;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
 
   /* ── HOME hub ── */
   .home-hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(130% 120% at 12% 8%,#3a1266 0%,var(--plum) 55%,#180a2e 100%);padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem)}
@@ -195,15 +195,19 @@
   .email-subj{font-size:1.15rem;font-weight:600;color:var(--plum)}
   .email-body{padding:1.2rem 1.3rem}
   .email-body p{color:var(--ink-2);font-weight:300;margin-bottom:.7rem}
-  .email-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.2rem;border-radius:9px;margin-top:.3rem}
+  .email-cta,.pill-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.3rem;border-radius:var(--r-pill);margin:.3rem 0 .9rem}
+  .email-body>:last-child,.frame-body>:last-child{margin-bottom:0}
+  .frame-head{background:var(--lead);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem}
+  .frame-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+  .frame-from b{display:block;color:var(--plum);font-weight:600;font-size:.95rem;line-height:1.3}.frame-from span{color:var(--muted);font-weight:300;font-size:.82rem}
+  .prod-note{color:var(--plum);font-weight:600}
   .frame{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
   .frame-banner{height:120px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:linear-gradient(135deg,var(--lead),var(--indigo));color:rgba(255,255,255,.85)}
   .frame-body{padding:1.2rem 1.3rem}
   .kicker{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
   .frame-body h4{font-size:1.3rem;font-weight:700;color:var(--plum);margin-bottom:.5rem;line-height:1.25}
   .frame-body p{color:var(--ink-2);font-weight:300;margin-bottom:.9rem}
-  .pill-cta{display:inline-block;background:var(--lead);color:#fff;font-weight:600;border-radius:9px;padding:.65rem 1.2rem}
-  .quote{font-size:1.35rem;font-weight:500;font-style:italic;color:var(--plum);line-height:1.35}
+    .quote{font-size:1.35rem;font-weight:500;color:var(--plum);line-height:1.35}
   .pairing{background:var(--lead-tint);border-radius:12px;padding:.9rem 1.1rem;font-size:.92rem;color:var(--ink-2);font-weight:300;margin-top:1rem}
   .pairing b{color:var(--lead-ink);font-weight:700}
 
@@ -218,7 +222,7 @@
   .sheet-x:hover{background:var(--line);transform:rotate(90deg)}
   .sheet-body{padding:1.4rem;overflow-y:auto;flex:1}
   .sheet-foot{padding:1rem 1.4rem;border-top:1px solid var(--line);background:#fff;display:flex;gap:.8rem;align-items:center;flex-shrink:0}
-  .copy-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--lead);color:#fff;font-weight:600;border:none;border-radius:var(--r-pill);padding:.75rem 1.4rem;cursor:pointer;transition:transform .2s,background .2s}
+  .copy-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--lead);color:#fff;font-weight:600;font-size:1rem;border:none;border-radius:var(--r-pill);padding:.8rem 1.5rem;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .2s,background .2s}
   .copy-btn:hover{transform:translateY(-2px)}
   .copy-btn.done{background:var(--warm)}
   .copy-hint{color:var(--muted);font-size:.85rem;font-weight:300}
@@ -268,7 +272,7 @@
   /* ── next-section flow button ── */
   .view-next{margin-top:var(--s8);padding-top:var(--s6);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   .vn-label{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  .vn-btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--lead);color:#fff;font-weight:600;font-size:1.05rem;padding:.85rem 1.7rem;border-radius:var(--r-pill);border:none;cursor:pointer;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .25s var(--ease),box-shadow .25s}
+  .vn-btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--lead);color:#fff;font-weight:600;font-size:1rem;padding:.8rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .25s var(--ease),box-shadow .25s}
   .vn-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
   .vn-btn .arw{transition:transform .3s var(--ease)}.vn-btn:hover .arw{transform:translateX(5px)}
 
@@ -490,7 +494,7 @@
 <section class="view" id="experience">
   <div class="container section">
     <span class="backlink" data-back>← Home</span>
-    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Prospect Experiences</h2><p class="intro">Knomee is a <strong>8-minute guided experience</strong> your prospects complete on their own, before they ever sit down with an advisor.</p></div>
+    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Prospect Experiences</h2><p class="intro">Knomee is an <strong>8-minute guided experience</strong> your prospects complete on their own, before they ever sit down with an advisor.</p></div>
     <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
       <div class="card"><span class="num">1</span><h3 style="margin-top:1rem">The prospect gets value</h3><p>A personal summary of what's driving their decisions and their top 3 money questions.</p></div>
       <div class="card"><span class="num">2</span><h3 style="margin-top:1rem">Your firm gets a signal</h3><p>A 0–100 Advisor Readiness Score that tells you who is ready to become a client right now.</p></div>
@@ -561,10 +565,10 @@
     <div class="tabpanel" data-panel="samples">
       <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
       <div class="sample-grid">
-        <button class="scard" data-sample="cold-1"><span class="type">Email · Option 1 · Curiosity</span><h4>How well does your financial advisor really know you?</h4><span class="prev">Most financial outreach starts with a pitch. Far fewer understand what's actually...</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="cold-2"><span class="type">Email · Option 2 · No strings</span><h4>Most financial conversations start in the wrong place.</h4><span class="prev">I don't know if you're looking for an advisor — most people who get this aren't…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="cold-3"><span class="type">Paid Social / Display Ad</span><h4>The best financial plans start with better questions.</h4><span class="prev">Your investments tell part of the story. Your goals, priorities, concerns, and motivations tell...</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="cold-4"><span class="type">Direct Mail · Postcard</span><h4>Most people know their networth, few know what drive it</h4><span class="prev">Eight minutes. No cost. No sales call. Get clear on your goals before you talk to anyone…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="cold-1"><span class="type">Email · Curiosity · Option 1</span><h4>How well does your financial advisor really know you?</h4><span class="prev">Most financial advisors know your portfolio. Far fewer understand what’s actually driving your decisions…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="cold-2"><span class="type">Email · No Strings · Option 2</span><h4>Most financial conversations start in the wrong place</h4><span class="prev">Most financial conversations start with your money. Here’s a different place to start: you…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="cold-3"><span class="type">Paid Social / Display Ad</span><h4>The best financial plans start with better questions.</h4><span class="prev">Before talking about investments, discover what’s most important to you…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="cold-4"><span class="type">Direct Mail · Postcard</span><h4>You know what your money is worth. Do you know what it’s for?</h4><span class="prev">Take 8 minutes to discover what’s driving your financial decisions…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
       </div>
     </div>
     <div class="tabpanel" data-panel="metrics">
@@ -573,7 +577,7 @@
         <tr><td class="m">Earn first engagement</td><td>Knomee completion rate (cold traffic)</td><td>Email open rate, time on landing page</td></tr>
         <tr><td class="m">Convert cold → warm</td><td>Cold-to-warm conversion rate</td><td>Opt-in rate, follow-on content engagement</td></tr>
       </tbody></table></div>
-      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Cold → Warm</h3><p>The win isn't a meeting; it's a completion. The moment someone completes Knomee, they've moved themselves to Warm — where the Warm section takes over with a follow-up cadence.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--warm)" data-go="warm">Go to Warm <span class="arw">→</span></button></p></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Cold → Warm</h3><p>The win isn't a meeting; it's a completion. The moment someone completes Knomee, they've moved themselves to Warm — where the Warm section takes over with a follow-up cadence.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="--lead:var(--warm)" data-go="warm">Go to Warm <span class="arw">→</span></button></p></div>
     </div>
   </div>
 </section>
@@ -609,10 +613,10 @@
     <div class="tabpanel" data-panel="samples">
       <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
       <div class="sample-grid">
-        <button class="scard" data-sample="warm-1"><span class="type">Email · Nurture · Option 1</span><h4>Before your next financial decision</h4><span class="prev">We believe great financial advice starts with understanding what matters most to you…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="warm-2"><span class="type">Email · Newsletter Feature</span><h4>A new way to get clear on your goals</h4><span class="prev">A research-backed experience to help you gain clarity on what you want your wealth to make possible…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="warm-3"><span class="type">Event Invite · Pre &amp; Post</span><h4>Advisor event — before &amp; after</h4><span class="prev">Invite registrants to complete Knomee before your talk; follow up with a warm thank-you after…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="warm-4"><span class="type">LinkedIn Inmail / Social</span><h4>Planning a vacation vs. your financial future</h4><span class="prev">Most people spend more time planning a vacation than getting clear on what their money is for…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="warm-1"><span class="type">Email · Nurture · Option 1</span><h4>Before your next financial decision</h4><span class="prev">You’ve probably spent time thinking about your investments. But have you spent time thinking about what you actually want them to accomplish?…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="warm-2"><span class="type">Email · Newsletter Feature</span><h4>A new way to get clear on what matters</h4><span class="prev">We’re excited to partner with Knomee, a research-backed experience to help you explore what matters most…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="warm-3"><span class="type">Event Invite · Pre &amp; Post</span><h4>Make {{Event Name}} more relevant to you</h4><span class="prev">Before you join us, take 8 minutes to think about your own financial life…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="warm-4"><span class="type">LinkedIn InMail / Social</span><h4>What do I actually want my money to make possible?</h4><span class="prev">Here’s something I’ve noticed. Most of us spend hours researching vacations, home projects, or even our next car…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
       </div>
     </div>
     <div class="tabpanel" data-panel="metrics">
@@ -621,7 +625,7 @@
         <tr><td class="m">Earn the meeting</td><td>Meeting-request rate post-completion</td><td>Time from completion to booked meeting</td></tr>
         <tr><td class="m">Deliver early value</td><td>Landing page time-on-page</td><td>Repeat visits to Knomee content</td></tr>
       </tbody></table></div>
-      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Warm → Hot</h3><p>A warm prospect who books a meeting becomes Hot the moment the meeting is on the calendar. Move them to the Hot cadence immediately — the confirmation email should go out the same day.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--hot)" data-go="hot">Go to Hot <span class="arw">→</span></button></p></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Warm → Hot</h3><p>A warm prospect who books a meeting becomes Hot the moment the meeting is on the calendar. Move them to the Hot cadence immediately — the confirmation email should go out the same day.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="--lead:var(--hot)" data-go="hot">Go to Hot <span class="arw">→</span></button></p></div>
     </div>
   </div>
 </section>
@@ -655,9 +659,9 @@
     <div class="tabpanel" data-panel="samples">
       <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
       <div class="sample-grid">
-        <button class="scard" data-sample="hot-1"><span class="type">Email · Confirmation</span><h4>Before we meet...</h4><span class="prev">Before we get together, I'd like to invite you to spend 8 minutes with Knomee…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="hot-2"><span class="type">Email · Reminder · 2 days before</span><h4>A quick reminder before we meet</h4><span class="prev">It takes about 8 minutes and helps you reflect on what you want your wealth to make possible…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="hot-3"><span class="type">Meeting Follow-Up</span><h4>Continuing our conversation</h4><span class="prev">Thank you again for meeting with me — I really enjoyed our conversation…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="hot-1"><span class="type">Email · Confirmation</span><h4>Before we meet</h4><span class="prev">I’m looking forward to meeting you. To make the most of our time together, I’d like to ask one small favor…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="hot-2"><span class="type">Email · Reminder · 2 days before</span><h4>A quick reminder before we meet</h4><span class="prev">I’m looking forward to our conversation on {{Day}}…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="hot-3"><span class="type">Email · Meeting Follow-Up</span><h4>Thank you</h4><span class="prev">Thank you again for meeting with me. I enjoyed our conversation…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
       </div>
     </div>
     <div class="tabpanel" data-panel="metrics">
@@ -666,7 +670,7 @@
         <tr><td class="m">Differentiate your firm</td><td>Meeting show-rate</td><td>Prospect engagement in-meeting</td></tr>
         <tr><td class="m">Accelerate the close</td><td>Close rate post-Knomee vs. baseline</td><td>Time from first meeting to signed client</td></tr>
       </tbody></table></div>
-      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Hot → Client</h3><p>The moment a hot prospect signs, they become a client — and a completely different toolkit takes over. See the companion <strong>Client Toolkit</strong> for how to keep them engaged from day one.</p></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Hot → Client</h3><p>The moment a hot prospect signs, they become a client — and a completely different toolkit takes over. See the companion <strong>Client Toolkit</strong> for how to keep them engaged from day one.</p><p style="margin-top:.9rem"><a class="btn btn-primary" style="--lead:var(--warm)" href="client-playbook.html">Open the Client Toolkit <span class="arw">→</span></a></p></div>
     </div>
   </div>
 </section>
@@ -686,7 +690,7 @@
             <div class="lp-tile"><div class="e">✨</div><b>Your Top 3 Money Questions</b><p>Questions to help you think, plan, and prepare for what's next.</p><div class="bar"></div></div>
           </div>
         </div>
-        <div class="lp-foot"><span class="btn btn-primary" style="background:var(--plum)">Discover Financial Joy</span><div style="margin-top:.6rem;color:var(--muted);font-size:.85rem">⏱ Est time: 8 min</div></div>
+        <div class="lp-foot"><span class="btn btn-primary" style="--lead:var(--plum)">Discover Financial Joy</span><div style="margin-top:.6rem;color:var(--muted);font-size:.85rem">⏱ Est time: 8 min</div></div>
       </div>
       <div class="anim d1">
         <h3 style="font-size:var(--fs-h3);color:var(--plum);font-weight:700;margin-bottom:1.2rem">Four Rules for the Page</h3>
@@ -736,7 +740,7 @@
       </tbody></table></div>
       <div class="callout" style="margin-top:var(--s4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;--lead:var(--grape);--lead-tint:#fff;border:1px solid var(--line)">
         <div><h3 style="color:var(--plum)">Browse the full library in Google Drive</h3><p>All ~28 videos, ready to embed — open the folder and pick the files that fit your plan.</p></div>
-        <a href="https://drive.google.com/drive/folders/11SHeKJ0PxBAwJzragIy4ZGvgZZGONpgk" target="_blank" rel="noopener" class="btn btn-primary" style="background:var(--plum)">▶ Open the Video Library <span class="arw">→</span></a>
+        <a href="https://drive.google.com/drive/folders/11SHeKJ0PxBAwJzragIy4ZGvgZZGONpgk" target="_blank" rel="noopener" class="btn btn-primary" style="--lead:var(--plum)">Open the Video Library <span class="arw">→</span></a>
       </div>
     </div>
 
@@ -768,60 +772,60 @@
 
 </main>
 
-<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Prospect Toolkit · V1 · 2026 · <a data-go="home" style="cursor:pointer">Home</a></div></div></footer>
+<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Prospect Toolkit · V2 · 2026 · <a data-go="home" style="cursor:pointer">Home</a></div></div></footer>
 
 <!-- ── SLIDE-OVER ── -->
 <div class="sheet-back" id="sheetBack"></div>
 <aside class="sheet" id="sheet" aria-label="Sample">
   <div class="sheet-head"><span class="st" id="sheetType">Sample</span><button class="sheet-x" id="sheetX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sheet-body" id="sheetBody"></div>
-  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
+  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy Text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
 </aside>
 
 <!-- ── SAMPLE STORE (hidden source content) ── -->
 <div class="sample-store" id="sampleStore">
-  <div data-sample-id="cold-1" data-type="Email · Option 1 · Curiosity" class="lead-cold">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">How well does your financial advisor really know you?</div></div><div class="email-body" data-copy=""><p>Hi [First Name],</p><p>Most financial advisors know your portfolio.</p><p>Far fewer understand what's actually driving your decisions.</p><p>We've created a short, 8-minute experience that helps uncover what's most important to you, what's changing in your life, and the questions worth discussing with an advisor.</p><p>At the end, you'll receive a personalized summary that's yours to keep.</p><p>No sales pitch. No obligation. Just a clearer picture of what matters most to you—and whether your financial plan reflects it.</p><p><b>Take the 8-minute assessment →</b></p><p>Best,</p><p>{{Advisor Name}}</p><p>{{Firm Name}}</p><a class="email-cta">Take the assessment →</a></div></div>
+  <div data-sample-id="cold-1" data-type="Email · Curiosity · Option 1" class="lead-cold">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">How well does your financial advisor really know you?</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Most financial advisors know your portfolio.</p><p>Far fewer understand what’s actually driving your decisions.</p><p>We’ve created a short, 8-minute experience that helps uncover what’s most important to you, what’s changing in your life, and the questions worth discussing with an advisor.</p><p>At the end, you’ll receive a personalized summary that’s yours to keep.</p><p>No sales pitch. No obligation. Just a clearer picture of what matters most to you — and whether your financial plan reflects it.</p><a class="email-cta">Take the Assessment →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
     <div class="pairing"><b>Suggested pairing:</b> a short awareness Video from the Appendix library — e.g. ‘Meaning over Returns’ or ‘The Questions You Never Ask.’ Optional.</div>
   </div>
-  <div data-sample-id="cold-2" data-type="Email · Option 2 · No strings" class="lead-cold">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Most financial conversations start in the wrong place</div></div><div class="email-body" data-copy=""><p>Hi {{First Name}},</p><p>Most financial conversations start with your money. Here’s a different place to start: <b>you.</b></p><p>I’m offering a free 8-minute guided experience that helps you clarify what you want your money to make possible, what matters most right now, and the financial questions you want answered.</p><p><b>You'll walk away with:</b></p><p>- A clearer understanding of what's most important to you</p><p>- Personalized insights about your financial priorities</p><p>- Better questions to ask any financial advisor</p><p><b>No appointment required.</b></p><p>Best,</p><p>{{Advisor Name}}, {{Firm}}</p><a class="email-cta">Start your personalized assessment&nbsp; →</a></div></div>
+  <div data-sample-id="cold-2" data-type="Email · No Strings · Option 2" class="lead-cold">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Most financial conversations start in the wrong place</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Most financial conversations start with your money. Here’s a different place to start: <b>you.</b></p><p>I’m offering a free 8-minute guided experience that helps you clarify what you want your money to make possible, what matters most right now, and the financial questions you want answered.</p><p><b>You’ll walk away with:</b></p><p>- A clearer understanding of what’s most important to you</p><p>- Personalized insights about your financial priorities</p><p>- Better questions to ask any financial advisor</p><p><b>No appointment required.</b></p><a class="email-cta">Start Your Personalized Assessment →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
     <div class="pairing"><b>Suggested pairing:</b> no image here — a plain, personal-looking email tends to land best on a first touch. Your call.</div>
   </div>
   <div data-sample-id="cold-3" data-type="Paid Social / Display Ad" class="lead-cold">
-    <div class="frame"><div class="frame-banner">👤</div><div class="frame-body" data-copy=""><div class="kicker">Sponsored</div><h4>The best financial plans start with better questions.</h4><h4><font color="#463a57"><span style="font-size: 17px; font-weight: 300;">Before talking about investments, discover what's most important to you.</span></font></h4><div><font color="#463a57"><span style="font-size: 17px; font-weight: 300;"><br></span></font></div><div><font color="#463a57"><span style="font-size: 17px; font-weight: 300;">In just 8 minutes you'll receive personalized insights that can help you have a more meaningful conversation with a financial advisor.</span></font></div><div><font color="#463a57"><span style="font-size: 17px; font-weight: 300;"><br></span></font></div><div><font color="#463a57"><span style="font-size: 17px; font-weight: 300;">No appointment required. Insights are yours to keep.<br><br></span></font></div><span class="pill-cta">Get My Personalized Insights</span></div></div>
+    <div class="frame"><div class="frame-banner">👤</div><div class="frame-body" data-copy><div class="kicker">Sponsored</div><h4>The best financial plans start with better questions.</h4><p>Before talking about investments, discover what’s most important to you.</p><p>In just 8 minutes you’ll receive personalized insights that can help you have a more meaningful conversation with a financial advisor.</p><p>No appointment required. Insights are yours to keep.</p><span class="pill-cta">Get My Personalized Insights →</span></div></div>
     <div class="pairing"><b>Suggested pairing:</b> a short awareness Video such as ‘Financial Joy’ or ‘When Life Changes, Money Changes,’ or a real, editorial human face.</div>
   </div>
   <div data-sample-id="cold-4" data-type="Direct Mail · Postcard" class="lead-cold">
-    <div class="frame"><div class="frame-body" data-copy=""><div class="kicker">Front</div><p class="quote"><span style="font-style: normal;">You know what your money is worth.</span></p><p class="quote"><span style="font-style: normal;">Do you know what it’s for?</span></p><div class="kicker" style="margin-top:1.2rem">Back</div><p>Take 8 minutes to discover what's driving your financial decisions.</p><p>You'll uncover:</p><p>- What matters most to you right now</p><p>- The questions your financial plan should answer</p><p>- Personalized insights you can keep</p><p style="color:var(--plum);font-weight:600">[QR CODE → Knomee landing page, direct-mail UTM tag]</p></div></div>
+    <div class="frame"><div class="frame-body" data-copy><div class="kicker">Front</div><p class="quote">You know what your money is worth.</p><p class="quote">Do you know what it’s for?</p><div class="kicker" style="margin-top:1.2rem">Back</div><p>Take 8 minutes to discover what’s driving your financial decisions.</p><p><b>You’ll uncover:</b></p><p>- What matters most to you right now</p><p>- The questions your financial plan should answer</p><p>- Personalized insights you can keep</p><p class="prod-note">[QR CODE → Knomee landing page, direct-mail UTM tag]</p></div></div>
     <div class="pairing"><b>Suggested pairing:</b> a life-stage moment your audience recognizes (family dinner, handing over the car keys) over a product shot.</div>
   </div>
   <div data-sample-id="warm-1" data-type="Email · Nurture · Option 1" class="lead-warm">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Before your next financial decision...</div></div><div class="email-body" data-copy=""><p>Hi {{First Name}},</p><p>You've probably spent time thinking about your investments.</p><p>But have you spent time thinking about what you actually want them to accomplish?</p><p>We've partnered with Knomee to offer a free, research-backed experience that helps you better understand what's driving your financial decisions.</p><p><b>In about 8 minutes, you'll receive:</b></p><p>- Personalized insights about your financial priorities</p><p>- Your top three money questions</p><p>- A summary you can keep and use in future financial conversations</p><p>Whether you're planning your next move or simply looking for more clarity, it's a worthwhile investment of eight minutes.</p><p>Best, <br>{{Advisor Name}}, {{Firm Name}}</p><a class="email-cta">Get my personalized summary →</a></div></div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Before your next financial decision</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>You’ve probably spent time thinking about your investments.</p><p>But have you spent time thinking about what you actually want them to accomplish?</p><p>We’ve partnered with Knomee to offer a free, research-backed experience that helps you better understand what’s driving your financial decisions.</p><p><b>In about 8 minutes, you’ll receive:</b></p><p>- Personalized insights about your financial priorities</p><p>- Your top three money questions</p><p>- A summary you can keep and use in future financial conversations</p><p>Whether you’re planning your next move or simply looking for more clarity, it’s a worthwhile investment of eight minutes.</p><a class="email-cta">Get My Personalized Summary →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
     <div class="pairing"><b>Suggested pairing:</b> a Theme video like ‘Prepare for the Conversation’ or ‘Smart People, Emotional Decisions,’ below the CTA.</div>
   </div>
   <div data-sample-id="warm-2" data-type="Email · Newsletter Feature" class="lead-warm">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A new way to get clear on what matters</div></div><div class="email-body" data-copy=""><p>We're excited to partner with Knomee, a research-backed experience to help you explore what matters most, what you want next, and what you want your wealth to make possible.</p><p>In just 8 minutes, you'll discover what's shaping your financial priorities, uncover your top three money questions, and receive personalized insights you can keep.</p><p>It's a different way to prepare for your next financial conversation, and perhaps a better one.</p><a class="email-cta">Discover your personalized profile →</a></div></div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A new way to get clear on what matters</div></div><div class="email-body" data-copy><p>We’re excited to partner with Knomee, a research-backed experience to help you explore what matters most, what you want next, and what you want your wealth to make possible.</p><p>In just 8 minutes, you’ll discover what’s shaping your financial priorities, uncover your top three money questions, and receive personalized insights you can keep.</p><p>It’s a different way to prepare for your next financial conversation, and perhaps a better one.</p><a class="email-cta">Discover Your Personalized Profile →</a></div></div>
     <div class="pairing"><b>Suggested pairing:</b> an Interview such as ‘Nobody Ever Asked Me That,’ or an Adventure Teaching Script from the series.</div>
   </div>
-  <div data-sample-id="warm-3" data-type="Event Invite · Pre & Post" class="lead-warm">
-    <div class="frame"><div style="background:var(--warm);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem">🗓 Advisor Event</div><div class="frame-body" data-copy=""><div class="kicker">Before the event</div><p><b>Make [the event] more relevant to you</b></p><p>Before you join us, take 8 minutes to think about your own financial life. You’ll uncover your top 3 money questions and what you most want your wealth to make possible, so you can come to the conversation knowing what you want to get out of it.</p><p>Start your experience →</p><div class="kicker" style="margin-top:1rem">After the event</div><p>Thanks for joining us. If today’s conversation gave you something to think about, take 8 minutes to make it personal.</p><p>You’ll uncover your top 3 money questions, clarify what matters most to you now, and identify where you may want to take action or get more guidance.</p><span class="pill-cta">Find your next step →</span></div></div>
+  <div data-sample-id="warm-3" data-type="Event Invite · Pre &amp; Post" class="lead-warm">
+    <div class="frame"><div class="frame-head">🗓 Advisor Event</div><div class="frame-body" data-copy><div class="kicker">Before the event</div><p><b>Make {{Event Name}} more relevant to you</b></p><p>Before you join us, take 8 minutes to think about your own financial life. You’ll uncover your top 3 money questions and what you most want your wealth to make possible, so you can come to the conversation knowing what you want to get out of it.</p><span class="pill-cta">Start Your Experience →</span><div class="kicker" style="margin-top:1rem">After the event</div><p>Thanks for joining us. If today’s conversation gave you something to think about, take 8 minutes to make it personal.</p><p>You’ll uncover your top 3 money questions, clarify what matters most to you now, and identify where you may want to take action or get more guidance.</p><span class="pill-cta">Find Your Next Step →</span></div></div>
     <div class="pairing"><b>Suggested pairing:</b> a recap from a past event, or a Theme like ‘Years in the Making / The Rigor.’</div>
   </div>
-  <div data-sample-id="warm-4" data-type="LinkedIn / Social" class="lead-warm">
-    <div class="frame"><div class="frame-body" data-copy=""><div class="email-from" style="margin-bottom:.6rem"><div class="email-av">A</div><div><b style="color:var(--plum)">Acme Financial Advisors</b><br><span style="font-size: 13.12px;">inMail, Direct Social Message</span></div></div><p>Hi [First Name],</p><p>Here's something I've noticed.</p><p>Most of us spend hours researching vacations, home projects, or even our next car, but very little time stepping back to ask a much bigger question:</p><p><b>What do I actually want my money to make possible?</b></p><p>That's why I wanted to share something a little different.</p><p>It's a free, research-backed experience that takes about 8 minutes and helps you uncover what's driving your financial decisions, along with the three money questions that matter most to you right now.</p><p>You might be surprised by what you discover.</p><p>[Link]</p><p>Best,</p><p>[Advisor Name]</p></div><div class="frame-banner" style="height:150px">▶</div></div>
+  <div data-sample-id="warm-4" data-type="LinkedIn InMail / Social" class="lead-warm">
+    <div class="frame"><div class="frame-body" data-copy><div class="frame-from"><div class="email-av">A</div><div><b>Advisor Name</b><span>LinkedIn InMail / Direct Message</span></div></div><p>Hi {{First Name}},</p><p>Here’s something I’ve noticed.</p><p>Most of us spend hours researching vacations, home projects, or even our next car, but very little time stepping back to ask a much bigger question:</p><p><b>What do I actually want my money to make possible?</b></p><p>That’s why I wanted to share something a little different.</p><p>It’s a free, research-backed experience that takes about 8 minutes and helps you uncover what’s driving your financial decisions, along with the three money questions that matter most to you right now.</p><p>You might be surprised by what you discover.</p><p>{{Link}}</p><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div><div class="frame-banner" style="height:150px">▶</div></div>
     <div class="pairing"><b>Suggested pairing:</b> a short, editorial Theme or Interview clip (e.g. ‘Money Personality’) over a stock finance photo.</div>
   </div>
   <div data-sample-id="hot-1" data-type="Email · Confirmation" class="lead-hot">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Before we meet</div></div><div class="email-body" data-copy=""><p>Hi {{First Name}},</p><p>I’m looking forward to meeting you.</p><p>To make the most of our time together, I'd like to ask one small favor.</p><p>Before our meeting, please take about 8 minutes to complete this guided experience.</p><p>It will help you organize your thoughts, uncover your top three money questions, and give me valuable context about what's most important to you.</p><p>Rather than spending our first meeting on basic fact-finding, we'll be able to focus on the questions, goals, and opportunities that matter most to you.</p><p>I'm looking forward to our conversation.<br>Best,</p><p>{{Advisor Name}}</p><a class="email-cta">Complete it here →</a></div></div>
-    <div class="pairing"><b>Suggested pairing:</b> an Interview such as ‘Context’ or ‘What Wealth Doesn't Solve,’ linked under the CTA.</div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Before we meet</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>I’m looking forward to meeting you.</p><p>To make the most of our time together, I’d like to ask one small favor.</p><p>Before our meeting, please take about 8 minutes to complete this guided experience.</p><p>It will help you organize your thoughts, uncover your top three money questions, and give me valuable context about what’s most important to you.</p><p>Rather than spending our first meeting on basic fact-finding, we’ll be able to focus on the questions, goals, and opportunities that matter most to you.</p><a class="email-cta">Complete It Here →</a><p>I’m looking forward to our conversation.</p><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> an Interview such as ‘Context’ or ‘What Wealth Doesn’t Solve,’ linked under the CTA.</div>
   </div>
   <div data-sample-id="hot-2" data-type="Email · Reminder · 2 days before" class="lead-hot">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick reminder before we meet...</div></div><div class="email-body" data-copy=""><p>Hi {{First Name}},</p><p>I'm looking forward to our conversation on {{Day}}.</p><p>If you haven't had a chance yet, there's still time to complete the short 8-minute experience I sent over.</p><p>It will help you clarify what's most important to you, identify your top three money questions, and give me valuable context before we meet.</p><p>I'll review your responses in advance so we can spend less time on background questions and more time discussing what's most relevant to you.</p><p>Complete it by clicking on the button below.</p><p>Looking forward to speaking with you.</p><p>Best,</p><p>{{Advisor Name}}</p><a class="email-cta">Start here →</a></div></div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick reminder before we meet</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>I’m looking forward to our conversation on {{Day}}.</p><p>If you haven’t had a chance yet, there’s still time to complete the short 8-minute experience I sent over.</p><p>It will help you clarify what’s most important to you, identify your top three money questions, and give me valuable context before we meet.</p><p>I’ll review your responses in advance so we can spend less time on background questions and more time discussing what’s most relevant to you.</p><p>Complete it by clicking on the button below.</p><a class="email-cta">Start Here →</a><p>Looking forward to speaking with you.</p><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
     <div class="pairing"><b>Suggested pairing:</b> the same Interview as the confirmation email, or a brief personal note from the advisor.</div>
   </div>
-  <div data-sample-id="hot-3" data-type="Meeting Follow-Up" class="lead-hot">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Thank you</div></div><div class="email-body" data-copy=""><p>Hi [First Name],</p><p>Thank you again for meeting with me. I enjoyed our conversation.</p><p>As you reflect on what we discussed, the 8-minute Knomee experience is a useful way to take that thinking further. You’ll clarify what you want your wealth to make possible, uncover your 3 most important financial questions, and receive personalized insights to keep.</p><p>[Discover your insights →]</p><p>I’m happy to answer any questions as you consider what comes next.</p><p>Best,</p><p>[Advisor Name]</p><a class="email-cta">Continue the conversation →</a></div></div>
+  <div data-sample-id="hot-3" data-type="Email · Meeting Follow-Up" class="lead-hot">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Thank you</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Thank you again for meeting with me. I enjoyed our conversation.</p><p>As you reflect on what we discussed, the 8-minute Knomee experience is a useful way to take that thinking further. You’ll clarify what you want your wealth to make possible, uncover your 3 most important financial questions, and receive personalized insights to keep.</p><a class="email-cta">Continue the Conversation →</a><p>I’m happy to answer any questions as you consider what comes next.</p><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
     <div class="pairing"><b>Suggested pairing:</b> no image or video here — this is a 1:1, personal message. Every message comes from the advisor personally, never a marketing address.</div>
   </div>
 </div>
@@ -863,7 +867,7 @@
     if(next){
       el.innerHTML = '<span class="vn-label">Up next</span><button class="vn-btn" data-go="'+next+'" style="--lead:var('+(vnColor[next]||'--grape')+')">Next: '+meta[next][1]+' <span class="arw">→</span></button>';
     } else {
-      el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">↑ Back to Home</button>';
+      el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">← Back to Home</button>';
     }
     host.appendChild(el);
   });
@@ -946,11 +950,11 @@
   back.addEventListener('click', function(){ closeSheet(); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
 
-  function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy text'; }
+  function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy Text'; }
   copyBtn.addEventListener('click', function(){
     var src = sheetBody.querySelector('[data-copy]') || sheetBody;
     var text = src.innerText.replace(/\n{3,}/g,'\n\n').trim();
-    var done=function(){ copyBtn.classList.add('done'); copyBtn.querySelector('span').textContent='Copied!'; setTimeout(resetCopy,1800); };
+    var done=function(){ copyBtn.classList.add('done'); copyBtn.querySelector('span').textContent='Copied ✓'; setTimeout(resetCopy,1800); };
     if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); }
     else fallback();
     function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }

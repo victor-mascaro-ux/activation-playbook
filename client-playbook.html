@@ -89,10 +89,10 @@
   .head{margin-bottom:var(--s6)}
 
   /* ── buttons ── */
-  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:1rem;padding:.8rem 1.4rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:1rem;padding:.8rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
   .btn .arw{transition:transform .3s var(--ease)}.btn:hover .arw{transform:translateX(4px)}
-  .btn-primary{background:var(--grape);color:#fff;box-shadow:0 8px 24px rgba(118,57,161,.32)}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(118,57,161,.42)}
+  .btn-primary{background:var(--lead);color:#fff;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
 
   /* ── HOME hub ── */
   .home-hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(130% 120% at 12% 8%,#125c55 0%,#0b3b47 55%,#071d2c 100%);padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem)}
@@ -196,7 +196,12 @@
   .email-subj{font-size:1.15rem;font-weight:600;color:var(--plum)}
   .email-body{padding:1.2rem 1.3rem}
   .email-body p{color:var(--ink-2);font-weight:300;margin-bottom:.7rem}
-  .email-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.2rem;border-radius:9px;margin-top:.3rem}
+  .email-cta,.pill-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.3rem;border-radius:var(--r-pill);margin:.3rem 0 .9rem}
+  .email-body>:last-child,.frame-body>:last-child{margin-bottom:0}
+  .frame-head{background:var(--lead);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem}
+  .frame-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+  .frame-from b{display:block;color:var(--plum);font-weight:600;font-size:.95rem;line-height:1.3}.frame-from span{color:var(--muted);font-weight:300;font-size:.82rem}
+  .prod-note{color:var(--plum);font-weight:600}
   .frame{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
   .frame-body{padding:1.2rem 1.3rem}
   .kicker{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
@@ -216,7 +221,7 @@
   .sheet-x:hover{background:var(--line);transform:rotate(90deg)}
   .sheet-body{padding:1.4rem;overflow-y:auto;flex:1}
   .sheet-foot{padding:1rem 1.4rem;border-top:1px solid var(--line);background:#fff;display:flex;gap:.8rem;align-items:center;flex-shrink:0}
-  .copy-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--lead);color:#fff;font-weight:600;border:none;border-radius:var(--r-pill);padding:.75rem 1.4rem;cursor:pointer;transition:transform .2s,background .2s}
+  .copy-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--lead);color:#fff;font-weight:600;font-size:1rem;border:none;border-radius:var(--r-pill);padding:.8rem 1.5rem;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .2s,background .2s}
   .copy-btn:hover{transform:translateY(-2px)}
   .copy-btn.done{background:var(--engaged)}
   .copy-hint{color:var(--muted);font-size:.85rem;font-weight:300}
@@ -255,7 +260,7 @@
   /* ── next-section flow button ── */
   .view-next{margin-top:var(--s8);padding-top:var(--s6);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   .vn-label{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  .vn-btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--lead);color:#fff;font-weight:600;font-size:1.05rem;padding:.85rem 1.7rem;border-radius:var(--r-pill);border:none;cursor:pointer;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .25s var(--ease),box-shadow .25s}
+  .vn-btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--lead);color:#fff;font-weight:600;font-size:1rem;padding:.8rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .25s var(--ease),box-shadow .25s}
   .vn-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
   .vn-btn .arw{transition:transform .3s var(--ease)}.vn-btn:hover .arw{transform:translateX(5px)}
 
@@ -471,7 +476,7 @@
 <section class="view" id="what-is-knomee">
   <div class="container section">
     <span class="backlink" data-back>← Home</span>
-    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Client Experiences</h2><p class="intro">Knomee is a <strong>8-minute guided check-in</strong> your clients complete before a review — or any time life shifts. It helps them articulate their current goals, priorities, and top money questions, so every conversation starts with what matters <em>now</em>, not what mattered at onboarding.</p></div>
+    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Client Experiences</h2><p class="intro">Knomee is an <strong>8-minute guided check-in</strong> your clients complete before a review — or any time life shifts. It helps them articulate their current goals, priorities, and top money questions, so every conversation starts with what matters <em>now</em>, not what mattered at onboarding.</p></div>
     <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
       <div class="card"><span class="num">1</span><h3 style="margin-top:1rem">The client feels heard</h3><p>They get a personal summary — and reviews stop feeling like a portfolio report.</p></div>
       <div class="card"><span class="num">2</span><h3 style="margin-top:1rem">The advisor sees what changed</h3><p>Knomee surfaces shifts in priorities and life events before the meeting.</p></div>
@@ -528,9 +533,9 @@
     <div class="tabpanel" data-panel="samples">
       <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
       <div class="sample-grid">
-        <button class="scard" data-sample="eng-1"><span class="type">Email · Pre-Meeting Invite · 2 weeks before</span><h4>A quick check-in before we connect</h4><span class="prev">Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="eng-2"><span class="type">Email · Mid-Year Pulse · between reviews</span><h4>A quick mid-year check-in</h4><span class="prev">A lot can change between reviews. I wanted to reach out with a quick mid-year check-in…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="eng-3"><span class="type">Email · Meeting Recap · 1–2 days after</span><h4>Great connecting today</h4><span class="prev">Thank you for meeting today. As a recap, the main areas we discussed…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="eng-1"><span class="type">Email · Pre-Meeting Invite · 2 weeks before</span><h4>A quick check-in before we connect</h4><span class="prev">Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="eng-2"><span class="type">Email · Mid-Year Pulse · between reviews</span><h4>A quick mid-year check-in</h4><span class="prev">A lot can change between reviews. I wanted to reach out with a quick mid-year check-in…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="eng-3"><span class="type">Email · Meeting Recap · 1–2 days after</span><h4>Great connecting today</h4><span class="prev">Thank you for meeting today. As a recap, the main areas we discussed…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
       </div>
     </div>
     <div class="tabpanel" data-panel="metrics">
@@ -539,7 +544,7 @@
         <tr><td class="m">Strengthen the relationship</td><td>Response rate to check-ins</td><td>Referral rate</td></tr>
         <tr><td class="m">Increase share of wallet</td><td>Household penetration rate</td><td>Assets under management growth</td></tr>
       </tbody></table></div>
-      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Engaged → Disengaged</h3><p>Watch for early drift signals — a skipped review, a slower response time, a declined meeting. Move them to the Disengaged cadence <strong>before six months of silence passes.</strong></p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--disengaged);box-shadow:0 8px 24px rgba(85,85,95,.32)" data-go="disengaged">Go to Disengaged <span class="arw">→</span></button></p></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Engaged → Disengaged</h3><p>Watch for early drift signals — a skipped review, a slower response time, a declined meeting. Move them to the Disengaged cadence <strong>before six months of silence passes.</strong></p><p style="margin-top:.9rem"><button class="btn btn-primary" style="--lead:var(--disengaged)" data-go="disengaged">Go to Disengaged <span class="arw">→</span></button></p></div>
     </div>
   </div>
 </section>
@@ -574,8 +579,8 @@
     <div class="tabpanel" data-panel="samples">
       <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
       <div class="sample-grid">
-        <button class="scard" data-sample="dis-1"><span class="type">Email · Annual Check-In · the default re-opener</span><h4>A quick check-in to make sure we're focused on what matters</h4><span class="prev">It's been a while since we connected, and I wanted to reach out with a quick check-in…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
-        <button class="scard" data-sample="dis-2"><span class="type">Email · Life-Event Check-In · when something changed</span><h4>A quick check-in on changes in your financial picture</h4><span class="prev">I wanted to check in on whether anything has changed in your financial picture or planning needs…</span><span class="open">Open &amp; copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="dis-1"><span class="type">Email · Annual Check-In · the default re-opener</span><h4>A quick check-in to make sure we’re focused on what matters</h4><span class="prev">It’s been a while since we connected, and I wanted to reach out with a quick check-in…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="dis-2"><span class="type">Email · Life-Event Check-In · when something changed</span><h4>A quick check-in on changes in your financial picture</h4><span class="prev">I wanted to check in on whether anything has changed in your financial picture or planning needs…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
       </div>
     </div>
     <div class="tabpanel" data-panel="metrics">
@@ -585,7 +590,7 @@
         <tr><td class="m">Rebuild trust</td><td>Participation rate</td><td>Retention rate</td></tr>
         <tr><td class="m">Strengthen the relationship</td><td>Share-of-wallet growth</td><td>Retention rate</td></tr>
       </tbody></table></div>
-      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Disengaged → Engaged</h3><p>The moment a disengaged client completes Knomee, treat them as Engaged: the advisor reviews responses <strong>within 48 hours</strong>, sends the thank-you, and books the meeting. A re-engagement completion that sits unanswered does more harm than no campaign at all.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="background:var(--engaged);box-shadow:0 8px 24px rgba(12,114,99,.32)" data-go="engaged">Go to Engaged <span class="arw">→</span></button></p></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Disengaged → Engaged</h3><p>The moment a disengaged client completes Knomee, treat them as Engaged: the advisor reviews responses <strong>within 48 hours</strong>, sends the thank-you, and books the meeting. A re-engagement completion that sits unanswered does more harm than no campaign at all.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="--lead:var(--engaged)" data-go="engaged">Go to Engaged <span class="arw">→</span></button></p></div>
     </div>
   </div>
 </section>
@@ -642,7 +647,7 @@
 
     <div class="callout anim" style="margin-top:var(--s4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;--lead:var(--grape);--lead-tint:#fff;border:1px solid var(--line)">
       <div><h3 style="color:var(--plum)">Browse the full library in Google Drive</h3><p>All ~24 videos, ready to embed — open the folder and pick the files that fit the plan above.</p></div>
-      <a href="https://drive.google.com/drive/folders/11SHeKJ0PxBAwJzragIy4ZGvgZZGONpgk" target="_blank" rel="noopener" class="btn btn-primary" style="background:var(--plum)">▶ Open the Video Library <span class="arw">→</span></a>
+      <a href="https://drive.google.com/drive/folders/11SHeKJ0PxBAwJzragIy4ZGvgZZGONpgk" target="_blank" rel="noopener" class="btn btn-primary" style="--lead:var(--plum)">Open the Video Library <span class="arw">→</span></a>
     </div>
     <p class="anim" style="margin-top:1.2rem;font-style:italic;color:var(--muted);font-size:.95rem">Tip: tag every video link with <code>utm_content=video[#]</code> so the traffic report shows which videos drive completions.</p>
   </div>
@@ -650,37 +655,37 @@
 
 </main>
 
-<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Client Toolkit · V1 · 2026 · <a data-go="home" style="cursor:pointer">Home</a></div></div></footer>
+<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Client Toolkit · V2 · 2026 · <a data-go="home" style="cursor:pointer">Home</a></div></div></footer>
 
 <!-- ── SLIDE-OVER ── -->
 <div class="sheet-back" id="sheetBack"></div>
 <aside class="sheet" id="sheet" aria-label="Sample">
   <div class="sheet-head"><span class="st" id="sheetType">Sample</span><button class="sheet-x" id="sheetX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sheet-body" id="sheetBody"></div>
-  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
+  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy Text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
 </aside>
 
 <!-- ── SAMPLE STORE (hidden source content) ── -->
 <div class="sample-store" id="sampleStore">
   <div data-sample-id="eng-1" data-type="Email · Pre-Meeting Invite · 2 weeks before" class="lead-engaged">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in before we connect</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now.</p><p>Knomee is a brief experience that helps you reflect on your goals, priorities, and what's top of mind. If you have a few minutes, please complete it before we meet:</p><a class="email-cta">Access your Knomee experience here →</a></div></div>
-    <div class="pairing"><b>Pair it with:</b> a short “why we check in” explainer video, below the CTA.</div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in before we connect</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now.</p><p>Knomee is a brief experience that helps you reflect on your goals, priorities, and what’s top of mind. If you have a few minutes, please complete it before we meet:</p><a class="email-cta">Access Your Knomee Experience Here →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a short “why we check in” explainer video, below the CTA.</div>
   </div>
   <div data-sample-id="eng-2" data-type="Email · Mid-Year Pulse · between reviews" class="lead-engaged">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick mid-year check-in</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>A lot can change between reviews. I wanted to reach out with a quick mid-year check-in.</p><p>If anything has shifted, Knomee is a simple way to let me know before our next scheduled meeting.</p><a class="email-cta">Complete Knomee →</a></div></div>
-    <div class="pairing"><b>Pair it with:</b> a family-conversation opener video works well for household-alignment prompts.</div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick mid-year check-in</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>A lot can change between reviews. I wanted to reach out with a quick mid-year check-in.</p><p>If anything has shifted, Knomee is a simple way to let me know before our next scheduled meeting.</p><a class="email-cta">Complete Knomee →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a family-conversation opener video works well for household-alignment prompts.</div>
   </div>
   <div data-sample-id="eng-3" data-type="Email · Meeting Recap · 1–2 days after" class="lead-engaged">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Great connecting today</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>Thank you for meeting today. As a recap, the main areas we discussed: [Priority 1], [Priority 2], [Priority 3]. Next steps: [Next Step 1], [Next Step 2].</p><p>I'll keep your Knomee responses in mind as we continue working together.</p><a class="email-cta">View your Knomee summary →</a></div></div>
-    <div class="pairing"><b>Pair it with:</b> no video needed — this is a personal recap, referencing their specific responses. Every message comes from the advisor personally.</div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Great connecting today</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Thank you for meeting today. As a recap, the main areas we discussed: {{Priority 1}}, {{Priority 2}}, {{Priority 3}}. Next steps: {{Next Step 1}}, {{Next Step 2}}.</p><p>I’ll keep your Knomee responses in mind as we continue working together.</p><a class="email-cta">View Your Knomee Summary →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> no video needed — this is a personal recap, referencing their specific responses. Every message comes from the advisor personally.</div>
   </div>
   <div data-sample-id="dis-1" data-type="Email · Annual Check-In · the default re-opener" class="lead-disengaged">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in to make sure we're focused on what matters</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>It's been a while since we connected, and I wanted to reach out with a quick check-in.</p><p>Rather than assume your priorities are the same, I'd like to give you a simple way to share what's top of mind. Knomee is a brief experience that helps you reflect on what may have changed.</p><a class="email-cta">Access your Knomee experience here →</a></div></div>
-    <div class="pairing"><b>Pair it with:</b> send from the advisor's personal email, not a marketing address. No image needed on a re-opener.</div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in to make sure we’re focused on what matters</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>It’s been a while since we connected, and I wanted to reach out with a quick check-in.</p><p>Rather than assume your priorities are the same, I’d like to give you a simple way to share what’s top of mind. Knomee is a brief experience that helps you reflect on what may have changed.</p><a class="email-cta">Access Your Knomee Experience Here →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> send from the advisor’s personal email, not a marketing address. No image needed on a re-opener.</div>
   </div>
   <div data-sample-id="dis-2" data-type="Email · Life-Event Check-In · when something changed" class="lead-disengaged">
-    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in on changes in your financial picture</div></div><div class="email-body" data-copy><p>Hi [Client First Name],</p><p>I wanted to check in on whether anything has changed in your financial picture or planning needs since we last spoke.</p><p>If new responsibilities or questions have come up, I'd welcome the chance to understand them — Knomee is a helpful starting point.</p><a class="email-cta">Access your Knomee experience here →</a></div></div>
-    <div class="pairing"><b>Pair it with:</b> never name products in this message — the Knomee responses tell you what to bring to the conversation.</div>
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in on changes in your financial picture</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>I wanted to check in on whether anything has changed in your financial picture or planning needs since we last spoke.</p><p>If new responsibilities or questions have come up, I’d welcome the chance to understand them — Knomee is a helpful starting point.</p><a class="email-cta">Access Your Knomee Experience Here →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> never name products in this message — the Knomee responses tell you what to bring to the conversation.</div>
   </div>
 </div>
 
@@ -718,7 +723,7 @@
     if(next){
       el.innerHTML = '<span class="vn-label">Up next</span><button class="vn-btn" data-go="'+next+'" style="--lead:var('+(vnColor[next]||'--grape')+')">Next: '+meta[next][1]+' <span class="arw">→</span></button>';
     } else {
-      el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">↑ Back to Home</button>';
+      el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">← Back to Home</button>';
     }
     host.appendChild(el);
   });
@@ -801,11 +806,11 @@
   back.addEventListener('click', function(){ closeSheet(); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
 
-  function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy text'; }
+  function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy Text'; }
   copyBtn.addEventListener('click', function(){
     var src = sheetBody.querySelector('[data-copy]') || sheetBody;
     var text = src.innerText.replace(/\n{3,}/g,'\n\n').trim();
-    var done=function(){ copyBtn.classList.add('done'); copyBtn.querySelector('span').textContent='Copied!'; setTimeout(resetCopy,1800); };
+    var done=function(){ copyBtn.classList.add('done'); copyBtn.querySelector('span').textContent='Copied ✓'; setTimeout(resetCopy,1800); };
     if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); }
     else fallback();
     function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
