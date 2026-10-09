@@ -212,9 +212,9 @@
   .pairing b{color:var(--lead-ink);font-weight:700}
 
   /* ── slide-over sheet ── */
-  .sheet-back{position:fixed;inset:0;z-index:90;background:rgba(20,6,40,.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+  .sheet-back{position:fixed;inset:0;z-index:210;background:rgba(20,6,40,.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
   .sheet-back.open{opacity:1;pointer-events:auto}
-  .sheet{position:fixed;top:0;right:0;bottom:0;z-index:95;width:min(560px,100%);background:var(--snow);box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .4s var(--ease);display:flex;flex-direction:column}
+  .sheet{position:fixed;top:0;right:0;bottom:0;z-index:215;width:min(560px,100%);background:var(--snow);box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .4s var(--ease);display:flex;flex-direction:column}
   .sheet.open{transform:none}
   .sheet-head{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;border-bottom:1px solid var(--line);background:#fff;flex-shrink:0}
   .sheet-head .st{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--lead-ink);background:var(--lead-tint);padding:.35rem .8rem;border-radius:var(--r-pill)}
