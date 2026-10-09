@@ -13,6 +13,8 @@ any page.
   iframe to each toolkit.
 - `prospect-playbook.html` — Winning New Clients: the Prospect Toolkit.
 - `client-playbook.html` — Deepening Relationships: the Client Toolkit.
+- `recruit-playbook.html` — Attracting Advisors: the Recruit Toolkit (advisors
+  weighing a move to independence).
 - `knomee_playbook.html` — the older combined V5 deck.
 
 ## Commenting overlay

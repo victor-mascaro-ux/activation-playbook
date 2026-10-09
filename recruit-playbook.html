@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<script>/* Live pages load directly (no commenting). The editor (?edit=1) runs inside the commenting shell. */(function(){try{if(window.top!==window.self)return;var s=location.search;if(/[?&]raw=1/.test(s))return;if(/[?&]edit=1/.test(s)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html')+'&edit=1');}}catch(e){}})();</script>
+<title>Knomee — The Recruit Toolkit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#240446; --indigo:#4A1C72; --grape:#7639A1; --aqua:#2DD2B0; --lilac:#B98DDC;
+    --ink:#221833; --ink-2:#463a57; --muted:#6d6478; --line:#ece7f2;
+    --snow:#f8fafa; --fog:#f6f5fb; --white:#fff;
+    --inbound:#0C7263;  --inbound-tint:#D6F3EC;
+    --outreach:#55555F; --outreach-tint:#EAEAEC;
+    --talks:#8B33D9;    --talks-tint:#F1E4FE;
+    --warm:#0C7263;
+    --fs-display:clamp(2.4rem,5.5vw,4.4rem);
+    --fs-h2:clamp(1.5rem,3vw,2.1rem);
+    --fs-h3:clamp(1.15rem,1.6vw,1.4rem);
+    --fs-lead:clamp(1.05rem,1.5vw,1.35rem);
+    --fs-body:1.0625rem; --fs-sm:.9375rem; --fs-eyebrow:.8rem;
+    --s2:1rem; --s3:1.5rem; --s4:2rem; --s6:3rem; --s8:4rem;
+    --pad:clamp(2.5rem,5vw,4.5rem);
+    --container:1180px; --r:16px; --r-lg:24px; --r-pill:999px;
+    --shadow-sm:0 2px 10px rgba(36,4,70,.06);
+    --shadow:0 14px 40px rgba(36,4,70,.10);
+    --shadow-lg:0 30px 70px rgba(36,4,70,.18);
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --font:'Poppins',system-ui,-apple-system,sans-serif;
+    --lead:var(--grape); --lead-tint:var(--fog); --lead-ink:var(--grape);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--snow);color:var(--ink);font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  img,svg{display:block;max-width:100%}
+  ::selection{background:var(--aqua);color:var(--plum)}
+  .container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem)}
+
+  /* ── nav ── */
+  .nav{position:sticky;top:0;z-index:60;background:rgba(28,10,54,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav-inner{max-width:1320px;margin-inline:auto;padding:.6rem clamp(1rem,3vw,2rem);display:flex;align-items:center;gap:1.2rem}
+  .nav-logo{display:flex;align-items:center;gap:.5rem;flex-shrink:0;cursor:pointer}
+  .nav-logo svg{height:19px;width:auto}
+  .nav-links{display:flex;align-items:center;gap:.15rem;margin-left:auto}
+  .nav-links a{position:relative;font-size:.8rem;font-weight:500;color:rgba(255,255,255,.66);padding:.4rem .62rem;border-radius:var(--r-pill);white-space:nowrap;transition:color .25s,background .25s;cursor:pointer}
+  .nav-links a::after{content:"";position:absolute;left:.62rem;right:.62rem;bottom:.16rem;height:2px;background:var(--aqua);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+  .nav-links a:hover{color:#fff}.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+  .nav-links a.active{color:#fff}
+  .nav-menu-btn{display:none;margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-weight:600;font-size:.85rem;border-radius:var(--r-pill);padding:.5rem .9rem;cursor:pointer;align-items:center;gap:.5rem}
+  .nav-menu-btn svg{width:16px;height:16px}
+
+  /* ── mobile drawer ── */
+  .drawer{position:fixed;inset:0;z-index:80;background:rgba(20,6,40,.92);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);display:flex;flex-direction:column;padding:clamp(1.5rem,6vw,3.5rem)}
+  .drawer.open{opacity:1;pointer-events:auto}
+  .drawer-close{align-self:flex-end;background:none;border:none;color:#fff;cursor:pointer;padding:.5rem}
+  .drawer-close svg{width:26px;height:26px}
+  .drawer-list{margin-top:.5rem;display:flex;flex-direction:column;gap:.1rem;overflow-y:auto}
+  .drawer-list a{display:flex;align-items:baseline;gap:.9rem;color:#fff;padding:.7rem .3rem;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer;transform:translateY(12px);opacity:0}
+  .drawer.open .drawer-list a{animation:drawerIn .5s var(--ease) forwards}
+  .drawer-list a .n{font-size:.7rem;font-weight:700;color:var(--aqua);width:1.5rem}
+  .drawer-list a .t{font-size:1.3rem;font-weight:600}
+  .drawer-list a .d{margin-left:auto;font-size:.78rem;color:rgba(255,255,255,.5);font-weight:300;text-align:right;max-width:42%}
+  @keyframes drawerIn{to{transform:none;opacity:1}}
+
+  /* ── views (router) ── */
+  .view{display:none}
+  .view.active{display:block}
+  main{min-height:calc(100vh - 55px)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  .view.active .anim{animation:fadeUp .6s var(--ease) both}
+  .view.active .anim.d1{animation-delay:.06s}.view.active .anim.d2{animation-delay:.13s}.view.active .anim.d3{animation-delay:.2s}
+  .view.active .stagger>*{animation:fadeUp .55s var(--ease) both}
+  .view.active .stagger>*:nth-child(2){animation-delay:.07s}
+  .view.active .stagger>*:nth-child(3){animation-delay:.14s}
+  .view.active .stagger>*:nth-child(4){animation-delay:.21s}
+  .view.active .stagger>*:nth-child(5){animation-delay:.28s}
+
+  .section{padding-block:var(--pad)}
+  .eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lead-ink)}
+  .eyebrow::before{content:"";width:26px;height:2px;border-radius:2px;background:currentColor;opacity:.6}
+  .h2{font-size:var(--fs-h2);font-weight:700;line-height:1.12;letter-spacing:-.01em;color:var(--plum);margin-top:var(--s2)}
+  .intro{font-size:var(--fs-lead);font-weight:300;color:var(--ink-2);margin-top:var(--s3);max-width:60ch}
+  .head{margin-bottom:var(--s6)}
+
+  /* ── buttons ── */
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:1rem;padding:.8rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+  .btn .arw{transition:transform .3s var(--ease)}.btn:hover .arw{transform:translateX(4px)}
+  .btn-primary{background:var(--lead);color:#fff;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
+
+  /* ── HOME hub ── */
+  .home-hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(130% 120% at 12% 8%,#3a1266 0%,var(--plum) 55%,#180a2e 100%);padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem)}
+  .blob{position:absolute;border-radius:50%;filter:blur(72px);z-index:0;will-change:transform}
+  .blob.b1{width:460px;height:460px;background:#7c2bd6;opacity:.45;top:-120px;right:-60px;animation:float1 20s ease-in-out infinite}
+  .blob.b2{width:400px;height:400px;background:#0f8f7a;opacity:.4;bottom:-160px;left:-80px;animation:float2 24s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-140px,100px) scale(1.16)}50%{transform:translate(-50px,190px) scale(1.05)}75%{transform:translate(130px,80px) scale(1.12)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}30%{transform:translate(170px,-80px) scale(1.14)}60%{transform:translate(80px,-170px) scale(1.05)}}
+  .home-hero .container{position:relative;z-index:1}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:.55rem;background:rgba(155,25,251,.16);border:1px solid rgba(180,120,255,.4);color:#e3c9ff;font-size:.76rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:var(--r-pill)}
+  .home-hero h1{font-size:var(--fs-display);font-weight:700;line-height:1.03;letter-spacing:-.02em;margin:1.3rem 0 0}
+  .home-hero h1 .accent{color:var(--lilac)}
+  .home-hero .tag{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.82);max-width:46ch;margin-top:1.2rem}
+  .intro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.4rem}
+  .intro-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:1.3rem 1.4rem;backdrop-filter:blur(4px)}
+  .intro-card .k{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua);margin-bottom:.5rem}
+  .intro-card h3{font-size:1.12rem;font-weight:600;margin-bottom:.35rem}
+  .intro-card p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.78)}
+
+  .choose{padding-block:clamp(3rem,6vw,5rem)}
+  .choose-label{text-align:center;margin-bottom:2.2rem}
+  .choose-label .eyebrow{color:var(--grape);justify-content:center}
+  .choose-label h2{font-size:var(--fs-h2);font-weight:700;color:var(--plum);margin-top:.6rem}
+  .choose-label p{color:var(--muted);font-weight:300;margin-top:.4rem}
+  .lead-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .lead-choice{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:1.8rem;color:#fff;cursor:pointer;min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(155deg,var(--lc) 0%,color-mix(in srgb,var(--lc) 55%,var(--plum)) 100%);box-shadow:var(--shadow);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .lead-choice:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .lead-choice::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 85% 12%,rgba(255,255,255,.22),transparent 55%);pointer-events:none}
+  .lead-choice .emoji{font-size:2.6rem;position:absolute;top:1.3rem;right:1.5rem;transition:transform .4s var(--ease)}
+  .lead-choice:hover .emoji{transform:scale(1.15) rotate(-6deg)}
+  .lead-choice .tagword{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+  .lead-choice h3{font-size:1.9rem;font-weight:700;line-height:1;margin:.3rem 0 .5rem}
+  .lead-choice p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.9)}
+  .lead-choice .go{display:inline-flex;align-items:center;gap:.4rem;margin-top:1rem;font-weight:600;font-size:.95rem}
+  .lead-choice .go .arw{transition:transform .3s var(--ease)}.lead-choice:hover .go .arw{transform:translateX(5px)}
+  .lc-inbound{--lc:#0C7263}.lc-outreach{--lc:#55555F}.lc-talks{--lc:#8B33D9}
+  .ref-row{margin-top:2.2rem}
+  .ref-row .k{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+  .ref-chips{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
+  .ref-chip{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:.6rem 1.15rem;font-weight:500;font-size:.95rem;color:var(--plum);cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
+  .ref-chip:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--grape)}
+  .ref-chip .e{font-size:1.05rem}
+
+  /* ── lead view ── */
+  .lead-band{border-radius:var(--r-lg);padding:clamp(1.6rem,4vw,2.6rem);color:#fff;background:linear-gradient(120deg,var(--lead) 0%,color-mix(in srgb,var(--lead) 58%,var(--plum)) 100%);position:relative;overflow:hidden}
+  .lead-band::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 90% 10%,rgba(255,255,255,.18),transparent 55%);pointer-events:none}
+  .lead-band .tagword{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem 1rem;border-radius:var(--r-pill);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+  .lead-band h2{font-size:clamp(1.9rem,5vw,3.1rem);font-weight:700;line-height:1;margin:.9rem 0 .5rem}
+  .lead-band p{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.92);max-width:52ch}
+  .backlink{display:inline-flex;align-items:center;gap:.4rem;color:var(--muted);font-weight:500;font-size:.9rem;cursor:pointer;margin-bottom:1.2rem;transition:color .2s,transform .2s}
+  .backlink:hover{color:var(--lead-ink);transform:translateX(-3px)}
+
+  /* tabs */
+  .tabs{display:flex;gap:.4rem;margin:1.6rem 0 2rem;flex-wrap:wrap;position:sticky;top:55px;z-index:20;background:var(--snow);padding:.5rem 0}
+  .tab{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);color:var(--ink-2);font-weight:600;font-size:.95rem;padding:.6rem 1.15rem;border-radius:var(--r-pill);cursor:pointer;transition:all .25s var(--ease)}
+  .tab .c{display:inline-flex;align-items:center;justify-content:center;min-width:1.3rem;height:1.3rem;padding:0 .35rem;border-radius:var(--r-pill);background:var(--lead-tint);color:var(--lead-ink);font-size:.72rem;font-weight:700}
+  .tab:hover{border-color:var(--lead);color:var(--lead-ink)}
+  .tab.active{background:var(--lead);color:#fff;border-color:var(--lead);box-shadow:0 8px 20px color-mix(in srgb,var(--lead) 35%,transparent)}
+  .tab.active .c{background:rgba(255,255,255,.25);color:#fff}
+  .tabpanel{display:none}
+  .tabpanel.active{display:block;animation:fadeUp .4s var(--ease) both}
+
+  /* ── dl ── */
+  .dl{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .dl>div{display:grid;grid-template-columns:210px 1fr;background:#fff}
+  .dl dt{background:var(--lead-tint);color:var(--lead-ink);font-weight:600;padding:1.1rem 1.4rem}
+  .dl dd{padding:1.1rem 1.4rem;color:var(--ink-2);font-weight:300}
+  .dl dd em{font-style:italic;color:var(--ink)}
+  .dl .rule dd strong{color:var(--plum);font-weight:600}
+
+  /* ── steps ── */
+  .steps{display:flex;flex-direction:column;gap:.9rem}
+  .step{display:flex;gap:1.1rem;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.2rem 1.4rem;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+  .step:hover{transform:translateX(6px);border-color:color-mix(in srgb,var(--lead) 45%,var(--line));box-shadow:var(--shadow)}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--lead);color:#fff;font-weight:700;flex-shrink:0}
+  .step-body{flex:1}.step-body strong{color:var(--plum);font-weight:600}.step-body p{color:var(--ink-2);font-weight:300;margin-top:.15rem}
+  .chip{display:inline-flex;align-items:center;gap:.35rem;margin-top:.7rem;background:var(--lead-tint);color:var(--lead-ink);font-size:.82rem;font-weight:600;padding:.3rem .8rem;border-radius:var(--r-pill)}
+
+  /* ── sample library grid ── */
+  .samples-note{color:var(--muted);font-weight:300;margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem}
+  .sample-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+  .scard{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.4rem;cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;display:flex;flex-direction:column;gap:.5rem}
+  .scard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--lead)}
+  .scard .type{display:inline-flex;align-self:flex-start;background:var(--lead-tint);color:var(--lead-ink);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.35rem .8rem;border-radius:var(--r-pill)}
+  .scard h4{font-size:1.15rem;font-weight:600;color:var(--plum);line-height:1.3}
+  .scard .prev{color:var(--muted);font-weight:300;font-size:.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .scard .open{margin-top:auto;display:inline-flex;align-items:center;gap:.4rem;color:var(--lead-ink);font-weight:600;font-size:.9rem}
+  .scard .open .arw{transition:transform .3s var(--ease)}.scard:hover .open .arw{transform:translateX(4px)}
+
+  /* ── email / frame mock ── */
+  .email{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .email-chrome{background:#eeeef0;padding:.55rem .9rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid #dcdce0}
+  .email-chrome .dots3{display:flex;gap:.3rem}.email-chrome i{width:10px;height:10px;border-radius:50%;display:block}
+  .email-chrome i:nth-child(1){background:#ff5f57}.email-chrome i:nth-child(2){background:#febc2e}.email-chrome i:nth-child(3){background:#28c840}
+  .email-chrome span{font-size:.8rem;color:#8a8a92;background:#fff;border:1px solid #d8d8de;border-radius:5px;padding:.15rem .6rem;flex:1}
+  .email-head{background:var(--snow);border-bottom:1px solid var(--line);padding:.9rem 1.2rem}
+  .email-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem}
+  .email-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--grape),var(--aqua));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+  .email-from b{color:var(--plum);font-weight:600;font-size:.95rem}.email-from span{color:var(--muted);font-weight:300;font-size:.9rem}
+  .email-subj{font-size:1.15rem;font-weight:600;color:var(--plum)}
+  .email-body{padding:1.2rem 1.3rem}
+  .email-body p{color:var(--ink-2);font-weight:300;margin-bottom:.7rem}
+  .email-cta,.pill-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.3rem;border-radius:var(--r-pill);margin:.3rem 0 .9rem}
+  .email-body>:last-child,.frame-body>:last-child{margin-bottom:0}
+  .frame-head{background:var(--lead);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem}
+  .frame-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+  .frame-from b{display:block;color:var(--plum);font-weight:600;font-size:.95rem;line-height:1.3}.frame-from span{color:var(--muted);font-weight:300;font-size:.82rem}
+  .prod-note{color:var(--plum);font-weight:600}
+  .frame{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .frame-banner{height:120px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:linear-gradient(135deg,var(--lead),var(--indigo));color:rgba(255,255,255,.85)}
+  .frame-body{padding:1.2rem 1.3rem}
+  .kicker{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+  .frame-body h4{font-size:1.3rem;font-weight:700;color:var(--plum);margin-bottom:.5rem;line-height:1.25}
+  .frame-body p{color:var(--ink-2);font-weight:300;margin-bottom:.9rem}
+    .quote{font-size:1.35rem;font-weight:500;color:var(--plum);line-height:1.35}
+  .pairing{background:var(--lead-tint);border-radius:12px;padding:.9rem 1.1rem;font-size:.92rem;color:var(--ink-2);font-weight:300;margin-top:1rem}
+  .pairing b{color:var(--lead-ink);font-weight:700}
+
+  /* ── slide-over sheet ── */
+  .sheet-back{position:fixed;inset:0;z-index:90;background:rgba(20,6,40,.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+  .sheet-back.open{opacity:1;pointer-events:auto}
+  .sheet{position:fixed;top:0;right:0;bottom:0;z-index:95;width:min(560px,100%);background:var(--snow);box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .4s var(--ease);display:flex;flex-direction:column}
+  .sheet.open{transform:none}
+  .sheet-head{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;border-bottom:1px solid var(--line);background:#fff;flex-shrink:0}
+  .sheet-head .st{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--lead-ink);background:var(--lead-tint);padding:.35rem .8rem;border-radius:var(--r-pill)}
+  .sheet-x{margin-left:auto;background:var(--fog);border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;color:var(--ink-2);display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+  .sheet-x:hover{background:var(--line);transform:rotate(90deg)}
+  .sheet-body{padding:1.4rem;overflow-y:auto;flex:1}
+  .sheet-foot{padding:1rem 1.4rem;border-top:1px solid var(--line);background:#fff;display:flex;gap:.8rem;align-items:center;flex-shrink:0}
+  .copy-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--lead);color:#fff;font-weight:600;font-size:1rem;border:none;border-radius:var(--r-pill);padding:.8rem 1.5rem;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .2s,background .2s}
+  .copy-btn:hover{transform:translateY(-2px)}
+  .copy-btn.done{background:var(--warm)}
+  .copy-hint{color:var(--muted);font-size:.85rem;font-weight:300}
+
+  /* ── tables / callout / cards (shared) ── */
+  .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm)}
+  table.t{width:100%;border-collapse:collapse;min-width:600px}
+  table.t thead th{background:var(--plum);color:rgba(255,255,255,.8);text-align:left;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.95rem 1.2rem}
+  table.t tbody td{padding:1rem 1.2rem;border-top:1px solid var(--line);color:var(--ink-2);font-weight:300;vertical-align:top}
+  table.t tbody tr{transition:background .25s}table.t tbody tr:hover{background:var(--lead-tint)}
+  table.t td .m{font-weight:600;color:var(--plum)}
+  .stage{display:inline-block;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--r-pill);margin:0 .2rem .2rem 0}
+  .stage.i{background:var(--inbound-tint);color:var(--inbound)}.stage.o{background:var(--outreach-tint);color:#3f3f47}.stage.t{background:var(--talks-tint);color:var(--talks)}
+  .fill{color:var(--muted);font-style:italic}
+  .vids{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+  .vids li{position:relative;padding-left:1.1rem;color:var(--ink-2);font-weight:300}
+  .vids li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--grape)}
+  .vids li em{font-style:italic;color:var(--muted)}
+  .callout{background:var(--lead-tint);border-radius:var(--r);border-left:4px solid var(--lead);padding:clamp(1.3rem,3vw,1.9rem)}
+  .callout h3{font-size:var(--fs-h3);font-weight:700;color:var(--lead-ink);margin-bottom:.5rem}
+  .callout p{color:var(--ink-2);font-weight:300}
+  .callout ul{margin:.7rem 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:.5rem}
+  .callout li{position:relative;padding-left:1.5rem;color:var(--ink-2);font-weight:300}
+  .callout li::before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--lead)}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.6rem;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--lead) 40%,var(--line))}
+  .card .ic{width:46px;height:46px;border-radius:13px;background:var(--lead-tint);color:var(--lead);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+  .card h3{font-size:var(--fs-h3);font-weight:600;color:var(--plum);margin-bottom:.45rem}.card p{color:var(--ink-2);font-weight:300}
+  .lp{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
+  .lp-top{background:var(--plum);color:#fff;padding:.9rem 1.5rem;text-align:center;position:relative;font-weight:700;letter-spacing:.14em;font-size:.9rem}
+  .lp-top svg{position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);height:14px}
+  .lp-hero{text-align:center;padding:1.8rem 1.5rem 1rem}
+  .lp-hero h3{font-size:clamp(1.3rem,3vw,1.9rem);color:var(--plum);font-weight:700;line-height:1.15}
+  .lp-hero p{color:var(--muted);font-weight:300;max-width:46ch;margin:.6rem auto 0}
+  .lp-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;background:var(--fog);border-radius:14px;padding:1rem;max-width:620px;margin:1.4rem auto 0}
+  .lp-tile{background:#fff;border-radius:11px;padding:1rem;box-shadow:var(--shadow-sm);text-align:left}
+  .lp-tile .e{font-size:1.4rem}.lp-tile b{display:block;color:var(--plum);font-size:.95rem;margin:.4rem 0 .3rem}.lp-tile p{font-size:.82rem;color:var(--muted);font-weight:300}
+  .lp-tile .bar{height:4px;border-radius:4px;background:var(--talks);margin-top:.8rem}
+  .lp-foot{text-align:center;padding:1.4rem}
+  .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(1.5rem,3vw,2.5rem);align-items:start}
+
+  .footer{background:var(--plum);color:rgba(255,255,255,.55);padding:2.4rem 0;margin-top:var(--s8)}
+  .footer .container{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+  .footer svg{width:150px}.footer a{color:var(--aqua)}
+
+  /* ── next-section flow button ── */
+  .view-next{margin-top:var(--s8);padding-top:var(--s6);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .vn-label{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .vn-btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--lead);color:#fff;font-weight:600;font-size:1rem;padding:.8rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .25s var(--ease),box-shadow .25s}
+  .vn-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
+  .vn-btn .arw{transition:transform .3s var(--ease)}.vn-btn:hover .arw{transform:translateX(5px)}
+
+  .lead-inbound{--lead:var(--inbound);--lead-tint:var(--inbound-tint);--lead-ink:#0a5f53}
+  .lead-outreach{--lead:var(--outreach);--lead-tint:var(--outreach-tint);--lead-ink:#3d3d45}
+  .lead-talks{--lead:var(--talks);--lead-tint:var(--talks-tint);--lead-ink:#7226b8}
+
+  /* twelve nav links need ~1170px; below that, use the menu drawer */
+  @media(max-width:1180px){.nav-links{display:none}.nav-menu-btn{display:inline-flex}}
+
+  /* ── Advisor Readiness mock (Reading Your Candidates) ── */
+  .snap{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(1.2rem,3vw,1.6rem);box-shadow:var(--shadow)}
+  .snap-title{display:flex;align-items:center;gap:.55rem;font-weight:600;color:var(--plum);font-size:1.02rem;margin-bottom:1.1rem}
+  .snap-title svg{width:18px;height:18px;flex-shrink:0}
+  .snap-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:.9rem;align-items:stretch}
+  .snap-kq{border:1px solid var(--line);border-radius:var(--r);padding:1rem .8rem;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .snap-kq b{color:var(--grape);font-weight:600;font-size:.98rem;line-height:1.3}
+  .snap-kq small{display:block;color:var(--muted);font-style:italic;font-weight:300;font-size:.76rem;line-height:1.35;margin-top:.2rem}
+  .ring{position:relative;width:128px;height:128px;margin-top:.8rem}
+  .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .ring span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;color:var(--ink)}
+  .snap-dims{display:flex;flex-direction:column;gap:.55rem}
+  .snap-dim{border:1px solid var(--line);border-radius:12px;padding:.6rem .9rem;display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:.8rem}
+  .snap-dim b{color:var(--grape);font-weight:600;font-size:.95rem}
+  .snap-dim small{grid-column:1;color:var(--muted);font-weight:300;font-size:.8rem;line-height:1.35}
+  .snap-dim .sc{grid-column:2;grid-row:1/span 2;font-size:1.65rem;font-weight:700;color:var(--ink)}
+  .snap-tier{margin-top:.9rem;background:#e4f7ef;border:1px solid #c5ecd9;border-radius:12px;padding:.7rem .95rem;font-size:.88rem;color:var(--ink-2);font-weight:300;line-height:1.5}
+  .snap-tier b{display:block;font-weight:700;letter-spacing:.06em;font-size:.76rem;color:var(--ink)}
+  .card .q{font-size:.88rem;font-style:italic;color:var(--muted);margin-top:-.15rem}
+  .hl{list-style:none;margin-top:.9rem;display:flex;flex-direction:column;gap:.6rem}
+  .hl li{color:var(--ink-2);font-weight:300;font-size:.95rem;line-height:1.55}
+  .hl li b{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.12rem .55rem;border-radius:var(--r-pill);margin-right:.4rem;vertical-align:.08em}
+  .hl li b.hi{background:var(--inbound-tint);color:#0a5f53}
+  .hl li b.lo{background:var(--outreach-tint);color:#3d3d45}
+
+  /* ── website mock (Landing) ── */
+  .site{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
+  .site-nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.3rem;border-bottom:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+  .site-nav b{color:var(--plum);letter-spacing:.14em;font-size:.8rem;white-space:nowrap}
+  .site-nav u{color:var(--plum);font-weight:600;text-decoration-color:var(--aqua);text-decoration-thickness:2px;text-underline-offset:5px}
+  .site-block{margin:1.2rem;border-radius:var(--r);padding:clamp(1.3rem,3vw,1.9rem);background:linear-gradient(135deg,var(--fog) 0%,#efe6fb 100%)}
+  .site-block h3{font-size:clamp(1.25rem,2.4vw,1.6rem);font-weight:700;color:var(--plum);line-height:1.2;margin-bottom:.5rem}
+  .site-block p{color:var(--ink-2);font-weight:300;margin-bottom:1.1rem;max-width:44ch}
+  .site-note{margin-top:.7rem;color:var(--muted);font-size:.85rem}
+  .site-rest{padding:0 1.2rem 1.2rem;display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+  .site-rest i{display:block;height:46px;border-radius:10px;background:var(--fog)}
+
+  @media(max-width:900px){
+    .nav-links{display:none}.nav-menu-btn{display:inline-flex}
+    .intro-cards,.lead-choices,.grid-3,.sample-grid,.lp-tiles,.two-col{grid-template-columns:1fr}
+    .two-col>*{min-width:0}
+    .dl>div{grid-template-columns:1fr}.dl dt{padding-bottom:.3rem}.dl dd{padding-top:.3rem}
+    .tabs{top:53px}
+  }
+  @media(max-width:560px){
+    .section{padding-block:clamp(1.8rem,7vw,2.6rem)}
+    .backlink{margin-bottom:1rem}
+    .lead-band{padding:1.4rem 1.35rem}
+    .lead-band h2{font-size:clamp(1.8rem,9vw,2.4rem)}
+    /* tabs become a single edge-to-edge scroll strip */
+    .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-inline:calc(-1*clamp(1.25rem,4vw,2.5rem));padding-inline:clamp(1.25rem,4vw,2.5rem)}
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{flex:0 0 auto}
+    /* tables reflow to fit the screen instead of scrolling */
+    table.t{min-width:0}
+    table.t thead th{padding:.7rem .8rem;font-size:.68rem}
+    table.t tbody td{padding:.75rem .8rem;font-size:.92rem}
+    /* full-width, stacked next-section button */
+    .view-next{flex-direction:column;align-items:stretch;gap:.9rem}
+    .vn-btn{width:100%;justify-content:center}
+    /* readiness snapshot and site mocks stack */
+    .snap-grid{grid-template-columns:1fr}
+    .site-nav span{display:none}
+    .site-block{margin:.9rem}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .sample-store{display:none}
+
+  /* ── live content editor (?edit=1) ── */
+  .ce-bar{display:none}
+  .cc-hint{display:none;font-size:.85rem;color:rgba(255,255,255,.72);font-weight:300}
+  body.ce-on .cc-hint-f2{display:inline}
+  body.ce-on.cc-review-on .cc-hint-f2{display:none}
+  body.ce-on.cc-review-on .cc-hint-esc{display:inline}
+  body.ce-on{padding-bottom:66px}
+  body.ce-on .ce-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:200;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--plum);color:#fff;padding:.7rem clamp(1rem,3vw,1.4rem);box-shadow:0 -6px 24px rgba(0,0,0,.28)}
+  .ce-bar .ce-badge{font-weight:700;background:var(--aqua);color:var(--plum);padding:.32rem .85rem;border-radius:999px;font-size:.82rem;letter-spacing:.02em}
+  .ce-bar .ce-hint{font-size:.85rem;color:rgba(255,255,255,.72);font-weight:300}
+  .ce-bar .ce-status{margin-left:auto;font-size:.82rem;color:var(--aqua);font-weight:600;min-width:5.5rem;text-align:right}
+  .ce-bar .ce-live{font-size:.82rem;color:#fff;border:1px solid rgba(255,255,255,.32);padding:.42rem .95rem;border-radius:999px;transition:background .2s}
+  .ce-bar .ce-live:hover{background:rgba(255,255,255,.14)}
+  body.ce-on [data-k]{border-radius:5px;transition:outline .15s,background .15s}
+  body.ce-on [data-k]:hover{outline:1px dashed color-mix(in srgb,var(--aqua) 70%,transparent);outline-offset:2px;cursor:text}
+  body.ce-on [data-k]:focus{outline:2px solid var(--aqua);outline-offset:2px;background:color-mix(in srgb,var(--aqua) 9%,transparent)}
+  body.ce-on .sheet [contenteditable="true"]:focus{outline:2px solid var(--aqua);outline-offset:1px}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
+<path d="M151.664 17.7879H146.827L146.052 20.0771H142.748L147.437 7.11728H151.092L155.781 20.0771H152.44L151.664 17.7879ZM150.852 15.351L149.246 10.6065L147.658 15.351H150.852ZM161.879 7.11728C163.245 7.11728 164.439 7.38804 165.461 7.92958C166.482 8.47111 167.27 9.23418 167.824 10.2188C168.39 11.1911 168.673 12.3172 168.673 13.5972C168.673 14.8649 168.39 15.991 167.824 16.9756C167.27 17.9602 166.476 18.7233 165.442 19.2648C164.421 19.8064 163.233 20.0771 161.879 20.0771H157.024V7.11728H161.879ZM161.676 17.3449C162.87 17.3449 163.799 17.0187 164.464 16.3664C165.128 15.7141 165.461 14.791 165.461 13.5972C165.461 12.4034 165.128 11.4742 164.464 10.8095C163.799 10.1449 162.87 9.81263 161.676 9.81263H160.181V17.3449H161.676ZM182.419 7.11728L177.822 20.0771H173.871L169.274 7.11728H172.634L175.846 16.9018L179.077 7.11728H182.419ZM186.71 7.11728V20.0771H183.553V7.11728H186.71ZM193.503 20.2064C192.555 20.2064 191.706 20.0525 190.955 19.7448C190.204 19.4372 189.601 18.9818 189.146 18.3787C188.703 17.7756 188.469 17.0495 188.444 16.2003H191.804C191.853 16.6803 192.019 17.0495 192.303 17.3079C192.586 17.5541 192.955 17.6772 193.41 17.6772C193.878 17.6772 194.247 17.5726 194.518 17.3633C194.789 17.1418 194.924 16.8403 194.924 16.4587C194.924 16.1387 194.813 15.8741 194.592 15.6649C194.383 15.4557 194.118 15.2833 193.798 15.148C193.49 15.0126 193.047 14.8587 192.469 14.6864C191.632 14.428 190.949 14.1695 190.419 13.9111C189.89 13.6526 189.435 13.2711 189.053 12.7665C188.672 12.2618 188.481 11.6034 188.481 10.7911C188.481 9.58494 188.918 8.64342 189.792 7.9665C190.666 7.27728 191.804 6.93266 193.207 6.93266C194.635 6.93266 195.786 7.27728 196.659 7.9665C197.533 8.64342 198.001 9.5911 198.062 10.8095H194.647C194.623 10.3911 194.469 10.0649 194.186 9.8311C193.903 9.58494 193.539 9.46187 193.096 9.46187C192.715 9.46187 192.407 9.56648 192.173 9.77571C191.939 9.97263 191.823 10.2619 191.823 10.6434C191.823 11.0619 192.019 11.388 192.413 11.6218C192.807 11.8557 193.423 12.108 194.259 12.3788C195.096 12.6618 195.773 12.9326 196.29 13.1911C196.819 13.4495 197.275 13.8249 197.656 14.3172C198.038 14.8095 198.229 15.4433 198.229 16.2187C198.229 16.9572 198.038 17.6279 197.656 18.231C197.287 18.8341 196.746 19.3141 196.032 19.671C195.318 20.0279 194.475 20.2064 193.503 20.2064ZM206.116 20.2064C204.898 20.2064 203.778 19.9233 202.756 19.3572C201.747 18.791 200.941 18.0033 200.338 16.9941C199.747 15.9726 199.451 14.828 199.451 13.5603C199.451 12.2926 199.747 11.1542 200.338 10.1449C200.941 9.13572 201.747 8.34803 202.756 7.78189C203.778 7.21574 204.898 6.93266 206.116 6.93266C207.334 6.93266 208.448 7.21574 209.457 7.78189C210.479 8.34803 211.279 9.13572 211.857 10.1449C212.448 11.1542 212.744 12.2926 212.744 13.5603C212.744 14.828 212.448 15.9726 211.857 16.9941C211.267 18.0033 210.467 18.791 209.457 19.3572C208.448 19.9233 207.334 20.2064 206.116 20.2064ZM206.116 17.3264C207.15 17.3264 207.974 16.9818 208.59 16.2926C209.217 15.6033 209.531 14.6926 209.531 13.5603C209.531 12.4157 209.217 11.5049 208.59 10.828C207.974 10.1388 207.15 9.79417 206.116 9.79417C205.07 9.79417 204.233 10.1326 203.605 10.8095C202.99 11.4865 202.682 12.4034 202.682 13.5603C202.682 14.7049 202.99 15.6218 203.605 16.311C204.233 16.9879 205.07 17.3264 206.116 17.3264ZM220.924 20.0771L218.229 15.1849H217.472V20.0771H214.315V7.11728H219.614C220.635 7.11728 221.503 7.29574 222.217 7.65266C222.943 8.00958 223.484 8.50188 223.841 9.12956C224.198 9.74494 224.377 10.4342 224.377 11.1972C224.377 12.0588 224.131 12.828 223.638 13.5049C223.158 14.1818 222.444 14.6618 221.497 14.9449L224.487 20.0771H220.924ZM217.472 12.9511H219.429C220.008 12.9511 220.438 12.8095 220.721 12.5265C221.017 12.2434 221.164 11.8434 221.164 11.3265C221.164 10.8342 221.017 10.4465 220.721 10.1634C220.438 9.88033 220.008 9.73879 219.429 9.73879H217.472V12.9511Z" fill="white"></path>
+<g clip-path="url(#clip0_1164_57289)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="white"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="white"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="white"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="white"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="white"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="white"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="white"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="white"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="white"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="white"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="white"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="white"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="white"></path>
+</g>
+<defs>
+<clipPath id="clip0_1164_57289">
+<rect width="134.564" height="22.77" fill="white"></rect>
+</clipPath>
+</defs>
+</symbol><symbol id="knomee-logo" viewBox="0 0 135 24"><g clip-path="url(#clip0_1164_57289)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="white"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="white"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="white"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="white"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="white"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="white"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="white"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="white"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="white"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="white"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="white"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="white"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="white"></path>
+</g><defs>
+<clipPath id="clip0_1164_57289">
+<rect width="134.564" height="22.77" fill="white"></rect>
+</clipPath>
+</defs>
+</symbol><symbol id="knomee-logo-plum" viewBox="0 0 135 24"><g clip-path="url(#clip0_plum)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="#240446"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="#240446"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="#240446"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="#240446"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="#240446"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="#240446"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="#240446"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="#240446"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="#240446"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="#240446"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="#240446"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="#240446"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="#240446"></path>
+</g><defs>
+<clipPath id="clip0_plum">
+<rect width="134.564" height="22.77" fill="#240446"></rect>
+</clipPath>
+</defs>
+</symbol></svg>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="home.html" aria-label="Back to landing page"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg></a>
+    <div class="nav-links" id="navLinks">
+      <a data-go="home">Home</a>
+      <a data-go="how-to-use">How to Use</a>
+      <a data-go="experience">Experience</a>
+      <a data-go="setup">Setup</a>
+      <a data-go="baseline">Baseline</a>
+      <a data-go="inbound">Inbound</a>
+      <a data-go="outreach">Outreach</a>
+      <a data-go="in-talks">In Talks</a>
+      <a data-go="results">Candidates</a>
+      <a data-go="landing">Links</a>
+      <a data-go="testing">Test</a>
+      <a data-go="appendix">Appendix</a>
+    </div>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menu</button>
+  </div>
+</nav>
+
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawerClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <nav class="drawer-list" id="drawerList"></nav>
+</div>
+
+<main>
+
+<!-- ══ HOME ══ -->
+<section class="view" id="home">
+  <div class="home-hero">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="container">
+      <span class="hero-eyebrow anim">Knomee Activation Toolkit</span>
+      <h1 class="anim d1">Attracting Advisors:<br><span class="accent">The Recruit Toolkit</span></h1>
+      <p class="tag anim d2">For an advisor thinking about independence, the first conversation shouldn't be a pitch. Ready-to-use campaigns that let candidates think it through on their own — and give your recruiters a real head start.</p>
+      <div class="intro-cards stagger">
+        <div class="intro-card"><div class="k">The candidate experience</div><h3>A first step on their terms</h3><p>Five short adventures, about 8 minutes, before any call. They leave with a Business ID and three questions to ask about their move.</p></div>
+        <div class="intro-card"><div class="k">What this toolkit is</div><h3>Copy-and-paste recruiting campaigns</h3><p>A website invite, outreach emails, peer intros, and event invites, organized by situation — each with a matching video suggestion.</p></div>
+        <div class="intro-card"><div class="k">How to use it</div><h3>Pick a situation → go</h3><p>Open the section that matches your candidate. Read the strategy, follow the play, and open any sample to copy it.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="choose container">
+    <div class="choose-label anim">
+      <span class="eyebrow">Choose your path</span>
+      <h2>Where's the conversation?</h2>
+      <p>Two ways in, one conversation. Start wherever most of your recruiting lives right now.</p>
+    </div>
+    <div class="lead-choices stagger">
+      <div class="lead-choice lc-inbound" data-go="inbound">
+        <span class="emoji">🌐</span><span class="tagword">Inbound Recruit</span><h3>Inbound</h3>
+        <p>They found you. Thinking about independence, quietly — give them a first step that needs no call.</p>
+        <span class="go">Enter Inbound <span class="arw">→</span></span>
+      </div>
+      <div class="lead-choice lc-outreach" data-go="outreach">
+        <span class="emoji">👋</span><span class="tagword">1:1 Outreach</span><h3>Outreach</h3>
+        <p>You found them. Lead with what they're aiming for, not your platform — earn a reply.</p>
+        <span class="go">Enter Outreach <span class="arw">→</span></span>
+      </div>
+      <div class="lead-choice lc-talks" data-go="in-talks">
+        <span class="emoji">💬</span><span class="tagword">Active Conversation</span><h3>In Talks</h3>
+        <p>You're talking. Answer their three questions — and help them decide.</p>
+        <span class="go">Enter In Talks <span class="arw">→</span></span>
+      </div>
+    </div>
+    <div class="ref-row anim">
+      <div class="k">Guide &amp; reference</div>
+      <div class="ref-chips">
+        <button class="ref-chip" data-go="how-to-use"><span class="e">🧭</span> How to Use</button>
+        <button class="ref-chip" data-go="experience"><span class="e">✨</span> The Experience</button>
+        <button class="ref-chip" data-go="setup"><span class="e">⚙️</span> 5-Step Setup</button>
+        <button class="ref-chip" data-go="baseline"><span class="e">📊</span> Know Your Baseline</button>
+        <button class="ref-chip" data-go="results"><span class="e">🔎</span> Reading Your Candidates</button>
+        <button class="ref-chip" data-go="landing"><span class="e">🔗</span> Website &amp; Invite Links</button>
+        <button class="ref-chip" data-go="testing"><span class="e">🧪</span> Test &amp; Learn</button>
+        <button class="ref-chip" data-go="appendix"><span class="e">🎬</span> Video Appendix</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW TO USE ══ -->
+<section class="view" id="how-to-use">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Orientation</span><h2 class="h2">How to Use This Toolkit</h2><p class="intro">This toolkit covers <strong>advisor recruiting</strong> — advisors who aren't with your firm yet and are weighing a move. Every candidate is in one of three situations, each with its own section and ready-to-use materials.</p></div>
+    <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
+      <div class="card lead-inbound" data-go="inbound" style="cursor:pointer"><div class="ic">🌐</div><h3>Inbound</h3><p><strong>They found you.</strong> Website visitors, readers, event registrants. Give them a first step that needs no call.</p></div>
+      <div class="card lead-outreach" data-go="outreach" style="cursor:pointer"><div class="ic">👋</div><h3>Outreach</h3><p><strong>You found them.</strong> Industry lists, LinkedIn, referrals. Lead with their goals — earn a reply.</p></div>
+      <div class="card lead-talks" data-go="in-talks" style="cursor:pointer"><div class="ic">💬</div><h3>In Talks</h3><p><strong>You're talking.</strong> Meetings, visits, offers. Answer their three questions — help them decide.</p></div>
+    </div>
+    <div class="callout anim">
+      <h3>Your Walkthrough Session</h3>
+      <p>This toolkit is designed to be walked through together. Your Knomee customer success contact will schedule a <strong>45-minute working session</strong> to:</p>
+      <ul><li>Decide where to start — Inbound, Outreach, or both</li><li>Put your Go Independent link on your website</li><li>Customize the outreach samples and set up invite links for each recruiter</li><li>Walk through My Candidates and a candidate profile together</li><li>Agree on success metrics</li></ul>
+      <p style="margin-top:.9rem"><strong>You'll leave with your website invite live and your first outreach ready to send.</strong></p>
+    </div>
+    <div class="callout anim" style="margin-top:var(--s4);--lead:var(--outreach);--lead-tint:var(--outreach-tint);--lead-ink:#3d3d45">
+      <h3>Ground Rules for Recruiting</h3>
+      <p>Advisors exploring a move are taking a real risk by talking to you. Every play in this toolkit follows four rules:</p>
+      <ul><li><strong>Personal channels only.</strong> Never email or message a candidate at their current firm — those channels are monitored.</li><li><strong>Never ask about their book.</strong> No client names, lists, or account details. The flow is about the advisor, not their clients.</li><li><strong>Let them set the pace.</strong> Deferred comp, bonus cycles, and family life set the timeline — not your quarter.</li><li><strong>Compliance first.</strong> Run every template past your compliance team before it goes out.</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPERIENCE ══ -->
+<section class="view" id="experience">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Candidate Experiences</h2><p class="intro">Knomee has a <strong>dedicated flow for advisors weighing a move</strong>: the same five-adventure shape your advisors' clients walk through, pointed at a different decision. It takes <strong>about 8 minutes</strong>, on their own, before they talk to anyone.</p></div>
+    <div class="head anim" style="margin-bottom:var(--s4)"><h2 class="h2" style="font-size:var(--fs-h3)">Five Short Adventures</h2></div>
+    <div class="steps stagger" style="margin-bottom:var(--s6)">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Practice Joy</strong><p>What they want the practice to give them — equity, control, their team's future, income — and the moment that reminds them why they do this.</p></div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Confidence</strong><p>Their relationship with the practice: whether their current firm gets them there, and whether the right platform partner would help.</p></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Outlook</strong><p>What's on their mind about going independent — the concerns that keep them up, and the hopes they daydream about.</p></div></div>
+      <div class="step"><span class="num">4</span><div class="step-body"><strong>Future You</strong><p>The practice they're building toward — where, with whom, how far out — and a postcard from Future You.</p></div></div>
+      <div class="step"><span class="num">5</span><div class="step-body"><strong>The Move</strong><p>The move they're considering, when, why, who else has a say, and the one thing that would have to be settled first.</p></div></div>
+    </div>
+    <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
+      <div class="card"><div class="ic">🪪</div><h3>Their Business ID</h3><p>A one-page summary of what they told you — what the practice is for, their hopes and concerns, and the move they're weighing. Theirs to keep.</p></div>
+      <div class="card"><div class="ic">❓</div><h3>Their Three Questions</h3><p>Three questions to ask about their move, written from their own answers — to put to every firm they're considering, including yours.</p></div>
+      <div class="card"><div class="ic">👁️</div><h3>What the Firm Sees</h3><p>They can open the same read your team gets. No surprises about who sees what.</p></div>
+    </div>
+    <div class="callout anim" style="margin-bottom:var(--s4)"><h3>What Your Team Gets</h3><p>Every completion lands in <strong>My Candidates</strong>, your candidates dashboard, with its candidate profile behind it:</p><ul><li><strong>Advisor Readiness</strong> — a 0–100 Recruitment Quotient (RQ) with Intent, Clarity, and Receptivity behind it, a tier, how quickly they'll move, and their motivators and apprehensions</li><li><strong>Recruiting Playbook</strong> — the Top Action, conversation starters in their own words, the questions they'll ask with how to answer each, and words to use and avoid</li><li><strong>Business ID</strong> — the same one-page summary they keep</li></ul><p style="margin-top:.9rem">How to read all of it is in <a data-go="results" style="color:var(--grape);font-weight:600;cursor:pointer">Reading Your Candidates</a>.</p></div>
+    <div class="callout anim" style="margin-bottom:var(--s4);--lead:var(--talks);--lead-tint:var(--talks-tint);--lead-ink:#7226b8"><h3>Firm-Neutral by Design</h3><p>Their three questions are written for <strong>every firm they're considering — including yours</strong>. That's what makes the flow credible to an advisor who's marketed to constantly. It also means your answers to those three questions are the real pitch: have them ready, in writing.</p></div>
+    <div class="callout anim"><h3>One Call to Action</h3><p>Every first touch uses the same call to action — the <strong>8-minute Knomee flow</strong> — never “schedule a confidential call.” The call still happens. It's just a better one, because you already know what they're aiming for.</p></div>
+    <div class="callout anim" style="margin-top:var(--s4);--lead:var(--inbound);--lead-tint:var(--inbound-tint);--lead-ink:#0a5f53"><h3>Two Jobs in One</h3><p>If your advisors use Knomee with their own clients, say so. The candidate flow is built on the same adventures their clients would walk through on your platform — so the recruiting conversation doubles as a product demo.</p></div>
+  </div>
+</section>
+
+<!-- ══ SETUP ══ -->
+<section class="view" id="setup">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Before You Launch</span><h2 class="h2">The 5-Step Setup</h2><p class="intro">Every recruiting campaign follows the same five setup steps. Work through them to prepare for your walkthrough session; your CS contact will help you complete each one.</p></div>
+    <div class="steps stagger">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Targeting</strong><p>Build your candidate list and sort it by situation: Inbound, Outreach, or In Talks.</p></div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Channel</strong><p>Choose your website, content, events, LinkedIn, personal email, or peer intros. One-to-one outreach goes to personal channels only.</p></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Copy</strong><p>Customize the sample copy with your firm name, recruiter names, and voice — and run it past compliance.</p></div></div>
+      <div class="step"><span class="num">4</span><div class="step-body"><strong>Links</strong><p>Put your Go Independent link on your website, and have each recruiter create personal invite links from My Candidates for 1:1 outreach.</p></div></div>
+      <div class="step"><span class="num">5</span><div class="step-body"><strong>My Candidates</strong><p>Completions land in My Candidates with an RQ score, tier, and Top Action. Decide who owns each new candidate — or use our APIs to route them into your CRM.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BASELINE ══ -->
+<section class="view" id="baseline">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Why this matters</span><h2 class="h2">Recruiting growth — the right advisors, signed sooner</h2><p class="intro">Knomee moves three numbers every recruiting team lives by. Track these as the headline, and capture where you are today so we can show the lift.</p></div>
+    <div class="table-wrap anim">
+      <table class="t"><thead><tr><th>The metric</th><th>What it means for your firm</th><th>Your baseline today</th></tr></thead><tbody>
+        <tr><td><span class="m">Outreach reply rate</span></td><td>More advisors say yes to a first conversation</td><td class="fill">___ %</td></tr>
+        <tr><td><span class="m">Conversation-to-signed rate</span></td><td>More first conversations become signed advisors</td><td class="fill">___ %</td></tr>
+        <tr><td><span class="m">Time to decision</span></td><td>Candidates decide with confidence, sooner — <span style="color:var(--muted)">days from first conversation to signed</span></td><td class="fill">___ days</td></tr>
+      </tbody></table>
+    </div>
+    <p class="anim" style="margin-top:1.2rem;color:var(--muted);font-size:.95rem">Once candidates come through Knomee, <strong style="font-weight:600;color:var(--ink-2)">Candidate Analytics</strong> tracks the funnel for you — flow completion, meetings from completions, signed, and AUM signed. The full baseline set lives in the <a data-go="appendix" style="color:var(--grape);font-weight:600;cursor:pointer">Appendix</a>.</p>
+  </div>
+</section>
+
+<!-- ══════ INBOUND ══════ -->
+<section class="view lead-inbound" id="inbound">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="lead-band anim"><span class="tagword">🌐 Inbound Recruit</span><h2>Inbound</h2><p>They found you. They're thinking about independence, quietly. Give them a first step they can take on their own — no call required.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="play">Toolkit <span class="c">5</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">4</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
+    </div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>Advisors who come to you: visitors to your website's careers or “For Advisors” pages, readers of your content, webinar and event registrants, LinkedIn followers</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I've thought about going independent. I'm not ready to talk to anyone about it.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Give them a pressure-free first step. Let them raise their hand — and tell you what they're aiming for before you ever speak.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>The first step needs no call.</strong> Every touchpoint routes to the Knomee flow — never “schedule a confidential call.”</dd></div>
+      </dl>
+    </div>
+    <div class="tabpanel" data-panel="play">
+      <div class="steps">
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>Website invite</strong><p>A “Thinking of becoming independent?” block on your careers or “For Advisors” page, with your Go Independent link behind it — and a link to it from your homepage. The block, the page, and where else the link belongs are in Website &amp; Invite Links.</p><span class="chip">🔗 Web</span></div></div>
+        <div class="step"><span class="num">2</span><div class="step-body"><strong>Newsletter &amp; content</strong><p>A standing invite in what you already publish for advisors: articles, newsletters, podcasts about independence.</p><span class="chip">📰 Newsletter</span></div></div>
+        <div class="step"><span class="num">3</span><div class="step-body"><strong>Events / webinars</strong><p>Invite registrants to complete the flow before your session; follow up after.</p><span class="chip">🎟 Event</span></div></div>
+        <div class="step"><span class="num">4</span><div class="step-body"><strong>LinkedIn</strong><p>Posts from firm leaders that lead with a human truth about the move and route to one link.</p><span class="chip">💼 Social</span></div></div>
+        <div class="step"><span class="num">5</span><div class="step-body"><strong>Paid social</strong><p>Target advisor audiences and route clicks to your Go Independent link, not your homepage.</p><span class="chip">📢 Ads</span></div></div>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="inbound-1"><span class="type">Website Block · Careers Page</span><h4>Thinking of becoming independent?</h4><span class="prev">It’s one of the biggest decisions of your career — and most of the thinking happens long before the first conversation…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="inbound-2"><span class="type">Email · Newsletter Feature</span><h4>Before you compare any offer</h4><span class="prev">Most advisors who explore independence start by comparing payouts, platforms, and deal terms…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="inbound-3"><span class="type">Event Invite · Pre &amp; Post</span><h4>Make {{Event Name}} about your next move</h4><span class="prev">Before you join us, take 8 minutes to think through what you want your practice to give you…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="inbound-4"><span class="type">LinkedIn Post · Firm Leader</span><h4>Advisors who’ve gone independent tell me the same thing.</h4><span class="prev">The hardest part wasn’t the paperwork or the technology…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
+        <tr><td class="m">Be found</td><td>Visits from your Go Independent link</td><td>Click-through from the website block and posts</td></tr>
+        <tr><td class="m">Earn the first step</td><td>Flow completion (Go Independent link)</td><td>Incomplete Profiles — started, not finished</td></tr>
+        <tr><td class="m">Start the conversation</td><td>Meetings from completions</td><td>Time from completion to first contact</td></tr>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Inbound → In Talks</h3><p>The win isn't a form fill; it's a completion. A finished flow lands in My Candidates with an RQ score, a tier, and a Top Action. Reach out personally within two business days, and open with the Top Action.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="--lead:var(--talks)" data-go="in-talks">Go to In Talks <span class="arw">→</span></button></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ OUTREACH ══════ -->
+<section class="view lead-outreach" id="outreach">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="lead-band anim"><span class="tagword">👋 1:1 Outreach</span><h2>Outreach</h2><p>You found them. They may not be looking — but they'd listen to the right conversation. Lead with what they're aiming for, not your platform.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="play">Toolkit <span class="c">4</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">4</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
+    </div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>Advisors your team reaches out to first — from industry data, LinkedIn, conference contacts, or a referral from an advisor who's already joined you</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I'm not really looking… but I'd listen to the right conversation.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Earn a first response by making the first ask about them, not your firm. Turn a name on a list into a candidate who has told you what they're aiming for.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>This is a 1:1 channel, on personal channels only.</strong> Every message comes from a named person — and never goes to their current firm's email.</dd></div>
+      </dl>
+    </div>
+    <div class="tabpanel" data-panel="play">
+      <div class="steps">
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>First-touch email</strong><p>To a personal address, with a personal invite link sent under Knomee's brand. Acknowledge the size of the move, then offer a way to think it through.</p><span class="chip">📧 Email</span></div></div>
+        <div class="step"><span class="num">2</span><div class="step-body"><strong>LinkedIn InMail or text</strong><p>The short version, for the channels advisors actually check.</p><span class="chip">💼 Social</span></div></div>
+        <div class="step"><span class="num">3</span><div class="step-body"><strong>Peer introduction</strong><p>An advisor who's already joined you makes the intro — from their own account, in their own words.</p><span class="chip">🤝 Peer</span></div></div>
+        <div class="step"><span class="num">4</span><div class="step-body"><strong>One follow-up</strong><p>One, not five — it doubles as the re-invite for anyone in Incomplete Profiles. Then step back.</p><span class="chip">🔁 Follow-up</span></div></div>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="outreach-1"><span class="type">Email · Big Move · Option 1</span><h4>Before any big move</h4><span class="prev">Going independent is one of the biggest moves an advisor can make — for your clients, your team, your family, and the next chapter of your career…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="outreach-2"><span class="type">LinkedIn InMail / Text · Option 2</span><h4>I’ll keep this short, and I won’t pitch you.</h4><span class="prev">If you’ve ever wondered whether independence makes sense for you, here’s a way to think it through on your own time…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="outreach-3"><span class="type">Email · Peer Introduction</span><h4>What I wish I’d had before my move</h4><span class="prev">When I was weighing my move to {{Firm Name}}, the hardest part wasn’t the logistics…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="outreach-4"><span class="type">Email · Follow-Up · 1 week later</span><h4>Worth 8 minutes?</h4><span class="prev">I know notes like mine are easy to set aside, so this is my last one for now…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
+        <tr><td class="m">Earn a first response</td><td>Reply rate</td><td>Email open rate, InMail acceptance rate</td></tr>
+        <tr><td class="m">Earn the first step</td><td>Invite-to-completion rate</td><td>Incomplete Profiles — started, not finished</td></tr>
+        <tr><td class="m">Start the conversation</td><td>Meetings from completions</td><td>Peer intros vs. recruiter outreach</td></tr>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Outreach → In Talks</h3><p>A completion moves them to In Talks: it lands in My Candidates with their RQ, tier, and Top Action. Book the first conversation and send the confirmation the same day — while the thinking is fresh.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="--lead:var(--talks)" data-go="in-talks">Go to In Talks <span class="arw">→</span></button></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ IN TALKS ══════ -->
+<section class="view lead-talks" id="in-talks">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="lead-band anim"><span class="tagword">💬 Active Conversation</span><h2>In Talks</h2><p>They're seriously considering it — and they'll put the same three questions to every firm. Answer yours best, and help them decide with confidence.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="play">Toolkit <span class="c">4</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">4</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
+    </div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>Advisors in active conversations with your team — first meetings booked, due-diligence calls, home-office visits, offers on the table</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I'm seriously considering it. I need to know it's the right move — and the right firm.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Answer their three questions with evidence, settle the one thing holding them back, and shorten the time to a confident decision.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>Use what they told you.</strong> Every meeting starts from their candidate profile — the Top Action, their three questions, and who else has a say.</dd></div>
+      </dl>
+    </div>
+    <div class="tabpanel" data-panel="play">
+      <div class="steps">
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>Meeting confirmation</strong><p>If they haven't completed the flow yet, invite them to before your first real conversation.</p><span class="chip">📧 Email</span></div></div>
+        <div class="step"><span class="num">2</span><div class="step-body"><strong>Visit prep</strong><p>Build the home-office visit from their candidate profile: the Top Action, their three questions, conversation starters, and who else has a say. Reading Your Candidates explains each part.</p><span class="chip">📋 Prep</span></div></div>
+        <div class="step"><span class="num">3</span><div class="step-body"><strong>After the meeting</strong><p>Answer their three questions in writing — including the hard one.</p><span class="chip">🔁 Follow-up</span></div></div>
+        <div class="step"><span class="num">4</span><div class="step-body"><strong>Not now</strong><p>When the timing isn't right, check back in six months — timed to their calendar, not yours.</p><span class="chip">⏳ Check-in</span></div></div>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="talks-1"><span class="type">Email · Meeting Confirmation</span><h4>Before our conversation</h4><span class="prev">I’m looking forward to our conversation on {{Day}}…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="talks-2"><span class="type">Recruiter Prep · Before the Visit</span><h4>Build the visit around their answers</h4><span class="prev">1. Top Action: {{Top Action}}. Do it in the first ten minutes — nothing else moves until it’s answered…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="talks-3"><span class="type">Email · After the Meeting</span><h4>Thank you for today</h4><span class="prev">Thank you for the time today. Conversations like this one take real thought, and I appreciated your candor…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="talks-4"><span class="type">Email · Not Now · 6-month check-in</span><h4>Has anything changed?</h4><span class="prev">When we last spoke, the timing wasn’t right, and that was the right call…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
+        <tr><td class="m">Make it about their move</td><td>Completion before the first meeting</td><td>Meeting show rate</td></tr>
+        <tr><td class="m">Settle the blocker</td><td>Meetings to decision</td><td>Visit-to-offer rate</td></tr>
+        <tr><td class="m">Help them decide with confidence</td><td>Signed, in Candidate Analytics</td><td>Time from first conversation to signed</td></tr>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: In Talks → Joined</h3><p>The day they sign, they stop being a candidate and start building a practice on your platform. If your advisors use Knomee with clients, point them to the companion <strong>Client Toolkit</strong> for staying close to clients through the move — and agree with your compliance team on how and when they reach out.</p><p style="margin-top:.9rem"><a class="btn btn-primary" style="--lead:var(--inbound)" href="client-playbook.html">Open the Client Toolkit <span class="arw">→</span></a></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ READING YOUR CANDIDATES ══ -->
+<section class="view" id="results">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Use the Results</span><h2 class="h2">Reading Your Candidates</h2><p class="intro">Every completion lands in <strong>My Candidates</strong>, your candidates dashboard. It tells you who to talk to and what to say — here's how to read it, from the whole pipeline down to one candidate.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="dashboard">My Candidates</button>
+      <button class="tab" data-tab="profile">The Profile</button>
+      <button class="tab" data-tab="apprehensions">Apprehensions</button>
+    </div>
+
+    <div class="tabpanel active" data-panel="dashboard">
+      <p class="samples-note">📊 Candidates are grouped by tier on their Recruitment Quotient (RQ): how ready each advisor is to move, 0–100.</p>
+      <div class="table-wrap" style="margin-bottom:var(--s6)"><table class="t"><thead><tr><th style="width:25%">Tier</th><th>What it usually means</th><th>What to do</th></tr></thead><tbody>
+        <tr><td><span class="m">Tier 1 · Ready Now</span><br><span style="font-size:.82rem;color:var(--muted)">70–100 RQ</span></td><td>Ready to talk — often blocked on one thing</td><td>Answer the blocker with evidence and book the meeting</td></tr>
+        <tr><td><span class="m">Tier 2 · Considering</span><br><span style="font-size:.82rem;color:var(--muted)">40–69 RQ</span></td><td>Interested but not moving — or moving without a clear picture</td><td>A dated next step, not another pitch</td></tr>
+        <tr><td><span class="m">Tier 3 · Nurture</span><br><span style="font-size:.82rem;color:var(--muted)">0–39 RQ</span></td><td>Early, or not a fit this year</td><td>Low-touch nurture: content and check-ins, not rep time</td></tr>
+        <tr><td><span class="m">Incomplete Profiles</span></td><td>Opened the flow and never finished</td><td>Re-invite once, with the Outreach follow-up</td></tr>
+      </tbody></table></div>
+      <div class="head anim" style="margin-bottom:var(--s4)"><h2 class="h2" style="font-size:var(--fs-h3)">Six Kinds of Candidate</h2><p class="intro" style="margin-top:.6rem">Actionable Insights groups your pipeline by where each advisor stands in the decision — not by the size of their book — and builds this week's call list from the groups whose next step is a conversation.</p></div>
+      <div class="table-wrap"><table class="t"><thead><tr><th style="width:22%">Group</th><th>What defines it</th><th>What to do</th><th>Sample to use</th></tr></thead><tbody>
+        <tr><td><span class="m">Ready, blocked on one thing</span></td><td>High intent and high clarity, with one apprehension left standing</td><td>Answer that one thing with evidence — this week, in writing</td><td>After the Meeting</td></tr>
+        <tr><td><span class="m">Wants it, hasn't started</span></td><td>Can describe the firm they want, and hasn't taken a step toward it</td><td>Shorten the perceived transition: a dated timeline with names on it, not a pitch</td><td>Visit Prep</td></tr>
+        <tr><td><span class="m">Unhappy but unclear</span></td><td>Something is wrong, and they can't say what independence would fix</td><td>A diagnostic conversation, not a platform conversation</td><td>Meeting Confirmation</td></tr>
+        <tr><td><span class="m">Succession-shaped</span></td><td>Future You is winding down or out, or the move is a sale or a successor</td><td>Answer the valuation and succession questions, not the build-your-own-firm ones</td><td>Visit Prep</td></tr>
+        <tr><td><span class="m">Team-blocked</span></td><td>Their own readiness is high; their junior (G2) advisors aren't aligned</td><td>Bring the G2 equity answer to the first meeting</td><td>Visit Prep</td></tr>
+        <tr><td><span class="m">Not a fit, or not this year</span></td><td>Chose “change nothing, but fix the parts that don't work”</td><td>Low-touch nurture — and say so plainly on the internal note</td><td>Not Now check-in</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="tabpanel" data-panel="profile">
+      <div class="two-col" style="margin-bottom:var(--s6)">
+        <div class="snap">
+          <div class="snap-title"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#7639A1"/><rect x="10" y="8" width="4" height="12" rx="1" fill="#9B19FB"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#7639A1"/></svg>Advisor Readiness</div>
+          <div class="snap-grid">
+            <div class="snap-kq"><b>Recruitment Quotient (RQ)</b><small>How ready is this advisor to move?</small>
+              <div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="kqGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C79BF0"/><stop offset="1" stop-color="#9B19FB"/></linearGradient></defs><circle cx="60" cy="60" r="50" fill="none" stroke="#ece7f2" stroke-width="11"/><circle cx="60" cy="60" r="50" fill="none" stroke="url(#kqGrad)" stroke-width="11" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="50.27"/></svg><span>84</span></div>
+            </div>
+            <div class="snap-dims">
+              <div class="snap-dim"><b>Intent</b><span class="sc">84</span><small>Moving within twelve months, and already started</small></div>
+              <div class="snap-dim"><b>Clarity</b><span class="sc">78</span><small>Can name the firm they want, down to who runs operations</small></div>
+              <div class="snap-dim"><b>Receptivity</b><span class="sc">90</span><small>Asked for a platform partner outright</small></div>
+            </div>
+          </div>
+          <div class="snap-tier"><b>TIER 1 · READY NOW</b>Ready and moving — blocked on one thing: proof that their clients follow.</div>
+        </div>
+        <div>
+          <div class="callout" style="--lead:var(--talks);--lead-tint:var(--talks-tint);--lead-ink:#7226b8"><h3>How to Read This One</h3><p>High on all three, with one blocker left: this candidate is <strong>Ready, blocked on one thing</strong>. Their Top Action names it — whether their clients come with them.</p><p style="margin-top:.8rem"><strong>Don't open anywhere else.</strong> Answer it with evidence in the first ten minutes: retention for teams like theirs, including the moves that went worst. Reassurance won't do it.</p></div>
+          <p style="margin-top:1rem;color:var(--muted);font-size:.9rem;font-weight:300">An illustrative example. Every candidate profile carries this Advisor Readiness card, with the answers behind each score one tap away.</p>
+        </div>
+      </div>
+
+      <div class="head" style="margin-bottom:var(--s4)"><h2 class="h2" style="font-size:var(--fs-h3)">The Three Dimensions</h2></div>
+      <div class="grid-3" style="margin-bottom:var(--s6)">
+        <div class="card"><div class="ic">🎯</div><h3>Intent</h3><p class="q">Is this a live decision, or a recurring mood?</p><ul class="hl"><li><b class="hi">High</b>A live decision. Get specific: timeline, transition plan, the offer.</li><li><b class="lo">Low</b>A recurring mood. Shorten the perceived transition — one date to react to, not a pitch.</li></ul></div>
+        <div class="card"><div class="ic">🔭</div><h3>Clarity</h3><p class="q">Do they know what kind of independence they want?</p><ul class="hl"><li><b class="hi">High</b>Match their picture to your platform, point by point.</li><li><b class="lo">Low</b>A diagnostic conversation, not a platform conversation. Find the actual complaint first.</li></ul></div>
+        <div class="card"><div class="ic">🤝</div><h3>Receptivity</h3><p class="q">Would they let a platform help?</p><ul class="hl"><li><b class="hi">High</b>Bring in your transition team early. They want the help.</li><li><b class="lo">Low</b>They'd rather do it alone. Lead with peers, and with what they'd keep control of.</li></ul></div>
+      </div>
+
+      <div class="callout" style="margin-bottom:var(--s4)"><h3>Motivators, Velocity, and the Second Seat</h3><ul><li><strong>Motivators</strong> come from Practice Joy — what they want the practice to give them. Open on those. If income isn't on the list, don't lead with payout.</li><li><strong>How Quickly Will This Advisor Move?</strong> High velocity: keep up, on a two-week cadence with the transition plan ready. Lower: a dated next step, then the six-month check-in.</li><li><strong>Who else has a say</strong> — a team, a business partner, a spouse — comes from The Move. Get them in the room early.</li></ul></div>
+      <div class="callout" style="--lead:var(--inbound);--lead-tint:var(--inbound-tint);--lead-ink:#0a5f53"><h3>Open the Recruiting Playbook Tab Before Every Call</h3><p>Every candidate profile has one. It holds the <strong>Top Action</strong>, <strong>Conversation Starters</strong> built from their own words, the <strong>Questions They May Ask</strong> — their three, with how to answer each — and <strong>Words to Use</strong> and <strong>Words to Avoid</strong>. The Visit Prep sample in In Talks turns it into a one-page plan.</p></div>
+    </div>
+
+    <div class="tabpanel" data-panel="apprehensions">
+      <p class="samples-note">🧱 The Move asks what would have to be settled before they decide. Most answers fall into six apprehensions — have these answers ready before anyone asks.</p>
+      <div class="table-wrap"><table class="t"><thead><tr><th style="width:28%">Apprehension</th><th>Bring this</th></tr></thead><tbody>
+        <tr><td><span class="m">Client attrition</span></td><td>Retention evidence for teams like theirs — including the moves that went worst — and an intro to an advisor who moved a comparable book</td></tr>
+        <tr><td><span class="m">Team obligation</span></td><td>What their junior advisors could own on day one: grant, vesting, and what it's worth</td></tr>
+        <tr><td><span class="m">Transition disruption</span></td><td>A dated transition plan with names on it, and who carries operations while it happens</td></tr>
+        <tr><td><span class="m">Deferred comp</span></td><td>A net-of-forfeiture model: what they'd walk away from, and what offsets it</td></tr>
+        <tr><td><span class="m">Ops and compliance load</span></td><td>Your support model: who runs operations, compliance, and technology, so they can stay an advisor</td></tr>
+        <tr><td><span class="m">Losing the brand</span></td><td>What stays theirs: their name, their client experience, how they show up</td></tr>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>Fix the Offer, Not Just the Pitch</h3><p>If one apprehension keeps coming up across your pipeline, that's a gap in the offer — not something a recruiter can talk around. Candidate Analytics shows which ones recur.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LANDING ══ -->
+<section class="view" id="landing">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">The Destination</span><h2 class="h2">Your Website &amp; Invite Links</h2><p class="intro">The simplest one-to-many play: a Go Independent link on your website for every advisor who's quietly wondering. For 1:1 outreach, each recruiter sends personal invite links from My Candidates.</p></div>
+    <div class="two-col" style="margin-bottom:var(--s8)">
+      <div class="site anim">
+        <div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>yourfirm.com/for-advisors</span></div>
+        <div class="site-nav"><b>ACME ADVISORS</b><span>Our Approach · Team · <u>For Advisors</u> · Contact</span></div>
+        <div class="site-block">
+          <div class="kicker">For advisors</div>
+          <h3>Thinking of becoming independent?</h3>
+          <p>It's one of the biggest decisions of your career. Take 8 minutes to get clear on what you want — and leave with three questions to ask any firm you're considering, including ours.</p>
+          <span class="btn btn-primary" style="--lead:var(--plum)">Get My Business ID <span class="arw">→</span></span>
+          <div class="site-note">⏱ 8 min · No call required · See exactly what we see</div>
+        </div>
+        <div class="site-rest"><i></i><i></i><i></i></div>
+      </div>
+      <div class="anim d1">
+        <h3 style="font-size:var(--fs-h3);color:var(--plum);font-weight:700;margin-bottom:1.2rem">Where the Link Lives</h3>
+        <div class="steps" style="--lead:var(--grape);--lead-tint:var(--fog)">
+          <div class="step"><span class="num">1</span><div class="step-body"><strong>Your careers or “For Advisors” page.</strong><p>The block shown here, above the fold — and a link to it from your homepage.</p></div></div>
+          <div class="step"><span class="num">2</span><div class="step-body"><strong>Every article about independence.</strong><p>End each one with the same invite.</p></div></div>
+          <div class="step"><span class="num">3</span><div class="step-body"><strong>Recruiter email signatures.</strong><p>“Thinking about independence? Start here.”</p></div></div>
+          <div class="step"><span class="num">4</span><div class="step-body"><strong>LinkedIn profiles.</strong><p>The featured link on every recruiter's and leader's profile.</p></div></div>
+          <div class="step"><span class="num">5</span><div class="step-body"><strong>Event confirmations.</strong><p>The registration email for every advisor event.</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="two-col" style="margin-bottom:var(--s6)">
+      <div class="lp anim">
+        <div class="lp-top"><svg viewBox="0 0 135 24" fill="none"><use href="#knomee-logo"></use></svg>ACME ADVISORS</div>
+        <div class="lp-hero"><h3>Thinking about independence?<br>Get clear on what you want.</h3><p>Before your next conversation, take 8 minutes on your own to find what matters most — in your own words.</p>
+          <div class="lp-tiles">
+            <div class="lp-tile"><div class="e">⚡</div><b>Five Short Adventures</b><p>Practice Joy, Confidence, Outlook, Future You, and The Move.</p><div class="bar"></div></div>
+            <div class="lp-tile"><div class="e">💡</div><b>Your Business ID</b><p>A one-page profile of what you want. Yours to keep.</p><div class="bar"></div></div>
+            <div class="lp-tile"><div class="e">✨</div><b>Your Three Questions</b><p>The key questions to ask about your move.</p><div class="bar"></div></div>
+          </div>
+        </div>
+        <div class="lp-foot"><span class="btn btn-primary" style="--lead:var(--plum)">Get Started</span><div style="margin-top:.6rem;color:var(--muted);font-size:.85rem">⏱ Est time: 8 min</div></div>
+      </div>
+      <div class="anim d1">
+        <h3 style="font-size:var(--fs-h3);color:var(--plum);font-weight:700;margin-bottom:1.2rem">Five Rules for the Page</h3>
+        <div class="steps" style="--lead:var(--grape);--lead-tint:var(--fog)">
+          <div class="step"><span class="num">1</span><div class="step-body"><strong>Lead with them, not your platform.</strong><p>Payout grids and “join us” come later, in conversation.</p></div></div>
+          <div class="step"><span class="num">2</span><div class="step-body"><strong>Say who sees it.</strong><p>Your firm sees their answers, and they can see exactly what you see. Say so plainly — never call it private.</p></div></div>
+          <div class="step"><span class="num">3</span><div class="step-body"><strong>Reduce friction.</strong><p>State the time commitment up front, make clear it's free, and show what they get: a Business ID and three questions.</p></div></div>
+          <div class="step"><span class="num">4</span><div class="step-body"><strong>One primary CTA.</strong><p>One path. No competing “schedule a call” button.</p></div></div>
+          <div class="step"><span class="num">5</span><div class="step-body"><strong>Show real people.</strong><p>A real recruiter photo — or better, an advisor who's made the move with you.</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout anim"><h3>Personal Invite Links</h3><p>For 1:1 outreach, create a link per candidate in <strong>My Candidates → Invite</strong>. Add their name, or leave it blank and the flow greets them as “Advisor.” Copy the link into your message; when they finish, their sitting lands in My Candidates.</p><ul><li><strong>Send as Knomee on a first touch.</strong> A link from a firm they haven't signed anything with shouldn't arrive wearing that firm's logo.</li><li><strong>Co-brand where your firm is already in the picture</strong> — once you're In Talks.</li></ul></div>
+  </div>
+</section>
+
+<!-- ══ TESTING ══ -->
+<section class="view" id="testing">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Optimize</span><h2 class="h2">Test Before You Launch</h2><p class="intro">Don't guess which message will land — test it. Tag your Go Independent link so you can see which channel and message drive completions (not just clicks). Personal invites need no tags: each one is already tied to the person you sent it to.</p></div>
+    <div class="steps stagger" style="--lead:var(--grape);--lead-tint:var(--fog)">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Copy</strong> your Go Independent link.</div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Tag</strong> it with UTM parameters. <span style="font-family:ui-monospace,monospace;font-size:.9rem;color:var(--grape);word-break:break-all">knomeeurl.com/?utm_source=linkedin&amp;utm_campaign=go_independent&amp;utm_content=post1</span></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Compare</strong> completions by source and message — then adapt.</div></div>
+    </div>
+    <div class="callout anim" style="--lead:var(--grape);--lead-tint:var(--fog);margin-top:var(--s4)"><h3>Small Lists, Small Batches</h3><p>Recruiting lists are short, so test in batches, not percentages. Alternate Option 1 and Option 2 across your next 20 outreach messages, compare replies and how many reach Completed in My Candidates, then keep the winner. The Outreach Option 1 / Option 2 samples are built to be your first test.</p></div>
+  </div>
+</section>
+
+<!-- ══ APPENDIX ══ -->
+<section class="view" id="appendix">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Appendix</h2><p class="intro">The Knomee videos that work with candidates, where each one belongs, and the complete measurement set behind the three headline numbers.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="videos">Video Picks <span class="c">7</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
+    </div>
+
+    <div class="tabpanel active" data-panel="videos">
+      <p class="samples-note">🎬 Knomee's videos were made for investors. With candidates, they do double duty: they speak to the advisor as a person — and show the experience they could offer their own clients.</p>
+      <div class="table-wrap"><table class="t"><thead><tr><th>Video</th><th>Stage</th><th>Where to use it</th></tr></thead><tbody>
+        <tr><td><span class="m">Transitions Scramble What You Thought You Wanted</span><br><span style="font-size:.82rem;color:var(--muted)">Video</span></td><td><span class="stage i">Inbound</span></td><td>Website invite, LinkedIn posts</td></tr>
+        <tr><td><span class="m">Smart People, Emotional Decisions</span><br><span style="font-size:.82rem;color:var(--muted)">Theme</span></td><td><span class="stage i">Inbound</span></td><td>Event invites, newsletter</td></tr>
+        <tr><td><span class="m">The Thinking Partner</span><br><span style="font-size:.82rem;color:var(--muted)">Video</span></td><td><span class="stage i">Inbound</span><span class="stage t">In Talks</span></td><td>Website, conversations about the client experience on your platform</td></tr>
+        <tr><td><span class="m">Nobody Ever Asked Me That</span><br><span style="font-size:.82rem;color:var(--muted)">Interview</span></td><td><span class="stage i">Inbound</span><span class="stage t">In Talks</span></td><td>Newsletter feature, meeting confirmation</td></tr>
+        <tr><td><span class="m">Prepare for the Conversation</span><br><span style="font-size:.82rem;color:var(--muted)">Theme</span></td><td><span class="stage t">In Talks</span></td><td>Meeting confirmation</td></tr>
+        <tr><td><span class="m">When Life Changes, Money Changes</span><br><span style="font-size:.82rem;color:var(--muted)">Video</span></td><td><span class="stage t">In Talks</span></td><td>Not Now check-in</td></tr>
+        <tr><td><span class="m">Future You</span><br><span style="font-size:.82rem;color:var(--muted)">Adventure Teaching Script</span></td><td><span class="stage t">In Talks</span></td><td>Not Now check-in — it echoes their own Future You adventure</td></tr>
+      </tbody></table></div>
+      <p style="margin-top:1.2rem;font-style:italic;color:var(--muted);font-size:.95rem">Outreach stays plain: first-touch messages land best without video. Tip: tag every video link with <code>utm_content=</code> so you can see which videos drive completions.</p>
+      <div class="callout" style="margin-top:var(--s4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;--lead:var(--grape);--lead-tint:#fff;border:1px solid var(--line)">
+        <div><h3 style="color:var(--plum)">Browse the full library in Google Drive</h3><p>Every Knomee video, ready to embed — open the folder and pick the files that fit your plan.</p></div>
+        <a href="https://drive.google.com/drive/folders/11SHeKJ0PxBAwJzragIy4ZGvgZZGONpgk" target="_blank" rel="noopener" class="btn btn-primary" style="--lead:var(--plum)">Open the Video Library <span class="arw">→</span></a>
+      </div>
+    </div>
+
+    <div class="tabpanel" data-panel="metrics">
+      <p class="samples-note">📊 The complete tracking set behind the three headline outcomes — still tracked, just not the headline. If you don't track a metric today, flag it with your CS contact.</p>
+      <div class="table-wrap"><table class="t"><thead><tr><th>Metric</th><th>Current Baseline</th><th>Where to Find It</th></tr></thead><tbody>
+        <tr><td><span class="m">Go Independent link visits</span></td><td class="fill">___ / mo</td><td>Web analytics (GA4, Fathom, etc.)</td></tr>
+        <tr><td><span class="m">Flow completion</span></td><td class="fill">___ %</td><td>Knomee Candidate Analytics</td></tr>
+        <tr><td><span class="m">Outreach reply rate</span></td><td class="fill">___ %</td><td>Email platform, LinkedIn, CRM activity</td></tr>
+        <tr><td><span class="m">Meetings from completions</span></td><td class="fill">___ %</td><td>Knomee Candidate Analytics</td></tr>
+        <tr><td><span class="m">Conversation-to-visit rate</span></td><td class="fill">___ %</td><td>CRM pipeline stages</td></tr>
+        <tr><td><span class="m">Signed</span></td><td class="fill">___ / yr</td><td>Knomee Candidate Analytics, CRM</td></tr>
+        <tr><td><span class="m">Time from first conversation to signed</span></td><td class="fill">___ days</td><td>CRM deal reporting</td></tr>
+        <tr><td><span class="m">AUM signed</span></td><td class="fill">$___ / yr</td><td>Knomee Candidate Analytics, finance reporting</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem">© Knomee | Confidential · Recruit Toolkit · V1 · 2026 · <a data-go="home" style="cursor:pointer">Home</a></div></div></footer>
+
+<!-- ── SLIDE-OVER ── -->
+<div class="sheet-back" id="sheetBack"></div>
+<aside class="sheet" id="sheet" aria-label="Sample">
+  <div class="sheet-head"><span class="st" id="sheetType">Sample</span><button class="sheet-x" id="sheetX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy Text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
+</aside>
+
+<!-- ── SAMPLE STORE (hidden source content) ── -->
+<div class="sample-store" id="sampleStore">
+  <div data-sample-id="inbound-1" data-type="Website Block · Careers Page" class="lead-inbound">
+    <div class="frame"><div class="frame-body" data-copy><div class="kicker">On your website</div><h4>Thinking of becoming independent?</h4><p>It’s one of the biggest decisions of your career — and most of the thinking happens long before the first conversation.</p><p>Take 8 minutes to get clear on what you want your practice to give you, what’s on your mind, and the move you’re weighing. You’ll leave with your Business ID — a one-page summary that’s yours to keep — and three questions to ask every firm you’re considering, including ours.</p><p>No call required. And you’ll see exactly what we see.</p><span class="pill-cta">Get My Business ID →</span></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> the Video ‘Transitions Scramble What You Thought You Wanted,’ or a photo of an advisor who’s made the move with you. Put your Go Independent link behind the button, on your careers or “For Advisors” page, above the fold.</div>
+  </div>
+  <div data-sample-id="inbound-2" data-type="Email · Newsletter Feature" class="lead-inbound">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">F</div><div><b>Firm Name</b> <span>&lt;insights@acme.com&gt;</span></div></div><div class="email-subj">Before you compare any offer</div></div><div class="email-body" data-copy><p>Most advisors who explore independence start by comparing payouts, platforms, and deal terms. The ones who move with confidence usually start somewhere else: what they actually want their practice to give them.</p><p>That’s why we offer an 8-minute experience built for advisors weighing a move. Five short adventures, and you leave with your Business ID — a one-page summary of what you want — plus three questions to put to every firm you’re considering, including us.</p><p>Whether you move next year or never, it’s a better place to start.</p><a class="email-cta">Get My Business ID →</a></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> the Interview ‘Nobody Ever Asked Me That,’ or a short story from an advisor on your platform.</div>
+  </div>
+  <div data-sample-id="inbound-3" data-type="Event Invite · Pre &amp; Post" class="lead-inbound">
+    <div class="frame"><div class="frame-head">🗓 Advisor Event</div><div class="frame-body" data-copy><div class="kicker">Before the event</div><p><b>Make {{Event Name}} about your next move</b></p><p>Before you join us, take 8 minutes to think through what you want your practice to give you and the move you’re weighing. You’ll arrive with your Business ID and three questions worth asking — of us, and of anyone else you’re talking to.</p><span class="pill-cta">Start Before the Session →</span><div class="kicker" style="margin-top:1rem">After the event</div><p>Thanks for joining us. If today raised more questions than it answered, that’s a good sign.</p><p>Take 8 minutes to make it personal: get clear on what you want from the next chapter, and leave with three questions to ask before making any move.</p><span class="pill-cta">Find Your Next Step →</span></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a recap clip from a past session, or the Theme ‘Smart People, Emotional Decisions.’</div>
+  </div>
+  <div data-sample-id="inbound-4" data-type="LinkedIn Post · Firm Leader" class="lead-inbound">
+    <div class="frame"><div class="frame-body" data-copy><div class="frame-from"><div class="email-av">L</div><div><b>Firm Leader Name</b><span>LinkedIn Post</span></div></div><p>Advisors who’ve gone independent tell me the same thing.</p><p>The hardest part wasn’t the paperwork or the technology. It was getting honest about why they wanted to go — and what they’d need to feel sure.</p><p>Most never had a way to think that through before the first conversation. Now there is one.</p><p>If you’ve been wondering what independence would look like for you, take 8 minutes. You’ll leave with a one-page Business ID and three questions to ask any firm you talk to — including ours.</p><p>{{Link}}</p></div><div class="frame-banner" style="height:150px">▶</div></div>
+    <div class="pairing"><b>Suggested pairing:</b> the Video ‘Transitions Scramble What You Thought You Wanted,’ or a real photo of the leader with an advisor who’s made the move.</div>
+  </div>
+  <div data-sample-id="outreach-1" data-type="Email · Big Move · Option 1" class="lead-outreach">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">R</div><div><b>Recruiter Name</b> <span>&lt;recruiter@acme.com&gt;</span></div></div><div class="email-subj">Before any big move</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Going independent is one of the biggest moves an advisor can make — for your clients, your team, your family, and the next chapter of your career.</p><p>So before we talk about {{Firm Name}}, I’d like to understand what you’re aiming for.</p><p>There’s a short experience built for advisors weighing a move that helps you work through exactly that: what you want your practice to give you, what’s on your mind, and what would have to be settled before you’d decide.</p><p>It takes about 8 minutes. You keep your Business ID, a one-page summary of what you want, plus three questions to ask any firm you’re considering — including us. I’ll see your answers, and so will you, so our first conversation can be about you, not a pitch.</p><a class="email-cta">Get My Business ID →</a><p>Best,<br>{{Recruiter Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> nothing — a plain, personal email reads like a person wrote it. Send it to a personal address, never their current firm’s, with a personal invite link sent as Knomee.</div>
+  </div>
+  <div data-sample-id="outreach-2" data-type="LinkedIn InMail / Text · Option 2" class="lead-outreach">
+    <div class="frame"><div class="frame-body" data-copy><div class="frame-from"><div class="email-av">R</div><div><b>Recruiter Name</b><span>LinkedIn InMail / Text Message</span></div></div><p>Hi {{First Name}},</p><p>I’ll keep this short, and I won’t pitch you.</p><p>If you’ve ever wondered whether independence makes sense for you, here’s a way to think it through on your own time: 8 minutes on what you want your practice to give you and what you’d need to feel sure. You keep the one-page summary, and three questions to ask any firm — including mine.</p><p>If it sparks questions, I’m glad to talk. If not, no pressure.</p><p>{{Link}}</p><p>Best,<br>{{Recruiter Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> nothing — on LinkedIn or text, short and plain wins. If you’ve met before, say where in the first line.</div>
+  </div>
+  <div data-sample-id="outreach-3" data-type="Email · Peer Introduction" class="lead-outreach">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">What I wish I’d had before my move</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>When I was weighing my move to {{Firm Name}}, the hardest part wasn’t the logistics. It was getting honest with myself about what I actually wanted — and what I needed to feel sure.</p><p>{{Firm Name}} now offers a short experience that helps you think that through. It takes about 8 minutes, and you keep a one-page Business ID of what you want, plus three questions to ask any firm you’re considering. I’d have asked better questions with those in hand.</p><p>No strings — and if you want to compare notes afterward, I’m happy to.</p><a class="email-cta">Take the 8 Minutes →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a short clip of this advisor on why they moved, if you have one. The advisor sends it personally, from their own account — never recruiting on their behalf.</div>
+  </div>
+  <div data-sample-id="outreach-4" data-type="Email · Follow-Up · 1 week later" class="lead-outreach">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">R</div><div><b>Recruiter Name</b> <span>&lt;recruiter@acme.com&gt;</span></div></div><div class="email-subj">Worth 8 minutes?</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>I know notes like mine are easy to set aside, so this is my last one for now.</p><p>If you’ve been quietly thinking about what’s next, the link I shared still works, on your own time. It takes about 8 minutes, and you’ll come away with a clearer picture of what you want, whatever you decide.</p><a class="email-cta">Start When You’re Ready →</a><p>Either way, I’m glad to be a resource.</p><p>Best,<br>{{Recruiter Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> nothing. It also works as the one re-invite for anyone in Incomplete Profiles — they opened the flow and didn’t finish. If there’s no reply, honor the note: step back, and try the Not Now check-in in a few months.</div>
+  </div>
+  <div data-sample-id="talks-1" data-type="Email · Meeting Confirmation" class="lead-talks">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">R</div><div><b>Recruiter Name</b> <span>&lt;recruiter@acme.com&gt;</span></div></div><div class="email-subj">Before our conversation</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>I’m looking forward to our conversation on {{Day}}.</p><p>To make it as useful as possible for you, I’d like to ask one small favor: before we meet, take about 8 minutes to complete this short experience.</p><p>It will help you organize your thinking about the move, and you’ll leave with three questions to ask us. Please do — they’re the questions that tell you whether a firm is right for you. It also gives me the context to spend our time on what matters to you, not a generic overview of our firm.</p><a class="email-cta">Complete It Before We Meet →</a><p>Talk soon.</p><p>Best,<br>{{Recruiter Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> the Theme ‘Prepare for the Conversation,’ or the Interview ‘Nobody Ever Asked Me That,’ linked under the CTA. Check My Candidates first — skip this one if they’ve already completed.</div>
+  </div>
+  <div data-sample-id="talks-2" data-type="Recruiter Prep · Before the Visit" class="lead-talks">
+    <div class="frame"><div class="frame-head">📋 Visit Prep · Internal</div><div class="frame-body" data-copy><div class="kicker">From their candidate profile</div><h4>Build the visit around their answers</h4><p><b>1. Top Action:</b> {{Top Action}}. Do it in the first ten minutes — nothing else moves until it’s answered.</p><p><b>2. Their three questions:</b> {{Question 1}} · {{Question 2}} · {{Question 3}}. They’ll ask these at every firm. Answer with evidence, in writing — not reassurance.</p><p><b>3. Open with:</b> {{Conversation Starter}}. Their own words, handed back.</p><p><b>4. Words to use / avoid:</b> {{Words to Use}} / {{Words to Avoid}}.</p><p><b>5. Who else has a say:</b> {{Team, Partner, or Spouse}}. Invite them, in person or by video. Big moves are rarely made alone.</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> the candidate’s Advisor Readiness and Recruiting Playbook tabs, open on screen in your prep meeting. Reading Your Candidates explains each part.</div>
+  </div>
+  <div data-sample-id="talks-3" data-type="Email · After the Meeting" class="lead-talks">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">R</div><div><b>Recruiter Name</b> <span>&lt;recruiter@acme.com&gt;</span></div></div><div class="email-subj">Thank you for today</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Thank you for the time today. Conversations like this one take real thought, and I appreciated your candor.</p><p>You came in with three questions, and they deserve better than answers from memory. Ours are in writing — including {{The Hardest One}}, and the cases where it went worst.</p><p>You told us {{What Matters Most}} matters most, so that stays at the center of everything from here. The next step, whenever you’re ready, is {{Next Step}}.</p><a class="email-cta">Read Our Answers →</a><p>I’m here for any questions, big or small.</p><p>Best,<br>{{Recruiter Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> your written answers to their three questions, linked under the CTA. This is a 1:1, personal note — it comes from the person they met, never a recruiting inbox.</div>
+  </div>
+  <div data-sample-id="talks-4" data-type="Email · Not Now · 6-month check-in" class="lead-talks">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">R</div><div><b>Recruiter Name</b> <span>&lt;recruiter@acme.com&gt;</span></div></div><div class="email-subj">Has anything changed?</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>When we last spoke, the timing wasn’t right, and that was the right call.</p><p>A lot can change in six months — at your firm, in your practice, at home. If you’ve found yourself thinking about it again, take 8 minutes to see where you stand now. Your Business ID is yours either way.</p><a class="email-cta">See Where You Stand →</a><p>No pressure on my end. I’m here whenever it’s useful.</p><p>Best,<br>{{Recruiter Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> the Adventure Teaching Script ‘Future You,’ or the Video ‘When Life Changes, Money Changes.’ Send a fresh invite link, and time it to what they told you — a bonus that vests, a deferred-comp date, a life event.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var meta = {
+    home:['','Home','Start here'],
+    'how-to-use':['01','How to Use','Situations & ground rules'],
+    experience:['02','The Experience','What candidates go through'],
+    setup:['03','5-Step Setup','The one framework'],
+    baseline:['04','Baseline','Recruiting growth — the 3 numbers'],
+    inbound:['05','Inbound','They found you'],
+    outreach:['06','Outreach','You found them'],
+    'in-talks':['07','In Talks','Answer their three questions'],
+    results:['08','Reading Your Candidates','Dashboard · Profile · Apprehensions'],
+    landing:['09','Website & Invite Links','Where the link lives'],
+    testing:['10','Test & Learn','UTM & small batches'],
+    appendix:['11','Appendix','Videos · Metrics']
+  };
+  var views = {}; document.querySelectorAll('.view').forEach(function(v){ views[v.id]=v; });
+  var navLinks = {}; document.querySelectorAll('#navLinks a').forEach(function(a){ navLinks[a.getAttribute('data-go')]=a; });
+
+  var dl = document.getElementById('drawerList');
+  Object.keys(meta).forEach(function(id){
+    var m=meta[id]; var a=document.createElement('a'); a.setAttribute('data-go',id);
+    a.innerHTML='<span class="n">'+(m[0]||'◆')+'</span><span class="t">'+m[1]+'</span><span class="d">'+m[2]+'</span>';
+    dl.appendChild(a);
+  });
+
+  /* build a labeled "Next section" button at the bottom of every view */
+  var order = ['home','how-to-use','experience','setup','baseline','inbound','outreach','in-talks','results','landing','testing','appendix'];
+  var vnColor = {inbound:'--inbound',outreach:'--outreach','in-talks':'--talks'};  /* Next button takes the destination section's color */
+  order.forEach(function(id, i){
+    if(id==='home') return;
+    var v = views[id]; if(!v) return;
+    var host = v.querySelector('.container'); if(!host) return;
+    var next = order[i+1];
+    var el = document.createElement('div'); el.className='view-next';
+    if(next){
+      el.innerHTML = '<span class="vn-label">Up next</span><button class="vn-btn" data-go="'+next+'" style="--lead:var('+(vnColor[next]||'--grape')+')">Next: '+meta[next][1]+' <span class="arw">→</span></button>';
+    } else {
+      el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">← Back to Home</button>';
+    }
+    host.appendChild(el);
+  });
+
+  function selectTab(group, name){
+    group.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-tab')===name); });
+    var view = group.closest('.view');
+    view.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-panel')===name); });
+  }
+  document.querySelectorAll('[data-tabs] .tab').forEach(function(t){
+    t.addEventListener('click', function(){ selectTab(t.closest('[data-tabs]'), t.getAttribute('data-tab')); });
+  });
+
+  /* remembers the trail of views so "Back" returns where you came from */
+  var navStack=[]; var currentView=null;
+  function labelBack(id){
+    var v=views[id]; if(!v) return;
+    var bl=v.querySelector('.backlink[data-back]'); if(!bl) return;
+    var prev=navStack[navStack.length-1];
+    bl.textContent = (prev && prev!=='home' && meta[prev]) ? ('← Back to '+meta[prev][1]) : '← Home';
+  }
+  function setView(id, push){
+    if(!views[id]) id='home';
+    Object.keys(views).forEach(function(k){ views[k].classList.toggle('active', k===id); });
+    Object.keys(navLinks).forEach(function(k){ navLinks[k].classList.toggle('active', k===id); });
+    var v=views[id]; var tg=v.querySelector('[data-tabs]');
+    if(tg){ selectTab(tg, tg.querySelector('.tab').getAttribute('data-tab')); }
+    window.scrollTo({top:0,behavior:'auto'});
+    if(push!==false && location.hash.slice(1)!==id){ history.pushState({v:id},'', '#'+id); }
+    currentView=id; labelBack(id);
+    document.title = (id==='home'?'':meta[id][1]+' · ')+'Knomee — The Recruit Toolkit';
+  }
+  function go(id){ closeDrawer(); if(currentView && id!==currentView){ navStack.push(currentView); } setView(id); }
+  function goBack(){ closeDrawer(); setView(navStack.pop() || 'home'); }
+
+  document.addEventListener('click', function(e){
+    var back = e.target.closest && e.target.closest('[data-back]');
+    if(back){ e.preventDefault(); goBack(); return; }
+    var el = e.target.closest && e.target.closest('[data-go]');
+    if(el){ e.preventDefault(); go(el.getAttribute('data-go')); }
+  });
+  window.addEventListener('popstate', function(){
+    /* if a sample tray is open, Back should close it — not change the page */
+    if(sheetBackPending){ sheetBackPending=false; return; }
+    if(sheet.classList.contains('open')){ closeSheet(true); return; }
+    var id = location.hash.slice(1)||'home';
+    if(navStack[navStack.length-1]===id){ navStack.pop(); }
+    setView(id, false);
+  });
+
+  /* slide-over */
+  var store = document.getElementById('sampleStore');
+  var sheet=document.getElementById('sheet'), back=document.getElementById('sheetBack');
+  var sheetBody=document.getElementById('sheetBody'), sheetType=document.getElementById('sheetType');
+  var copyBtn=document.getElementById('copyBtn');
+  var sheetBackPending=false; /* true while a manual close consumes its own history entry */
+  function openSheet(id){
+    var node = store.querySelector('[data-sample-id="'+id+'"]'); if(!node) return;
+    ceCurrentSample = id;
+    sheetBody.innerHTML = ceSampleOverride(id) || node.innerHTML;
+    sheetType.textContent = node.getAttribute('data-type');
+    sheet.classList.remove('lead-inbound','lead-outreach','lead-talks');
+    (node.className.match(/lead-\w+/g)||[]).forEach(function(c){ sheet.classList.add(c); });
+    resetCopy();
+    var wasOpen = sheet.classList.contains('open');
+    back.classList.add('open'); sheet.classList.add('open');
+    document.body.style.overflow='hidden';
+    /* push a history entry so the Back button closes the tray, not the page */
+    if(!wasOpen){ history.pushState({sheet:true},'',location.href); }
+    ceEnableSheetEdit();
+  }
+  function closeSheet(fromPop){
+    if(!sheet.classList.contains('open')) return;
+    back.classList.remove('open'); sheet.classList.remove('open'); document.body.style.overflow='';
+    /* if closed by the user (not the Back button), consume the tray's history entry */
+    if(!fromPop){ sheetBackPending=true; history.back(); }
+  }
+  document.querySelectorAll('[data-sample]').forEach(function(c){ c.addEventListener('click', function(){ openSheet(c.getAttribute('data-sample')); }); });
+  document.getElementById('sheetX').addEventListener('click', function(){ closeSheet(); });
+  back.addEventListener('click', function(){ closeSheet(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
+
+  function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy Text'; }
+  copyBtn.addEventListener('click', function(){
+    var src = sheetBody.querySelector('[data-copy]') || sheetBody;
+    var text = src.innerText.replace(/\n{3,}/g,'\n\n').trim();
+    var done=function(){ copyBtn.classList.add('done'); copyBtn.querySelector('span').textContent='Copied ✓'; setTimeout(resetCopy,1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); }
+    else fallback();
+    function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
+  });
+
+  /* mobile drawer */
+  var drawer=document.getElementById('drawer');
+  function openDrawer(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer(){ drawer.classList.remove('open'); if(!sheet.classList.contains('open')) document.body.style.overflow=''; }
+  document.getElementById('menuBtn').addEventListener('click', openDrawer);
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  drawer.addEventListener('click', function(e){ if(e.target===drawer) closeDrawer(); });
+
+  setView(location.hash.slice(1)||'home', false);
+
+  /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
+  var CE_ID='recruit';
+  var ceEDIT=/[?&]edit=1/.test(location.search);
+  var ceOverrides={}, ceSamples={}, ceKeyed=[], ceCurrentSample=null, ceDocRef=null;
+  function ceSampleOverride(id){ return ceSamples['sample::'+id] || null; }
+  function ceStatus(t){ var s=document.getElementById('ceStatus'); if(s) s.textContent=t; }
+  function ceCollect(){
+    var sel='h1,h2,h3,h4,p,dt,dd,li,th,td,.eyebrow,.hero-eyebrow,.tagword,.kick,.k,.sub,.samples-note,.prev,.type,.chip';
+    function ok(el){
+      if(el.closest('.nav,.drawer,.tabs,.footer,.sheet,.sample-store,.view-next,.backlink,.email-chrome')) return false;
+      if(el.querySelector('[data-go],button,a[href]')) return false;
+      return true;
+    }
+    document.querySelectorAll('.view').forEach(function(view){
+      var vid=view.id;
+      var base=Array.prototype.slice.call(view.querySelectorAll(sel)).filter(ok);
+      base=base.filter(function(el){ return !base.some(function(o){ return o!==el && el.contains(o); }); });
+      /* step titles appended AFTER the base set so existing edit slots keep their keys */
+      var extra=Array.prototype.slice.call(view.querySelectorAll('.step-body strong')).filter(function(el){ return ok(el) && base.indexOf(el)===-1; });
+      var nodes=base.concat(extra);
+      var i=0; nodes.forEach(function(el){ el.setAttribute('data-k', vid+'::'+(i++)); ceKeyed.push(el); });
+    });
+  }
+  function ceApply(){
+    ceKeyed.forEach(function(el){
+      var k=el.getAttribute('data-k');
+      if(Object.prototype.hasOwnProperty.call(ceOverrides,k) && document.activeElement!==el && el.innerHTML!==ceOverrides[k]){ el.innerHTML=ceOverrides[k]; }
+    });
+    if(ceCurrentSample && sheet.classList.contains('open') && document.activeElement!==sheetBody){
+      var ov=ceSamples['sample::'+ceCurrentSample];
+      if(ov && sheetBody.innerHTML!==ov) sheetBody.innerHTML=ov;
+    }
+  }
+  function ceSplit(data){
+    ceOverrides={}; ceSamples={};
+    Object.keys(data||{}).forEach(function(k){ if(k.indexOf('sample::')===0) ceSamples[k]=data[k]; else ceOverrides[k]=data[k]; });
+  }
+  function ceInit(){
+    try{
+      var cfg={apiKey:"AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",authDomain:"knomee-playbook.firebaseapp.com",projectId:"knomee-playbook",storageBucket:"knomee-playbook.firebasestorage.app",messagingSenderId:"956493019959",appId:"1:956493019959:web:13f099b4ea42ef948d78b2"};
+      if(!firebase.apps.length) firebase.initializeApp(cfg);
+      ceDocRef=firebase.firestore().collection('video-feedback').doc('activation-playbook').collection('content').doc(CE_ID);
+      ceDocRef.onSnapshot(function(snap){ ceSplit(snap.exists?snap.data():{}); ceApply(); }, function(err){ console.warn('content sync error',err); ceStatus('Offline'); });
+    }catch(e){ console.warn('content editor unavailable',e); ceStatus('Offline'); }
+  }
+  function ceSave(key,html){
+    if(!ceDocRef){ ceStatus('Save failed'); return; }
+    ceStatus('Saving…');
+    var o={}; o[key]=html;
+    ceDocRef.set(o,{merge:true}).then(function(){ ceStatus('Saved ✓'); }, function(err){ console.warn('save failed',err); ceStatus('Save failed'); });
+  }
+  function cePlainPaste(e){ e.preventDefault(); var t=((e.clipboardData||window.clipboardData).getData('text/plain')||''); document.execCommand('insertText',false,t); }
+  function ceWire(el){
+    el.setAttribute('contenteditable','true');
+    el.addEventListener('mousedown',function(e){ e.stopPropagation(); });
+    el.addEventListener('click',function(e){ e.stopPropagation(); });
+    el.addEventListener('paste',cePlainPaste);
+    el.addEventListener('blur',function(){ ceSave(el.getAttribute('data-k'), el.innerHTML); });
+  }
+  function ceEnableSheetEdit(){
+    if(!ceEDIT) return;
+    sheetBody.setAttribute('contenteditable','true');
+    sheetBody.onpaste=cePlainPaste;
+    sheetBody.onblur=function(){ if(ceCurrentSample!=null) ceSave('sample::'+ceCurrentSample, sheetBody.innerHTML); };
+  }
+  function ceStart(){
+    document.body.classList.add('ce-on');
+    /* keep the header logo pointing at the editable landing while editing */
+    var logo=document.querySelector('.nav-logo');
+    if(logo){ var lh=logo.getAttribute('href'); if(lh && !/[?&]edit=1/.test(lh)){ logo.setAttribute('href', lh+(lh.indexOf('?')>=0?'&':'?')+'edit=1'); } }
+    ceKeyed.forEach(ceWire);
+    (function setLive(){ var l=document.getElementById('ceLive'); if(l){ l.href=location.pathname; } else { document.addEventListener('DOMContentLoaded', setLive); } })();
+  }
+  ceCollect(); ceInit(); if(ceEDIT) ceStart();
+})();
+</script>
+
+<div class="ce-bar" id="ceBar">
+  <span class="ce-badge">✏️ Editing</span>
+  <span class="ce-hint">Click any text to edit — changes save automatically and go live for everyone.</span>
+  <span class="cc-hint cc-hint-f2">Press F2 to comment</span>
+  <span class="cc-hint cc-hint-esc">Press F2 to exit commenting mode</span>
+  <span class="ce-status" id="ceStatus">Ready</span>
+  <a class="ce-live" id="ceLive" href="#" target="_blank" rel="noopener">View live ↗</a>
+</div>
+</body>
+</html>

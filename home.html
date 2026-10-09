@@ -46,10 +46,11 @@
   h1 .g{background:linear-gradient(100deg,var(--lilac),var(--mint));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .lede{opacity:0;animation:up .7s var(--ease) .2s forwards;font-size:clamp(1.05rem,1.6vw,1.35rem);font-weight:300;color:rgba(255,255,255,.8);max-width:52ch;margin-top:1.3rem}
 
-  .choices{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2.2vw,1.6rem);margin-top:clamp(2.2rem,5vw,3.4rem)}
-  .choice{opacity:0;position:relative;overflow:hidden;border-radius:26px;padding:clamp(1.6rem,3vw,2.4rem);min-height:clamp(300px,34vw,380px);display:flex;flex-direction:column;justify-content:flex-end;border:1px solid rgba(255,255,255,.12);transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .45s}
+  .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.2vw,1.6rem);margin-top:clamp(2.2rem,5vw,3.4rem)}
+  .choice{opacity:0;position:relative;overflow:hidden;border-radius:26px;padding:clamp(1.6rem,3vw,2.4rem);padding-top:clamp(4.6rem,8vw,6.4rem);min-height:clamp(300px,34vw,380px);display:flex;flex-direction:column;justify-content:flex-end;border:1px solid rgba(255,255,255,.12);transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .45s}
   .choice.c1{animation:up .7s var(--ease) .3s forwards;background:linear-gradient(160deg,#8a37d6 0%,#5a1e8f 55%,#33125e 100%)}
   .choice.c2{animation:up .7s var(--ease) .4s forwards;background:linear-gradient(160deg,#12a58e 0%,#0b6c67 55%,#093f4d 100%)}
+  .choice.c3{animation:up .7s var(--ease) .5s forwards;background:linear-gradient(160deg,#3d7fd0 0%,#2d4590 55%,#22175c 100%)}
   .choice::after{content:"";position:absolute;inset:0;background:radial-gradient(90% 80% at 85% 8%,rgba(255,255,255,.28),transparent 55%);opacity:.9;transition:opacity .45s}
   .choice .emoji{position:absolute;top:clamp(1.2rem,2.5vw,1.9rem);right:clamp(1.2rem,2.5vw,1.9rem);font-size:clamp(2.4rem,4vw,3.4rem);z-index:2;transition:transform .5s var(--ease);filter:drop-shadow(0 6px 14px rgba(0,0,0,.25))}
   .choice .num{position:absolute;top:clamp(1.1rem,2.5vw,1.7rem);left:clamp(1.4rem,3vw,2.2rem);font-size:clamp(3.5rem,7vw,5.5rem);font-weight:700;line-height:1;color:rgba(255,255,255,.14);z-index:1}
@@ -116,8 +117,8 @@
 
   <div class="hero">
     <span class="eyebrow">Knomee Activation Toolkit</span>
-    <h1>Two toolkits.<br><span class="g">One client lifecycle.</span></h1>
-    <p class="lede">Ready-to-use campaigns for every stage — from a prospect's first spark of curiosity to a lifelong client relationship. Choose where you're working today.</p>
+    <h1>Three toolkits.<br><span class="g">One growth engine.</span></h1>
+    <p class="lede">Ready-to-use campaigns for every stage — from an advisor's first thought of going independent, to a prospect's first spark of curiosity, to a lifelong client relationship. Choose where you're working today.</p>
 
     <div class="choices">
       <a class="choice c1" href="prospect-playbook.html">
@@ -139,6 +140,17 @@
           <h2>The Client Toolkit</h2>
           <div class="sub">Deepening Relationships</div>
           <p>Keep engaged clients engaged, and win back the ones who are drifting — organized by client type, ready to send.</p>
+          <span class="enter">Enter Toolkit <span class="arw">→</span></span>
+        </div>
+      </a>
+      <a class="choice c3" href="recruit-playbook.html">
+        <span class="num">03</span>
+        <span class="emoji">🧭</span>
+        <div class="body">
+          <div class="kick">Recruits</div>
+          <h2>The Recruit Toolkit</h2>
+          <div class="sub">Attracting Advisors</div>
+          <p>For advisors thinking about independence — a website invite, 1:1 outreach, and peer intros that start with what they're aiming for.</p>
           <span class="enter">Enter Toolkit <span class="arw">→</span></span>
         </div>
       </a>
@@ -222,7 +234,7 @@
 <script>
 (function(){
   /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
-  var CE_ID='home-v2'; /* content baked into this page; the pre-bake 'home' doc is retained but no longer applied */
+  var CE_ID='home-v3'; /* the third card shifts every edit key after it, and 'home-v2' holds the "Two toolkits" headline; both older docs are retained but no longer applied */
   var ceEDIT=/[?&]edit=1/.test(location.search);
   var ceOverrides={}, ceKeyed=[], ceDocRef=null;
   function ceStatus(t){ var s=document.getElementById('ceStatus'); if(s) s.textContent=t; }
