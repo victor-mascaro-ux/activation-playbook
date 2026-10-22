@@ -827,7 +827,7 @@
   setView(location.hash.slice(1)||'home', false);
 
   /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
-  var CE_ID='client';
+  var CE_ID='client-v2'; /* content baked into this page; the 'client' doc is retained but no longer applied */
   var ceEDIT=/[?&]edit=1/.test(location.search);
   var ceOverrides={}, ceSamples={}, ceKeyed=[], ceCurrentSample=null, ceDocRef=null;
   function ceSampleOverride(id){ return ceSamples['sample::'+id] || null; }
