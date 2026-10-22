@@ -235,7 +235,12 @@
 (function(){
   /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
   var CE_ID='home-v4'; /* content baked into this page; 'home-v3' and the older docs are retained but no longer applied */
-  var ceEDIT=/[?&]edit=1/.test(location.search);
+  var ceWANT=/[?&]edit=1/.test(location.search), ceEDIT=false; /* ceEDIT turns on only once the editor password gate passes */
+  /* editor password gate: the shell (index.html) asks for the password and keeps a hash of it in
+     localStorage; this page holds only a hash of that hash, so the source never reveals the password */
+  var CE_GATE='84a5c1b87a7af5fedd739eae37d286a5d79854d70f54048a700e61ad9caa0c42';
+  function ceSha(s){ return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){ return Array.prototype.map.call(new Uint8Array(b),function(x){ return ('0'+x.toString(16)).slice(-2); }).join(''); }); }
+  function ceUnlocked(){ try{ var t=localStorage.getItem('knomee-edit-token'); return t ? ceSha(t).then(function(h){ return h===CE_GATE; },function(){ return false; }) : Promise.resolve(false); }catch(e){ return Promise.resolve(false); } }
   var ceOverrides={}, ceKeyed=[], ceDocRef=null;
   function ceStatus(t){ var s=document.getElementById('ceStatus'); if(s) s.textContent=t; }
   function ceCollect(){
@@ -283,7 +288,7 @@
     ceKeyed.forEach(ceWire);
     (function setLive(){ var l=document.getElementById('ceLive'); if(l){ l.href=location.pathname; } else { document.addEventListener('DOMContentLoaded', setLive); } })();
   }
-  ceCollect(); ceInit(); if(ceEDIT) ceStart();
+  ceCollect(); ceInit(); if(ceWANT) ceUnlocked().then(function(ok){ if(ok){ ceEDIT=true; ceStart(); } });
 })();
 </script>
 </body>
