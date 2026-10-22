@@ -234,7 +234,7 @@
 <script>
 (function(){
   /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
-  var CE_ID='home-v3'; /* the third card shifts every edit key after it, and 'home-v2' holds the "Two toolkits" headline; both older docs are retained but no longer applied */
+  var CE_ID='home-v4'; /* content baked into this page; 'home-v3' and the older docs are retained but no longer applied */
   var ceEDIT=/[?&]edit=1/.test(location.search);
   var ceOverrides={}, ceKeyed=[], ceDocRef=null;
   function ceStatus(t){ var s=document.getElementById('ceStatus'); if(s) s.textContent=t; }
