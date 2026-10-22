@@ -384,6 +384,25 @@
   .cc-rail { position: fixed; }
   .cc-fab  { position: fixed; }
   .cc-esc  { position: fixed; }
+
+  /* ════════════════════════════════════════════════════════
+     Editor password gate — covers the whole shell until the
+     editor is unlocked. The card stays hidden until we know
+     this browser isn't already unlocked, so returning editors
+     only see a blink of plum, never the prompt.
+     ════════════════════════════════════════════════════════ */
+  .ce-lock { position: fixed; inset: 0; z-index: 2147483647; display: flex; align-items: center; justify-content: center; padding: 16px; background: #240446; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .ce-lock[hidden] { display: none; }
+  .ce-lock-card { display: none; width: 100%; max-width: 360px; box-sizing: border-box; background: #fff; border-radius: 16px; padding: 28px 24px 22px; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+  .ce-lock.ce-lock-ask .ce-lock-card { display: block; }
+  .ce-lock h1 { margin: 0 0 6px; font-size: 20px; font-weight: 800; color: #1E1A28; }
+  .ce-lock p { margin: 0 0 18px; font-size: 14px; line-height: 1.45; color: #6E6880; }
+  .ce-lock input { width: 100%; box-sizing: border-box; font: inherit; font-size: 15px; padding: 11px 14px; color: #1E1A28; border: 1.5px solid rgba(20,10,40,.16); border-radius: 10px; outline: none; }
+  .ce-lock input:focus { border-color: #4A1C72; box-shadow: 0 0 0 3px rgba(74,28,114,.14); }
+  .ce-lock button { width: 100%; margin-top: 12px; font: inherit; font-size: 15px; font-weight: 700; padding: 11px 14px; border: 0; border-radius: 999px; background: #2DD2B0; color: #06403A; cursor: pointer; }
+  .ce-lock button:focus-visible { outline: 2px solid #1E1A28; outline-offset: 2px; }
+  .ce-lock-err { min-height: 18px; margin-top: 10px; font-size: 13px; color: #B3261E; }
+  .ce-lock-live { font-size: 13px; color: #4A1C72; }
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -391,16 +410,34 @@
 </head>
 <body style="margin:0">
 
+<!-- editor password gate: nothing behind it loads until it's unlocked -->
+<div class="ce-lock" id="ceLock">
+  <form class="ce-lock-card" id="ceLockForm">
+    <h1>Editor access</h1>
+    <p>Edits made here go live for everyone. Enter the editor password to continue.</p>
+    <input type="password" id="ceLockPw" placeholder="Password" aria-label="Editor password" autocomplete="current-password">
+    <button type="submit">Unlock editor</button>
+    <div class="ce-lock-err" id="ceLockErr" role="alert"></div>
+    <a class="ce-lock-live" id="ceLockLive" href="home.html">View the live toolkit instead</a>
+  </form>
+</div>
+
 <div class="cc-stage" id="ccStage" data-cc-theme="neutral-frost">
 
   <!-- the prototype under review -->
   <div class="cc-frame" id="ccFrame">
-    <iframe id="ccProto" src="home.html" title="Prototype"></iframe>
+    <iframe id="ccProto" src="about:blank" title="Prototype"></iframe>
     <script>
       /* The shell only runs in editor mode (the top guard redirects any
          non-edit visit away), so always load the target page in its
-         editable mode. index.html?page=<file>&edit=1 picks the page;
-         with no ?page= (e.g. index.html?edit=1) default to the landing. */
+         editable mode — once the editor password gate passes.
+         index.html?page=<file>&edit=1 picks the page;
+         with no ?page= (e.g. index.html?edit=1) default to the landing.
+
+         Gate: the password is never in the source. Unlocking stores
+         sha256('knomee-edit:'+password) in localStorage as the token;
+         this shell and each page check sha256(token) against CE_GATE,
+         and each page turns its editor on only when that matches. */
       (function(){
         var ok=['home.html','prospect-playbook.html','client-playbook.html','recruit-playbook.html','knomee_playbook.html'];
         var qs=new URLSearchParams(location.search);
@@ -408,7 +445,35 @@
         if(!pg || ok.indexOf(pg)===-1) pg='home.html';
         var src=pg+'?edit=1';
         var f=document.getElementById('ccProto');
-        if(f && f.getAttribute('src')!==src) f.src=src;
+
+        var CE_GATE='84a5c1b87a7af5fedd739eae37d286a5d79854d70f54048a700e61ad9caa0c42';
+        function ceSha(s){ return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){ return Array.prototype.map.call(new Uint8Array(b),function(x){ return ('0'+x.toString(16)).slice(-2); }).join(''); }); }
+        function ceUnlocked(){ try{ var t=localStorage.getItem('knomee-edit-token'); return t ? ceSha(t).then(function(h){ return h===CE_GATE; },function(){ return false; }) : Promise.resolve(false); }catch(e){ return Promise.resolve(false); } }
+
+        var lock=document.getElementById('ceLock'), form=document.getElementById('ceLockForm');
+        var pw=document.getElementById('ceLockPw'), err=document.getElementById('ceLockErr');
+        document.getElementById('ceLockLive').href=pg;
+        function open(){ lock.hidden=true; if(f && f.getAttribute('src')!==src) f.src=src; }
+        /* while locked, keep F2 / "c" / Esc from reaching the comments overlay */
+        window.addEventListener('keydown',function(e){
+          if(lock.hidden) return;
+          if(e.key==='F2' || !(e.target.closest && e.target.closest('#ceLock'))) e.stopImmediatePropagation();
+        },true);
+        ceUnlocked().then(function(yes){
+          if(yes) return open();
+          lock.classList.add('ce-lock-ask'); pw.focus();
+        });
+        form.addEventListener('submit',function(e){
+          e.preventDefault();
+          var token;
+          try{
+            ceSha('knomee-edit:'+pw.value).then(function(h){ token=h; return ceSha(h); }).then(function(h){
+              if(h!==CE_GATE){ err.textContent='That password isn’t right.'; pw.select(); return; }
+              try{ localStorage.setItem('knomee-edit-token',token); }catch(x){}
+              open();
+            });
+          }catch(x){ err.textContent='The editor needs a secure (https) connection.'; }
+        });
       })();
     </script>
     <div class="cc-catcher" id="ccCatcher"></div>

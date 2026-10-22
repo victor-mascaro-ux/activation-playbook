@@ -38,6 +38,29 @@ on the Prospect Toolkit don't show up on the Client Toolkit.
 Config lives at the top of the `<script>` block in `index.html` (`PROJECT_ID`,
 `THEME`, `SEED_DEMO`).
 
+## Editor password
+
+The editor (`index.html?page=<file>&edit=1`, or any toolkit page with
+`?edit=1`) is behind a password. The shell shows a lock screen first and
+loads nothing behind it until the password is entered. Once someone unlocks it,
+their browser stays unlocked (the token lives in `localStorage` under
+`knomee-edit-token`). Each toolkit page also checks that token before it turns
+its own editor on, so `?edit=1&raw=1` can't get around the gate.
+
+The password itself is never in the source. Unlocking stores
+`sha256('knomee-edit:' + password)` as the token, and the shell and each page
+compare `sha256(token)` with `CE_GATE`. To change the password, compute the new
+value and replace `CE_GATE` in `index.html`, `home.html`,
+`prospect-playbook.html`, `client-playbook.html` and `recruit-playbook.html`:
+
+```bash
+python -c "import hashlib,getpass;t=hashlib.sha256(('knomee-edit:'+getpass.getpass()).encode()).hexdigest();print(hashlib.sha256(t.encode()).hexdigest())"
+```
+
+This only stops casual access: the site is static, so someone determined could
+still write to Firestore directly. The older always-editable decks
+(`knomee_playbook.html`, `*-pdf.html`) aren't gated.
+
 ## Serving locally
 
 ```bash
