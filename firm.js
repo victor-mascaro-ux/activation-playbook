@@ -90,13 +90,10 @@
   /* ── fill-in templates ──
      An open sample shows every {{Placeholder}} as a field to type into, and a field for the advisor's Knomee link
      under each call to action. Copy Text stays off until every field is filled; it then copies formatted text (the
-     call to action a real link, tagged with this template) and a plain-text version. The advisor's name and link
-     are remembered in this browser only: nothing typed here is sent anywhere or recorded in the usage events. */
-  var KEEP=['Advisor Name','Recruiter Name','Firm Name','Link'];
-  /* the link is kept per toolkit: a prospect invite and a recruit invite are different links */
-  function slot(k){ return k==='Link' ? 'Link@'+KIT : k; }
-  function kept(){ try{ return JSON.parse(store('knomee-toolkit-fields')||'{}')||{}; }catch(e){ return {}; } }
-  function keep(k,v){ if(KEEP.indexOf(k)<0) return; var m=kept(); if(v) m[slot(k)]=v; else delete m[slot(k)]; store('knomee-toolkit-fields',JSON.stringify(m)); }
+     call to action a real link, tagged with this template) and a plain-text version. Nothing typed here is kept,
+     sent anywhere or recorded in the usage events: advisors may share a computer, so every sample opens with empty
+     fields (Victor, 2026-10-29). */
+  store('knomee-toolkit-fields',null); /* the names and links an earlier version remembered */
   function linkOk(v){ return /^(https?:\/\/)?[^\s\/.]+\.[^\s]+$/i.test(v); }
   function fullLink(v){ return /^https?:\/\//i.test(v) ? v : 'https://'+v; }
   function medium(label){
@@ -167,7 +164,7 @@
       cta.insertAdjacentElement('afterend',row);
     });
 
-    var fields=Array.prototype.slice.call(root.querySelectorAll('.tk-field')), memo=kept();
+    var fields=Array.prototype.slice.call(root.querySelectorAll('.tk-field'));
     var names=root.querySelectorAll('.email-from b,.frame-from b');
     Array.prototype.forEach.call(names,function(b){ b.setAttribute('data-default',b.textContent); });
     function update(){
@@ -196,7 +193,6 @@
     }
     fields.forEach(function(f,i){
       var k=f.getAttribute('data-field');
-      if(memo[slot(k)]) f.textContent=memo[slot(k)];
       f.addEventListener('keydown',function(e){
         if(e.key!=='Enter') return;
         e.preventDefault(); var next=fields[i+1]; if(next) next.focus(); else f.blur();
@@ -209,7 +205,7 @@
         if(!f.textContent.trim()) f.textContent=''; /* back to empty, so the placeholder shows again */
         var v=val(f);
         fields.forEach(function(o){ if(o!==f && o.getAttribute('data-field')===k && val(o)!==v) o.textContent=v; });
-        keep(k,v); update();
+        update();
       });
     });
     update();
