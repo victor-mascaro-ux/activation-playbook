@@ -17,7 +17,7 @@ The live pages are only read. Every change below must match exactly as often as 
 markup has moved stops the build with the line that no longer matches, instead of producing a half-branded page.
 Branding and usage events live in firm.js / firm.css; this script only wires them in.
 """
-import io, os, re, sys
+import hashlib, io, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KITS = {'prospect': 'Prospect', 'client': 'Client', 'recruit': 'Recruit'}
@@ -26,6 +26,12 @@ KITS = {'prospect': 'Prospect', 'client': 'Client', 'recruit': 'Recruit'}
 def read(name):
     with io.open(os.path.join(ROOT, name), encoding='utf-8') as f:
         return f.read().replace('\r\n', '\n')
+
+
+def version(name):
+    """A short hash of the file's contents. Browsers keep firm.js and firm.css for up to ten minutes, so each page
+    asks for them by version: a change reaches everyone as soon as the rebuilt pages are live."""
+    return hashlib.sha256(read(name).encode('utf-8')).hexdigest()[:10]
 
 
 def write(name, html):
@@ -52,8 +58,8 @@ def common(p, kit):
           '<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="robots" content="noindex">\n')
     p.sub('<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>\n',
           '<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>\n'
-          '<link rel="stylesheet" href="firm.css">\n'
-          '<script src="firm.js" data-kit="%s"></script>\n' % kit)
+          '<link rel="stylesheet" href="firm.css?v=%s">\n'
+          '<script src="firm.js?v=%s" data-kit="%s"></script>\n' % (version('firm.css'), version('firm.js'), kit))
     # links between pages stay inside the firm editions
     for k in KITS:
         p.sub('href="%s-playbook.html"' % k, 'href="%s-toolkit.html"' % k, count=p.html.count('href="%s-playbook.html"' % k))
