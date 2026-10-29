@@ -127,9 +127,35 @@ against, the same three Prospect Analytics and Candidate Analytics show in knome
 | Recruit | Time to decision (days) | `days` |
 | Recruit | AUM per signed advisor ($M) | `aum` |
 
-In the firm editions each one is a number field. It opens with what that browser saved, or else with the firm's
-onboarding numbers from its config. A changed number is saved in the browser and sent as a `baseline` usage event:
-the metric and the number, nothing else.
+In the firm editions each one is a number field. The numbers belong to the firm, not to one browser: everyone at the
+firm reads and changes the same Firestore document, `toolkit-baselines/<slug>_<kit>` (for example
+`acme_prospect`). Until that document exists, the fields show the firm's onboarding numbers from its config. A saved
+change is also logged as a `baseline` usage event, carrying only the metric and the number. A local server reads and
+writes its own copy (`acme_prospect_dev`), so testing never changes a firm's numbers. Anyone with the firm's
+password can change them, and the note under the table says a change applies to everyone.
+
+The Firestore rules must allow this. Add the following inside `match /databases/{database}/documents` in the
+Firebase console. Until it's in, the fields show the onboarding numbers and a change says it wasn't saved:
+
+```
+match /toolkit-baselines/{id} {
+  function num(d, k) { return !(k in d) || (d[k] is string && d[k].matches('^[0-9.,]{0,12}$')); }
+  allow read: if id.matches('^[a-z0-9-]{1,40}_(prospect|recruit)(_dev)?$');
+  allow create, update: if id.matches('^[a-z0-9-]{1,40}_(prospect|recruit)(_dev)?$')
+    && request.resource.data.keys().hasOnly(['firm','kit','at','conversion','days','revenue','signed','aum'])
+    && request.resource.data.firm is string
+    && request.resource.data.kit in ['prospect','recruit']
+    && id.matches('^' + request.resource.data.firm + '_' + request.resource.data.kit + '(_dev)?$')
+    && request.resource.data.at == request.time
+    && num(request.resource.data, 'conversion') && num(request.resource.data, 'days')
+    && num(request.resource.data, 'revenue') && num(request.resource.data, 'signed')
+    && num(request.resource.data, 'aum');
+  allow delete: if false;
+}
+```
+
+Like everything on this static site, the rule stops casual changes only. It checks the shape of a change, not who
+made it, and the numbers can be read by anyone who has the site's public Firebase config.
 
 ```json
 "baseline": {

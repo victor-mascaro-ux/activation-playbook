@@ -338,19 +338,26 @@
 
   /* ── Know Your Baseline: the numbers Prospect / Candidate Analytics measures the lift against ──
      Each [data-baseline] cell on the live page ("___ %", "$___M") becomes a number field with its unit around it.
-     It opens with what this browser saved, else the firm's onboarding numbers (firms/<slug>.json "baseline", per
-     toolkit). A changed number is saved in this browser and sent as a usage event — the metric and the number,
-     nothing else — since it's what the lift is measured against. data-firm keeps a live edit from replacing it. */
+     The numbers are the firm's, not one browser's (Victor, 2026-10-29): one Firestore document per firm and toolkit
+     (toolkit-baselines/<slug>_<kit>, with '_dev' on a local server) that everyone at the firm reads and changes,
+     over the firm's onboarding numbers (firms/<slug>.json "baseline"). A saved change is also logged as a usage
+     event, the metric and the number only. data-firm keeps a live edit from replacing a field. */
   function baseline(f){
     var cells=document.querySelectorAll('[data-baseline]'); if(!cells.length) return;
-    var name=f.name||FIRM, given=(f.baseline||{})[KIT]||{}, BKEY='knomee-toolkit-baseline:'+FIRM+':'+KIT, saved;
-    try{ saved=JSON.parse(store(BKEY)||'{}')||{}; }catch(e){ saved={}; }
-    var inputs=[], prefilled=false;
+    var name=f.name||FIRM, given=(f.baseline||{})[KIT]||{}, inputs=[], prefilled=false, shared=false;
+    store('knomee-toolkit-baseline:'+FIRM+':'+KIT,null); /* the per-browser copy an earlier version kept */
+    var ref=null;
+    try{ if(col()) ref=firebase.firestore().collection('toolkit-baselines').doc(FIRM+'_'+KIT+(base.env==='dev' ? '_dev' : '')); }catch(e){}
+    function intro(){
+      return shared ? 'Everyone at '+name+' sees these numbers, so a change here updates them for all.'
+        : prefilled ? 'From onboarding. Everyone at '+name+' sees these numbers, so a change here updates them for all.'
+        : 'Add where '+name+' is today, before Knomee. Everyone at '+name+' will see these numbers.';
+    }
     var note=document.createElement('p'); note.className='tk-base-note anim'; note.setAttribute('role','status');
     Array.prototype.forEach.call(cells,function(td){
       var k=td.getAttribute('data-baseline'), unit=td.textContent.split(/_+/), m=td.parentNode.querySelector('.m');
       var said=unit[1].trim()==='%' ? 'percent' : unit[1].trim()==='M' ? 'millions of dollars' : unit[0].trim()==='$' ? 'dollars' : unit[1].trim();
-      var last=Object.prototype.hasOwnProperty.call(saved,k) ? saved[k] : (given[k]!=null ? String(given[k]) : '');
+      var last=given[k]!=null ? String(given[k]) : '';
       if(given[k]!=null) prefilled=true;
       td.setAttribute('data-firm',''); td.classList.add('tk-base-cell'); td.textContent='';
       var w=document.createElement('label'); w.className='tk-base';
@@ -362,22 +369,37 @@
       var pre=document.createElement('span'); pre.className='tk-base-unit tk-base-pre'; pre.textContent=unit[0].trim();
       num.appendChild(pre); num.appendChild(inp); w.appendChild(num);
       if(unit[1].trim()){ var post=document.createElement('span'); post.className='tk-base-unit'; post.textContent=unit[1].trim(); w.appendChild(post); }
-      td.appendChild(w); inputs.push(inp);
+      td.appendChild(w); inputs.push(inp); inp.tkKey=k; inp.tkLast=last;
       inp.addEventListener('input',function(){ var v=inp.value.replace(/[^\d.,]/g,''); if(v!==inp.value) inp.value=v; });
       inp.addEventListener('keydown',function(e){
         if(e.key!=='Enter') return;
         e.preventDefault(); var next=inputs[inputs.indexOf(inp)+1]; if(next) next.focus(); else inp.blur();
       });
       inp.addEventListener('change',function(){
-        var v=inp.value.trim(); if(v===last) return;
-        last=v; saved[k]=v; store(BKEY,JSON.stringify(saved));
-        tkTrack('baseline',{metric:k,value:v});
-        note.textContent='Saved. Knomee measures the lift against these numbers.';
+        var v=inp.value.trim(); if(v===inp.tkLast) return;
+        var failed='This change wasn’t saved: it couldn’t reach Knomee. Try again in a moment.';
+        if(!ref){ note.textContent=failed; return; }
+        var d={firm:FIRM, kit:KIT, at:firebase.firestore.FieldValue.serverTimestamp()}; d[k]=v;
+        ref.set(d,{merge:true}).then(function(){
+          inp.tkLast=v; shared=true;
+          tkTrack('baseline',{metric:k,value:v});
+          note.textContent='Saved for everyone at '+name+'.';
+        },function(e){ console.warn('baseline not saved',e); note.textContent=failed; });
       });
     });
-    note.textContent=prefilled ? 'From what '+name+' shared at onboarding. Change any number that has moved.'
-      : 'Add where '+name+' is today, before Knomee, to measure the lift against.';
+    note.textContent=intro();
     var wrap=cells[0].closest('.table-wrap'); if(wrap) wrap.insertAdjacentElement('afterend',note);
+    /* the firm's saved numbers replace the onboarding ones, except in a field someone has started changing */
+    if(ref) ref.get().then(function(snap){
+      if(!snap.exists) return;
+      var d=snap.data(); shared=true;
+      inputs.forEach(function(inp){
+        var v=d[inp.tkKey]; if(typeof v!=='string') return;
+        if(document.activeElement===inp || inp.value!==inp.tkLast) return;
+        inp.value=v; inp.tkLast=v;
+      });
+      note.textContent=intro();
+    },function(e){ console.warn('baseline not read',e); });
   }
 
   /* ── the welcome screen (firms with a password) ── */
