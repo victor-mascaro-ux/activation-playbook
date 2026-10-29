@@ -3,5 +3,6 @@
   "logo": "firms/acme-white.svg",
   "color": "#1c3f6e",
   "domain": "acme.com",
-  "brand": "cobrand"
+  "brand": "cobrand",
+  "gate": "4e7d11a43f5b548245b94c40fbfe25d8f14d4946d5de76420e8d5430af75a881"
 }

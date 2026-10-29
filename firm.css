@@ -23,3 +23,34 @@
 .powered-by-logo{display:block;height:16px;width:auto}
 body:has(.sheet.open) .powered-by,body:has(.drawer.open) .powered-by,body.ce-on .powered-by{display:none}
 @media(max-width:720px){.powered-by{left:12px;bottom:10px}}
+
+/* ── the welcome screen: knomee-demo's sign-in card (src/screens/signUp.css) in the firm's brand ──
+   The firm's colour fills the screen, its white logo sits over the card, and the credit holds the foot.
+   Nothing of the page behind shows until the password is in. */
+html.firm-gate-check body>:not(.firm-gate),html.firm-locked body>:not(.firm-gate){visibility:hidden}
+html.firm-locked,html.firm-locked body{overflow:hidden}
+html.firm-locked .powered-by{display:none}
+.firm-gate{position:fixed;inset:0;z-index:1000;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:clamp(40px,10vh,96px) 16px 20px;background:var(--firm,#240446);font-family:'Poppins',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;transition:opacity .35s ease}
+.firm-gate.is-leaving{opacity:0;pointer-events:none}
+.fg-main{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;margin:auto 0;animation:fgIn .35s ease both}
+@keyframes fgIn{from{opacity:0;transform:translateY(8px)}}
+.fg-logo{display:block;height:40px;width:auto;margin-bottom:28px}
+.fg-name{margin-bottom:28px;font-size:24px;font-weight:600;letter-spacing:.2px;color:#fff;text-align:center}
+.fg-card{box-sizing:border-box;width:100%;padding:28px 22px 26px;border-radius:14px;background:#fff;box-shadow:0 18px 44px -16px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.04);text-align:center}
+.fg-title{margin:0 0 4px;font-size:18px;font-weight:700;line-height:1.35;color:#1f1f23}
+.fg-sub{margin:0 0 22px;font-size:13.5px;line-height:1.5;color:#6b6b75}
+.fg-label{display:block;text-align:left;font-size:13px;font-weight:600;color:#1f1f23}
+.fg-input{box-sizing:border-box;width:100%;margin-top:6px;padding:10px 12px;border:1.5px solid #dcdce2;border-radius:12px;background:#fff;font:inherit;font-size:15px;color:#1f1f23}
+.fg-input::placeholder{color:#9a9aa3}
+.fg-input:focus{outline:none;border-color:var(--firm,#7639a1);box-shadow:0 0 0 3px color-mix(in srgb,var(--firm,#7639a1) 18%,transparent)}
+.fg-input[aria-invalid="true"]{border-color:#d81e4a}
+.fg-error{min-height:1.2em;margin:8px 0 0;text-align:left;font-size:12.5px;line-height:1.4;color:#d81e4a}
+.fg-error:empty{min-height:0;margin:0}
+.fg-continue{width:100%;margin-top:22px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 12px;border:0;border-radius:8px;background:var(--firm,#240446);color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.08)}
+.fg-continue:hover{filter:brightness(1.12)}
+.fg-continue:focus-visible{outline:2px solid var(--firm,#240446);outline-offset:3px}
+.fg-continue:disabled{opacity:.6;cursor:default}
+.fg-continue svg{opacity:.6}
+.fg-foot{margin-top:28px}
+.fg-credit{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.82)}
+@media(prefers-reduced-motion:reduce){.fg-main{animation:none}.firm-gate{transition:none}}
