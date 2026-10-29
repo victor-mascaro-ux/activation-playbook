@@ -345,7 +345,7 @@
     }
   }
 
-  /* what the demo setup screen (?setup=1) was given, for this tab only: {baseline:{<kit>:{…}}, gate} */
+  /* the password the demo setup screen (?setup=1) set, for this tab only: {gate} */
   var DEMO='knomee-firm-demo:'+FIRM;
   function demo(v){
     try{ if(v===undefined) return JSON.parse(sessionStorage.getItem(DEMO)||'{}')||{}; sessionStorage.setItem(DEMO,JSON.stringify(v)); }catch(e){}
@@ -360,9 +360,7 @@
      event, the metric and the number only. data-firm keeps a live edit from replacing a field. */
   function baseline(f){
     var cells=document.querySelectorAll('[data-baseline]'); if(!cells.length) return;
-    var name=f.name||FIRM, given={}, inputs=[], prefilled=false, shared=false;
-    /* the onboarding numbers: the firm's config, and what the demo setup screen was given in this tab */
-    [(f.baseline||{})[KIT]||{}, (demo().baseline||{})[KIT]||{}].forEach(function(src){ Object.keys(src).forEach(function(k){ given[k]=src[k]; }); });
+    var name=f.name||FIRM, given=(f.baseline||{})[KIT]||{}, inputs=[], prefilled=false, shared=false;
     store('knomee-toolkit-baseline:'+FIRM+':'+KIT,null); /* the per-browser copy an earlier version kept */
     var ref=null;
     try{ if(col()) ref=firebase.firestore().collection('toolkit-baselines').doc(FIRM+'_'+KIT+(base.env==='dev' ? '_dev' : '')); }catch(e){}
@@ -376,7 +374,7 @@
       var k=td.getAttribute('data-baseline'), unit=td.textContent.split(/_+/), m=td.parentNode.querySelector('.m');
       var said=unit[1].trim()==='%' ? 'percent' : unit[1].trim()==='M' ? 'millions of dollars' : unit[0].trim()==='$' ? 'dollars' : unit[1].trim();
       var last=given[k]!=null ? String(given[k]) : '';
-      if(given[k]!=null && given[k]!=='') prefilled=true; /* a number skipped at setup is blank, to add here */
+      if(given[k]!=null) prefilled=true;
       td.setAttribute('data-firm',''); td.classList.add('tk-base-cell'); td.textContent='';
       var w=document.createElement('label'); w.className='tk-base';
       var inp=document.createElement('input');
@@ -495,66 +493,38 @@
   }
 
   /* ── the demo setup screen: activation.knomee.com/<firm>/?setup=1 ──
-     For showing a firm's onboarding, and only for demo firms (Victor, 2026-10-29). In the firm's brand, it asks for
-     the firm's baseline, both toolkits', which can wait (blank numbers are added later in each Baseline), and a
-     password for its advisors, typed twice, which can't. Then it opens the toolkits.
-     - The numbers go where the Baseline sections read them: the firm's Firestore documents, and this tab (demo()),
-       in case Firestore can't take them yet.
-     - The password is for this tab only: the welcome screen accepts it beside the firm's real one, which stays as
-       it is (tools/firm_password.py). Anyone with the link can set one, and so open the firm's toolkits in their
-       own browser. */
-  var SETUP=[
-    {kit:'prospect', name:'Prospect Toolkit', fields:[['conversion','Conversion rate','','%'],['days','Time to client','','days'],['revenue','Revenue per client','$','']]},
-    {kit:'recruit', name:'Recruit Toolkit', fields:[['joined','Joining rate','','%'],['days','Time to decision','','days'],['aum','AUM per advisor','$','M']]}
-  ];
+     For showing a firm's onboarding, and only for demo firms (Victor, 2026-10-29): the welcome screen, in the
+     firm's brand, setting the advisors' password (typed twice) instead of asking for it, then opening the toolkits.
+     The password is for this tab only: the welcome screen accepts it beside the firm's real one, which stays as it
+     is (tools/firm_password.py). Anyone with the link can set one, and so open the firm's toolkits in their own
+     browser. */
   function showSetup(f){
     var name=f.name||FIRM, safe=String(name).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; });
     var root=document.documentElement; root.classList.add('firm-locked'); root.classList.remove('firm-gate-check');
-    var groups=SETUP.map(function(s){
-      return '<div class="fg-group"><div class="fg-group-name">'+s.name+'</div><div class="fg-grid">'+
-        s.fields.map(function(x){
-          var id='fgB-'+s.kit+'-'+x[0];
-          return '<div><label class="fg-label" for="'+id+'">'+x[1]+'</label>'+
-            '<div class="fg-num"><span class="fg-unit">'+x[2]+'</span>'+
-            '<input id="'+id+'" data-kit="'+s.kit+'" data-key="'+x[0]+'" type="text" inputmode="decimal" autocomplete="off" maxlength="12">'+
-            '<span class="fg-unit">'+x[3]+'</span></div></div>';
-        }).join('')+'</div></div>';
-    }).join('');
-    function pass(id,label,auto){
-      return '<label class="fg-label fg-label-gap" for="'+id+'">'+label+'</label>'+
-        '<div class="fg-pass"><input class="fg-input" id="'+id+'" type="password" autocomplete="'+auto+'">'+
+    function pass(id,label,gap){
+      return '<label class="fg-label'+(gap ? ' fg-label-gap' : '')+'" for="'+id+'">'+label+'</label>'+
+        '<div class="fg-pass"><input class="fg-input" id="'+id+'" type="password" autocomplete="new-password">'+
         '<button class="pw-eye" type="button" aria-controls="'+id+'" aria-label="Show password" aria-pressed="false">'+EYE+'</button></div>';
     }
     var g=document.createElement('div'); g.className='firm-gate';
     g.setAttribute('role','dialog'); g.setAttribute('aria-modal','true'); g.setAttribute('aria-labelledby','fgTitle');
     g.innerHTML=
-      '<div class="fg-main fg-wide">'+
+      '<div class="fg-main">'+
         (f.logo ? '<img class="fg-logo" src="'+f.logo+'" alt="'+safe+'">' : '<div class="fg-name">'+safe+'</div>')+
-        '<form class="fg-card fg-setup" novalidate>'+
-          '<div class="fg-title" id="fgTitle" role="heading" aria-level="1">Set up your Activation Toolkits</div>'+
-          '<p class="fg-sub">Where '+safe+' is today, if you have the numbers, and the password your advisors will use.</p>'+
-          '<fieldset class="fg-set"><legend class="fg-legend">Your baseline today</legend>'+
-            '<p class="fg-help">Your numbers before Knomee, which the lift is measured against. Optional: you can add them later in each toolkit’s Baseline.</p>'+
-            groups+
-          '</fieldset>'+
-          '<fieldset class="fg-set"><legend class="fg-legend">Your advisors’ password</legend>'+
-            '<p class="fg-help">Advisors enter it on the welcome screen to open the toolkits. At least 4 characters.</p>'+
-            pass('fgNew','Password','new-password')+
-            pass('fgConfirm','Confirm password','new-password')+
-            '<p class="fg-error" id="fgError" role="alert"></p>'+
-          '</fieldset>'+
+        '<form class="fg-card" novalidate>'+
+          '<div class="fg-title" id="fgTitle" role="heading" aria-level="1">Welcome to your Activation Toolkits</div>'+
+          '<p class="fg-sub">Set the password your advisors will use to open them. At least 4 characters.</p>'+
+          pass('fgNew','Password')+
+          pass('fgConfirm','Confirm password',true)+
+          '<p class="fg-error" id="fgError" role="alert"></p>'+
           '<button class="fg-continue" type="submit" disabled>Open the Toolkits<svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true"><path d="M2 1l6 4-6 4z" fill="currentColor"/></svg></button>'+
         '</form>'+
       '</div>'+
       (f.brand!=='white' ? '<div class="fg-foot"><span class="fg-credit"><span class="powered-by-text">powered by</span><img class="powered-by-logo" src="knomee-logo-plum.svg" alt="knomee"></span></div>' : '');
     document.body.appendChild(g);
-    var nums=Array.prototype.slice.call(g.querySelectorAll('.fg-num input'));
     var pw=g.querySelector('#fgNew'), again=g.querySelector('#fgConfirm'), err=g.querySelector('#fgError');
     var btn=g.querySelector('.fg-continue');
     Array.prototype.forEach.call(g.querySelectorAll('.pw-eye'),function(b){ pwEye(b,g.querySelector('#'+b.getAttribute('aria-controls'))); });
-    /* a click anywhere on a number's box lands in its field */
-    Array.prototype.forEach.call(g.querySelectorAll('.fg-num'),function(box){ box.addEventListener('mousedown',function(e){ if(e.target!==box.querySelector('input')){ e.preventDefault(); box.querySelector('input').focus(); } }); });
-    /* only the password is required; the numbers can wait for each toolkit's Baseline */
     function update(){
       var p=pw.value, c=again.value;
       var mismatch=!!c && (p.indexOf(c)!==0 || (document.activeElement!==again && c!==p));
@@ -562,39 +532,20 @@
       if(mismatch) again.setAttribute('aria-invalid','true'); else again.removeAttribute('aria-invalid');
       btn.disabled=p.length<4 || c!==p;
     }
-    nums.forEach(function(i,n){
-      i.addEventListener('input',function(){ var v=i.value.replace(/[^\d.,]/g,''); if(v!==i.value) i.value=v; update(); });
-      i.addEventListener('keydown',function(e){ if(e.key!=='Enter') return; e.preventDefault(); (nums[n+1]||pw).focus(); });
-    });
     [pw,again].forEach(function(i){ i.addEventListener('input',update); i.addEventListener('blur',update); });
-    update(); nums[0].focus();
+    update(); pw.focus();
     g.querySelector('form').addEventListener('submit',function(e){
       e.preventDefault();
       update(); if(btn.disabled) return;
       btn.disabled=true;
-      var vals={};
-      nums.forEach(function(i){ var k=i.getAttribute('data-kit'); (vals[k]=vals[k]||{})[i.getAttribute('data-key')]=i.value.trim(); });
       sha('knomee-firm:'+FIRM+':'+pw.value).then(function(t){ return sha(t).then(function(h){
-        demo({baseline:vals, gate:h});
+        demo({gate:h});
         cookie(KEY,t);
-        var saves=[];
-        try{
-          if(col()) SETUP.forEach(function(s){
-            /* only the numbers given: one left blank doesn't wipe what the firm already has */
-            var d={firm:FIRM, kit:s.kit, at:firebase.firestore.FieldValue.serverTimestamp()}, any=false;
-            Object.keys(vals[s.kit]).forEach(function(k){ if(vals[s.kit][k]){ d[k]=vals[s.kit][k]; any=true; } });
-            if(any) saves.push(firebase.firestore().collection('toolkit-baselines').doc(FIRM+'_'+s.kit+(base.env==='dev' ? '_dev' : ''))
-              .set(d,{merge:true}).catch(function(x){ console.warn('setup baseline not saved',x); }));
-          });
-        }catch(x){}
-        /* the toolkits open even if Firestore is slow or refuses: the numbers are in this tab too */
-        return Promise.race([Promise.all(saves), new Promise(function(r){ setTimeout(r,1500); })]);
-      }); }).then(function(){
         try{ q.delete('setup'); history.replaceState(history.state,'',location.pathname+(q.toString() ? '?'+q.toString() : '')+location.hash); }catch(x){}
         if(KIT!=='home'){ location.replace('toolkits.html'); return; }
         g.classList.add('is-leaving'); reveal();
         setTimeout(function(){ g.remove(); },400);
-      });
+      }); });
     });
   }
 

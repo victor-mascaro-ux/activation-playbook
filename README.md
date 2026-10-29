@@ -209,17 +209,13 @@ reload after the password stays unlocked.
 
 ### Demo setup screen (`?setup=1`)
 
-For demos only: `activation.knomee.com/acme/?setup=1` opens a setup screen in
-the firm's brand. It shows the firm's onboarding. First come the six baseline
-numbers (Prospect and Recruit, as in the Baseline sections). They're optional,
-and any left blank stay blank in each toolkit's Baseline, to add later. Then
-comes a password for the firm's advisors, typed twice, which is required.
-**Open the Toolkits** stays off until the passwords match (at least 4
-characters), then it opens the firm's toolkits page, unlocked.
+For demos only: `activation.knomee.com/acme/?setup=1` opens the welcome screen
+set up for a firm's onboarding. Instead of asking for the password, it sets
+one: a password for the firm's advisors, typed twice. **Open the Toolkits**
+stays off until the two match (at least 4 characters), then it opens the
+firm's toolkits page, unlocked. The baseline numbers aren't part of it; they're
+added in each toolkit's Baseline.
 
-- The numbers are saved where the Baseline sections read them: the firm's
-  Firestore documents (once the rule above is in), and the tab itself, so the
-  demo works without the rule.
 - The password lasts for that tab only. The welcome screen accepts it as well
   as the firm's real password, which this screen doesn't change (that's
   `tools/firm_password.py`).

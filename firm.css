@@ -105,26 +105,8 @@ html.firm-locked .powered-by{display:none}
 .fg-continue svg{opacity:.6}
 .fg-foot{margin:28px 0 auto}
 
-/* the demo setup screen (firm.js showSetup, ?setup=1): the welcome card, wider, with the baseline in two groups of
-   three and the password under it */
-.fg-main.fg-wide{max-width:600px}
-.fg-setup{padding:28px 26px 24px;text-align:left}
-.fg-setup .fg-title,.fg-setup .fg-sub{text-align:center}
-.fg-set{min-width:0;margin:0;padding:18px 0 0;border:0;border-top:1px solid #ececf1}
-.fg-set+.fg-set{margin-top:22px}
-.fg-legend{float:left;width:100%;padding:0;font-size:14px;font-weight:700;color:#1f1f23}
-.fg-help{clear:both;margin:0 0 14px;padding-top:4px;font-size:12.5px;line-height:1.45;color:#6b6b75}
-.fg-group+.fg-group{margin-top:16px}
-.fg-group-name{margin-bottom:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--firm,#240446)}
-.fg-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.fg-num{display:flex;align-items:center;gap:6px;margin-top:6px;padding:0 12px;border:1.5px solid #dcdce2;border-radius:12px;background:#fff;cursor:text}
-.fg-num:hover{border-color:#c4c4cc}
-.fg-num:focus-within{border-color:var(--firm,#7639a1);box-shadow:0 0 0 3px color-mix(in srgb,var(--firm,#7639a1) 18%,transparent)}
-.fg-num input{flex:1;min-width:0;padding:10px 0;border:0;outline:0;background:none;font:inherit;font-size:15px;color:#1f1f23;text-align:right}
-.fg-unit{font-size:13px;color:#6b6b75}
-.fg-unit:empty{display:none}
+/* the demo setup screen (firm.js showSetup, ?setup=1): the welcome card, with a second password field */
 .fg-label-gap{margin-top:14px}
 .fg-pass .fg-input[aria-invalid="true"]{border-color:#d81e4a}
-@media(max-width:560px){.fg-setup{padding:24px 18px 20px}.fg-grid{grid-template-columns:1fr}.fg-num input,.fg-setup .fg-input{font-size:16px}}
 .fg-credit{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.82)}
 @media(prefers-reduced-motion:reduce){.fg-main{animation:none}.firm-gate{transition:none}}
