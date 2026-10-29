@@ -72,9 +72,12 @@ td.tk-base-cell{font-style:normal;white-space:nowrap}
 html.firm-gate-check body>:not(.firm-gate),html.firm-locked body>:not(.firm-gate){visibility:hidden}
 html.firm-locked,html.firm-locked body{overflow:hidden}
 html.firm-locked .powered-by{display:none}
-.firm-gate{position:fixed;inset:0;z-index:1000;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:clamp(40px,10vh,96px) 16px 20px;background:var(--firm,#240446);font-family:'Poppins',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;transition:opacity .35s ease}
+.firm-gate{position:fixed;inset:0;z-index:1000;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:clamp(20px,4vh,48px) 16px;background:var(--firm,#240446);font-family:'Poppins',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;transition:opacity .35s ease}
 .firm-gate.is-leaving{opacity:0;pointer-events:none}
-.fg-main{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;margin:auto 0;animation:fgIn .35s ease both}
+/* the logo, card and credit sit together in the middle of the screen; auto margins rather than centring, so a
+   card taller than the screen still scrolls from its top */
+.fg-main{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;margin:auto 0 0;animation:fgIn .35s ease both}
+.fg-main:last-child{margin-bottom:auto}
 @keyframes fgIn{from{opacity:0;transform:translateY(8px)}}
 .fg-logo{display:block;height:40px;width:auto;margin-bottom:28px}
 .fg-name{margin-bottom:28px;font-size:24px;font-weight:600;letter-spacing:.2px;color:#fff;text-align:center}
@@ -100,7 +103,7 @@ html.firm-locked .powered-by{display:none}
 .fg-continue:focus-visible{outline:2px solid var(--firm,#240446);outline-offset:3px}
 .fg-continue:disabled{opacity:.6;cursor:default}
 .fg-continue svg{opacity:.6}
-.fg-foot{margin-top:28px}
+.fg-foot{margin:28px 0 auto}
 
 /* the demo setup screen (firm.js showSetup, ?setup=1): the welcome card, wider, with the baseline in two groups of
    three and the password under it */
