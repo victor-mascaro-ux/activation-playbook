@@ -116,8 +116,10 @@
   }
   /* the template rides along as a UTM tag, so starts can be counted per template (an advisor's own tags win) */
   function tagged(v,id,label){
+    /* the tags go before any #route (Knomee's invite links end in #/flow/<token>), where analytics look for them */
     var u=fullLink(v); if(/[?&]utm_/.test(u)) return u;
-    return u+(u.indexOf('?')<0?'?':'&')+'utm_source=knomee-toolkit&utm_medium='+medium(label)+'&utm_campaign='+encodeURIComponent(FIRM||'none')+'&utm_content='+encodeURIComponent(id||'');
+    var at=u.indexOf('#'), base=at<0 ? u : u.slice(0,at), route=at<0 ? '' : u.slice(at);
+    return base+(base.indexOf('?')<0?'?':'&')+'utm_source=knomee-toolkit&utm_medium='+medium(label)+'&utm_campaign='+encodeURIComponent(FIRM||'none')+'&utm_content='+encodeURIComponent(id||'')+route;
   }
   function field(k){
     var s=document.createElement('span'), link=(k==='Link');
