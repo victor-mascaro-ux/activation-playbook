@@ -251,7 +251,9 @@
         var text=cta.textContent.trim();
         if(plain){ var p=document.createElement('p'); p.textContent=text.replace(/\s*→\s*$/,'')+': '+url; cta.replaceWith(p); return; }
         var a=document.createElement('a'); a.href=url; a.textContent=text;
-        a.setAttribute('style','display:inline-block;padding:10px 20px;border-radius:999px;background:'+color+';color:#ffffff;text-decoration:none;font-weight:600');
+        /* as on the page: an email's button a rounded square, any other a pill */
+        var r=cta.classList.contains('email-cta') ? '10px' : '999px';
+        a.setAttribute('style','display:inline-block;padding:10px 20px;border-radius:'+r+';background:'+color+';color:#ffffff;text-decoration:none;font-weight:600');
         cta.replaceWith(a);
       });
       Array.prototype.forEach.call(c.querySelectorAll('*'),function(e){
