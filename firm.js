@@ -351,6 +351,12 @@
   fetch('firms/'+FIRM+'.json',{cache:'no-cache'})
     .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
     .then(function(f){ return new Promise(function(done){ whenReady(function(){ apply(f); gate(f); done(); }); }); })
-    .catch(function(e){ console.warn('firm "'+FIRM+'" not found',e); whenReady(reveal); })
+    /* No such firm: the page belongs to nobody, so it's not public (staff-gate.js) — and the browser forgets
+       the firm, so the next plain visit doesn't try it again */
+    .catch(function(e){
+      console.warn('firm "'+FIRM+'" not found',e);
+      store('knomee-toolkit-firm',null);
+      whenReady(function(){ if(window.ktLock) window.ktLock(); reveal(); });
+    })
     .then(function(){ whenReady(ready); });
 })();
