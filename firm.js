@@ -7,9 +7,10 @@
    Branding follows knomee-demo's white-label pattern: the firm's colour on the top bar only, its white logo where
    the knomee mark was, and a "powered by knomee" credit fixed to the bottom-left corner (firms/<slug>.json).
 
-   A firm with a "gate" in its config opens on a welcome screen in its own brand that asks for its password, once per
-   browser. The config holds sha256(token), the browser keeps token = sha256('knomee-firm:<slug>:' + password), so
-   neither the page nor the config carries the password. Like the editor's password, this only stops casual
+   A firm with a "gate" in its config opens on a welcome screen in its own brand that asks for its password on every
+   visit: the unlock is a session cookie, so it lasts until the browser closes. The config holds sha256(token), the
+   cookie keeps token = sha256('knomee-firm:<slug>:' + password), so neither the page nor the config carries the
+   password. Like the editor's password, this only stops casual
    access: the site is static. Inside the commenting shell (same origin, already behind the editor password) the
    welcome screen is skipped. tools/firm_password.py sets or changes a firm's password. ?lock=1 (for demos) forgets
    this browser's unlock, so the welcome screen shows again.
@@ -22,6 +23,14 @@
   var KIT=(document.currentScript && document.currentScript.getAttribute('data-kit')) || 'unknown';
   var q=new URLSearchParams(location.search);
   function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){} return null; }
+  /* the firm's and the editor's unlocks: session cookies, shared by the browser's tabs and gone when it closes */
+  function cookie(k,v){
+    try{
+      if(v===undefined){ var m=document.cookie.match(new RegExp('(?:^|;\\s*)'+k+'=([0-9a-f]{64})')); return m ? m[1] : null; }
+      document.cookie=k+'='+(v||'')+'; path=/; SameSite=Strict'+(location.protocol==='https:' ? '; Secure' : '')+(v ? '' : '; max-age=0');
+    }catch(e){}
+    return null;
+  }
   function rid(){ return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2)); }
 
   /* ── which firm ── */
@@ -30,18 +39,19 @@
   else if(FIRM){ store('knomee-toolkit-firm',FIRM); }
   else { FIRM=store('knomee-toolkit-firm')||''; }
   window.TK_FIRM=FIRM;
-  var KEY='knomee-firm-key:'+FIRM;
+  var KEY='knomee-firm-key-'+FIRM;
+  store('knomee-firm-key:'+FIRM,null); /* the unlock that used to last forever, in localStorage */
   var inShell=(function(){ try{ return window.top!==window.self && window.top.location.origin===location.origin; }catch(e){ return false; } })();
   /* ?lock=1 forgets this browser's unlock, so the welcome screen shows again — for showing it in a demo. The
      parameter then leaves the address, so a reload after unlocking stays unlocked. */
   if(FIRM && q.get('lock')==='1'){
-    store(KEY,null);
+    cookie(KEY,null);
     try{ q.delete('lock'); history.replaceState(history.state,'',location.pathname+(q.toString() ? '?'+q.toString() : '')+location.hash); }catch(e){}
   }
   if(FIRM){
     document.documentElement.classList.add('firm-pending');
     /* until the config says whether this firm has a password, a browser that hasn't unlocked it sees nothing */
-    if(!inShell && !store(KEY)) document.documentElement.classList.add('firm-gate-check');
+    if(!inShell && !cookie(KEY)) document.documentElement.classList.add('firm-gate-check');
   }
 
   /* ── usage events ── */
@@ -52,7 +62,7 @@
   var base = {
     firm: FIRM||'unknown', kit:KIT, vid:vid, sid:rid(),
     env: /^(localhost|127\.0\.0\.1|\[::1\]|)$/.test(location.hostname) ? 'dev' : 'live',
-    staff: !!store('knomee-edit-token'),
+    staff: !!cookie('knomee-edit-token'),
     device: window.matchMedia('(max-width:820px)').matches ? 'mobile' : 'desktop'
   };
   var events=null;
@@ -365,13 +375,25 @@
   /* ── the welcome screen (firms with a password) ── */
   function sha(s){ return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){ return Array.prototype.map.call(new Uint8Array(b),function(x){ return ('0'+x.toString(16)).slice(-2); }).join(''); }); }
   function reveal(){ var r=document.documentElement; r.classList.remove('firm-gate-check'); r.classList.remove('firm-locked'); }
+  /* the eye at the field's far end shows or hides what's typed */
+  var EYE='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var EYE_OFF='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.1 10.1 0 0 1 12 19c-6.4 0-10-7-10-7a18.4 18.4 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M2 2l20 20"/></svg>';
+  function pwEye(b,input){
+    b.addEventListener('click',function(){
+      var show=input.type==='password';
+      input.type=show ? 'text' : 'password';
+      b.innerHTML=show ? EYE_OFF : EYE;
+      b.setAttribute('aria-pressed',show ? 'true' : 'false');
+      b.setAttribute('aria-label',show ? 'Hide password' : 'Show password');
+    });
+  }
 
   function gate(f){
     if(!f.gate || inShell){ reveal(); return; }
-    var t=store(KEY);
+    var t=cookie(KEY);
     (t ? sha(t) : Promise.resolve('')).then(function(h){
       if(h===f.gate){ reveal(); return; }
-      if(t) store(KEY,null); /* the password changed since this browser unlocked */
+      if(t) cookie(KEY,null); /* the password changed since this browser unlocked */
       showGate(f);
     });
   }
@@ -389,7 +411,10 @@
           '<div class="fg-title" id="fgTitle" role="heading" aria-level="1">Welcome to your Activation Toolkits</div>'+
           '<p class="fg-sub">Enter the password '+safe+' shared with you.</p>'+
           '<label class="fg-label" for="fgPass">Password</label>'+
-          '<input class="fg-input" id="fgPass" type="password" autocomplete="current-password" placeholder="Enter your password">'+
+          '<div class="fg-pass">'+
+            '<input class="fg-input" id="fgPass" type="password" autocomplete="current-password" placeholder="Enter your password">'+
+            '<button class="pw-eye" type="button" aria-controls="fgPass" aria-label="Show password" aria-pressed="false">'+EYE+'</button>'+
+          '</div>'+
           '<p class="fg-error" id="fgError" role="alert"></p>'+
           '<button class="fg-continue" type="submit">Continue<svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true"><path d="M2 1l6 4-6 4z" fill="currentColor"/></svg></button>'+
         '</form>'+
@@ -398,6 +423,7 @@
     document.body.appendChild(g);
     tkTrack('gate');
     var input=g.querySelector('#fgPass'), err=g.querySelector('#fgError'), btn=g.querySelector('.fg-continue');
+    pwEye(g.querySelector('.pw-eye'),input);
     input.focus();
     input.addEventListener('input',function(){ err.textContent=''; input.removeAttribute('aria-invalid'); });
     g.querySelector('form').addEventListener('submit',function(e){
@@ -411,7 +437,7 @@
           input.setAttribute('aria-invalid','true'); input.select();
           return;
         }
-        store(KEY,th[0]);
+        cookie(KEY,th[0]);
         tkTrack('unlock');
         g.classList.add('is-leaving'); reveal();
         setTimeout(function(){ g.remove(); },400);

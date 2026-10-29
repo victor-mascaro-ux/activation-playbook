@@ -84,6 +84,13 @@ html.firm-locked .powered-by{display:none}
 .fg-label{display:block;text-align:left;font-size:13px;font-weight:600;color:#1f1f23}
 .fg-input{box-sizing:border-box;width:100%;margin-top:6px;padding:10px 12px;border:1.5px solid #dcdce2;border-radius:12px;background:#fff;font:inherit;font-size:15px;color:#1f1f23}
 .fg-input::placeholder{color:#9a9aa3}
+/* the show-password eye at the field's far end (Edge's own reveal button would make it two) */
+.fg-pass{position:relative;margin-top:6px}
+.fg-pass .fg-input{margin-top:0;padding-right:46px}
+.fg-input::-ms-reveal{display:none}
+.pw-eye{position:absolute;top:50%;right:6px;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:0;border-radius:8px;background:none;color:#6b6b75;cursor:pointer}
+.pw-eye:hover{color:#1f1f23;background:#f1f1f4}
+.pw-eye:focus-visible{outline:2px solid var(--firm,#240446);outline-offset:1px}
 .fg-input:focus{outline:none;border-color:var(--firm,#7639a1);box-shadow:0 0 0 3px color-mix(in srgb,var(--firm,#7639a1) 18%,transparent)}
 .fg-input[aria-invalid="true"]{border-color:#d81e4a}
 .fg-error{min-height:1.2em;margin:8px 0 0;text-align:left;font-size:12.5px;line-height:1.4;color:#d81e4a}
