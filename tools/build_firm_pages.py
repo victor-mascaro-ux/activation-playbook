@@ -108,8 +108,8 @@ def build_kit(kit, label):
           "    tkTrack('copy',{sample:ceCurrentSample,label:sheetType.textContent,how:'button'});\n"
           "    var done=function(){ copyBtn.classList.add('done');")
     p.sub("  /* mobile drawer */\n",
-          "  /* text selected and copied by hand counts too (the button's own fallback copies from a textarea outside the tray) */\n"
-          "  sheetBody.addEventListener('copy', function(){ if(!ceEDIT) tkTrack('copy',{sample:ceCurrentSample,label:sheetType.textContent,how:'select'}); });\n"
+          "  /* samples copy through Copy Text only: a hand copy in the tray copies nothing and points at the button (firm.js) */\n"
+          "  sheetBody.addEventListener('copy', tkBlockCopy);\n"
           "\n  /* mobile drawer */\n")
     write('%s-toolkit.html' % kit, p.html)
 

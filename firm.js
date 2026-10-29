@@ -136,6 +136,8 @@
       var left=Object.keys(missing);
       if(btn){ btn.disabled=left.length>0; }
       if(hint){
+        /* a "Use Copy Text" note still showing gives way to the current state */
+        if(hint.hasAttribute('data-was')){ clearTimeout(hint._tkNudge); hint.removeAttribute('data-was'); hint.classList.remove('is-nudge'); }
         hint.textContent = !fields.length ? hint.getAttribute('data-default')
           : left.length===1 && left[0]==='Link' ? 'Add your Knomee link to copy it.'
           : left.length ? 'Fill in the '+(left.length===1?'highlighted field':left.length+' highlighted fields')+' to copy it.'
@@ -168,6 +170,26 @@
       });
     });
     update();
+  };
+
+  /* Samples copy through Copy Text only: that copy is the one with every field filled, the link tagged, and it's
+     counted. A hand copy in the tray (Ctrl+C, the menu's Copy) copies nothing and points at the button instead;
+     words inside one field — the advisor's own — still copy. firm.css keeps the sample's text from selecting. */
+  window.tkBlockCopy=function(e){
+    var sel=window.getSelection(), at=sel && sel.anchorNode, el=at && (at.nodeType===1 ? at : at.parentNode);
+    var field=el && el.closest && el.closest('.tk-field');
+    if(field && field.contains(sel.focusNode)) return;
+    e.preventDefault();
+    var btn=document.getElementById('copyBtn'), hint=document.querySelector('.copy-hint');
+    if(hint){
+      if(!hint.hasAttribute('data-was')) hint.setAttribute('data-was',hint.textContent);
+      hint.textContent='Use Copy Text to copy this template.'; hint.classList.add('is-nudge');
+      clearTimeout(hint._tkNudge);
+      hint._tkNudge=setTimeout(function(){
+        hint.textContent=hint.getAttribute('data-was'); hint.removeAttribute('data-was'); hint.classList.remove('is-nudge');
+      },2600);
+    }
+    if(btn){ btn.classList.remove('tk-nudge'); void btn.offsetWidth; btn.classList.add('tk-nudge'); }
   };
 
   /* Copy Text on a sample with fields: returns false when there's nothing to fill, so the page copies as it did */
