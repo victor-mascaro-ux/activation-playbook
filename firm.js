@@ -11,7 +11,8 @@
    browser. The config holds sha256(token), the browser keeps token = sha256('knomee-firm:<slug>:' + password), so
    neither the page nor the config carries the password. Like the editor's password, this only stops casual
    access: the site is static. Inside the commenting shell (same origin, already behind the editor password) the
-   welcome screen is skipped. tools/firm_password.py sets or changes a firm's password.
+   welcome screen is skipped. tools/firm_password.py sets or changes a firm's password. ?lock=1 (for demos) forgets
+   this browser's unlock, so the welcome screen shows again.
 
    Usage events (tkTrack) carry the firm, the page, a random id for this browser and one for this visit — never a
    name, email or link. Nothing is recorded in the editor, inside the commenting shell, or in a browser opted out
@@ -31,6 +32,12 @@
   window.TK_FIRM=FIRM;
   var KEY='knomee-firm-key:'+FIRM;
   var inShell=(function(){ try{ return window.top!==window.self && window.top.location.origin===location.origin; }catch(e){ return false; } })();
+  /* ?lock=1 forgets this browser's unlock, so the welcome screen shows again — for showing it in a demo. The
+     parameter then leaves the address, so a reload after unlocking stays unlocked. */
+  if(FIRM && q.get('lock')==='1'){
+    store(KEY,null);
+    try{ q.delete('lock'); history.replaceState(history.state,'',location.pathname+(q.toString() ? '?'+q.toString() : '')+location.hash); }catch(e){}
+  }
   if(FIRM){
     document.documentElement.classList.add('firm-pending');
     /* until the config says whether this firm has a password, a browser that hasn't unlocked it sees nothing */

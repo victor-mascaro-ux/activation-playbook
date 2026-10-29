@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Acme Advisors — Activation Toolkits</title>
-<!-- ACME's toolkit link (activation.knomee.com/acme): opens the firm edition's main page with the firm set -->
+<!-- ACME's toolkit link (activation.knomee.com/acme): opens the firm edition's main page with the firm set,
+     passing on anything after the address (e.g. /acme/?lock=1 shows the welcome screen again) -->
 <meta http-equiv="refresh" content="0; url=../toolkits.html?firm=acme">
-<script>location.replace('../toolkits.html?firm=acme'+location.hash);</script>
+<script>location.replace('../toolkits.html?firm=acme'+(location.search ? '&'+location.search.slice(1) : '')+location.hash);</script>
 </head>
 <body>
 <a href="../toolkits.html?firm=acme">Open the Acme Advisors toolkits</a>
