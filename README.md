@@ -16,33 +16,57 @@ any page.
 - `recruit-playbook.html` — Attracting Advisors: the Recruit Toolkit (advisors
   weighing a move to independence).
 - `knomee_playbook.html` — the older combined V5 deck.
-- `prospect-toolkit.html` — the **firm edition** of the Prospect Toolkit:
-  branded for one firm and counting how it's used (see below). It started as a
-  copy of `prospect-playbook.html`, which is left as it was for the advisors
-  already using it.
+- **Firm editions**, branded for one firm and counting how they're used (see
+  below): `toolkits.html` (the landing), `prospect-toolkit.html`,
+  `client-toolkit.html` and `recruit-toolkit.html`. They are built from the
+  live pages above, which stay as they are for the advisors already using them.
 
 ## Firm toolkits
 
 Each firm gets its own link: `activation.knomee.com/<slug>` (ACME:
 `/acme`). The `<slug>/index.html` stub redirects to
-`prospect-toolkit.html?firm=<slug>`, which reads `firms/<slug>.json`:
+`toolkits.html?firm=<slug>`, the firm's landing with all three toolkits, and
+every firm page reads `firms/<slug>.json`:
 
 ```json
-{ "name": "ACME Wealth", "monogram": "A", "color": "#2F6FE4", "domain": "acme.com", "brand": "cobrand" }
+{ "name": "Acme Advisors", "logo": "firms/acme-white.svg", "color": "#1c3f6e", "domain": "acme.com", "brand": "cobrand" }
 ```
 
-The page shows the firm's mark and name in the header ("with Knomee" beside
-it; `"brand": "white"` drops that), names the firm in the hero and footer, and
-fills `{{Firm Name}}` and `advisor@acme.com` in the templates. The browser
-remembers the firm, so a bookmarked plain `prospect-toolkit.html` still counts
-for it; `?firm=none` forgets it.
+The branding follows knomee-demo's white-label pattern (its `TopBar`,
+`clientBrands.tsx` and `.powered-by`; ACME is the demo's own Acme brand): the
+firm's colour on the toolkits' top bar only, its white logo where the knomee
+mark was, and a "powered by knomee" credit fixed to the bottom-left corner
+(`"brand": "white"` drops the credit). Without a `logo` the bar shows the
+firm's name. Logos follow knomee-demo's `docs/logo-guidelines.md`: one flat
+white, vector, cropped tight. The pages also name the firm in the hero and
+footer and fill `{{Firm Name}}` and `advisor@acme.com`. The browser remembers
+the firm, so a bookmarked plain link still counts for it; `?firm=none` forgets
+it.
 
-To add a firm: copy `acme/` and `firms/acme.json` under the new slug and edit
-both. The repo is public, so these files are too: prefer slugs that don't
-spell out a customer's name.
+`firm.js` (firm, branding, events) and `firm.css` hold all of this. The pages
+themselves are built by `tools/build_firm_pages.py`, which wires those two in
+and changes nothing else.
 
-The editor slot is `firm-prospect-v1`, separate from `prospect-v3`: edits made
-in either page never reach the other.
+**Edit the live pages only; every firm edition follows on its own:**
+
+- **A change to a live page's file**, once it's on `main`: the *Build firm
+  pages* GitHub Action (`.github/workflows/build-firm-pages.yml`) rebuilds the
+  firm editions, commits them, and asks Pages to publish. It also runs on
+  demand from the Actions tab. By hand: `python tools/build_firm_pages.py`.
+- **An edit made in a live page's inline editor** (`?edit=1`, saved to
+  Firestore, no commit): each firm edition reads the same editor slot as its
+  live page (`home-v4`, `prospect-v3`, `client-v2`, `recruit-v2`) and shows the
+  edit at once, with `{{Firm Name}}` filled in. The firm editions can't be
+  edited themselves, and the firm's own eyebrow keeps the firm's name.
+
+This works because the firm editions add or remove no editable element, so
+the editor's element keys line up with the live page's. If the build ever
+stops on a line that no longer matches, a live page's markup has moved:
+update the matching line in the build script.
+
+To add a firm: copy `acme/` and `firms/acme.json` (plus its logo) under the new
+slug and edit them. The repo is public, so these files are too: prefer slugs
+that don't spell out a customer's name.
 
 ### Usage events
 
@@ -54,7 +78,7 @@ hand-selected copy) adds a document to the Firestore collection
 | --- | --- |
 | `type` | `open`, `view`, `sample_open`, `copy` |
 | `firm` | the slug, or `unknown` |
-| `kit` | `prospect` |
+| `kit` | `home`, `prospect`, `client` or `recruit` |
 | `view` / `sample` / `label` / `how` / `via` | what was viewed or copied, and how |
 | `vid` / `sid` | random ids for this browser and this visit |
 | `env` | `live`, or `dev` on a local server |
@@ -114,8 +138,8 @@ The password itself is never in the source. Unlocking stores
 `sha256('knomee-edit:' + password)` as the token, and the shell and each page
 compare `sha256(token)` with `CE_GATE`. To change the password, compute the new
 value and replace `CE_GATE` in `index.html`, `home.html`,
-`prospect-playbook.html`, `client-playbook.html`, `recruit-playbook.html` and
-`prospect-toolkit.html`:
+`prospect-playbook.html`, `client-playbook.html` and `recruit-playbook.html`
+(the firm editions can't be edited, so they need no gate of their own):
 
 ```bash
 python -c "import hashlib,getpass;t=hashlib.sha256(('knomee-edit:'+getpass.getpass()).encode()).hexdigest();print(hashlib.sha256(t.encode()).hexdigest())"

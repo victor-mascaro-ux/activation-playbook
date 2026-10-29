@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<script>/* Live pages load directly (no commenting). The editor (?edit=1) runs inside the commenting shell. */(function(){try{if(window.top!==window.self)return;var s=location.search;if(/[?&]raw=1/.test(s))return;if(/[?&]edit=1/.test(s)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html')+'&edit=1');}}catch(e){}})();</script>
+<title>Knomee — The Client Toolkit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#240446; --indigo:#4A1C72; --grape:#7639A1; --aqua:#2DD2B0; --lilac:#B98DDC;
+    --ink:#221833; --ink-2:#463a57; --muted:#6d6478; --line:#ece7f2;
+    --snow:#f8fafa; --fog:#f6f5fb; --white:#fff;
+    --warm:#0C7263; --warm-tint:#D6F3EC;
+    --engaged:#0C7263; --engaged-tint:#D6F3EC;
+    --disengaged:#55555F; --disengaged-tint:#EAEAEC;
+    --fs-display:clamp(2.4rem,5.5vw,4.4rem);
+    --fs-h2:clamp(1.5rem,3vw,2.1rem);
+    --fs-h3:clamp(1.15rem,1.6vw,1.4rem);
+    --fs-lead:clamp(1.05rem,1.5vw,1.35rem);
+    --fs-body:1.0625rem; --fs-sm:.9375rem; --fs-eyebrow:.8rem;
+    --s2:1rem; --s3:1.5rem; --s4:2rem; --s6:3rem; --s8:4rem;
+    --pad:clamp(2.5rem,5vw,4.5rem);
+    --container:1180px; --r:16px; --r-lg:24px; --r-pill:999px;
+    --shadow-sm:0 2px 10px rgba(36,4,70,.06);
+    --shadow:0 14px 40px rgba(36,4,70,.10);
+    --shadow-lg:0 30px 70px rgba(36,4,70,.18);
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --font:'Poppins',system-ui,-apple-system,sans-serif;
+    --lead:var(--engaged); --lead-tint:var(--engaged-tint); --lead-ink:#0a5f53;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--snow);color:var(--ink);font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  img,svg{display:block;max-width:100%}
+  ::selection{background:var(--aqua);color:var(--plum)}
+  .container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem)}
+
+  /* ── nav ── */
+  .nav{position:sticky;top:0;z-index:60;background:rgba(28,10,54,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav-inner{max-width:1320px;margin-inline:auto;padding:.6rem clamp(1rem,3vw,2rem);display:flex;align-items:center;gap:1.2rem}
+  .nav-logo{display:flex;align-items:center;gap:.5rem;flex-shrink:0;cursor:pointer}
+  .nav-logo svg{height:19px;width:auto}
+  .nav-links{display:flex;align-items:center;gap:.15rem;margin-left:auto}
+  .nav-links a{position:relative;font-size:.8rem;font-weight:500;color:rgba(255,255,255,.66);padding:.4rem .62rem;border-radius:var(--r-pill);white-space:nowrap;transition:color .25s,background .25s;cursor:pointer}
+  .nav-links a::after{content:"";position:absolute;left:.62rem;right:.62rem;bottom:.16rem;height:2px;background:var(--aqua);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+  .nav-links a:hover{color:#fff}.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+  .nav-links a.active{color:#fff}
+  .nav-menu-btn{display:none;margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-weight:600;font-size:.85rem;border-radius:var(--r-pill);padding:.5rem .9rem;cursor:pointer;align-items:center;gap:.5rem}
+  .nav-menu-btn svg{width:16px;height:16px}
+
+  /* ── mobile drawer ── */
+  .drawer{position:fixed;inset:0;z-index:80;background:rgba(20,6,40,.92);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);display:flex;flex-direction:column;padding:clamp(1.5rem,6vw,3.5rem)}
+  .drawer.open{opacity:1;pointer-events:auto}
+  .drawer-close{align-self:flex-end;background:none;border:none;color:#fff;cursor:pointer;padding:.5rem}
+  .drawer-close svg{width:26px;height:26px}
+  .drawer-list{margin-top:.5rem;display:flex;flex-direction:column;gap:.1rem;overflow-y:auto}
+  .drawer-list a{display:flex;align-items:baseline;gap:.9rem;color:#fff;padding:.7rem .3rem;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer;transform:translateY(12px);opacity:0}
+  .drawer.open .drawer-list a{animation:drawerIn .5s var(--ease) forwards}
+  .drawer-list a .n{font-size:.7rem;font-weight:700;color:var(--aqua);width:1.5rem}
+  .drawer-list a .t{font-size:1.3rem;font-weight:600}
+  .drawer-list a .d{margin-left:auto;font-size:.78rem;color:rgba(255,255,255,.5);font-weight:300;text-align:right;max-width:42%}
+  @keyframes drawerIn{to{transform:none;opacity:1}}
+
+  /* ── views (router) ── */
+  .view{display:none}
+  .view.active{display:block}
+  main{min-height:calc(100vh - 55px)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  .view.active .anim{animation:fadeUp .6s var(--ease) both}
+  .view.active .anim.d1{animation-delay:.06s}.view.active .anim.d2{animation-delay:.13s}.view.active .anim.d3{animation-delay:.2s}
+  .view.active .stagger>*{animation:fadeUp .55s var(--ease) both}
+  .view.active .stagger>*:nth-child(2){animation-delay:.07s}
+  .view.active .stagger>*:nth-child(3){animation-delay:.14s}
+  .view.active .stagger>*:nth-child(4){animation-delay:.21s}
+  .view.active .stagger>*:nth-child(5){animation-delay:.28s}
+
+  .section{padding-block:var(--pad)}
+  .eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lead-ink)}
+  .eyebrow::before{content:"";width:26px;height:2px;border-radius:2px;background:currentColor;opacity:.6}
+  .h2{font-size:var(--fs-h2);font-weight:700;line-height:1.12;letter-spacing:-.01em;color:var(--plum);margin-top:var(--s2)}
+  .intro{font-size:var(--fs-lead);font-weight:300;color:var(--ink-2);margin-top:var(--s3);max-width:62ch}
+  .head{margin-bottom:var(--s6)}
+
+  /* ── buttons ── */
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:1rem;padding:.8rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+  .btn .arw{transition:transform .3s var(--ease)}.btn:hover .arw{transform:translateX(4px)}
+  .btn-primary{background:var(--lead);color:#fff;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
+
+  /* ── HOME hub ── */
+  .home-hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(130% 120% at 12% 8%,#125c55 0%,#0b3b47 55%,#071d2c 100%);padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem)}
+  .blob{position:absolute;border-radius:50%;filter:blur(72px);z-index:0;will-change:transform}
+  .blob.b1{width:460px;height:460px;background:#12a58f;opacity:.42;top:-120px;right:-60px;animation:float1 20s ease-in-out infinite}
+  .blob.b2{width:400px;height:400px;background:#5b5b66;opacity:.32;bottom:-160px;left:-80px;animation:float2 24s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-140px,100px) scale(1.16)}50%{transform:translate(-50px,190px) scale(1.05)}75%{transform:translate(130px,80px) scale(1.12)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}30%{transform:translate(170px,-80px) scale(1.14)}60%{transform:translate(80px,-170px) scale(1.05)}}
+  .home-hero .container{position:relative;z-index:1}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:.55rem;background:rgba(45,210,176,.16);border:1px solid rgba(45,210,176,.42);color:#a9f0e1;font-size:.76rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:var(--r-pill)}
+  .home-hero h1{font-size:var(--fs-display);font-weight:700;line-height:1.03;letter-spacing:-.02em;margin:1.3rem 0 0}
+  .home-hero h1 .accent{color:var(--aqua)}
+  .home-hero .tag{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.82);max-width:50ch;margin-top:1.2rem}
+  .intro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.4rem}
+  .intro-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:1.3rem 1.4rem;backdrop-filter:blur(4px)}
+  .intro-card .k{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua);margin-bottom:.5rem}
+  .intro-card h3{font-size:1.12rem;font-weight:600;margin-bottom:.35rem}
+  .intro-card p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.78)}
+
+  .choose{padding-block:clamp(3rem,6vw,5rem)}
+  .choose-label{text-align:center;margin-bottom:2.2rem}
+  .choose-label .eyebrow{color:var(--engaged);justify-content:center}
+  .choose-label h2{font-size:var(--fs-h2);font-weight:700;color:var(--plum);margin-top:.6rem}
+  .choose-label p{color:var(--muted);font-weight:300;margin-top:.4rem;max-width:56ch;margin-inline:auto}
+  .lead-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .lead-choices.two{grid-template-columns:repeat(2,1fr);max-width:780px;margin-inline:auto}
+  .lead-choice{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:1.9rem;color:#fff;cursor:pointer;min-height:250px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(155deg,var(--lc) 0%,color-mix(in srgb,var(--lc) 55%,var(--plum)) 100%);box-shadow:var(--shadow);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .lead-choice:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .lead-choice::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 85% 12%,rgba(255,255,255,.22),transparent 55%);pointer-events:none}
+  .lead-choice .emoji{font-size:2.6rem;position:absolute;top:1.3rem;right:1.5rem;transition:transform .4s var(--ease)}
+  .lead-choice:hover .emoji{transform:scale(1.15) rotate(-6deg)}
+  .lead-choice .tagword{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+  .lead-choice h3{font-size:1.9rem;font-weight:700;line-height:1;margin:.3rem 0 .5rem}
+  .lead-choice p{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.9)}
+  .lead-choice .go{display:inline-flex;align-items:center;gap:.4rem;margin-top:1rem;font-weight:600;font-size:.95rem}
+  .lead-choice .go .arw{transition:transform .3s var(--ease)}.lead-choice:hover .go .arw{transform:translateX(5px)}
+  .lc-engaged{--lc:#0C7263}.lc-disengaged{--lc:#55555F}
+  .ref-row{margin-top:2.2rem}
+  .ref-row .k{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+  .ref-chips{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
+  .ref-chip{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:.6rem 1.15rem;font-weight:500;font-size:.95rem;color:var(--plum);cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
+  .ref-chip:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--engaged)}
+  .ref-chip .e{font-size:1.05rem}
+
+  /* ── lead view ── */
+  .lead-band{border-radius:var(--r-lg);padding:clamp(1.6rem,4vw,2.6rem);color:#fff;background:linear-gradient(120deg,var(--lead) 0%,color-mix(in srgb,var(--lead) 58%,var(--plum)) 100%);position:relative;overflow:hidden}
+  .lead-band::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 90% 10%,rgba(255,255,255,.18),transparent 55%);pointer-events:none}
+  .lead-band .tagword{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem 1rem;border-radius:var(--r-pill);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+  .lead-band h2{font-size:clamp(1.9rem,5vw,3.1rem);font-weight:700;line-height:1;margin:.9rem 0 .5rem}
+  .lead-band p{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.92);max-width:54ch}
+  .backlink{display:inline-flex;align-items:center;gap:.4rem;color:var(--muted);font-weight:500;font-size:.9rem;cursor:pointer;margin-bottom:1.2rem;transition:color .2s,transform .2s}
+  .backlink:hover{color:var(--lead-ink);transform:translateX(-3px)}
+
+  /* tabs */
+  .tabs{display:flex;gap:.4rem;margin:1.6rem 0 2rem;flex-wrap:wrap;position:sticky;top:55px;z-index:20;background:var(--snow);padding:.5rem 0}
+  .tab{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);color:var(--ink-2);font-weight:600;font-size:.95rem;padding:.6rem 1.15rem;border-radius:var(--r-pill);cursor:pointer;transition:all .25s var(--ease)}
+  .tab .c{display:inline-flex;align-items:center;justify-content:center;min-width:1.3rem;height:1.3rem;padding:0 .35rem;border-radius:var(--r-pill);background:var(--lead-tint);color:var(--lead-ink);font-size:.72rem;font-weight:700}
+  .tab:hover{border-color:var(--lead);color:var(--lead-ink)}
+  .tab.active{background:var(--lead);color:#fff;border-color:var(--lead);box-shadow:0 8px 20px color-mix(in srgb,var(--lead) 35%,transparent)}
+  .tab.active .c{background:rgba(255,255,255,.25);color:#fff}
+  .tabpanel{display:none}
+  .tabpanel.active{display:block;animation:fadeUp .4s var(--ease) both}
+
+  /* ── dl ── */
+  .dl{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .dl>div{display:grid;grid-template-columns:210px 1fr;background:#fff}
+  .dl dt{background:var(--lead-tint);color:var(--lead-ink);font-weight:600;padding:1.1rem 1.4rem}
+  .dl dd{padding:1.1rem 1.4rem;color:var(--ink-2);font-weight:300}
+  .dl dd em{font-style:italic;color:var(--ink)}
+  .dl .rule dd strong{color:var(--plum);font-weight:600}
+
+  /* ── steps ── */
+  .steps{display:flex;flex-direction:column;gap:.9rem}
+  .step{display:flex;gap:1.1rem;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.2rem 1.4rem;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+  .step:hover{transform:translateX(6px);border-color:color-mix(in srgb,var(--lead) 45%,var(--line));box-shadow:var(--shadow)}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--lead);color:#fff;font-weight:700;flex-shrink:0}
+  .step-body{flex:1}.step-body strong{color:var(--plum);font-weight:600}.step-body p{color:var(--ink-2);font-weight:300;margin-top:.15rem}
+  .chip{display:inline-flex;align-items:center;gap:.35rem;margin-top:.7rem;background:var(--lead-tint);color:var(--lead-ink);font-size:.82rem;font-weight:600;padding:.3rem .8rem;border-radius:var(--r-pill)}
+
+  /* ── sample library grid ── */
+  .samples-note{color:var(--muted);font-weight:300;margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem}
+  .sample-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+  .scard{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.4rem;cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;display:flex;flex-direction:column;gap:.5rem}
+  .scard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--lead)}
+  .scard .type{display:inline-flex;align-self:flex-start;background:var(--lead-tint);color:var(--lead-ink);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.35rem .8rem;border-radius:var(--r-pill)}
+  .scard h4{font-size:1.15rem;font-weight:600;color:var(--plum);line-height:1.3}
+  .scard .prev{color:var(--muted);font-weight:300;font-size:.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .scard .open{margin-top:auto;display:inline-flex;align-items:center;gap:.4rem;color:var(--lead-ink);font-weight:600;font-size:.9rem}
+  .scard .open .arw{transition:transform .3s var(--ease)}.scard:hover .open .arw{transform:translateX(4px)}
+
+  /* ── email / frame mock ── */
+  .email{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .email-chrome{background:#eeeef0;padding:.55rem .9rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid #dcdce0}
+  .email-chrome .dots3{display:flex;gap:.3rem}.email-chrome i{width:10px;height:10px;border-radius:50%;display:block}
+  .email-chrome i:nth-child(1){background:#ff5f57}.email-chrome i:nth-child(2){background:#febc2e}.email-chrome i:nth-child(3){background:#28c840}
+  .email-chrome span{font-size:.8rem;color:#8a8a92;background:#fff;border:1px solid #d8d8de;border-radius:5px;padding:.15rem .6rem;flex:1}
+  .email-head{background:var(--snow);border-bottom:1px solid var(--line);padding:.9rem 1.2rem}
+  .email-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem}
+  .email-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--engaged),var(--aqua));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+  .email-from b{color:var(--plum);font-weight:600;font-size:.95rem}.email-from span{color:var(--muted);font-weight:300;font-size:.9rem}
+  .email-subj{font-size:1.15rem;font-weight:600;color:var(--plum)}
+  .email-body{padding:1.2rem 1.3rem}
+  .email-body p{color:var(--ink-2);font-weight:300;margin-bottom:.7rem}
+  .email-cta,.pill-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.3rem;border-radius:var(--r-pill);margin:.3rem 0 .9rem}
+  .email-body>:last-child,.frame-body>:last-child{margin-bottom:0}
+  .frame-head{background:var(--lead);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem}
+  .frame-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+  .frame-from b{display:block;color:var(--plum);font-weight:600;font-size:.95rem;line-height:1.3}.frame-from span{color:var(--muted);font-weight:300;font-size:.82rem}
+  .prod-note{color:var(--plum);font-weight:600}
+  .frame{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .frame-body{padding:1.2rem 1.3rem}
+  .kicker{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+  .frame-body h4{font-size:1.3rem;font-weight:700;color:var(--plum);margin-bottom:.5rem;line-height:1.25}
+  .frame-body p{color:var(--ink-2);font-weight:300;margin-bottom:.9rem}
+  .pairing{background:var(--lead-tint);border-radius:12px;padding:.9rem 1.1rem;font-size:.92rem;color:var(--ink-2);font-weight:300;margin-top:1rem}
+  .pairing b{color:var(--lead-ink);font-weight:700}
+
+  /* ── slide-over sheet ── */
+  .sheet-back{position:fixed;inset:0;z-index:210;background:rgba(20,6,40,.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+  .sheet-back.open{opacity:1;pointer-events:auto}
+  .sheet{position:fixed;top:0;right:0;bottom:0;z-index:215;width:min(560px,100%);background:var(--snow);box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .4s var(--ease);display:flex;flex-direction:column}
+  .sheet.open{transform:none}
+  .sheet-head{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;border-bottom:1px solid var(--line);background:#fff;flex-shrink:0}
+  .sheet-head .st{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--lead-ink);background:var(--lead-tint);padding:.35rem .8rem;border-radius:var(--r-pill)}
+  .sheet-x{margin-left:auto;background:var(--fog);border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;color:var(--ink-2);display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+  .sheet-x:hover{background:var(--line);transform:rotate(90deg)}
+  .sheet-body{padding:1.4rem;overflow-y:auto;flex:1}
+  .sheet-foot{padding:1rem 1.4rem;border-top:1px solid var(--line);background:#fff;display:flex;gap:.8rem;align-items:center;flex-shrink:0}
+  .copy-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--lead);color:#fff;font-weight:600;font-size:1rem;border:none;border-radius:var(--r-pill);padding:.8rem 1.5rem;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .2s,background .2s}
+  .copy-btn:hover{transform:translateY(-2px)}
+  .copy-btn.done{background:var(--engaged)}
+  .copy-hint{color:var(--muted);font-size:.85rem;font-weight:300}
+
+  /* ── tables / callout / cards (shared) ── */
+  .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm)}
+  table.t{width:100%;border-collapse:collapse;min-width:600px}
+  table.t thead th{background:var(--plum);color:rgba(255,255,255,.8);text-align:left;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.95rem 1.2rem}
+  table.t tbody td{padding:1rem 1.2rem;border-top:1px solid var(--line);color:var(--ink-2);font-weight:300;vertical-align:top}
+  table.t tbody tr{transition:background .25s}table.t tbody tr:hover{background:var(--lead-tint)}
+  table.t td .m{font-weight:600;color:var(--plum)}
+  .stage{display:inline-block;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--r-pill);margin:0 .2rem .2rem 0}
+  .stage.e{background:var(--engaged-tint);color:var(--engaged)}.stage.d{background:var(--disengaged-tint);color:#3f3f47}
+  .fill{color:var(--muted);font-style:italic}
+  .vids{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+  .vids li{position:relative;padding-left:1.1rem;color:var(--ink-2);font-weight:300}
+  .vids li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--lead)}
+  .vids li em{font-style:italic;color:var(--muted)}
+  .callout{background:var(--lead-tint);border-radius:var(--r);border-left:4px solid var(--lead);padding:clamp(1.3rem,3vw,1.9rem)}
+  .callout h3{font-size:var(--fs-h3);font-weight:700;color:var(--lead-ink);margin-bottom:.5rem}
+  .callout p{color:var(--ink-2);font-weight:300}
+  .callout ul{margin:.7rem 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:.5rem}
+  .callout li{position:relative;padding-left:1.5rem;color:var(--ink-2);font-weight:300}
+  .callout li::before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--lead)}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.6rem;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--lead) 40%,var(--line))}
+  .card .ic{width:46px;height:46px;border-radius:13px;background:var(--lead-tint);color:var(--lead);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+  .card h3{font-size:var(--fs-h3);font-weight:600;color:var(--plum);margin-bottom:.45rem}.card p{color:var(--ink-2);font-weight:300}
+
+  .footer{background:var(--plum);color:rgba(255,255,255,.55);padding:2.4rem 0;margin-top:var(--s8)}
+  .footer .container{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+  .footer svg{width:150px}.footer a{color:var(--aqua)}
+
+  /* ── next-section flow button ── */
+  .view-next{margin-top:var(--s8);padding-top:var(--s6);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .vn-label{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .vn-btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--lead);color:#fff;font-weight:600;font-size:1rem;padding:.8rem 1.5rem;border-radius:var(--r-pill);border:none;cursor:pointer;box-shadow:0 8px 22px color-mix(in srgb,var(--lead) 32%,transparent);transition:transform .25s var(--ease),box-shadow .25s}
+  .vn-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px color-mix(in srgb,var(--lead) 40%,transparent)}
+  .vn-btn .arw{transition:transform .3s var(--ease)}.vn-btn:hover .arw{transform:translateX(5px)}
+
+  .lead-engaged{--lead:var(--engaged);--lead-tint:var(--engaged-tint);--lead-ink:#0a5f53}
+  .lead-disengaged{--lead:var(--disengaged);--lead-tint:var(--disengaged-tint);--lead-ink:#3d3d45}
+
+  @media(max-width:900px){
+    .nav-links{display:none}.nav-menu-btn{display:inline-flex}
+    .intro-cards,.lead-choices,.lead-choices.two,.grid-2,.grid-3,.sample-grid{grid-template-columns:1fr}
+    .dl>div{grid-template-columns:1fr}.dl dt{padding-bottom:.3rem}.dl dd{padding-top:.3rem}
+    .tabs{top:53px}
+  }
+  @media(max-width:560px){
+    .section{padding-block:clamp(1.8rem,7vw,2.6rem)}
+    .backlink{margin-bottom:1rem}
+    .lead-band{padding:1.4rem 1.35rem}
+    .lead-band h2{font-size:clamp(1.8rem,9vw,2.4rem)}
+    /* tabs become a single edge-to-edge scroll strip */
+    .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-inline:calc(-1*clamp(1.25rem,4vw,2.5rem));padding-inline:clamp(1.25rem,4vw,2.5rem)}
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{flex:0 0 auto}
+    /* tables reflow to fit the screen instead of scrolling */
+    table.t{min-width:0}
+    table.t thead th{padding:.7rem .8rem;font-size:.68rem}
+    table.t tbody td{padding:.75rem .8rem;font-size:.92rem}
+    /* full-width, stacked next-section button */
+    .view-next{flex-direction:column;align-items:stretch;gap:.9rem}
+    .vn-btn{width:100%;justify-content:center}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .sample-store{display:none}
+
+  /* ── live content editor (?edit=1) ── */
+  .ce-bar{display:none}
+  .cc-hint{display:none;font-size:.85rem;color:rgba(255,255,255,.72);font-weight:300}
+  body.ce-on .cc-hint-f2{display:inline}
+  body.ce-on.cc-review-on .cc-hint-f2{display:none}
+  body.ce-on.cc-review-on .cc-hint-esc{display:inline}
+  body.ce-on{padding-bottom:66px}
+  body.ce-on .ce-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:200;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--plum);color:#fff;padding:.7rem clamp(1rem,3vw,1.4rem);box-shadow:0 -6px 24px rgba(0,0,0,.28)}
+  .ce-bar .ce-badge{font-weight:700;background:var(--aqua);color:var(--plum);padding:.32rem .85rem;border-radius:999px;font-size:.82rem;letter-spacing:.02em}
+  .ce-bar .ce-hint{font-size:.85rem;color:rgba(255,255,255,.72);font-weight:300}
+  .ce-bar .ce-status{margin-left:auto;font-size:.82rem;color:var(--aqua);font-weight:600;min-width:5.5rem;text-align:right}
+  .ce-bar .ce-live{font-size:.82rem;color:#fff;border:1px solid rgba(255,255,255,.32);padding:.42rem .95rem;border-radius:999px;transition:background .2s}
+  .ce-bar .ce-live:hover{background:rgba(255,255,255,.14)}
+  body.ce-on [data-k]{border-radius:5px;transition:outline .15s,background .15s}
+  body.ce-on [data-k]:hover{outline:1px dashed color-mix(in srgb,var(--aqua) 70%,transparent);outline-offset:2px;cursor:text}
+  body.ce-on [data-k]:focus{outline:2px solid var(--aqua);outline-offset:2px;background:color-mix(in srgb,var(--aqua) 9%,transparent)}
+  body.ce-on .sheet [contenteditable="true"]:focus{outline:2px solid var(--aqua);outline-offset:1px}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<link rel="stylesheet" href="firm.css">
+<script src="firm.js" data-kit="client"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
+<path d="M151.664 17.7879H146.827L146.052 20.0771H142.748L147.437 7.11728H151.092L155.781 20.0771H152.44L151.664 17.7879ZM150.852 15.351L149.246 10.6065L147.658 15.351H150.852ZM161.879 7.11728C163.245 7.11728 164.439 7.38804 165.461 7.92958C166.482 8.47111 167.27 9.23418 167.824 10.2188C168.39 11.1911 168.673 12.3172 168.673 13.5972C168.673 14.8649 168.39 15.991 167.824 16.9756C167.27 17.9602 166.476 18.7233 165.442 19.2648C164.421 19.8064 163.233 20.0771 161.879 20.0771H157.024V7.11728H161.879ZM161.676 17.3449C162.87 17.3449 163.799 17.0187 164.464 16.3664C165.128 15.7141 165.461 14.791 165.461 13.5972C165.461 12.4034 165.128 11.4742 164.464 10.8095C163.799 10.1449 162.87 9.81263 161.676 9.81263H160.181V17.3449H161.676ZM182.419 7.11728L177.822 20.0771H173.871L169.274 7.11728H172.634L175.846 16.9018L179.077 7.11728H182.419ZM186.71 7.11728V20.0771H183.553V7.11728H186.71ZM193.503 20.2064C192.555 20.2064 191.706 20.0525 190.955 19.7448C190.204 19.4372 189.601 18.9818 189.146 18.3787C188.703 17.7756 188.469 17.0495 188.444 16.2003H191.804C191.853 16.6803 192.019 17.0495 192.303 17.3079C192.586 17.5541 192.955 17.6772 193.41 17.6772C193.878 17.6772 194.247 17.5726 194.518 17.3633C194.789 17.1418 194.924 16.8403 194.924 16.4587C194.924 16.1387 194.813 15.8741 194.592 15.6649C194.383 15.4557 194.118 15.2833 193.798 15.148C193.49 15.0126 193.047 14.8587 192.469 14.6864C191.632 14.428 190.949 14.1695 190.419 13.9111C189.89 13.6526 189.435 13.2711 189.053 12.7665C188.672 12.2618 188.481 11.6034 188.481 10.7911C188.481 9.58494 188.918 8.64342 189.792 7.9665C190.666 7.27728 191.804 6.93266 193.207 6.93266C194.635 6.93266 195.786 7.27728 196.659 7.9665C197.533 8.64342 198.001 9.5911 198.062 10.8095H194.647C194.623 10.3911 194.469 10.0649 194.186 9.8311C193.903 9.58494 193.539 9.46187 193.096 9.46187C192.715 9.46187 192.407 9.56648 192.173 9.77571C191.939 9.97263 191.823 10.2619 191.823 10.6434C191.823 11.0619 192.019 11.388 192.413 11.6218C192.807 11.8557 193.423 12.108 194.259 12.3788C195.096 12.6618 195.773 12.9326 196.29 13.1911C196.819 13.4495 197.275 13.8249 197.656 14.3172C198.038 14.8095 198.229 15.4433 198.229 16.2187C198.229 16.9572 198.038 17.6279 197.656 18.231C197.287 18.8341 196.746 19.3141 196.032 19.671C195.318 20.0279 194.475 20.2064 193.503 20.2064ZM206.116 20.2064C204.898 20.2064 203.778 19.9233 202.756 19.3572C201.747 18.791 200.941 18.0033 200.338 16.9941C199.747 15.9726 199.451 14.828 199.451 13.5603C199.451 12.2926 199.747 11.1542 200.338 10.1449C200.941 9.13572 201.747 8.34803 202.756 7.78189C203.778 7.21574 204.898 6.93266 206.116 6.93266C207.334 6.93266 208.448 7.21574 209.457 7.78189C210.479 8.34803 211.279 9.13572 211.857 10.1449C212.448 11.1542 212.744 12.2926 212.744 13.5603C212.744 14.828 212.448 15.9726 211.857 16.9941C211.267 18.0033 210.467 18.791 209.457 19.3572C208.448 19.9233 207.334 20.2064 206.116 20.2064ZM206.116 17.3264C207.15 17.3264 207.974 16.9818 208.59 16.2926C209.217 15.6033 209.531 14.6926 209.531 13.5603C209.531 12.4157 209.217 11.5049 208.59 10.828C207.974 10.1388 207.15 9.79417 206.116 9.79417C205.07 9.79417 204.233 10.1326 203.605 10.8095C202.99 11.4865 202.682 12.4034 202.682 13.5603C202.682 14.7049 202.99 15.6218 203.605 16.311C204.233 16.9879 205.07 17.3264 206.116 17.3264ZM220.924 20.0771L218.229 15.1849H217.472V20.0771H214.315V7.11728H219.614C220.635 7.11728 221.503 7.29574 222.217 7.65266C222.943 8.00958 223.484 8.50188 223.841 9.12956C224.198 9.74494 224.377 10.4342 224.377 11.1972C224.377 12.0588 224.131 12.828 223.638 13.5049C223.158 14.1818 222.444 14.6618 221.497 14.9449L224.487 20.0771H220.924ZM217.472 12.9511H219.429C220.008 12.9511 220.438 12.8095 220.721 12.5265C221.017 12.2434 221.164 11.8434 221.164 11.3265C221.164 10.8342 221.017 10.4465 220.721 10.1634C220.438 9.88033 220.008 9.73879 219.429 9.73879H217.472V12.9511Z" fill="white"></path>
+<g clip-path="url(#clip0_1164_57289)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="white"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="white"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="white"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="white"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="white"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="white"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="white"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="white"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="white"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="white"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="white"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="white"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="white"></path>
+</g>
+<defs>
+<clipPath id="clip0_1164_57289">
+<rect width="134.564" height="22.77" fill="white"></rect>
+</clipPath>
+</defs>
+</symbol><symbol id="knomee-logo" viewBox="0 0 135 24"><g clip-path="url(#clip0_1164_57289)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="white"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="white"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="white"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="white"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="white"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="white"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="white"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="white"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="white"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="white"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="white"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="white"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="white"></path>
+</g><defs>
+<clipPath id="clip0_1164_57289">
+<rect width="134.564" height="22.77" fill="white"></rect>
+</clipPath>
+</defs>
+</symbol><symbol id="knomee-logo-plum" viewBox="0 0 135 24"><g clip-path="url(#clip0_plum)">
+<path d="M13.0751 15.7081C13.0445 15.7081 13.0087 15.7081 12.978 15.7029C8.75303 15.2205 7.35668 13.5034 6.90145 12.5283C6.23139 11.086 6.5792 9.59725 7.79145 8.72582C8.8963 7.93211 10.3386 7.99433 11.2185 8.8762C11.5612 9.21862 11.5663 9.78407 11.2287 10.1316C10.891 10.4791 10.3337 10.4843 9.99084 10.1419C9.67372 9.8255 9.15198 9.91887 8.80419 10.1731C8.56384 10.3443 8.05744 10.8474 8.48707 11.7708C8.71722 12.2636 9.57149 13.4101 12.6353 13.8665C14.2363 11.1742 13.9038 9.77885 13.6787 9.28606C13.4895 8.88141 13.2286 8.62723 12.9013 8.5235C12.5944 8.43013 12.2312 8.47677 11.9345 8.65316C11.5202 8.90213 10.9832 8.76211 10.7377 8.34189C10.4921 7.92175 10.6303 7.37705 11.0446 7.12806C11.7658 6.69231 12.6353 6.58338 13.4127 6.82719C13.9753 7.00356 14.7529 7.4393 15.2592 8.52864C15.7145 9.50909 16.1339 11.6878 13.8118 15.3034C13.648 15.5577 13.3718 15.7081 13.0803 15.7081H13.0751Z" fill="#240446"></path>
+<path d="M14.4625 22.5287C14.038 22.5287 13.6441 22.2486 13.5111 21.8128C13.3525 21.2786 13.6491 20.7131 14.1709 20.5523C17.4803 19.5252 19.9713 16.7551 20.6669 13.321C21.1733 10.8154 20.6873 8.26322 19.3012 6.13121C17.915 3.99918 15.7924 2.54152 13.3218 2.02277C12.7848 1.90864 12.437 1.37435 12.5495 0.829662C12.6621 0.284979 13.1838 -0.0677675 13.7259 0.0463562C16.7131 0.668848 19.2858 2.43776 20.9635 5.02111C22.6412 7.60446 23.2295 10.6962 22.6156 13.7308C21.7717 17.8911 18.759 21.2474 14.754 22.4872C14.6569 22.5183 14.5596 22.5339 14.4625 22.5339V22.5287Z" fill="#240446"></path>
+<path d="M9.32621 22.77C9.25972 22.77 9.19323 22.7648 9.12674 22.7492C6.13961 22.1267 3.5668 20.363 1.8891 17.7744C0.211402 15.1912 -0.376815 12.0994 0.236976 9.06475C1.1679 4.45833 4.71255 0.904949 9.26486 0.0178968C9.80699 -0.0858517 10.3287 0.272078 10.4311 0.816755C10.5333 1.36663 10.1804 1.89574 9.64333 1.9995C5.88386 2.73611 2.95812 5.66702 2.18577 9.47461C1.67939 11.9802 2.1653 14.5324 3.55146 16.6644C4.9376 18.7965 7.0603 20.2541 9.53075 20.7728C10.0679 20.8869 10.4158 21.4213 10.3032 21.9659C10.206 22.4432 9.79165 22.77 9.33135 22.77H9.32621Z" fill="#240446"></path>
+<path d="M4.65135 10.7832C4.57975 10.7832 4.50813 10.7728 4.43653 10.7573C3.91991 10.6379 3.59768 10.1141 3.72043 9.59013C4.19613 7.49956 5.44417 5.72546 7.23951 4.58941C9.02973 3.45337 11.1524 3.09543 13.2138 3.57786C16.0372 4.24186 18.2775 6.4102 19.055 9.24771C19.1982 9.76652 18.9016 10.3007 18.39 10.446C17.8786 10.5913 17.3518 10.2852 17.2085 9.77166C16.6203 7.62406 14.9222 5.97964 12.779 5.47646C11.219 5.10816 9.61282 5.38309 8.25231 6.24421C6.89681 7.10533 5.95055 8.44887 5.58739 10.0311C5.48508 10.4824 5.09124 10.7832 4.65135 10.7832Z" fill="#240446"></path>
+<path d="M11.4211 19.4239C10.8329 19.4239 10.2344 19.3566 9.64113 19.2164C6.51076 18.485 4.14766 15.9328 3.6157 12.7217C3.52875 12.1926 3.88169 11.6895 4.4034 11.6012C4.92513 11.5131 5.42128 11.871 5.50823 12.4001C5.91231 14.8331 7.70254 16.7628 10.0708 17.3178C13.2932 18.0701 16.5155 16.0261 17.2624 12.7633C17.3799 12.2393 17.8966 11.9125 18.4132 12.037C18.9298 12.1563 19.252 12.6803 19.1293 13.2041C18.2853 16.908 15.022 19.4239 11.4211 19.4239Z" fill="#240446"></path>
+<path d="M34.5267 14.8935H33.2685V20.5167H29.9336V0.949707H33.2685V12.2843H34.8797L38.5983 7.434H42.3986L37.3451 13.6693L42.946 20.5116H38.8745L34.5319 14.8883L34.5267 14.8935Z" fill="#240446"></path>
+<path d="M56.9382 12.0646V20.0999H53.6033V12.5367C53.6033 10.8456 52.7286 9.73555 51.0919 9.73555C48.9589 9.73555 48.0024 11.6756 48.0024 13.3096V20.0999H44.6675V7.02244L47.2352 6.9135C47.4807 7.82649 47.6444 9.18559 47.6444 9.76662H47.7263C48.3809 8.18964 49.6955 6.85645 52.0432 6.85645C55.2144 6.85645 56.9332 9.04557 56.9332 12.0646H56.9382Z" fill="#240446"></path>
+<path d="M72.8629 13.5897C72.8629 17.527 70.1878 20.266 66.1162 20.266C62.0448 20.266 59.3696 17.5218 59.3696 13.5897C59.3696 9.65759 62.0755 6.85645 66.1162 6.85645C70.1571 6.85645 72.8629 9.65759 72.8629 13.5897ZM69.4768 13.5897C69.4768 11.2605 68.1674 9.62652 66.1162 9.62652C64.0652 9.62652 62.7557 11.2605 62.7557 13.5897C62.7557 15.9189 64.0652 17.4959 66.1162 17.4959C68.1674 17.4959 69.4768 15.8878 69.4768 13.5897Z" fill="#240446"></path>
+<path d="M96.2269 12.1282V20.1116H92.8921V12.5743C92.8921 10.8831 92.0429 9.80418 90.4063 9.80418C88.3855 9.80418 87.4802 11.7184 87.4802 13.3213V20.1116H84.1454V12.5743C84.1454 10.8831 83.2962 9.80418 81.6597 9.80418C79.6396 9.80418 78.7645 11.7184 78.7645 13.3213V20.1116H75.4297V7.0341L77.9974 6.92516C78.2429 7.78628 78.4065 9.19729 78.4065 9.77824H78.4322C79.0613 8.17019 80.3448 6.89404 82.6108 6.89404C84.8767 6.89404 86.4627 8.05602 87.1173 9.88719C87.7206 8.22206 89.0306 6.89404 91.3527 6.89404C94.4678 6.89404 96.2166 9.08313 96.2166 12.1334L96.2269 12.1282Z" fill="#240446"></path>
+<path d="M109.336 16.0797L111.029 17.9368C110.046 19.2389 108.159 20.266 105.566 20.266C101.274 20.266 98.6812 17.5218 98.6812 13.5897C98.6812 9.65759 101.249 6.85645 105.213 6.85645C109.177 6.85645 111.141 9.4865 111.141 13.0087C111.141 13.8387 111.003 14.3679 111.003 14.3679H102.041C102.344 16.308 103.653 17.6359 105.924 17.6359C107.781 17.6359 108.793 16.7489 109.34 16.0849L109.336 16.0797ZM102.041 12.4485H108.001C107.976 10.7314 106.906 9.48128 105.213 9.48128C103.52 9.48128 102.344 10.6174 102.041 12.4485Z" fill="#240446"></path>
+<path d="M123.711 16.0797L125.403 17.9368C124.421 19.2389 122.534 20.266 119.94 20.266C115.649 20.266 113.056 17.5218 113.056 13.5897C113.056 9.65759 115.624 6.85645 119.588 6.85645C123.552 6.85645 125.516 9.4865 125.516 13.0087C125.516 13.8387 125.378 14.3679 125.378 14.3679H116.416C116.718 16.308 118.028 17.6359 120.298 17.6359C122.155 17.6359 123.168 16.7489 123.716 16.0849L123.711 16.0797ZM116.416 12.4485H122.375C122.35 10.7314 121.281 9.48128 119.588 9.48128C117.894 9.48128 116.718 10.6174 116.416 12.4485Z" fill="#240446"></path>
+<path d="M131.28 6.87807L130.501 5.50175H130.167V6.87807H129.458V3.34619H130.784C131.057 3.34619 131.29 3.3951 131.482 3.49293C131.675 3.58738 131.818 3.71726 131.913 3.88255C132.01 4.04447 132.059 4.22663 132.059 4.42903C132.059 4.66179 131.992 4.87262 131.856 5.06153C131.722 5.24706 131.521 5.37525 131.255 5.44609L132.099 6.87807H131.28ZM130.167 4.97045H130.758C130.951 4.97045 131.094 4.92491 131.188 4.83383C131.283 4.73938 131.331 4.6095 131.331 4.44421C131.331 4.28229 131.283 4.15748 131.188 4.06977C131.094 3.97869 130.951 3.93315 130.758 3.93315H130.167V4.97045Z" fill="#240446"></path>
+<path d="M133.932 5.13875C133.932 3.39215 132.516 1.97625 130.77 1.97625C129.023 1.97625 127.607 3.39215 127.607 5.13875C127.607 6.88535 129.023 8.30125 130.77 8.30125C132.516 8.30125 133.932 6.88535 133.932 5.13875ZM134.565 5.13875C134.565 7.23467 132.866 8.93375 130.77 8.93375C128.674 8.93375 126.975 7.23467 126.975 5.13875C126.975 3.04283 128.674 1.34375 130.77 1.34375C132.866 1.34375 134.565 3.04283 134.565 5.13875Z" fill="#240446"></path>
+</g><defs>
+<clipPath id="clip0_plum">
+<rect width="134.564" height="22.77" fill="#240446"></rect>
+</clipPath>
+</defs>
+</symbol></svg>
+
+<nav class="nav" data-firm-bar>
+  <div class="nav-inner">
+    <a class="nav-logo" href="toolkits.html" aria-label="Back to landing page"><img class="firm-logo" data-firm-logo alt=""><span class="firm-name" data-firm-name data-firm></span><svg class="kn-logo" viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg></a>
+    <div class="nav-links" id="navLinks">
+      <a data-go="home">Home</a>
+      <a data-go="how-to-use">How to Use</a>
+      <a data-go="what-is-knomee">The Check-In</a>
+      <a data-go="setup">Setup</a>
+      <a data-go="engaged">Engaged</a>
+      <a data-go="disengaged">Disengaged</a>
+      <a data-go="testing">Test</a>
+      <a data-go="appendix">Appendix</a>
+    </div>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menu</button>
+  </div>
+</nav>
+
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawerClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <nav class="drawer-list" id="drawerList"></nav>
+</div>
+
+<main>
+
+<!-- ══ HOME ══ -->
+<section class="view" id="home">
+  <div class="home-hero">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="container">
+      <span class="hero-eyebrow anim" data-firm-eyebrow data-firm>Knomee Activation Toolkit</span>
+      <h1 class="anim d1">Deepening Relationships:<br><span class="accent">The Client Toolkit</span></h1>
+      <p class="tag anim d2">How to use Knomee to keep engaged clients engaged — and win back the ones who are drifting. Ready-to-use check-ins, meeting follow-ups, and re-engagement messages, organized by client type.</p>
+      <div class="intro-cards stagger">
+        <div class="intro-card"><div class="k">What Knomee is</div><h3>An 8-minute check-in</h3><p>Your client completes it before a review — or any time life shifts — so every conversation starts with what matters now.</p></div>
+        <div class="intro-card"><div class="k">What this toolkit is</div><h3>Copy-and-paste outreach</h3><p>Check-in invites, meeting follow-ups, and re-engagement messages, organized by client type — each with a matching video suggestion.</p></div>
+        <div class="intro-card"><div class="k">How to use it</div><h3>Pick a client type → go</h3><p>Open the section that matches your client. Read the strategy, follow the cadence, and open any sample to copy it.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="choose container">
+    <div class="choose-label anim">
+      <span class="eyebrow">Choose your path</span>
+      <h2>Which client are you working with?</h2>
+      <p>With clients, Knomee isn't a marketing funnel — it's a relationship instrument. Start with whichever client type needs your attention most right now.</p>
+    </div>
+    <div class="lead-choices two stagger">
+      <div class="lead-choice lc-engaged" data-go="engaged">
+        <span class="emoji">🌱</span><span class="tagword">Engaged Client</span><h3>Engaged</h3>
+        <p>Responsive and open to guidance. Keep them engaged — and grow the relationship.</p>
+        <span class="go">Enter Engaged <span class="arw">→</span></span>
+      </div>
+      <div class="lead-choice lc-disengaged" data-go="disengaged">
+        <span class="emoji">⏳</span><span class="tagword">Disengaged Client</span><h3>Disengaged</h3>
+        <p>Drifting — slower replies, declined reviews. Reopen the conversation before you lose them.</p>
+        <span class="go">Enter Disengaged <span class="arw">→</span></span>
+      </div>
+    </div>
+    <div class="ref-row anim">
+      <div class="k">Guide &amp; reference</div>
+      <div class="ref-chips">
+        <button class="ref-chip" data-go="how-to-use"><span class="e">🧭</span> How to Use</button>
+        <button class="ref-chip" data-go="what-is-knomee"><span class="e">✨</span> The Check-In</button>
+        <button class="ref-chip" data-go="setup"><span class="e">⚙️</span> 5-Step Setup</button>
+        <button class="ref-chip" data-go="testing"><span class="e">🧪</span> Test &amp; Learn</button>
+        <button class="ref-chip" data-go="appendix"><span class="e">🎬</span> Video Appendix</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW TO USE ══ -->
+<section class="view" id="how-to-use">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Orientation</span><h2 class="h2">How to Use This Toolkit</h2><p class="intro">This toolkit covers <strong>existing clients only</strong>. Knomee here isn't a marketing funnel — it's a relationship instrument: a simple, respectful way to ask “what's changed?” and actually use the answer. Every client falls into one of two types.</p></div>
+    <div class="grid-2 stagger" style="margin-bottom:var(--s6)">
+      <div class="card lead-engaged" data-go="engaged" style="cursor:pointer"><div class="ic">🌱</div><h3>Engaged</h3><p><strong>Responsive, open to guidance.</strong> Deepen the relationship — grow share of wallet.</p></div>
+      <div class="card lead-disengaged" data-go="disengaged" style="cursor:pointer"><div class="ic">⏳</div><h3>Disengaged</h3><p><strong>Less responsive, declining meetings.</strong> Reopen communication — retain the assets.</p></div>
+    </div>
+    <div class="head anim" style="margin-bottom:var(--s4)"><h2 class="h2" style="font-size:var(--fs-h3)">Three Steps to Your First Campaign</h2></div>
+    <div class="steps stagger" style="margin-bottom:var(--s6)">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Segment your book.</strong><p>Which clients haven't had a meaningful touch in 6+ months? That's your Disengaged list.</p><span class="chip">📋 Segment</span></div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Pick one play.</strong><p>The pre-review invite (Engaged) and the annual check-in (Disengaged) are the highest-impact starts.</p><span class="chip">🎯 Play</span></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Copy, customize, send.</strong><p>These messages come from the advisor personally. Marketing prepares them; advisors send them.</p><span class="chip">✉️ Send</span></div></div>
+    </div>
+    <div class="callout anim">
+      <h3>Your Walkthrough Session</h3>
+      <p>This toolkit is designed to be walked through together. Your Knomee customer success contact will schedule a <strong>45-minute working session</strong> to:</p>
+      <ul><li>10 min — segment engaged vs. disengaged clients</li><li>15 min — choose your first play and customize the copy</li><li>10 min — set the annual cadence calendar</li><li>10 min — CRM sync, tracking, and success metrics</li></ul>
+      <p style="margin-top:.9rem"><strong>You'll leave with your first client campaign ready to send.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHAT IS KNOMEE ══ -->
+<section class="view" id="what-is-knomee">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Client Experiences</h2><p class="intro">Knomee is an <strong>8-minute guided check-in</strong> your clients complete before a review — or any time life shifts. It helps them articulate their current goals, priorities, and top money questions, so every conversation starts with what matters <em>now</em>, not what mattered at onboarding.</p></div>
+    <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
+      <div class="card"><span class="num">1</span><h3 style="margin-top:1rem">The client feels heard</h3><p>They get a personal summary — and reviews stop feeling like a portfolio report.</p></div>
+      <div class="card"><span class="num">2</span><h3 style="margin-top:1rem">The advisor sees what changed</h3><p>Knomee surfaces shifts in priorities and life events before the meeting.</p></div>
+      <div class="card"><span class="num">3</span><h3 style="margin-top:1rem">The firm keeps the relationship</h3><p>Knomee catches drift early and opens doors to the broader household.</p></div>
+    </div>
+    <div class="callout anim"><h3>Why This Matters Commercially</h3><p>Client use of Knomee drives <strong>retention, annual-review participation, household penetration, and share of wallet</strong> — different economics than prospect acquisition, and often a faster payoff. A single retained at-risk household typically covers the program.</p></div>
+  </div>
+</section>
+
+<!-- ══ SETUP ══ -->
+<section class="view" id="setup">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Before You Launch</span><h2 class="h2">The 5-Step Setup</h2><p class="intro">Every campaign follows the same five setup steps. Work through them to prepare for your walkthrough session; your CS contact will help you complete each one.</p></div>
+    <div class="steps stagger">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Targeting</strong><p>Segment your book: engaged (upcoming reviews) vs. disengaged (6+ months quiet).</p></div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Cadence</strong><p>Map the plays to your review calendar (see the cadence table in Engaged).</p></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Copy</strong><p>Customize samples with the advisor's name and voice — 1:1 messages, not blasts.</p></div></div>
+      <div class="step"><span class="num">4</span><div class="step-body"><strong>Link</strong><p>Use your client invite URL from the Knomee dashboard (different from the prospect link).</p></div></div>
+      <div class="step"><span class="num">5</span><div class="step-body"><strong>CRM</strong><p>Sync completions to HubSpot / Redtail so advisors see responses before every meeting.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ ENGAGED ══════ -->
+<section class="view lead-engaged" id="engaged">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="lead-band anim"><span class="tagword">🌱 Engaged Client</span><h2>Engaged</h2><p>They're responsive and open to guidance. Keep it that way — and grow the relationship.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="cadence">Cadence <span class="c">5</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">3</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
+    </div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>Active clients who attend reviews, respond to outreach, and engage with their plan.</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I want to stay engaged and make sure my financial priorities are reflected in my plan.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Improve advisor preparation, strengthen the relationship, engage the broader family, and increase share of wallet.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>Every Knomee invite promises a payoff:</strong> “I'll review your responses and use them.” Then do it, visibly.</dd></div>
+      </dl>
+    </div>
+    <div class="tabpanel" data-panel="cadence">
+      <p class="samples-note">🗓 A repeatable rhythm across the client year — every touch comes from the advisor personally.</p>
+      <div class="table-wrap"><table class="t"><thead><tr><th>When</th><th>Play</th><th>Channel</th></tr></thead><tbody>
+        <tr><td class="m">2 weeks before each review</td><td>Pre-meeting Knomee invite</td><td>Email from advisor</td></tr>
+        <tr><td class="m">2 days before the review</td><td>Thank-you (if completed) or gentle nudge</td><td>Email from advisor</td></tr>
+        <tr><td class="m">1–2 days after the review</td><td>Meeting recap referencing their Knomee responses</td><td>Email from advisor</td></tr>
+        <tr><td class="m">Mid-year (between reviews)</td><td>Mid-year pulse check-in</td><td>Email from advisor</td></tr>
+        <tr><td class="m">Before family / estate conversations</td><td>Family &amp; household alignment prompt</td><td>Email from advisor</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="eng-1"><span class="type">Email · Pre-Meeting Invite · 2 weeks before</span><h4>A quick check-in before we connect</h4><span class="prev">Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="eng-2"><span class="type">Email · Mid-Year Pulse · between reviews</span><h4>A quick mid-year check-in</h4><span class="prev">A lot can change between reviews. I wanted to reach out with a quick mid-year check-in…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="eng-3"><span class="type">Email · Meeting Recap · 1–2 days after</span><h4>Great connecting today</h4><span class="prev">Thank you for meeting today. As a recap, the main areas we discussed…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
+        <tr><td class="m">Improve advisor preparation</td><td>Pre-meeting completion rate</td><td>Meeting satisfaction (advisor-reported)</td></tr>
+        <tr><td class="m">Strengthen the relationship</td><td>Response rate to check-ins</td><td>Referral rate</td></tr>
+        <tr><td class="m">Increase share of wallet</td><td>Household penetration rate</td><td>Assets under management growth</td></tr>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Engaged → Disengaged</h3><p>Watch for early drift signals — a skipped review, a slower response time, a declined meeting. Move them to the Disengaged cadence <strong>before six months of silence passes.</strong></p><p style="margin-top:.9rem"><button class="btn btn-primary" style="--lead:var(--disengaged)" data-go="disengaged">Go to Disengaged <span class="arw">→</span></button></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ DISENGAGED ══════ -->
+<section class="view lead-disengaged" id="disengaged">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="lead-band anim"><span class="tagword">⏳ Disengaged Client</span><h2>Disengaged</h2><p>They're drifting — less responsive, declining meetings. Restart the conversation before you lose the relationship.</p></div>
+    <div class="tabs" data-tabs>
+      <button class="tab active" data-tab="strategy">Strategy</button>
+      <button class="tab" data-tab="play">Toolkit <span class="c">4</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">2</span></button>
+      <button class="tab" data-tab="metrics">Metrics</button>
+    </div>
+    <div class="tabpanel active" data-panel="strategy">
+      <dl class="dl">
+        <div><dt>Who this is</dt><dd>At-risk clients: 6+ months without meaningful contact, declined reviews, reduced responsiveness.</dd></div>
+        <div><dt>They're thinking</dt><dd><em>“I don't feel my involvement is helpful or needed — and I'm considering switching advisors.”</em></dd></div>
+        <div><dt>Your goal</dt><dd>Reopen communication, rebuild trust, and retain assets.</dd></div>
+        <div class="rule"><dt>The one rule</dt><dd><strong>No pressure, no pitch, no guilt.</strong> Every message offers the client a low-effort way to be heard — that's it.</dd></div>
+      </dl>
+    </div>
+    <div class="tabpanel" data-panel="play">
+      <div class="steps">
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>Annual / personalization check-in</strong><p>The default re-opener for any quiet client.</p><span class="chip">📅 Annual</span></div></div>
+        <div class="step"><span class="num">2</span><div class="step-body"><strong>Life-event check-in</strong><p>When you know (or suspect) something changed.</p><span class="chip">🏡 Life event</span></div></div>
+        <div class="step"><span class="num">3</span><div class="step-body"><strong>Relationship refresh</strong><p>Invite the client to tell you how conversations could be more useful.</p><span class="chip">🔄 Refresh</span></div></div>
+        <div class="step"><span class="num">4</span><div class="step-body"><strong>Broader financial picture</strong><p>A share-of-wallet opener framed entirely around their needs.</p><span class="chip">💰 Wallet</span></div></div>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="samples">
+      <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
+      <div class="sample-grid">
+        <button class="scard" data-sample="dis-1"><span class="type">Email · Annual Check-In · the default re-opener</span><h4>A quick check-in to make sure we’re focused on what matters</h4><span class="prev">It’s been a while since we connected, and I wanted to reach out with a quick check-in…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="dis-2"><span class="type">Email · Life-Event Check-In · when something changed</span><h4>A quick check-in on changes in your financial picture</h4><span class="prev">I wanted to check in on whether anything has changed in your financial picture or planning needs…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+      </div>
+    </div>
+    <div class="tabpanel" data-panel="metrics">
+      <div class="table-wrap"><table class="t"><thead><tr><th>Your goal</th><th>Watch this first</th><th>Then watch</th></tr></thead><tbody>
+        <tr><td class="m">Reopen communication</td><td>Reengagement rate</td><td>Meeting rate</td></tr>
+        <tr><td class="m">Increase responsiveness</td><td>Response rate</td><td>Meeting rate</td></tr>
+        <tr><td class="m">Rebuild trust</td><td>Participation rate</td><td>Retention rate</td></tr>
+        <tr><td class="m">Strengthen the relationship</td><td>Share-of-wallet growth</td><td>Retention rate</td></tr>
+      </tbody></table></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Disengaged → Engaged</h3><p>The moment a disengaged client completes Knomee, treat them as Engaged: the advisor reviews responses <strong>within 48 hours</strong>, sends the thank-you, and books the meeting. A re-engagement completion that sits unanswered does more harm than no campaign at all.</p><p style="margin-top:.9rem"><button class="btn btn-primary" style="--lead:var(--engaged)" data-go="engaged">Go to Engaged <span class="arw">→</span></button></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTING ══ -->
+<section class="view" id="testing">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Optimize</span><h2 class="h2">Test Before You Launch</h2><p class="intro">Even 1:1 client outreach benefits from testing. Knomee supports UTM tags so you can see which message and timing drives completions — not just opens.</p></div>
+    <div class="steps stagger" style="--lead:var(--engaged);--lead-tint:var(--engaged-tint)">
+      <div class="step"><span class="num">1</span><div class="step-body"><strong>Copy</strong> your client invite URL from the Knomee Advisor dashboard (different from the prospect URL).</div></div>
+      <div class="step"><span class="num">2</span><div class="step-body"><strong>Tag</strong> it with UTM parameters. <span style="font-family:ui-monospace,monospace;font-size:.9rem;color:var(--engaged);word-break:break-all">knomeeurl.com/?utm_source=email&amp;utm_campaign=midyear_pulse&amp;utm_content=option1</span></div></div>
+      <div class="step"><span class="num">3</span><div class="step-body"><strong>Read</strong> Knomee's traffic report, then standardize on the winning message across the book.</div></div>
+    </div>
+    <div class="callout anim" style="--lead:var(--engaged);--lead-tint:var(--engaged-tint);margin-top:var(--s4)"><h3>The 10% Rule</h3><p>Pilot each play with a handful of advisors or <strong>10% of the target segment</strong> first. Once completion and response rates prove out, roll it out book-wide.</p></div>
+  </div>
+</section>
+
+<!-- ══ APPENDIX ══ -->
+<section class="view" id="appendix">
+  <div class="container section">
+    <span class="backlink" data-back>← Home</span>
+    <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Videos for Clients</h2><p class="intro">From your library of <strong>~24 Knomee videos</strong>, a subset works well with existing clients — check-in explainers, family-conversation openers, and life-event themes. Match each use case to the right video, then pull the files from the Drive library.</p></div>
+    <div class="table-wrap anim"><table class="t"><thead><tr><th>Use case</th><th>Best video types</th><th>Where to embed</th></tr></thead><tbody>
+      <tr><td><span class="stage e">Engaged</span></td><td>“Why we check in” explainers, family conversation openers</td><td>Pre-meeting invites, mid-year pulse, family prompts</td></tr>
+      <tr><td><span class="stage d">Disengaged</span></td><td>Life-event themes (retirement, new home, family), human stories</td><td>Life-event check-ins, re-engagement emails</td></tr>
+    </tbody></table></div>
+
+    <div class="head anim" style="margin:var(--s6) 0 var(--s4)"><h2 class="h2" style="font-size:var(--fs-h3)">Your 8 Client Videos</h2></div>
+    <div class="grid-2">
+      <div class="lead-engaged">
+        <div class="callout anim" style="--lead:var(--engaged);--lead-tint:#fff;border:1px solid var(--line);border-left:4px solid var(--engaged)">
+          <h3 style="color:var(--engaged)">🌱 Engaged</h3>
+          <ul class="vids" style="margin-top:.5rem">
+            <li>Why we check in, explained <em>(video 1)</em></li>
+            <li>Family conversation starters <em>(video 3)</em></li>
+            <li>Meet [Advisor Name] <em>(video 5)</em></li>
+            <li>The mid-year pulse, explained <em>(video 7)</em></li>
+          </ul>
+        </div>
+      </div>
+      <div class="lead-disengaged">
+        <div class="callout anim" style="--lead:var(--disengaged);--lead-tint:#fff;border:1px solid var(--line);border-left:4px solid var(--disengaged)">
+          <h3 style="color:#3d3d45">⏳ Disengaged</h3>
+          <ul class="vids" style="margin-top:.5rem">
+            <li>A quick guide to your annual review <em>(video 2)</em></li>
+            <li>What changes, and why it matters <em>(video 4)</em></li>
+            <li>Life events: what to tell your advisor <em>(video 6)</em></li>
+            <li>Retirement, in their own words <em>(video 8)</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout anim" style="margin-top:var(--s4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;--lead:var(--grape);--lead-tint:#fff;border:1px solid var(--line)">
+      <div><h3 style="color:var(--plum)">Browse the full library in Google Drive</h3><p>All ~24 videos, ready to embed — open the folder and pick the files that fit the plan above.</p></div>
+      <a href="https://drive.google.com/drive/folders/11SHeKJ0PxBAwJzragIy4ZGvgZZGONpgk" target="_blank" rel="noopener" class="btn btn-primary" style="--lead:var(--plum)">Open the Video Library <span class="arw">→</span></a>
+    </div>
+    <p class="anim" style="margin-top:1.2rem;font-style:italic;color:var(--muted);font-size:.95rem">Tip: tag every video link with <code>utm_content=video[#]</code> so the traffic report shows which videos drive completions.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem"><span data-firm-footer data-firm></span>© Knomee | Confidential · Client Toolkit · V2 · 2026 · <a data-go="home" style="cursor:pointer">Home</a></div></div></footer>
+
+<!-- ── SLIDE-OVER ── -->
+<div class="sheet-back" id="sheetBack"></div>
+<aside class="sheet" id="sheet" aria-label="Sample">
+  <div class="sheet-head"><span class="st" id="sheetType">Sample</span><button class="sheet-x" id="sheetX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy Text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
+</aside>
+
+<!-- ── SAMPLE STORE (hidden source content) ── -->
+<div class="sample-store" id="sampleStore">
+  <div data-sample-id="eng-1" data-type="Email · Pre-Meeting Invite · 2 weeks before" class="lead-engaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in before we connect</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Ahead of our meeting, I want to make sure our conversation is focused on what matters most to you right now.</p><p>Knomee is a brief experience that helps you reflect on your goals, priorities, and what’s top of mind. Take a few minutes with it before we meet — you’ll get a personal summary to keep, and you’ll come to our conversation clearer on what you want from it:</p><a class="email-cta">Access Your Knomee Experience Here →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a short “why we check in” explainer video, below the CTA.</div>
+  </div>
+  <div data-sample-id="eng-2" data-type="Email · Mid-Year Pulse · between reviews" class="lead-engaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick mid-year check-in</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>A lot can change between reviews. I wanted to reach out with a quick mid-year check-in.</p><p>If anything has shifted, Knomee is a simple way to take stock of what’s changed for you, so our next meeting starts with what matters now.</p><a class="email-cta">See What’s Changed →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> a family-conversation opener video works well for household-alignment prompts.</div>
+  </div>
+  <div data-sample-id="eng-3" data-type="Email · Meeting Recap · 1–2 days after" class="lead-engaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Great connecting today</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Thank you for meeting today. As a recap, the main areas we discussed: {{Priority 1}}, {{Priority 2}}, {{Priority 3}}. Next steps: {{Next Step 1}}, {{Next Step 2}}.</p><p>I’ll keep your Knomee responses in mind as we continue working together.</p><a class="email-cta">View Your Knomee Summary →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> no video needed — this is a personal recap, referencing their specific responses. Every message comes from the advisor personally.</div>
+  </div>
+  <div data-sample-id="dis-1" data-type="Email · Annual Check-In · the default re-opener" class="lead-disengaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in to make sure we’re focused on what matters</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>It’s been a while since we connected, and I wanted to reach out with a quick check-in.</p><p>Rather than assume your priorities are the same, I’d like to give you a simple way to see what’s top of mind for you now. Knomee is a brief experience that helps you reflect on what may have changed, and you’ll get a personal summary to keep.</p><a class="email-cta">Access Your Knomee Experience Here →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> send from the advisor’s personal email, not a marketing address. No image needed on a re-opener.</div>
+  </div>
+  <div data-sample-id="dis-2" data-type="Email · Life-Event Check-In · when something changed" class="lead-disengaged">
+    <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick check-in on changes in your financial picture</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>I wanted to check in on whether anything has changed in your financial picture or planning needs since we last spoke.</p><p>If new responsibilities or questions have come up, Knomee is a helpful starting point. It helps you sort out what’s changed and what you most want answered, and you’ll get a personal summary to keep.</p><a class="email-cta">Access Your Knomee Experience Here →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
+    <div class="pairing"><b>Suggested pairing:</b> never name products in this message — the Knomee responses tell you what to bring to the conversation.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var meta = {
+    home:['','Home','Start here'],
+    'how-to-use':['01','How to Use','Client types & walkthrough'],
+    'what-is-knomee':['02','The Check-In','What clients experience'],
+    setup:['03','5-Step Setup','Before you launch'],
+    engaged:['04','Engaged','Deepen the relationship'],
+    disengaged:['05','Disengaged','Win them back'],
+    testing:['06','Test & Learn','UTM & the 10% rule'],
+    appendix:['07','Appendix','Client video library']
+  };
+  var views = {}; document.querySelectorAll('.view').forEach(function(v){ views[v.id]=v; });
+  var navLinks = {}; document.querySelectorAll('#navLinks a').forEach(function(a){ navLinks[a.getAttribute('data-go')]=a; });
+
+  var dl = document.getElementById('drawerList');
+  Object.keys(meta).forEach(function(id){
+    var m=meta[id]; var a=document.createElement('a'); a.setAttribute('data-go',id);
+    a.innerHTML='<span class="n">'+(m[0]||'◆')+'</span><span class="t">'+m[1]+'</span><span class="d">'+m[2]+'</span>';
+    dl.appendChild(a);
+  });
+
+  /* build a labeled "Next section" button at the bottom of every view */
+  var order = ['home','how-to-use','what-is-knomee','setup','engaged','disengaged','testing','appendix'];
+  var vnColor = {engaged:'--engaged',disengaged:'--disengaged'};  /* Next button takes the destination section's color */
+  order.forEach(function(id, i){
+    if(id==='home') return;
+    var v = views[id]; if(!v) return;
+    var host = v.querySelector('.container'); if(!host) return;
+    var next = order[i+1];
+    var el = document.createElement('div'); el.className='view-next';
+    if(next){
+      el.innerHTML = '<span class="vn-label">Up next</span><button class="vn-btn" data-go="'+next+'" style="--lead:var('+(vnColor[next]||'--grape')+')">Next: '+meta[next][1]+' <span class="arw">→</span></button>';
+    } else {
+      el.innerHTML = '<span class="vn-label">You’ve reached the end</span><button class="vn-btn" data-go="home">← Back to Home</button>';
+    }
+    host.appendChild(el);
+  });
+
+  function selectTab(group, name){
+    group.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-tab')===name); });
+    var view = group.closest('.view');
+    view.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-panel')===name); });
+  }
+  document.querySelectorAll('[data-tabs] .tab').forEach(function(t){
+    t.addEventListener('click', function(){ selectTab(t.closest('[data-tabs]'), t.getAttribute('data-tab')); });
+  });
+
+  /* remembers the trail of views so "Back" returns where you came from */
+  var navStack=[]; var currentView=null;
+  function labelBack(id){
+    var v=views[id]; if(!v) return;
+    var bl=v.querySelector('.backlink[data-back]'); if(!bl) return;
+    var prev=navStack[navStack.length-1];
+    bl.textContent = (prev && prev!=='home' && meta[prev]) ? ('← Back to '+meta[prev][1]) : '← Home';
+  }
+  function setView(id, push){
+    if(!views[id]) id='home';
+    Object.keys(views).forEach(function(k){ views[k].classList.toggle('active', k===id); });
+    Object.keys(navLinks).forEach(function(k){ navLinks[k].classList.toggle('active', k===id); });
+    var v=views[id]; var tg=v.querySelector('[data-tabs]');
+    if(tg){ selectTab(tg, tg.querySelector('.tab').getAttribute('data-tab')); }
+    window.scrollTo({top:0,behavior:'auto'});
+    if(push!==false && location.hash.slice(1)!==id){ history.pushState({v:id},'', '#'+id); }
+    currentView=id; labelBack(id);
+    document.title = (id==='home'?'':meta[id][1]+' · ')+(window.TK_TITLE||'Knomee')+' — The Client Toolkit';
+    tkTrack('view',{view:id});
+  }
+  function go(id){ closeDrawer(); if(currentView && id!==currentView){ navStack.push(currentView); } setView(id); }
+  function goBack(){ closeDrawer(); setView(navStack.pop() || 'home'); }
+
+  document.addEventListener('click', function(e){
+    var back = e.target.closest && e.target.closest('[data-back]');
+    if(back){ e.preventDefault(); goBack(); return; }
+    var el = e.target.closest && e.target.closest('[data-go]');
+    if(el){ e.preventDefault(); go(el.getAttribute('data-go')); }
+  });
+  window.addEventListener('popstate', function(){
+    /* if a sample tray is open, Back should close it — not change the page */
+    if(sheetBackPending){ sheetBackPending=false; return; }
+    if(sheet.classList.contains('open')){ closeSheet(true); return; }
+    var id = location.hash.slice(1)||'home';
+    if(navStack[navStack.length-1]===id){ navStack.pop(); }
+    setView(id, false);
+  });
+
+  /* slide-over */
+  var store = document.getElementById('sampleStore');
+  var sheet=document.getElementById('sheet'), back=document.getElementById('sheetBack');
+  var sheetBody=document.getElementById('sheetBody'), sheetType=document.getElementById('sheetType');
+  var copyBtn=document.getElementById('copyBtn');
+  var sheetBackPending=false; /* true while a manual close consumes its own history entry */
+  function openSheet(id){
+    var node = store.querySelector('[data-sample-id="'+id+'"]'); if(!node) return;
+    ceCurrentSample = id;
+    sheetBody.innerHTML = tkFill(ceSampleOverride(id) || node.innerHTML);
+    sheetType.textContent = node.getAttribute('data-type');
+    sheet.classList.remove('lead-engaged','lead-disengaged');
+    (node.className.match(/lead-\w+/g)||[]).forEach(function(c){ sheet.classList.add(c); });
+    resetCopy();
+    tkTrack('sample_open',{sample:id,label:node.getAttribute('data-type')});
+    var wasOpen = sheet.classList.contains('open');
+    back.classList.add('open'); sheet.classList.add('open');
+    document.body.style.overflow='hidden';
+    /* push a history entry so the Back button closes the tray, not the page */
+    if(!wasOpen){ history.pushState({sheet:true},'',location.href); }
+    ceEnableSheetEdit();
+  }
+  function closeSheet(fromPop){
+    if(!sheet.classList.contains('open')) return;
+    back.classList.remove('open'); sheet.classList.remove('open'); document.body.style.overflow='';
+    /* if closed by the user (not the Back button), consume the tray's history entry */
+    if(!fromPop){ sheetBackPending=true; history.back(); }
+  }
+  document.querySelectorAll('[data-sample]').forEach(function(c){ c.addEventListener('click', function(){ openSheet(c.getAttribute('data-sample')); }); });
+  document.getElementById('sheetX').addEventListener('click', function(){ closeSheet(); });
+  back.addEventListener('click', function(){ closeSheet(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
+
+  function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy Text'; }
+  copyBtn.addEventListener('click', function(){
+    var src = sheetBody.querySelector('[data-copy]') || sheetBody;
+    var text = src.innerText.replace(/\n{3,}/g,'\n\n').trim();
+    tkTrack('copy',{sample:ceCurrentSample,label:sheetType.textContent,how:'button'});
+    var done=function(){ copyBtn.classList.add('done'); copyBtn.querySelector('span').textContent='Copied ✓'; setTimeout(resetCopy,1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); }
+    else fallback();
+    function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
+  });
+
+  /* text selected and copied by hand counts too (the button's own fallback copies from a textarea outside the tray) */
+  sheetBody.addEventListener('copy', function(){ if(!ceEDIT) tkTrack('copy',{sample:ceCurrentSample,label:sheetType.textContent,how:'select'}); });
+
+  /* mobile drawer */
+  var drawer=document.getElementById('drawer');
+  function openDrawer(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer(){ drawer.classList.remove('open'); if(!sheet.classList.contains('open')) document.body.style.overflow=''; }
+  document.getElementById('menuBtn').addEventListener('click', openDrawer);
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  drawer.addEventListener('click', function(e){ if(e.target===drawer) closeDrawer(); });
+
+  setView(location.hash.slice(1)||'home', false);
+
+  /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
+  var CE_ID='client-v2'; /* content baked into this page; the 'client' doc is retained but no longer applied */
+  var ceWANT=false, ceEDIT=false; /* a firm edition is never edited itself: it shows the live page's edits (same CE_ID), firm-filled */
+  /* editor password gate: the shell (index.html) asks for the password and keeps a hash of it in
+     localStorage; this page holds only a hash of that hash, so the source never reveals the password */
+  var CE_GATE='84a5c1b87a7af5fedd739eae37d286a5d79854d70f54048a700e61ad9caa0c42';
+  function ceSha(s){ return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){ return Array.prototype.map.call(new Uint8Array(b),function(x){ return ('0'+x.toString(16)).slice(-2); }).join(''); }); }
+  function ceUnlocked(){ try{ var t=localStorage.getItem('knomee-edit-token'); return t ? ceSha(t).then(function(h){ return h===CE_GATE; },function(){ return false; }) : Promise.resolve(false); }catch(e){ return Promise.resolve(false); } }
+  var ceOverrides={}, ceSamples={}, ceKeyed=[], ceCurrentSample=null, ceDocRef=null;
+  function ceSampleOverride(id){ return ceSamples['sample::'+id] || null; }
+  function ceStatus(t){ var s=document.getElementById('ceStatus'); if(s) s.textContent=t; }
+  function ceCollect(){
+    var sel='h1,h2,h3,h4,p,dt,dd,li,th,td,.eyebrow,.hero-eyebrow,.tagword,.kick,.k,.sub,.samples-note,.prev,.type,.chip';
+    function ok(el){
+      if(el.closest('.nav,.drawer,.tabs,.footer,.sheet,.sample-store,.view-next,.backlink,.email-chrome')) return false;
+      if(el.querySelector('[data-go],button,a[href]')) return false;
+      return true;
+    }
+    document.querySelectorAll('.view').forEach(function(view){
+      var vid=view.id;
+      var base=Array.prototype.slice.call(view.querySelectorAll(sel)).filter(ok);
+      base=base.filter(function(el){ return !base.some(function(o){ return o!==el && el.contains(o); }); });
+      /* step titles appended AFTER the base set so existing edit slots keep their keys */
+      var extra=Array.prototype.slice.call(view.querySelectorAll('.step-body strong')).filter(function(el){ return ok(el) && base.indexOf(el)===-1; });
+      var nodes=base.concat(extra);
+      var i=0; nodes.forEach(function(el){ el.setAttribute('data-k', vid+'::'+(i++)); ceKeyed.push(el); });
+    });
+  }
+  function ceApply(){
+    ceKeyed.forEach(function(el){
+      var k=el.getAttribute('data-k');
+      if(el.hasAttribute('data-firm') || !Object.prototype.hasOwnProperty.call(ceOverrides,k)) return; var v=tkFill(ceOverrides[k]); if(document.activeElement!==el && el.innerHTML!==v){ el.innerHTML=v; }
+    });
+    if(ceCurrentSample && sheet.classList.contains('open') && document.activeElement!==sheetBody){
+      var ov=tkFill(ceSamples['sample::'+ceCurrentSample]);
+      if(ov && sheetBody.innerHTML!==ov) sheetBody.innerHTML=ov;
+    }
+  }
+  function ceSplit(data){
+    ceOverrides={}; ceSamples={};
+    Object.keys(data||{}).forEach(function(k){ if(k.indexOf('sample::')===0) ceSamples[k]=data[k]; else ceOverrides[k]=data[k]; });
+  }
+  function ceInit(){
+    try{
+      var cfg={apiKey:"AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",authDomain:"knomee-playbook.firebaseapp.com",projectId:"knomee-playbook",storageBucket:"knomee-playbook.firebasestorage.app",messagingSenderId:"956493019959",appId:"1:956493019959:web:13f099b4ea42ef948d78b2"};
+      if(!firebase.apps.length) firebase.initializeApp(cfg);
+      ceDocRef=firebase.firestore().collection('video-feedback').doc('activation-playbook').collection('content').doc(CE_ID);
+      ceDocRef.onSnapshot(function(snap){ ceSplit(snap.exists?snap.data():{}); ceApply(); }, function(err){ console.warn('content sync error',err); ceStatus('Offline'); });
+    }catch(e){ console.warn('content editor unavailable',e); ceStatus('Offline'); }
+  }
+  function ceSave(key,html){
+    if(!ceDocRef){ ceStatus('Save failed'); return; }
+    ceStatus('Saving…');
+    var o={}; o[key]=html;
+    ceDocRef.set(o,{merge:true}).then(function(){ ceStatus('Saved ✓'); }, function(err){ console.warn('save failed',err); ceStatus('Save failed'); });
+  }
+  function cePlainPaste(e){ e.preventDefault(); var t=((e.clipboardData||window.clipboardData).getData('text/plain')||''); document.execCommand('insertText',false,t); }
+  function ceWire(el){
+    el.setAttribute('contenteditable','true');
+    el.addEventListener('mousedown',function(e){ e.stopPropagation(); });
+    el.addEventListener('click',function(e){ e.stopPropagation(); });
+    el.addEventListener('paste',cePlainPaste);
+    el.addEventListener('blur',function(){ ceSave(el.getAttribute('data-k'), el.innerHTML); });
+  }
+  function ceEnableSheetEdit(){
+    if(!ceEDIT) return;
+    sheetBody.setAttribute('contenteditable','true');
+    sheetBody.onpaste=cePlainPaste;
+    sheetBody.onblur=function(){ if(ceCurrentSample!=null) ceSave('sample::'+ceCurrentSample, sheetBody.innerHTML); };
+  }
+  function ceStart(){
+    document.body.classList.add('ce-on');
+    /* keep the header logo pointing at the editable landing while editing */
+    var logo=document.querySelector('.nav-logo');
+    if(logo){ var lh=logo.getAttribute('href'); if(lh && !/[?&]edit=1/.test(lh)){ logo.setAttribute('href', lh+(lh.indexOf('?')>=0?'&':'?')+'edit=1'); } }
+    ceKeyed.forEach(ceWire);
+    (function setLive(){ var l=document.getElementById('ceLive'); if(l){ l.href=location.pathname; } else { document.addEventListener('DOMContentLoaded', setLive); } })();
+  }
+  ceCollect(); ceInit(); if(ceWANT) ceUnlocked().then(function(ok){ if(ok){ ceEDIT=true; ceStart(); } });
+})();
+</script>
+
+<div class="ce-bar" id="ceBar">
+  <span class="ce-badge">✏️ Editing</span>
+  <span class="ce-hint">Click any text to edit — changes save automatically and go live for everyone.</span>
+  <span class="cc-hint cc-hint-f2">Press F2 to comment</span>
+  <span class="cc-hint cc-hint-esc">Press F2 to exit commenting mode</span>
+  <span class="ce-status" id="ceStatus">Ready</span>
+  <a class="ce-live" id="ceLive" href="#" target="_blank" rel="noopener">View live ↗</a>
+</div>
+</body>
+</html>

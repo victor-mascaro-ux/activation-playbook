@@ -1,7 +1,7 @@
 {
-  "name": "ACME Wealth",
-  "monogram": "A",
-  "color": "#2F6FE4",
+  "name": "Acme Advisors",
+  "logo": "firms/acme-white.svg",
+  "color": "#1c3f6e",
   "domain": "acme.com",
   "brand": "cobrand"
 }

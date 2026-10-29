@@ -1,0 +1,25 @@
+/* Firm editions: knomee-demo's white-label pattern (src/index.css .topbar, .client-logo, .powered-by;
+   src/components/clientBrands.tsx). A client's brand colours the top bar and nothing under it; its white
+   logo takes the knomee mark's place; knomee stays as a small "powered by" credit. firm.js sets the classes. */
+
+.firm-pending [data-firm]{visibility:hidden}
+
+/* the logo slot: the knomee mark until a firm loads, then the firm's logo (or its name, set like the demo's
+   .brand-name, while a firm has no logo file yet) */
+[data-firm-bar] .firm-logo,[data-firm-bar] .firm-name{display:none}
+[data-firm-bar].firm .kn-logo{display:none}
+[data-firm-bar].firm.has-logo .firm-logo{display:block;height:34px;width:auto}
+[data-firm-bar].firm:not(.has-logo) .firm-name{display:block;font-size:20px;font-weight:600;letter-spacing:.2px;line-height:1;color:#fff;white-space:nowrap}
+
+/* the toolkits' sticky nav becomes the demo's 64px bar in the firm's colour */
+.nav[data-firm-bar].firm{background:var(--firm,#240446);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:0}
+.nav[data-firm-bar].firm .nav-inner{min-height:64px}
+.firm-on .tabs{top:64px}
+
+/* the credit: fixed to the window's bottom-left, a wash rather than a solid so it reads as a credit and not a
+   control, and out of the way while a sample tray, the menu or the editor is open */
+.powered-by{position:fixed;left:clamp(1rem,3vw,2rem);bottom:14px;z-index:70;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);pointer-events:none}
+.powered-by-text{font-size:10px;font-weight:600;line-height:1;letter-spacing:.1em;text-transform:uppercase;color:#757575;transform:translateY(2px)}
+.powered-by-logo{display:block;height:16px;width:auto}
+body:has(.sheet.open) .powered-by,body:has(.drawer.open) .powered-by,body.ce-on .powered-by{display:none}
+@media(max-width:720px){.powered-by{left:12px;bottom:10px}}

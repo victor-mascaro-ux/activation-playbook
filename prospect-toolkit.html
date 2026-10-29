@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <script>/* Live pages load directly (no commenting). The editor (?edit=1) runs inside the commenting shell. */(function(){try{if(window.top!==window.self)return;var s=location.search;if(/[?&]raw=1/.test(s))return;if(/[?&]edit=1/.test(s)){location.replace('index.html?page='+(location.pathname.split('/').pop()||'home.html')+'&edit=1');}}catch(e){}})();</script>
 <title>Knomee — The Prospect Toolkit</title>
-<meta name="robots" content="noindex">
-<script>/* Firm edition: the firm comes from the link (?firm=<slug>; the /<slug> short links redirect here) and is remembered in this browser, so a bookmarked plain link still counts for that firm. ?firm=none forgets it. */(function(){var k='knomee-toolkit-firm',s='';try{s=(new URLSearchParams(location.search).get('firm')||'').toLowerCase().replace(/[^a-z0-9-]/g,'');}catch(e){}try{if(s==='none'){localStorage.removeItem(k);s='';}else if(s){localStorage.setItem(k,s);}else{s=localStorage.getItem(k)||'';}}catch(e){if(s==='none')s='';}window.TK_FIRM=s;if(s)document.documentElement.classList.add('firm-pending');})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
 <style>
@@ -56,17 +55,6 @@
   .nav-links a.active{color:#fff}
   .nav-menu-btn{display:none;margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-weight:600;font-size:.85rem;border-radius:var(--r-pill);padding:.5rem .9rem;cursor:pointer;align-items:center;gap:.5rem}
   .nav-menu-btn svg{width:16px;height:16px}
-
-  /* ── firm branding ── */
-  .firm-pending [data-firm]{visibility:hidden}
-  .nav-logo:not(.firm) .firm-mark,.nav-logo:not(.firm) .firm-with{display:none}
-  .nav-logo .firm-mark{display:flex;align-items:center;gap:.6rem;color:#fff}
-  .firm-badge{width:30px;height:30px;border-radius:9px;background:var(--firm,var(--grape));display:grid;place-items:center;font-size:.86rem;font-weight:700;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
-  .firm-name{font-size:1rem;font-weight:600;letter-spacing:-.005em;white-space:nowrap}
-  .nav-logo.firm .firm-with{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.5);margin-left:.4rem;padding-left:.9rem;border-left:1px solid rgba(255,255,255,.18);line-height:1.6}
-  .nav-logo.firm .kn-logo{height:14px;opacity:.75}
-  .nav-logo.firm.white .firm-with,.nav-logo.firm.white .kn-logo{display:none}
-  @media(max-width:560px){.nav-logo.firm .firm-with,.nav-logo.firm .kn-logo{display:none}}
 
   /* ── mobile drawer ── */
   .drawer{position:fixed;inset:0;z-index:80;background:rgba(20,6,40,.92);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);display:flex;flex-direction:column;padding:clamp(1.5rem,6vw,3.5rem)}
@@ -339,6 +327,8 @@
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<link rel="stylesheet" href="firm.css">
+<script src="firm.js" data-kit="prospect"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
@@ -403,9 +393,9 @@
 </defs>
 </symbol></svg>
 
-<nav class="nav">
+<nav class="nav" data-firm-bar>
   <div class="nav-inner">
-    <a class="nav-logo" data-go="home" aria-label="Toolkit home"><span class="firm-mark" data-firm><span class="firm-badge" id="firmBadge"></span><span class="firm-name" id="firmName"></span></span><span class="firm-with">with</span><svg class="kn-logo" viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg></a>
+    <a class="nav-logo" href="toolkits.html" aria-label="Back to landing page"><img class="firm-logo" data-firm-logo alt=""><span class="firm-name" data-firm-name data-firm></span><svg class="kn-logo" viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg></a>
     <div class="nav-links" id="navLinks">
       <a data-go="home">Home</a>
       <a data-go="how-to-use">How to Use</a>
@@ -435,7 +425,7 @@
   <div class="home-hero">
     <div class="blob b1"></div><div class="blob b2"></div>
     <div class="container">
-      <span class="hero-eyebrow anim" id="heroEyebrow" data-firm>Knomee Activation Toolkit</span>
+      <span class="hero-eyebrow anim" data-firm-eyebrow data-firm>Knomee Activation Toolkit</span>
       <h1 class="anim d1">Convert New Clients:<br><span class="accent">The Prospect Toolkit</span></h1>
       <p class="tag anim d2">Ready-to-use campaigns that turn cold, warm, and hot leads into first meetings — and first meetings into clients. Pick a lead type below and go straight to what you need.</p>
       <div class="intro-cards stagger">
@@ -683,7 +673,7 @@
         <tr><td class="m">Differentiate your firm</td><td>Meeting show-rate</td><td>Prospect engagement in-meeting</td></tr>
         <tr><td class="m">Accelerate the close</td><td>Close rate post-Knomee vs. baseline</td><td>Time from first meeting to signed client</td></tr>
       </tbody></table></div>
-      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Hot → Client</h3><p>The moment a hot prospect signs, they become a client — and a completely different toolkit takes over. See the companion <strong>Client Toolkit</strong> for how to keep them engaged from day one.</p><p style="margin-top:.9rem"><a class="btn btn-primary" style="--lead:var(--warm)" href="client-playbook.html">Open the Client Toolkit <span class="arw">→</span></a></p></div>
+      <div class="callout" style="margin-top:var(--s4)"><h3>The Handoff: Hot → Client</h3><p>The moment a hot prospect signs, they become a client — and a completely different toolkit takes over. See the companion <strong>Client Toolkit</strong> for how to keep them engaged from day one.</p><p style="margin-top:.9rem"><a class="btn btn-primary" style="--lead:var(--warm)" href="client-toolkit.html">Open the Client Toolkit <span class="arw">→</span></a></p></div>
     </div>
   </div>
 </section>
@@ -785,7 +775,7 @@
 
 </main>
 
-<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem"><span id="firmFooter" data-firm></span>© Knomee | Confidential · Prospect Toolkit · V2 · 2026 · <a data-go="home" style="cursor:pointer">Home</a></div></div></footer>
+<footer class="footer"><div class="container"><svg viewBox="0 0 236 24" fill="none"><use href="#pb-logo"></use></svg><div style="font-size:.85rem"><span data-firm-footer data-firm></span>© Knomee | Confidential · Prospect Toolkit · V2 · 2026 · <a data-go="home" style="cursor:pointer">Home</a></div></div></footer>
 
 <!-- ── SLIDE-OVER ── -->
 <div class="sheet-back" id="sheetBack"></div>
@@ -842,77 +832,6 @@
     <div class="pairing"><b>Suggested pairing:</b> no image or video here — this is a 1:1, personal message. Every message comes from the advisor personally, never a marketing address.</div>
   </div>
 </div>
-
-<script>
-/* ===== firm edition: branding from firms/<slug>.json + anonymous usage events =====
-   Every event carries the firm, the toolkit, a random id for this browser and one for this visit — never a name,
-   email or link. Nothing is recorded in the editor, inside the commenting shell, or in a browser opted out with
-   ?notrack=1 (?notrack=0 opts back in). Browsers that unlocked the editor are tagged staff, local servers env 'dev'. */
-(function(){
-  var FIRM=window.TK_FIRM||'', q=new URLSearchParams(location.search);
-  function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){} return null; }
-  function rid(){ return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2)); }
-  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-
-  /* ── usage events ── */
-  if(q.get('notrack')==='1') store('knomee-toolkit-notrack','1');
-  if(q.get('notrack')==='0') store('knomee-toolkit-notrack',null);
-  var off = window.top!==window.self || /[?&]edit=1/.test(location.search) || store('knomee-toolkit-notrack')==='1';
-  var vid = store('knomee-toolkit-vid'); if(!vid){ vid=rid(); store('knomee-toolkit-vid',vid); }
-  var base = {
-    firm: FIRM||'unknown', kit:'prospect', vid:vid, sid:rid(),
-    env: /^(localhost|127\.0\.0\.1|\[::1\]|)$/.test(location.hostname) ? 'dev' : 'live',
-    staff: !!store('knomee-edit-token'),
-    device: window.matchMedia('(max-width:820px)').matches ? 'mobile' : 'desktop'
-  };
-  var events=null;
-  function col(){
-    if(events) return events;
-    try{
-      var cfg={apiKey:"AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",authDomain:"knomee-playbook.firebaseapp.com",projectId:"knomee-playbook",storageBucket:"knomee-playbook.firebasestorage.app",messagingSenderId:"956493019959",appId:"1:956493019959:web:13f099b4ea42ef948d78b2"};
-      if(!firebase.apps.length) firebase.initializeApp(cfg);
-      events=firebase.firestore().collection('toolkit-events');
-    }catch(e){ console.warn('usage events unavailable',e); }
-    return events;
-  }
-  window.tkTrack=function(type,data){
-    if(off) return;
-    var ev={type:type};
-    Object.keys(base).forEach(function(k){ ev[k]=base[k]; });
-    Object.keys(data||{}).forEach(function(k){ if(data[k]!=null) ev[k]=data[k]; });
-    var c=col(); if(!c) return;
-    ev.at=firebase.firestore.FieldValue.serverTimestamp();
-    c.add(ev).catch(function(e){ console.warn('usage event not saved',e); });
-  };
-  /* via: link = opened from the firm's link, remembered = plain link in a browser that had the firm link before */
-  tkTrack('open',{via: q.get('firm') ? 'link' : (FIRM ? 'remembered' : 'none')});
-
-  /* ── firm branding ── */
-  if(!FIRM) return;
-  function ready(){ document.documentElement.classList.remove('firm-pending'); }
-  setTimeout(ready,1500);
-  fetch('firms/'+FIRM+'.json',{cache:'no-cache'})
-    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function(f){
-      var name=f.name||FIRM;
-      if(f.color) document.documentElement.style.setProperty('--firm', f.color);
-      var logo=document.querySelector('.nav-logo');
-      logo.classList.add('firm'); if(f.brand==='white') logo.classList.add('white');
-      logo.setAttribute('aria-label', name+' toolkit home');
-      document.getElementById('firmBadge').textContent=f.monogram||name.charAt(0);
-      document.getElementById('firmName').textContent=name;
-      document.getElementById('heroEyebrow').textContent=name+' · Activation Toolkit';
-      document.getElementById('firmFooter').textContent='Prepared for '+name+' · ';
-      window.TK_TITLE=name; document.title=document.title.replace('Knomee — ', name+' — ');
-      /* the templates already say {{Firm Name}} and advisor@acme.com — fill in this firm */
-      var s=document.getElementById('sampleStore'), h=s.innerHTML.split('{{Firm Name}}').join(esc(name));
-      if(f.domain) h=h.split('@acme.com').join('@'+esc(f.domain));
-      s.innerHTML=h;
-    })
-    .catch(function(e){ console.warn('firm "'+FIRM+'" not found',e); })
-    .then(ready);
-})();
-</script>
 
 <script>
 (function(){
@@ -1012,7 +931,7 @@
   function openSheet(id){
     var node = store.querySelector('[data-sample-id="'+id+'"]'); if(!node) return;
     ceCurrentSample = id;
-    sheetBody.innerHTML = ceSampleOverride(id) || node.innerHTML;
+    sheetBody.innerHTML = tkFill(ceSampleOverride(id) || node.innerHTML);
     sheetType.textContent = node.getAttribute('data-type');
     sheet.classList.remove('lead-cold','lead-warm','lead-hot');
     (node.className.match(/lead-\w+/g)||[]).forEach(function(c){ sheet.classList.add(c); });
@@ -1061,8 +980,8 @@
   setView(location.hash.slice(1)||'home', false);
 
   /* ===== live content editor (?edit=1) — edits sync via shared Firestore ===== */
-  var CE_ID='firm-prospect-v1'; /* the firm edition's own slot: edits here never reach prospect-playbook.html, and its edits never reach this page */
-  var ceWANT=/[?&]edit=1/.test(location.search), ceEDIT=false; /* ceEDIT turns on only once the editor password gate passes */
+  var CE_ID='prospect-v3'; /* content baked into this page; the 'prospect-v2' and pre-bake 'prospect' docs are retained but no longer applied */
+  var ceWANT=false, ceEDIT=false; /* a firm edition is never edited itself: it shows the live page's edits (same CE_ID), firm-filled */
   /* editor password gate: the shell (index.html) asks for the password and keeps a hash of it in
      localStorage; this page holds only a hash of that hash, so the source never reveals the password */
   var CE_GATE='84a5c1b87a7af5fedd739eae37d286a5d79854d70f54048a700e61ad9caa0c42';
@@ -1074,7 +993,7 @@
   function ceCollect(){
     var sel='h1,h2,h3,h4,p,dt,dd,li,th,td,.eyebrow,.hero-eyebrow,.tagword,.kick,.k,.sub,.samples-note,.prev,.type,.chip';
     function ok(el){
-      if(el.closest('.nav,.drawer,.tabs,.footer,.sheet,.sample-store,.view-next,.backlink,.email-chrome,[data-firm]')) return false;
+      if(el.closest('.nav,.drawer,.tabs,.footer,.sheet,.sample-store,.view-next,.backlink,.email-chrome')) return false;
       if(el.querySelector('[data-go],button,a[href]')) return false;
       return true;
     }
@@ -1091,10 +1010,10 @@
   function ceApply(){
     ceKeyed.forEach(function(el){
       var k=el.getAttribute('data-k');
-      if(Object.prototype.hasOwnProperty.call(ceOverrides,k) && document.activeElement!==el && el.innerHTML!==ceOverrides[k]){ el.innerHTML=ceOverrides[k]; }
+      if(el.hasAttribute('data-firm') || !Object.prototype.hasOwnProperty.call(ceOverrides,k)) return; var v=tkFill(ceOverrides[k]); if(document.activeElement!==el && el.innerHTML!==v){ el.innerHTML=v; }
     });
     if(ceCurrentSample && sheet.classList.contains('open') && document.activeElement!==sheetBody){
-      var ov=ceSamples['sample::'+ceCurrentSample];
+      var ov=tkFill(ceSamples['sample::'+ceCurrentSample]);
       if(ov && sheetBody.innerHTML!==ov) sheetBody.innerHTML=ov;
     }
   }
