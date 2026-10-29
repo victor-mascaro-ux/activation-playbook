@@ -7,6 +7,6 @@
   "gate": "4e7d11a43f5b548245b94c40fbfe25d8f14d4946d5de76420e8d5430af75a881",
   "baseline": {
     "prospect": { "conversion": "11", "days": "74", "revenue": "8,500" },
-    "recruit": { "signed": "15", "days": "150", "aum": "250" }
+    "recruit": { "joined": "15", "days": "150", "aum": "250" }
   }
 }

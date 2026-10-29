@@ -88,24 +88,35 @@ update the matching line in the build script.
 ### Fill-in templates
 
 In the firm editions an open sample is a form: every `{{Placeholder}}` is a
-field to type into, and every call to action has a field under it for the
-advisor's Knomee link. **Copy Text stays off until all of them are filled**,
-and the hint beside it says what's left. It then copies formatted text, with
-the call to action a real button-link in the firm's colour, plus a plain-text
-version where the link follows the button's words. The sample's From line
-follows the advisor's name as it's typed.
+field to type into. **Copy Text stays off until all of them are filled**, and
+the hint beside it says what's left. It then copies formatted text plus a
+plain-text version. The sample's From line follows the advisor's name as it's
+typed.
 
-- The link gets UTM tags, so starts can be counted per template:
+Only the invite emails have a field for the advisor's Knomee invite link under
+their call to action. These are the samples Knomee's own Invite modal sends,
+listed in knomee-demo's `src/data/inviteEmails.ts`: `cold-2` and `hot-1`
+(Prospect), and `eng-1`, `eng-2`, `dis-1` and `dis-2` (Client). The list lives
+in `INVITE` in `firm.js`, so a change to the modal's emails needs a change
+there too. In an invite email, the copied call to action is a real
+button-link in the firm's colour, and in plain text the link follows the
+button's words. Every other call to action keeps its button look, and the
+advisor links it in their own email tool. The Recruit Toolkit has no invite
+emails, because Invite Advisor sends a link rather than an email. Three
+samples write `{{Link}}` into their own text (`warm-4`, `inbound-4`,
+`outreach-2`). That stays a field like any other placeholder.
+
+- The invite link gets UTM tags, so starts can be counted per template:
   `utm_source=knomee-toolkit`, `utm_medium` (email, social, paid, event,
   print), `utm_campaign=<firm slug>`, and `utm_content=<sample id>`.
   If the advisor's own link already carries UTM tags, it's left as it is.
 - The advisor's (or recruiter's) name and link fill in every sample while
   the tab stays open, the link separately per toolkit, since prospect and
-  recruit invites are different links. Advisors may share a computer, so
+  client invites are different links. Advisors may share a computer, so
   they're gone once the tab or window closes (sessionStorage), and the ones
   an earlier version kept for good are erased on the next visit. Nothing
   typed is sent anywhere or recorded in the usage events.
-- Samples without placeholders or a call to action copy as before.
+- Samples with no placeholders and no invite link copy as before.
 - **Samples copy through Copy Text only.** The sample's text doesn't select,
   and a hand copy (Ctrl+C, the menu's Copy) copies nothing: the button
   shakes and the hint says to use Copy Text. That keeps every copy filled in,
@@ -123,9 +134,9 @@ against, the same three Prospect Analytics and Candidate Analytics show in knome
 | Prospect | Conversion rate (%) | `conversion` |
 | Prospect | Time to client (days) | `days` |
 | Prospect | Revenue per client ($) | `revenue` |
-| Recruit | Conversation-to-signed rate (%) | `signed` |
+| Recruit | Joining rate (%) | `joined` |
 | Recruit | Time to decision (days) | `days` |
-| Recruit | AUM per signed advisor ($M) | `aum` |
+| Recruit | AUM per advisor who joined ($M) | `aum` |
 
 In the firm editions each one is a number field. The numbers belong to the firm, not to one browser: everyone at the
 firm reads and changes the same Firestore document, `toolkit-baselines/<slug>_<kit>` (for example
@@ -142,13 +153,13 @@ match /toolkit-baselines/{id} {
   function num(d, k) { return !(k in d) || (d[k] is string && d[k].matches('^[0-9.,]{0,12}$')); }
   allow read: if id.matches('^[a-z0-9-]{1,40}_(prospect|recruit)(_dev)?$');
   allow create, update: if id.matches('^[a-z0-9-]{1,40}_(prospect|recruit)(_dev)?$')
-    && request.resource.data.keys().hasOnly(['firm','kit','at','conversion','days','revenue','signed','aum'])
+    && request.resource.data.keys().hasOnly(['firm','kit','at','conversion','days','revenue','joined','aum'])
     && request.resource.data.firm is string
     && request.resource.data.kit in ['prospect','recruit']
     && id.matches('^' + request.resource.data.firm + '_' + request.resource.data.kit + '(_dev)?$')
     && request.resource.data.at == request.time
     && num(request.resource.data, 'conversion') && num(request.resource.data, 'days')
-    && num(request.resource.data, 'revenue') && num(request.resource.data, 'signed')
+    && num(request.resource.data, 'revenue') && num(request.resource.data, 'joined')
     && num(request.resource.data, 'aum');
   allow delete: if false;
 }
@@ -160,7 +171,7 @@ made it, and the numbers can be read by anyone who has the site's public Firebas
 ```json
 "baseline": {
   "prospect": { "conversion": "11", "days": "74", "revenue": "8,500" },
-  "recruit": { "signed": "15", "days": "150", "aum": "250" }
+  "recruit": { "joined": "15", "days": "150", "aum": "250" }
 }
 ```
 
