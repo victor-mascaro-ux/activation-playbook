@@ -99,10 +99,10 @@ follows the advisor's name as it's typed.
   `utm_source=knomee-toolkit`, `utm_medium` (email, social, paid, event,
   print), `utm_campaign=<firm slug>`, and `utm_content=<sample id>`.
   If the advisor's own link already carries UTM tags, it's left as it is.
-- The advisor's (or recruiter's) name and their link are remembered in their
-  own browser, the link separately per toolkit, since prospect and recruit
-  invites are different links. Nothing typed is sent anywhere or recorded in
-  the usage events.
+- Nothing typed is kept, sent anywhere or recorded in the usage events.
+  Advisors may share a computer, so every sample opens with empty fields,
+  and the names and links an earlier version remembered are erased on the
+  next visit.
 - Samples without placeholders or a call to action copy as before.
 - **Samples copy through Copy Text only.** The sample's text doesn't select,
   and a hand copy (Ctrl+C, the menu's Copy) copies nothing: the button
