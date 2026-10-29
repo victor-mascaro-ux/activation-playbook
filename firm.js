@@ -104,7 +104,33 @@
     s.className='tk-field'+(link?' tk-link':''); s.setAttribute('data-field',k);
     s.setAttribute('data-ph',link?'Paste your Knomee link':k); s.setAttribute('aria-label',link?'Your Knomee link':k);
     s.setAttribute('contenteditable','true'); s.setAttribute('role','textbox'); s.setAttribute('spellcheck',link?'false':'true');
-    return s;
+    return DATE.test(k) && PICKS ? datePick(s,k) : s;
+  }
+  /* A day ({{Day}}) is picked, not typed: a click opens the browser's calendar, and the field says the day as the
+     email would ("Thursday, November 5"). The date input under it is never copied (data-tk-skip). A browser with no
+     calendar to open keeps the field typed. */
+  var DATE=/\b(day|date)\b/i, PICKS=typeof HTMLInputElement!=='undefined' && 'showPicker' in HTMLInputElement.prototype;
+  function ymd(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function longDay(v){ var p=v.split('-'); return new Date(+p[0],p[1]-1,+p[2]).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
+  function datePick(s,k){
+    s.removeAttribute('contenteditable'); s.removeAttribute('spellcheck');
+    s.setAttribute('role','button'); s.setAttribute('tabindex','0'); s.setAttribute('aria-label',k+': pick a date');
+    var pick=document.createElement('input'), wrap=document.createElement('span');
+    pick.type='date'; pick.className='tk-date-pick'; pick.min=ymd(new Date()); pick.tabIndex=-1;
+    pick.setAttribute('aria-hidden','true'); pick.setAttribute('data-tk-skip','');
+    wrap.className='tk-date'; wrap.appendChild(s); wrap.appendChild(pick);
+    function open(){ try{ pick.showPicker(); }catch(e){} }
+    s.addEventListener('click',open);
+    /* added before tkFields' own keys, so Enter opens the calendar here rather than moving on */
+    s.addEventListener('keydown',function(e){
+      if(e.key!=='Enter' && e.key!==' ') return;
+      e.preventDefault(); e.stopImmediatePropagation(); open();
+    });
+    pick.addEventListener('change',function(){
+      if(!pick.value) return;
+      s.textContent=longDay(pick.value); s.dispatchEvent(new Event('input',{bubbles:true}));
+    });
+    return wrap;
   }
   function val(f){ return f.textContent.replace(/\s+/g,' ').trim(); }
   function filled(f){ var v=val(f); return !!v && (f.getAttribute('data-field')!=='Link' || linkOk(v)); }

@@ -32,6 +32,13 @@ body:has(.sheet.open) .powered-by,body:has(.drawer.open) .powered-by,body.ce-on 
 .tk-field.is-done{background:color-mix(in srgb,var(--lead,#7639a1) 5%,#fff);box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--lead,#7639a1) 30%,transparent)}
 .tk-field.is-done:focus{box-shadow:inset 0 0 0 1.5px var(--lead,#7639a1)}
 .tk-field.is-bad,.tk-field.is-bad:focus{box-shadow:inset 0 -2px 0 #d81e4a}
+/* a day ({{Day}}) is picked from the browser's calendar (firm.js datePick): a calendar mark after it, and the date
+   input it opens sits unseen at the field's foot, so the calendar opens under the field */
+.tk-date{position:relative;display:inline-block;max-width:100%}
+.tk-date .tk-field{cursor:pointer}
+.tk-date .tk-field::after{content:'';display:inline-block;width:.85em;height:.85em;margin-left:.35em;vertical-align:-.1em;background:color-mix(in srgb,var(--lead,#7639a1) 75%,#6d6478);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round'%3E%3Crect x='2' y='3' width='12' height='11' rx='2'/%3E%3Cpath d='M2 6.5h12M5.5 1.5v3M10.5 1.5v3'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round'%3E%3Crect x='2' y='3' width='12' height='11' rx='2'/%3E%3Cpath d='M2 6.5h12M5.5 1.5v3M10.5 1.5v3'/%3E%3C/svg%3E") center/contain no-repeat}
+.tk-date .tk-field:focus-visible{background:#fff;box-shadow:inset 0 0 0 1.5px var(--lead,#7639a1)}
+.tk-date-pick{position:absolute;left:0;bottom:0;width:1px;height:1px;padding:0;border:0;opacity:0;pointer-events:none}
 .tk-linkrow{display:flex;align-items:center;gap:.45rem;margin:.6rem 0 1rem;color:var(--lead,#7639a1);font-size:.92em}
 .tk-linkrow svg{flex-shrink:0}
 .tk-linkrow .tk-field{flex:1 1 auto;min-width:0}
