@@ -67,6 +67,28 @@ the editor's element keys line up with the live page's. If the build ever
 stops on a line that no longer matches, a live page's markup has moved:
 update the matching line in the build script.
 
+### Fill-in templates
+
+In the firm editions an open sample is a form: every `{{Placeholder}}` is a
+field to type into, and every call to action has a field under it for the
+advisor's Knomee link. **Copy Text stays off until all of them are filled**,
+and the hint beside it says what's left. It then copies formatted text, with
+the call to action a real button-link in the firm's colour, plus a plain-text
+version where the link follows the button's words. The sample's From line
+follows the advisor's name as it's typed.
+
+- The link gets UTM tags, so starts can be counted per template:
+  `utm_source=knomee-toolkit`, `utm_medium` (email, social, paid, event,
+  print), `utm_campaign=<firm slug>`, and `utm_content=<sample id>`.
+  If the advisor's own link already carries UTM tags, it's left as it is.
+- The advisor's (or recruiter's) name and their link are remembered in their
+  own browser, the link separately per toolkit, since prospect and recruit
+  invites are different links. Nothing typed is sent anywhere or recorded in
+  the usage events.
+- Samples without placeholders or a call to action copy as before.
+- `firm.js` (`tkFields`, `tkCopy`) holds this; the build wires it into the
+  sample tray. The live pages are unchanged.
+
 ### Firm password (welcome screen)
 
 A firm whose config has a `"gate"` opens on a welcome screen in its own brand:

@@ -85,11 +85,18 @@ def build_kit(kit, label):
           '<span class="hero-eyebrow anim" data-firm-eyebrow data-firm>Knomee Activation Toolkit</span>')
     p.sub('<div style="font-size:.85rem">© Knomee | Confidential · %s Toolkit' % label,
           '<div style="font-size:.85rem"><span data-firm-footer data-firm></span>© Knomee | Confidential · %s Toolkit' % label)
-    # a sample edited on the live page opens with the firm's name in it
+    # a sample edited on the live page opens with the firm's name in it, and with its {{placeholders}} as fields
+    # (tkFields keeps the text it started from in data-src, so a live edit is spotted against that, not the fields)
     p.sub("sheetBody.innerHTML = ceSampleOverride(id) || node.innerHTML;",
-          "sheetBody.innerHTML = tkFill(ceSampleOverride(id) || node.innerHTML);")
+          "sheetBody.innerHTML = tkFill(ceSampleOverride(id) || node.innerHTML); tkFields(sheetBody, id);")
     p.sub("var ov=ceSamples['sample::'+ceCurrentSample];",
           "var ov=tkFill(ceSamples['sample::'+ceCurrentSample]);")
+    p.sub("if(ov && sheetBody.innerHTML!==ov) sheetBody.innerHTML=ov;",
+          "if(ov && sheetBody.getAttribute('data-src')!==ov){ sheetBody.innerHTML=ov; tkFields(sheetBody, ceCurrentSample); }")
+    # Copy Text: a sample with fields copies through firm.js once they're all filled (formatted, with the link)
+    p.sub("  copyBtn.addEventListener('click', function(){\n",
+          "  copyBtn.addEventListener('click', function(){\n"
+          "    if(tkCopy(sheetBody, ceCurrentSample, sheetType.textContent)) return;\n")
 
     # usage events from the existing interactions
     p.sub("    document.title = (id==='home'?'':meta[id][1]+' · ')+'Knomee — The %s Toolkit';\n" % label,

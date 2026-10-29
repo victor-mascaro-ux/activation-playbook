@@ -24,6 +24,19 @@
 body:has(.sheet.open) .powered-by,body:has(.drawer.open) .powered-by,body.ce-on .powered-by{display:none}
 @media(max-width:720px){.powered-by{left:12px;bottom:10px}}
 
+/* ── fill-in templates: each {{Placeholder}} is a field in the sample, tinted in its lead colour; a link field sits
+   under every call to action; Copy Text waits until all of them are filled ── */
+.tk-field{display:inline-block;max-width:100%;min-width:3ch;padding:0 .4em;border-radius:6px;background:color-mix(in srgb,var(--lead,#7639a1) 10%,#fff);box-shadow:inset 0 -2px 0 color-mix(in srgb,var(--lead,#7639a1) 50%,transparent);color:var(--ink,#221833);outline:none;cursor:text;white-space:pre-wrap;overflow-wrap:anywhere;transition:background .15s,box-shadow .15s}
+.tk-field:empty::before{content:attr(data-ph);color:color-mix(in srgb,var(--lead,#7639a1) 75%,#6d6478)}
+.tk-field:focus{background:#fff;box-shadow:inset 0 0 0 1.5px var(--lead,#7639a1)}
+.tk-field.is-done{background:color-mix(in srgb,var(--lead,#7639a1) 5%,#fff);box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--lead,#7639a1) 30%,transparent)}
+.tk-field.is-done:focus{box-shadow:inset 0 0 0 1.5px var(--lead,#7639a1)}
+.tk-field.is-bad,.tk-field.is-bad:focus{box-shadow:inset 0 -2px 0 #d81e4a}
+.tk-linkrow{display:flex;align-items:center;gap:.45rem;margin:.6rem 0 1rem;color:var(--lead,#7639a1);font-size:.92em}
+.tk-linkrow svg{flex-shrink:0}
+.tk-linkrow .tk-field{flex:1 1 auto;min-width:0}
+.copy-btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+
 /* ── the welcome screen: knomee-demo's sign-in card (src/screens/signUp.css) in the firm's brand ──
    The firm's colour fills the screen, its white logo sits over the card, and the credit holds the foot.
    Nothing of the page behind shows until the password is in. */

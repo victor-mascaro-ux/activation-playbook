@@ -314,8 +314,8 @@
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<link rel="stylesheet" href="firm.css?v=788899cfe9">
-<script src="firm.js?v=36e5c91e38" data-kit="client"></script>
+<link rel="stylesheet" href="firm.css?v=5517e4682a">
+<script src="firm.js?v=03633ad684" data-kit="client"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
@@ -787,7 +787,7 @@
   function openSheet(id){
     var node = store.querySelector('[data-sample-id="'+id+'"]'); if(!node) return;
     ceCurrentSample = id;
-    sheetBody.innerHTML = tkFill(ceSampleOverride(id) || node.innerHTML);
+    sheetBody.innerHTML = tkFill(ceSampleOverride(id) || node.innerHTML); tkFields(sheetBody, id);
     sheetType.textContent = node.getAttribute('data-type');
     sheet.classList.remove('lead-engaged','lead-disengaged');
     (node.className.match(/lead-\w+/g)||[]).forEach(function(c){ sheet.classList.add(c); });
@@ -813,6 +813,7 @@
 
   function resetCopy(){ copyBtn.classList.remove('done'); copyBtn.querySelector('span').textContent='Copy Text'; }
   copyBtn.addEventListener('click', function(){
+    if(tkCopy(sheetBody, ceCurrentSample, sheetType.textContent)) return;
     var src = sheetBody.querySelector('[data-copy]') || sheetBody;
     var text = src.innerText.replace(/\n{3,}/g,'\n\n').trim();
     tkTrack('copy',{sample:ceCurrentSample,label:sheetType.textContent,how:'button'});
@@ -870,7 +871,7 @@
     });
     if(ceCurrentSample && sheet.classList.contains('open') && document.activeElement!==sheetBody){
       var ov=tkFill(ceSamples['sample::'+ceCurrentSample]);
-      if(ov && sheetBody.innerHTML!==ov) sheetBody.innerHTML=ov;
+      if(ov && sheetBody.getAttribute('data-src')!==ov){ sheetBody.innerHTML=ov; tkFields(sheetBody, ceCurrentSample); }
     }
   }
   function ceSplit(data){
