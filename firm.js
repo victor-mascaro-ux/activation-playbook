@@ -374,7 +374,7 @@
       var k=td.getAttribute('data-baseline'), unit=td.textContent.split(/_+/), m=td.parentNode.querySelector('.m');
       var said=unit[1].trim()==='%' ? 'percent' : unit[1].trim()==='M' ? 'millions of dollars' : unit[0].trim()==='$' ? 'dollars' : unit[1].trim();
       var last=given[k]!=null ? String(given[k]) : '';
-      if(given[k]!=null) prefilled=true;
+      if(given[k]!=null && given[k]!=='') prefilled=true; /* a number skipped at setup is blank, to add here */
       td.setAttribute('data-firm',''); td.classList.add('tk-base-cell'); td.textContent='';
       var w=document.createElement('label'); w.className='tk-base';
       var inp=document.createElement('input');
@@ -494,7 +494,8 @@
 
   /* ── the demo setup screen: activation.knomee.com/<firm>/?setup=1 ──
      For showing a firm's onboarding, and only for demo firms (Victor, 2026-10-29). In the firm's brand, it asks for
-     the firm's baseline, both toolkits', and a password for its advisors, then opens the toolkits.
+     the firm's baseline, both toolkits', which can wait (blank numbers are added later in each Baseline), and a
+     password for its advisors, typed twice, which can't. Then it opens the toolkits.
      - The numbers go where the Baseline sections read them: the firm's Firestore documents, and this tab (demo()),
        in case Firestore can't take them yet.
      - The password is for this tab only: the welcome screen accepts it beside the firm's real one, which stays as
@@ -529,9 +530,9 @@
         (f.logo ? '<img class="fg-logo" src="'+f.logo+'" alt="'+safe+'">' : '<div class="fg-name">'+safe+'</div>')+
         '<form class="fg-card fg-setup" novalidate>'+
           '<div class="fg-title" id="fgTitle" role="heading" aria-level="1">Set up your Activation Toolkits</div>'+
-          '<p class="fg-sub">Two things before your advisors start: where '+safe+' is today, and the password they’ll use.</p>'+
+          '<p class="fg-sub">Where '+safe+' is today, if you have the numbers, and the password your advisors will use.</p>'+
           '<fieldset class="fg-set"><legend class="fg-legend">Your baseline today</legend>'+
-            '<p class="fg-help">Your numbers before Knomee, which the lift is measured against. Everyone at '+safe+' sees them in each toolkit’s Baseline.</p>'+
+            '<p class="fg-help">Your numbers before Knomee, which the lift is measured against. Optional: you can add them later in each toolkit’s Baseline.</p>'+
             groups+
           '</fieldset>'+
           '<fieldset class="fg-set"><legend class="fg-legend">Your advisors’ password</legend>'+
@@ -541,27 +542,23 @@
             '<p class="fg-error" id="fgError" role="alert"></p>'+
           '</fieldset>'+
           '<button class="fg-continue" type="submit" disabled>Open the Toolkits<svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true"><path d="M2 1l6 4-6 4z" fill="currentColor"/></svg></button>'+
-          '<p class="fg-hint" id="fgHint" aria-live="polite"></p>'+
         '</form>'+
       '</div>'+
       (f.brand!=='white' ? '<div class="fg-foot"><span class="fg-credit"><span class="powered-by-text">powered by</span><img class="powered-by-logo" src="knomee-logo-plum.svg" alt="knomee"></span></div>' : '');
     document.body.appendChild(g);
     var nums=Array.prototype.slice.call(g.querySelectorAll('.fg-num input'));
     var pw=g.querySelector('#fgNew'), again=g.querySelector('#fgConfirm'), err=g.querySelector('#fgError');
-    var btn=g.querySelector('.fg-continue'), hint=g.querySelector('#fgHint');
+    var btn=g.querySelector('.fg-continue');
     Array.prototype.forEach.call(g.querySelectorAll('.pw-eye'),function(b){ pwEye(b,g.querySelector('#'+b.getAttribute('aria-controls'))); });
     /* a click anywhere on a number's box lands in its field */
     Array.prototype.forEach.call(g.querySelectorAll('.fg-num'),function(box){ box.addEventListener('mousedown',function(e){ if(e.target!==box.querySelector('input')){ e.preventDefault(); box.querySelector('input').focus(); } }); });
+    /* only the password is required; the numbers can wait for each toolkit's Baseline */
     function update(){
-      var missing=nums.filter(function(i){ return !i.value.trim(); }).length, p=pw.value, c=again.value;
+      var p=pw.value, c=again.value;
       var mismatch=!!c && (p.indexOf(c)!==0 || (document.activeElement!==again && c!==p));
       err.textContent=mismatch ? 'The passwords don’t match.' : '';
       if(mismatch) again.setAttribute('aria-invalid','true'); else again.removeAttribute('aria-invalid');
-      var left=[];
-      if(missing) left.push(missing===nums.length ? 'the '+missing+' numbers' : missing===1 ? '1 more number' : missing+' more numbers');
-      if(p.length<4) left.push('a password of at least 4 characters'); else if(c!==p) left.push('the same password twice');
-      btn.disabled=left.length>0;
-      hint.textContent=left.length ? 'Add '+left.join(' and ')+' to continue.' : '';
+      btn.disabled=p.length<4 || c!==p;
     }
     nums.forEach(function(i,n){
       i.addEventListener('input',function(){ var v=i.value.replace(/[^\d.,]/g,''); if(v!==i.value) i.value=v; update(); });
@@ -581,9 +578,10 @@
         var saves=[];
         try{
           if(col()) SETUP.forEach(function(s){
-            var d={firm:FIRM, kit:s.kit, at:firebase.firestore.FieldValue.serverTimestamp()};
-            Object.keys(vals[s.kit]).forEach(function(k){ d[k]=vals[s.kit][k]; });
-            saves.push(firebase.firestore().collection('toolkit-baselines').doc(FIRM+'_'+s.kit+(base.env==='dev' ? '_dev' : ''))
+            /* only the numbers given: one left blank doesn't wipe what the firm already has */
+            var d={firm:FIRM, kit:s.kit, at:firebase.firestore.FieldValue.serverTimestamp()}, any=false;
+            Object.keys(vals[s.kit]).forEach(function(k){ if(vals[s.kit][k]){ d[k]=vals[s.kit][k]; any=true; } });
+            if(any) saves.push(firebase.firestore().collection('toolkit-baselines').doc(FIRM+'_'+s.kit+(base.env==='dev' ? '_dev' : ''))
               .set(d,{merge:true}).catch(function(x){ console.warn('setup baseline not saved',x); }));
           });
         }catch(x){}
