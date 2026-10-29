@@ -309,12 +309,57 @@
       if(f.domain) u=u.split('@acme.com').join('@'+f.domain);
       if(u!==t) n.nodeValue=u;
     }
+    baseline(f);
 
     if(f.brand!=='white'){
       var c=document.createElement('span'); c.className='powered-by';
       c.innerHTML='<span class="powered-by-text">powered by</span><img class="powered-by-logo" src="knomee-logo-plum.svg" alt="knomee">';
       document.body.appendChild(c);
     }
+  }
+
+  /* ── Know Your Baseline: the numbers Prospect / Candidate Analytics measures the lift against ──
+     Each [data-baseline] cell on the live page ("___ %", "$___M") becomes a number field with its unit around it.
+     It opens with what this browser saved, else the firm's onboarding numbers (firms/<slug>.json "baseline", per
+     toolkit). A changed number is saved in this browser and sent as a usage event — the metric and the number,
+     nothing else — since it's what the lift is measured against. data-firm keeps a live edit from replacing it. */
+  function baseline(f){
+    var cells=document.querySelectorAll('[data-baseline]'); if(!cells.length) return;
+    var name=f.name||FIRM, given=(f.baseline||{})[KIT]||{}, BKEY='knomee-toolkit-baseline:'+FIRM+':'+KIT, saved;
+    try{ saved=JSON.parse(store(BKEY)||'{}')||{}; }catch(e){ saved={}; }
+    var inputs=[], prefilled=false;
+    var note=document.createElement('p'); note.className='tk-base-note anim'; note.setAttribute('role','status');
+    Array.prototype.forEach.call(cells,function(td){
+      var k=td.getAttribute('data-baseline'), unit=td.textContent.split(/_+/), m=td.parentNode.querySelector('.m');
+      var said=unit[1].trim()==='%' ? 'percent' : unit[1].trim()==='M' ? 'millions of dollars' : unit[0].trim()==='$' ? 'dollars' : unit[1].trim();
+      var last=Object.prototype.hasOwnProperty.call(saved,k) ? saved[k] : (given[k]!=null ? String(given[k]) : '');
+      if(given[k]!=null) prefilled=true;
+      td.setAttribute('data-firm',''); td.classList.add('tk-base-cell'); td.textContent='';
+      var w=document.createElement('label'); w.className='tk-base';
+      var inp=document.createElement('input');
+      inp.type='text'; inp.inputMode='decimal'; inp.autocomplete='off'; inp.maxLength=12; inp.value=last; inp.placeholder='—';
+      inp.setAttribute('aria-label',(m ? m.textContent+', ' : '')+'your baseline today'+(said ? ', in '+said : ''));
+      /* every field gets the prefix slot, empty or "$", so the fields line up down the column */
+      var num=document.createElement('span'); num.className='tk-base-num';
+      var pre=document.createElement('span'); pre.className='tk-base-unit tk-base-pre'; pre.textContent=unit[0].trim();
+      num.appendChild(pre); num.appendChild(inp); w.appendChild(num);
+      if(unit[1].trim()){ var post=document.createElement('span'); post.className='tk-base-unit'; post.textContent=unit[1].trim(); w.appendChild(post); }
+      td.appendChild(w); inputs.push(inp);
+      inp.addEventListener('input',function(){ var v=inp.value.replace(/[^\d.,]/g,''); if(v!==inp.value) inp.value=v; });
+      inp.addEventListener('keydown',function(e){
+        if(e.key!=='Enter') return;
+        e.preventDefault(); var next=inputs[inputs.indexOf(inp)+1]; if(next) next.focus(); else inp.blur();
+      });
+      inp.addEventListener('change',function(){
+        var v=inp.value.trim(); if(v===last) return;
+        last=v; saved[k]=v; store(BKEY,JSON.stringify(saved));
+        tkTrack('baseline',{metric:k,value:v});
+        note.textContent='Saved. Knomee measures the lift against these numbers.';
+      });
+    });
+    note.textContent=prefilled ? 'From what '+name+' shared at onboarding. Change any number that has moved.'
+      : 'Add where '+name+' is today, before Knomee, to measure the lift against.';
+    var wrap=cells[0].closest('.table-wrap'); if(wrap) wrap.insertAdjacentElement('afterend',note);
   }
 
   /* ── the welcome screen (firms with a password) ── */
