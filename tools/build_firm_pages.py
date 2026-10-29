@@ -56,6 +56,10 @@ class Page:
 def common(p, kit):
     p.sub('<meta name="viewport" content="width=device-width, initial-scale=1">\n',
           '<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="robots" content="noindex">\n')
+    # the live pages aren't public (staff-gate.js); a firm page is, behind its firm's own welcome screen, so the
+    # gate only steps in here when the page has no firm
+    p.sub('<script src="staff-gate.js"></script>\n',
+          '<script src="staff-gate.js?v=%s" data-firm-page></script>\n' % version('staff-gate.js'))
     p.sub('<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>\n',
           '<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>\n'
           '<link rel="stylesheet" href="firm.css?v=%s">\n'

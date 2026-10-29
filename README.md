@@ -19,7 +19,19 @@ any page.
 - **Firm editions**, branded for one firm and counting how they're used (see
   below): `toolkits.html` (the landing), `prospect-toolkit.html`,
   `client-toolkit.html` and `recruit-toolkit.html`. They are built from the
-  live pages above, which stay as they are for the advisors already using them.
+  pages above.
+
+## What's public
+
+Only two doors are open to anyone: **each firm's link** (`/acme`, behind the
+firm's welcome screen) and **the editor** (`index.html?edit=1`, behind the
+editor password). Every other page (`home.html`, the `*-playbook.html`
+toolkits, the older decks, and a firm page opened without a firm or with an
+unknown one) shows a "Knomee team only" screen that takes the editor password.
+`staff-gate.js`, loaded first in each of those pages, does this. It uses the
+editor's own token, so a browser that has unlocked the editor opens them all
+straight away. Advisors who still have an old toolkit link see that screen,
+with a note to use the link their firm sent.
 
 ## Firm toolkits
 
@@ -193,8 +205,9 @@ The password itself is never in the source. Unlocking stores
 `sha256('knomee-edit:' + password)` as the token, and the shell and each page
 compare `sha256(token)` with `CE_GATE`. To change the password, compute the new
 value and replace `CE_GATE` in `index.html`, `home.html`,
-`prospect-playbook.html`, `client-playbook.html` and `recruit-playbook.html`
-(the firm editions can't be edited, so they need no gate of their own):
+`prospect-playbook.html`, `client-playbook.html` and `recruit-playbook.html`,
+and `GATE` in `staff-gate.js` (the firm editions can't be edited, so they need
+no editor gate of their own):
 
 ```bash
 python -c "import hashlib,getpass;t=hashlib.sha256(('knomee-edit:'+getpass.getpass()).encode()).hexdigest();print(hashlib.sha256(t.encode()).hexdigest())"
@@ -202,7 +215,8 @@ python -c "import hashlib,getpass;t=hashlib.sha256(('knomee-edit:'+getpass.getpa
 
 This only stops casual access: the site is static, so someone determined could
 still write to Firestore directly. The older always-editable decks
-(`knomee_playbook.html`, `*-pdf.html`) aren't gated.
+(`knomee_playbook.html`, `*-pdf.html`) have no editor gate, but since they
+aren't public they sit behind `staff-gate.js` like the other pages.
 
 ## Serving locally
 
