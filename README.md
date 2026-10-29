@@ -27,11 +27,17 @@ Only two doors are open to anyone: **each firm's link** (`/acme`, behind the
 firm's welcome screen) and **the editor** (`index.html?edit=1`, behind the
 editor password). Every other page (`home.html`, the `*-playbook.html`
 toolkits, the older decks, and a firm page opened without a firm or with an
-unknown one) shows a "Knomee team only" screen that takes the editor password.
-`staff-gate.js`, loaded first in each of those pages, does this. It uses the
-editor's own token, so a browser that has unlocked the editor opens them all
-straight away. Advisors who still have an old toolkit link see that screen,
-with a note to use the link their firm sent.
+unknown one) is closed. It shows a "This page isn't public" card that asks for
+nothing and tells advisors to use the link their firm sent. A small link takes
+the Knomee team to the same page in the editor, the only place the editor
+password is asked for. `staff-gate.js`, loaded first in each of those pages,
+does this.
+
+Both passwords unlock the browser until it closes (a session cookie, shared by
+its tabs). The next visit asks again. Browsers that restore their last session
+on start-up may keep it too. All of this stops casual access only: the site is
+static and the repo is public, so the pages' content can be read from the
+source.
 
 ## Firm toolkits
 
@@ -138,9 +144,10 @@ blank (`data-baseline` marks them).
 
 A firm whose config has a `"gate"` opens on a welcome screen in its own brand:
 its colour fills the screen, its white logo sits over a sign-in card (the
-knomee-demo sign-in card), and "POWERED BY knomee" holds the foot. Once the
-right password is in, that browser stays unlocked for all of the firm's
-pages. ACME's password is set.
+knomee-demo sign-in card), and "POWERED BY knomee" holds the foot. An eye at
+the end of the field shows what's typed. Once the right password is in, that
+browser stays unlocked for all of the firm's pages until it closes. ACME's
+password is set.
 
 ```bash
 python tools/firm_password.py acme            # set or change it (asked for, not shown)
@@ -148,7 +155,8 @@ python tools/firm_password.py acme --remove   # no password
 ```
 
 The config keeps only `sha256(sha256('knomee-firm:<slug>:' + password))`, and
-the browser keeps the inner hash, so the password itself is never stored.
+the browser keeps the inner hash in a session cookie, so the password itself is
+never stored.
 Changing it sends every browser back to the welcome screen. Like the editor
 password, this stops casual access only: the site is static, the config is
 public, and the same toolkits are open on the live pages. Inside the
@@ -227,18 +235,19 @@ Config lives at the top of the `<script>` block in `index.html` (`PROJECT_ID`,
 
 The editor (`index.html?page=<file>&edit=1`, or any toolkit page with
 `?edit=1`) is behind a password. The shell shows a lock screen first and
-loads nothing behind it until the password is entered. Once someone unlocks it,
-their browser stays unlocked (the token lives in `localStorage` under
-`knomee-edit-token`). Each toolkit page also checks that token before it turns
-its own editor on, so `?edit=1&raw=1` can't get around the gate.
+loads nothing behind it until the password is entered. An eye at the end of
+the field shows what's typed. Once someone unlocks it, their browser stays
+unlocked until it closes (the token is a session cookie, `knomee-edit-token`).
+Each toolkit page also checks that token before it turns its own editor on, and
+`staff-gate.js` closes a page opened with `?edit=1&raw=1`, so that can't get
+around the gate.
 
 The password itself is never in the source. Unlocking stores
 `sha256('knomee-edit:' + password)` as the token, and the shell and each page
 compare `sha256(token)` with `CE_GATE`. To change the password, compute the new
 value and replace `CE_GATE` in `index.html`, `home.html`,
-`prospect-playbook.html`, `client-playbook.html` and `recruit-playbook.html`,
-and `GATE` in `staff-gate.js` (the firm editions can't be edited, so they need
-no editor gate of their own):
+`prospect-playbook.html`, `client-playbook.html` and `recruit-playbook.html`
+(the firm editions can't be edited, so they need no editor gate of their own):
 
 ```bash
 python -c "import hashlib,getpass;t=hashlib.sha256(('knomee-edit:'+getpass.getpass()).encode()).hexdigest();print(hashlib.sha256(t.encode()).hexdigest())"
