@@ -71,7 +71,9 @@
     try{
       var cfg={apiKey:"AIzaSyBqmxrO__M6mGypXsxQ_HgCu81qs8mXe90",authDomain:"knomee-playbook.firebaseapp.com",projectId:"knomee-playbook",storageBucket:"knomee-playbook.firebasestorage.app",messagingSenderId:"956493019959",appId:"1:956493019959:web:13f099b4ea42ef948d78b2"};
       if(!firebase.apps.length) firebase.initializeApp(cfg);
-      events=firebase.firestore().collection('toolkit-events');
+      /* under the one collection the project's rules already open (as knomee-demo's directory is), so the demo's
+         Candidate Analytics can read and count them; no console rule needed */
+      events=firebase.firestore().collection('video-feedback').doc('activation-playbook-events').collection('events');
     }catch(e){ console.warn('usage events unavailable',e); }
     return events;
   }

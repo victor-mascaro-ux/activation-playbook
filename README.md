@@ -234,7 +234,7 @@ that don't spell out a customer's name.
 
 Every open, section view, sample open, template copy (Copy Text; copying by
 hand is turned off), welcome screen shown, password accepted and baseline number changed adds a document to the
-Firestore collection `toolkit-events`:
+Firestore collection `video-feedback/activation-playbook-events/events`:
 
 | Field | Value |
 | --- | --- |
@@ -253,20 +253,14 @@ No names, emails or links are recorded; the only typed text recorded is a baseli
 inside the commenting shell, or in a browser opened once with `?notrack=1`
 (`?notrack=0` turns it back on).
 
-The Firestore rules must allow the toolkit to add these events and nothing
-else. Add this inside `match /databases/{database}/documents` in the Firebase
-console; reads stay with the console:
-
-```
-match /toolkit-events/{id} {
-  allow create: if request.resource.data.keys().hasOnly(['type','firm','kit','vid','sid','env','staff','device','at','via','view','sample','label','how','metric','value'])
-    && request.resource.data.type in ['open','view','sample_open','copy','gate','unlock','baseline']
-    && (!('value' in request.resource.data) || (request.resource.data.value is string && request.resource.data.value.size() <= 12))
-    && request.resource.data.firm is string && request.resource.data.firm.size() <= 40
-    && request.resource.data.at == request.time;
-  allow read, update, delete: if false;
-}
-```
+They live under `video-feedback`, the one collection the project's rules
+already open, beside knomee-demo's advisor directory, so no console rule is
+needed and knomee-demo's Candidate Analytics reads them: it counts the Recruit
+Toolkit's `open` and `copy` events, one per browser, leaving out staff and
+`dev`. The other side of that: anyone with the site's public Firebase config
+can read them. They hold no names, emails or links, only what the table above
+lists (until Oct 29, 2026 they went to `toolkit-events`, which nothing could
+read).
 
 ## Commenting overlay
 
