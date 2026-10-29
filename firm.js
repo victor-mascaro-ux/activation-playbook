@@ -70,6 +70,155 @@
   /* via: link = opened from the firm's link, remembered = plain link in a browser that had the firm link before */
   tkTrack('open',{via: q.get('firm') ? 'link' : (FIRM ? 'remembered' : 'none')});
 
+  /* ── fill-in templates ──
+     An open sample shows every {{Placeholder}} as a field to type into, and a field for the advisor's Knomee link
+     under each call to action. Copy Text stays off until every field is filled; it then copies formatted text (the
+     call to action a real link, tagged with this template) and a plain-text version. The advisor's name and link
+     are remembered in this browser only: nothing typed here is sent anywhere or recorded in the usage events. */
+  var KEEP=['Advisor Name','Recruiter Name','Firm Name','Link'];
+  /* the link is kept per toolkit: a prospect invite and a recruit invite are different links */
+  function slot(k){ return k==='Link' ? 'Link@'+KIT : k; }
+  function kept(){ try{ return JSON.parse(store('knomee-toolkit-fields')||'{}')||{}; }catch(e){ return {}; } }
+  function keep(k,v){ if(KEEP.indexOf(k)<0) return; var m=kept(); if(v) m[slot(k)]=v; else delete m[slot(k)]; store('knomee-toolkit-fields',JSON.stringify(m)); }
+  function linkOk(v){ return /^(https?:\/\/)?[^\s\/.]+\.[^\s]+$/i.test(v); }
+  function fullLink(v){ return /^https?:\/\//i.test(v) ? v : 'https://'+v; }
+  function medium(label){
+    label=(label||'').toLowerCase();
+    return /paid|display|sponsored/.test(label) ? 'paid' : /email/.test(label) ? 'email' : /linkedin|social|message/.test(label) ? 'social'
+      : /event/.test(label) ? 'event' : /mail|postcard/.test(label) ? 'print' : 'other';
+  }
+  /* the template rides along as a UTM tag, so starts can be counted per template (an advisor's own tags win) */
+  function tagged(v,id,label){
+    var u=fullLink(v); if(/[?&]utm_/.test(u)) return u;
+    return u+(u.indexOf('?')<0?'?':'&')+'utm_source=knomee-toolkit&utm_medium='+medium(label)+'&utm_campaign='+encodeURIComponent(FIRM||'none')+'&utm_content='+encodeURIComponent(id||'');
+  }
+  function field(k){
+    var s=document.createElement('span'), link=(k==='Link');
+    s.className='tk-field'+(link?' tk-link':''); s.setAttribute('data-field',k);
+    s.setAttribute('data-ph',link?'Paste your Knomee link':k); s.setAttribute('aria-label',link?'Your Knomee link':k);
+    s.setAttribute('contenteditable','true'); s.setAttribute('role','textbox'); s.setAttribute('spellcheck',link?'false':'true');
+    return s;
+  }
+  function val(f){ return f.textContent.replace(/\s+/g,' ').trim(); }
+  function filled(f){ var v=val(f); return !!v && (f.getAttribute('data-field')!=='Link' || linkOk(v)); }
+
+  window.tkFields=function(root,id){
+    root.setAttribute('data-src',root.innerHTML);
+    var btn=document.getElementById('copyBtn'), hint=document.querySelector('.copy-hint');
+    if(hint && !hint.hasAttribute('data-default')) hint.setAttribute('data-default',hint.textContent);
+
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT), texts=[], n;
+    while((n=w.nextNode())) if(/\{\{[^}]+\}\}/.test(n.nodeValue)) texts.push(n);
+    texts.forEach(function(t){
+      var frag=document.createDocumentFragment();
+      t.nodeValue.split(/(\{\{[^}]+\}\})/).forEach(function(p){
+        var m=/^\{\{([^}]+)\}\}$/.exec(p);
+        if(m) frag.appendChild(field(m[1].trim())); else if(p) frag.appendChild(document.createTextNode(p));
+      });
+      t.parentNode.replaceChild(frag,t);
+    });
+    Array.prototype.forEach.call(root.querySelectorAll('.email-cta,.pill-cta'),function(cta){
+      var row=document.createElement('div'); row.className='tk-linkrow'; row.setAttribute('data-tk-skip','');
+      row.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>';
+      row.appendChild(field('Link'));
+      cta.insertAdjacentElement('afterend',row);
+    });
+
+    var fields=Array.prototype.slice.call(root.querySelectorAll('.tk-field')), memo=kept();
+    var names=root.querySelectorAll('.email-from b,.frame-from b');
+    Array.prototype.forEach.call(names,function(b){ b.setAttribute('data-default',b.textContent); });
+    function update(){
+      var missing={};
+      fields.forEach(function(f){
+        var ok=filled(f); f.classList.toggle('is-done',ok); f.classList.toggle('is-bad',!ok && !!val(f));
+        if(!ok) missing[f.getAttribute('data-field')]=1;
+      });
+      var left=Object.keys(missing);
+      if(btn){ btn.disabled=left.length>0; }
+      if(hint){
+        hint.textContent = !fields.length ? hint.getAttribute('data-default')
+          : left.length===1 && left[0]==='Link' ? 'Add your Knomee link to copy it.'
+          : left.length ? 'Fill in the '+(left.length===1?'highlighted field':left.length+' highlighted fields')+' to copy it.'
+          : 'All set. Paste it where you’ll send it.';
+      }
+      /* the sample's From line (and its avatar's letter) follows the sender's name as it's typed */
+      var who=root.querySelector('.tk-field[data-field="Advisor Name"],.tk-field[data-field="Recruiter Name"]'), name=who && val(who);
+      Array.prototype.forEach.call(names,function(b){
+        b.textContent=name || b.getAttribute('data-default');
+        var av=b.parentNode && b.parentNode.parentNode && b.parentNode.parentNode.querySelector('.email-av');
+        if(av){ if(!av.hasAttribute('data-default')) av.setAttribute('data-default',av.textContent); av.textContent=name ? name.charAt(0).toUpperCase() : av.getAttribute('data-default'); }
+      });
+    }
+    fields.forEach(function(f,i){
+      var k=f.getAttribute('data-field');
+      if(memo[slot(k)]) f.textContent=memo[slot(k)];
+      f.addEventListener('keydown',function(e){
+        if(e.key!=='Enter') return;
+        e.preventDefault(); var next=fields[i+1]; if(next) next.focus(); else f.blur();
+      });
+      f.addEventListener('paste',function(e){
+        e.preventDefault(); var t=((e.clipboardData||window.clipboardData).getData('text/plain')||'').replace(/\s+/g,' ').trim();
+        document.execCommand('insertText',false,t);
+      });
+      f.addEventListener('input',function(){
+        if(!f.textContent.trim()) f.textContent=''; /* back to empty, so the placeholder shows again */
+        var v=val(f);
+        fields.forEach(function(o){ if(o!==f && o.getAttribute('data-field')===k && val(o)!==v) o.textContent=v; });
+        keep(k,v); update();
+      });
+    });
+    update();
+  };
+
+  /* Copy Text on a sample with fields: returns false when there's nothing to fill, so the page copies as it did */
+  window.tkCopy=function(root,id,label){
+    var fields=root.querySelectorAll('.tk-field'); if(!fields.length) return false;
+    var btn=document.getElementById('copyBtn'); if(!btn || btn.disabled) return true;
+    var linkField=root.querySelector('.tk-field[data-field="Link"]'), url=linkField ? tagged(val(linkField),id,label) : '';
+    var color=(getComputedStyle(document.documentElement).getPropertyValue('--firm')||'').trim() || '#240446';
+    function build(plain){
+      var c=(root.querySelector('[data-copy]')||root).cloneNode(true);
+      Array.prototype.forEach.call(c.querySelectorAll('[data-tk-skip]'),function(e){ e.remove(); });
+      Array.prototype.forEach.call(c.querySelectorAll('.tk-field'),function(f){
+        f.replaceWith(document.createTextNode(f.getAttribute('data-field')==='Link' ? url : val(f)));
+      });
+      Array.prototype.forEach.call(c.querySelectorAll('.email-cta,.pill-cta'),function(cta){
+        var text=cta.textContent.trim();
+        if(plain){ var p=document.createElement('p'); p.textContent=text.replace(/\s*→\s*$/,'')+': '+url; cta.replaceWith(p); return; }
+        var a=document.createElement('a'); a.href=url; a.textContent=text;
+        a.setAttribute('style','display:inline-block;padding:10px 20px;border-radius:999px;background:'+color+';color:#ffffff;text-decoration:none;font-weight:600');
+        cta.replaceWith(a);
+      });
+      Array.prototype.forEach.call(c.querySelectorAll('*'),function(e){
+        Array.prototype.slice.call(e.attributes).forEach(function(a){ if(a.name!=='href' && a.name!=='style') e.removeAttribute(a.name); });
+        if(e.tagName!=='A') e.removeAttribute('style');
+      });
+      return c;
+    }
+    var html=build(false).innerHTML;
+    var off=build(true); off.style.cssText='position:fixed;left:-9999px;top:0;width:600px'; document.body.appendChild(off);
+    var text=off.innerText.replace(/\n{3,}/g,'\n\n').trim(); off.remove();
+
+    function done(){
+      var s=btn.querySelector('span'); btn.classList.add('done'); if(s) s.textContent='Copied ✓';
+      setTimeout(function(){ btn.classList.remove('done'); if(s) s.textContent='Copy Text'; },1800);
+    }
+    function fallback(){
+      var d=document.createElement('div'); d.contentEditable='true'; d.style.cssText='position:fixed;left:-9999px;top:0'; d.innerHTML=html;
+      document.body.appendChild(d);
+      var r=document.createRange(), sel=window.getSelection(); r.selectNodeContents(d); sel.removeAllRanges(); sel.addRange(r);
+      try{ document.execCommand('copy'); }catch(e){}
+      sel.removeAllRanges(); d.remove(); done();
+    }
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,fallback);
+      } else fallback();
+    }catch(e){ fallback(); }
+    tkTrack('copy',{sample:id,label:label,how:'button'});
+    return true;
+  };
+
   /* ── firm branding ── */
   /* tkFill: the page's editor runs every live edit through this before showing it, so an edit made on the live
      page that says {{Firm Name}} arrives here with the firm's name in it. It passes text through untouched until
