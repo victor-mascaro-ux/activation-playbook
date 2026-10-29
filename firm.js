@@ -88,12 +88,16 @@
   tkTrack('open',{via: q.get('firm') ? 'link' : (FIRM ? 'remembered' : 'none')});
 
   /* ── fill-in templates ──
-     An open sample shows every {{Placeholder}} as a field to type into, and a field for the advisor's Knomee link
-     under each call to action. Copy Text stays off until every field is filled; it then copies formatted text (the
-     call to action a real link, tagged with this template) and a plain-text version. The advisor's name and link
+     An open sample shows every {{Placeholder}} as a field to type into. The invite emails, and only those, also get a
+     field for the advisor's Knomee invite link under their call to action: the samples Knomee's own Invite modal
+     sends (INVITE, as in knomee-demo's src/data/inviteEmails.ts; Victor, 2026-10-29). Any other call to action is
+     linked by the advisor in their own email tool. Copy Text stays off until every field is filled; it then copies
+     formatted text (an invite's call to action a real link, tagged with this template) and a plain-text version. The advisor's name and link
      fill in every sample while the tab stays open and are gone once it closes (sessionStorage): advisors may share
      a computer (Victor, 2026-10-29). Nothing typed here is sent anywhere or recorded in the usage events. */
   store('knomee-toolkit-fields',null); /* the names and links an earlier version kept for good, in localStorage */
+  /* the invite emails, by toolkit; the Recruit Toolkit has none, since Invite Advisor sends a link, not an email */
+  var INVITE={prospect:['cold-2','hot-1'], client:['eng-1','eng-2','dis-1','dis-2']};
   var KEEP=['Advisor Name','Recruiter Name','Firm Name','Link'];
   /* the link is kept per toolkit: a prospect invite and a recruit invite are different links */
   function slot(k){ return k==='Link' ? 'Link@'+KIT : k; }
@@ -166,7 +170,7 @@
       });
       t.parentNode.replaceChild(frag,t);
     });
-    Array.prototype.forEach.call(root.querySelectorAll('.email-cta,.pill-cta'),function(cta){
+    if((INVITE[KIT]||[]).indexOf(id)>=0) Array.prototype.forEach.call(root.querySelectorAll('.email-cta,.pill-cta'),function(cta){
       var row=document.createElement('div'); row.className='tk-linkrow'; row.setAttribute('data-tk-skip','');
       row.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>';
       row.appendChild(field('Link'));
@@ -255,8 +259,9 @@
       });
       Array.prototype.forEach.call(c.querySelectorAll('.email-cta,.pill-cta'),function(cta){
         var text=cta.textContent.trim();
-        if(plain){ var p=document.createElement('p'); p.textContent=text.replace(/\s*→\s*$/,'')+': '+url; cta.replaceWith(p); return; }
-        var a=document.createElement('a'); a.href=url; a.textContent=text;
+        /* without an invite link the button keeps its look and gets its link in the advisor's email tool */
+        if(plain){ var p=document.createElement('p'); p.textContent=url ? text.replace(/\s*→\s*$/,'')+': '+url : text; cta.replaceWith(p); return; }
+        var a=document.createElement('a'); if(url) a.href=url; a.textContent=text;
         /* as on the page: an email's button a rounded square, any other a pill */
         var r=cta.classList.contains('email-cta') ? '10px' : '999px';
         a.setAttribute('style','display:inline-block;padding:10px 20px;border-radius:'+r+';background:'+color+';color:#ffffff;text-decoration:none;font-weight:600');
