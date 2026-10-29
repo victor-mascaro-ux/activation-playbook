@@ -23,15 +23,15 @@ any page.
 
 ## What's public
 
-Only two doors are open to anyone: **each firm's link** (`/acme`, behind the
-firm's welcome screen) and **the editor** (`index.html?edit=1`, behind the
-editor password). Every other page (`home.html`, the `*-playbook.html`
-toolkits, the older decks, and a firm page opened without a firm or with an
-unknown one) is closed. It shows a "This page isn't public" card that asks for
-nothing and tells advisors to use the link their firm sent. A small link takes
-the Knomee team to the same page in the editor, the only place the editor
-password is asked for. `staff-gate.js`, loaded first in each of those pages,
-does this.
+**Only the editable version is locked.** The editor (`index.html?edit=1`) asks
+for the editor password. Every toolkit page is open to anyone: the original
+ones (`activation.knomee.com`, `home.html`, the `*-playbook.html` toolkits, the
+older decks), which advisors use every day, and the firm editions. A firm
+whose config has a password (ACME) opens on its own welcome screen.
+
+Never close the original toolkits. Closing them (PRs 19 and 24) locked out the
+advisors who rely on them, and the Knomee team, until PR 39 reopened them.
+`staff-gate.js`, loaded first in each page, is the one place this is decided.
 
 Both passwords unlock the browser until it closes (a session cookie, shared by
 its tabs). The next visit asks again. Browsers that restore their last session
