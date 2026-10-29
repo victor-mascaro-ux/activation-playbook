@@ -144,6 +144,13 @@
   .lead-band .tagword{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem 1rem;border-radius:var(--r-pill);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
   .lead-band h2{font-size:clamp(1.9rem,5vw,3.1rem);font-weight:700;line-height:1;margin:.9rem 0 .5rem}
   .lead-band p{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.92);max-width:52ch}
+  /* which toolkit this is: a strip under the top bar on every page; the first section gives up the room it takes */
+  .kit-head{background:var(--white);border-bottom:1px solid var(--line)}
+  .kit-head .container{display:flex;align-items:center;min-height:46px}
+  .kit-name{display:inline-flex;align-items:center;gap:.55rem;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--plum)}
+  .kit-name::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grape)}
+  .kit-head ~ .view > .section:first-child{padding-top:clamp(1.25rem,2.5vw,2rem)}
+  .kit-head ~ .view{scroll-margin-top:120px} /* a link straight to a section (#in-talks) lands at the top, the toolkit's name in view */
   .backlink{display:inline-flex;align-items:center;gap:.4rem;color:var(--muted);font-weight:500;font-size:.9rem;cursor:pointer;margin-bottom:1.2rem;transition:color .2s,transform .2s}
   .backlink:hover{color:var(--lead-ink);transform:translateX(-3px)}
 
@@ -423,6 +430,8 @@
 </div>
 
 <main>
+<!-- the toolkit's name, on every page; outside the views, so the editor's element keys stay put -->
+<div class="kit-head"><div class="container"><span class="kit-name">Prospect Toolkit</span></div></div>
 
 <!-- ══ HOME ══ -->
 <section class="view" id="home">
