@@ -114,6 +114,11 @@ public, and the same toolkits are open on the live pages. Inside the
 commenting shell, which is already behind the editor password, the welcome
 screen is skipped.
 
+To show the welcome screen again in a browser that has already unlocked (for a
+demo), add `?lock=1`: `activation.knomee.com/acme/?lock=1`, or on any firm
+page. It forgets that browser's unlock and then drops out of the address, so a
+reload after the password stays unlocked.
+
 To add a firm: copy `acme/` and `firms/acme.json` (plus its logo) under the new
 slug and edit them, then give it a password or remove ACME's copied one. The repo is public, so these files are too: prefer slugs
 that don't spell out a customer's name.
