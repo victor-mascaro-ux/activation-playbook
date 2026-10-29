@@ -105,6 +105,35 @@ follows the advisor's name as it's typed.
 - `firm.js` (`tkFields`, `tkCopy`, `tkBlockCopy`) holds this; the build wires
   it into the sample tray. The live pages are unchanged.
 
+### Know Your Baseline
+
+The Baseline section of the Prospect and Recruit toolkits holds the three numbers the funnel measures the lift
+against, the same three Prospect Analytics and Candidate Analytics show in knomee-demo:
+
+| Toolkit | Metric | Key |
+| --- | --- | --- |
+| Prospect | Conversion rate (%) | `conversion` |
+| Prospect | Time to client (days) | `days` |
+| Prospect | Revenue per client ($) | `revenue` |
+| Recruit | Conversation-to-signed rate (%) | `signed` |
+| Recruit | Time to decision (days) | `days` |
+| Recruit | AUM per signed advisor ($M) | `aum` |
+
+In the firm editions each one is a number field. It opens with what that browser saved, or else with the firm's
+onboarding numbers from its config. A changed number is saved in the browser and sent as a `baseline` usage event:
+the metric and the number, nothing else.
+
+```json
+"baseline": {
+  "prospect": { "conversion": "11", "days": "74", "revenue": "8,500" },
+  "recruit": { "signed": "15", "days": "150", "aum": "250" }
+}
+```
+
+ACME's prospect numbers are the demo's (11%, 74 days, $8,500). The config is public, like the rest of the repo,
+so leave a real firm's numbers out of it unless the firm is fine with that. On the live pages the cells stay
+blank (`data-baseline` marks them).
+
 ### Firm password (welcome screen)
 
 A firm whose config has a `"gate"` opens on a welcome screen in its own brand:
@@ -138,22 +167,23 @@ that don't spell out a customer's name.
 ### Usage events
 
 Every open, section view, sample open, template copy (Copy Text; copying by
-hand is turned off), welcome screen shown and password accepted adds a document to the Firestore collection
-`toolkit-events`:
+hand is turned off), welcome screen shown, password accepted and baseline number changed adds a document to the
+Firestore collection `toolkit-events`:
 
 | Field | Value |
 | --- | --- |
-| `type` | `open`, `view`, `sample_open`, `copy`, `gate`, `unlock` |
+| `type` | `open`, `view`, `sample_open`, `copy`, `gate`, `unlock`, `baseline` |
 | `firm` | the slug, or `unknown` |
 | `kit` | `home`, `prospect`, `client` or `recruit` |
 | `view` / `sample` / `label` / `how` / `via` | what was viewed or copied, and how |
+| `metric` / `value` | for `baseline`: which number (its key above) and what was typed |
 | `vid` / `sid` | random ids for this browser and this visit |
 | `env` | `live`, or `dev` on a local server |
 | `staff` | `true` when this browser unlocked the editor |
 | `device` | `mobile` or `desktop` |
 | `at` | server timestamp |
 
-No names, emails or links are recorded. Nothing is recorded in the editor,
+No names, emails or links are recorded; the only typed text recorded is a baseline number. Nothing is recorded in the editor,
 inside the commenting shell, or in a browser opened once with `?notrack=1`
 (`?notrack=0` turns it back on).
 
@@ -163,8 +193,9 @@ console; reads stay with the console:
 
 ```
 match /toolkit-events/{id} {
-  allow create: if request.resource.data.keys().hasOnly(['type','firm','kit','vid','sid','env','staff','device','at','via','view','sample','label','how'])
-    && request.resource.data.type in ['open','view','sample_open','copy','gate','unlock']
+  allow create: if request.resource.data.keys().hasOnly(['type','firm','kit','vid','sid','env','staff','device','at','via','view','sample','label','how','metric','value'])
+    && request.resource.data.type in ['open','view','sample_open','copy','gate','unlock','baseline']
+    && (!('value' in request.resource.data) || (request.resource.data.value is string && request.resource.data.value.size() <= 12))
     && request.resource.data.firm is string && request.resource.data.firm.size() <= 40
     && request.resource.data.at == request.time;
   allow read, update, delete: if false;
