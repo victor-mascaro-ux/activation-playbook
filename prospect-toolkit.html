@@ -146,7 +146,7 @@
   .lead-band p{font-size:var(--fs-lead);font-weight:300;color:rgba(255,255,255,.92);max-width:52ch}
   /* which toolkit this is: a strip under the top bar on every page; the first section gives up the room it takes */
   .kit-head{background:var(--white);border-bottom:1px solid var(--line)}
-  .kit-head .container{display:flex;align-items:center;min-height:46px}
+  .kit-head .container{display:flex;align-items:center;justify-content:center;min-height:46px}
   .kit-name{display:inline-flex;align-items:center;gap:.55rem;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--plum)}
   .kit-name::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grape)}
   .kit-head ~ .view > .section:first-child{padding-top:clamp(1.25rem,2.5vw,2rem)}
@@ -490,7 +490,6 @@
 <!-- ══ HOW TO USE ══ -->
 <section class="view" id="how-to-use">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Orientation</span><h2 class="h2">How to Use This Toolkit</h2><p class="intro">This toolkit covers <strong>prospects only</strong> — people who are not yet clients. Every prospect is one of three lead types, each with its own section and ready-to-use materials.</p></div>
     <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
       <div class="card lead-cold" data-go="cold" style="cursor:pointer"><div class="ic">❄️</div><h3>Cold</h3><p><strong>Doesn't know your firm yet.</strong> Spark curiosity — earn a first response.</p></div>
@@ -509,7 +508,6 @@
 <!-- ══ EXPERIENCE ══ -->
 <section class="view" id="experience">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">The Product</span><h2 class="h2">What Your Prospect Experiences</h2><p class="intro">Knomee is an <strong>8-minute guided experience</strong> your prospects complete on their own, before they ever sit down with an advisor.</p></div>
     <div class="grid-3 stagger" style="margin-bottom:var(--s6)">
       <div class="card"><span class="num">1</span><h3 style="margin-top:1rem">The prospect gets value</h3><p>A personal summary of what's driving their decisions and their top 3 money questions.</p></div>
@@ -523,7 +521,6 @@
 <!-- ══ SETUP ══ -->
 <section class="view" id="setup">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Before You Launch</span><h2 class="h2">The 5-Step Setup</h2><p class="intro">Every campaign follows the same five setup steps. Work through them to prepare for your walkthrough session; your CS contact will help you complete each one.</p></div>
     <div class="steps stagger">
       <div class="step"><span class="num">1</span><div class="step-body"><strong>Targeting</strong><p>Identify the list of prospects for this campaign (and which lead type they are).</p></div></div>
@@ -538,7 +535,6 @@
 <!-- ══ BASELINE ══ -->
 <section class="view" id="baseline">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Why this matters</span><h2 class="h2">Organic growth — better prospects, closed faster</h2><p class="intro">Knomee moves three numbers your firm already lives by. Track these as the headline, and capture where you are today so we can show the lift.</p></div>
     <div class="table-wrap anim">
       <table class="t"><thead><tr><th>The metric</th><th>What it means for your firm</th><th>Your baseline today</th></tr></thead><tbody>
@@ -554,7 +550,6 @@
 <!-- ══════ COLD ══════ -->
 <section class="view lead-cold" id="cold">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="lead-band anim"><span class="tagword">❄️ Cold Lead</span><h2>Cold</h2><p>They don't know you yet. Offer helpful insight in return for 8 minutes of curiosity.</p></div>
     <div class="tabs" data-tabs>
       <button class="tab active" data-tab="strategy">Strategy</button>
@@ -601,7 +596,6 @@
 <!-- ══════ WARM ══════ -->
 <section class="view lead-warm" id="warm">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="lead-band anim"><span class="tagword">🌤️ Warm Lead</span><h2>Warm</h2><p>They know you, but they're not ready to act. Earn the meeting by delivering value first.</p></div>
     <div class="tabs" data-tabs>
       <button class="tab active" data-tab="strategy">Strategy</button>
@@ -649,7 +643,6 @@
 <!-- ══════ HOT ══════ -->
 <section class="view lead-hot" id="hot">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="lead-band anim"><span class="tagword">🔥 Hot Lead</span><h2>Hot</h2><p>They've agreed to meet — but they're not convinced yet. Make the first meeting feel like the tenth.</p></div>
     <div class="tabs" data-tabs>
       <button class="tab active" data-tab="strategy">Strategy</button>
@@ -694,7 +687,6 @@
 <!-- ══ LANDING ══ -->
 <section class="view" id="landing">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">The Destination</span><h2 class="h2">Your Landing Page</h2><p class="intro">Every channel in this toolkit points to one destination: your firm-branded Knomee landing page. Fully brandable for your firm.</p></div>
     <div class="two-col">
       <div class="lp anim">
@@ -724,7 +716,6 @@
 <!-- ══ TESTING ══ -->
 <section class="view" id="testing">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Optimize</span><h2 class="h2">Test Before You Launch</h2><p class="intro">Don't guess which message will land — test it. Knomee supports UTM tags so you can see exactly which channel, campaign, and message drives completions (not just clicks).</p></div>
     <div class="steps stagger" style="--lead:var(--grape);--lead-tint:var(--fog)">
       <div class="step"><span class="num">1</span><div class="step-body"><strong>Copy</strong> your prospect invite URL from the Knomee Advisor dashboard.</div></div>
@@ -738,7 +729,6 @@
 <!-- ══ APPENDIX ══ -->
 <section class="view" id="appendix">
   <div class="container section">
-    <span class="backlink" data-back>← Home</span>
     <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Appendix</h2><p class="intro">Everything behind the plays — the full Knomee video catalog, and where each clip belongs.</p></div>
     <div class="tabs" data-tabs>
       <button class="tab active" data-tab="library">Video Library <span class="c">28</span></button>
