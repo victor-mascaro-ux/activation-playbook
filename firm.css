@@ -36,6 +36,14 @@ body:has(.sheet.open) .powered-by,body:has(.drawer.open) .powered-by,body.ce-on 
 .tk-linkrow svg{flex-shrink:0}
 .tk-linkrow .tk-field{flex:1 1 auto;min-width:0}
 .copy-btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+/* Samples copy through Copy Text only (firm.js tkBlockCopy): the sample's text doesn't select, a field's words do,
+   and a hand copy nudges the button and says so in the hint */
+.sheet-body{-webkit-user-select:none;user-select:none}
+.sheet-body .tk-field{-webkit-user-select:text;user-select:text}
+.copy-hint.is-nudge{color:var(--ink,#221833);font-weight:600}
+@keyframes tkNudge{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.copy-btn.tk-nudge{animation:tkNudge .32s ease 2}
+@media(prefers-reduced-motion:reduce){.copy-btn.tk-nudge{animation:none}}
 
 /* ── the welcome screen: knomee-demo's sign-in card (src/screens/signUp.css) in the firm's brand ──
    The firm's colour fills the screen, its white logo sits over the card, and the credit holds the foot.

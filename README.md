@@ -86,8 +86,12 @@ follows the advisor's name as it's typed.
   invites are different links. Nothing typed is sent anywhere or recorded in
   the usage events.
 - Samples without placeholders or a call to action copy as before.
-- `firm.js` (`tkFields`, `tkCopy`) holds this; the build wires it into the
-  sample tray. The live pages are unchanged.
+- **Samples copy through Copy Text only.** The sample's text doesn't select,
+  and a hand copy (Ctrl+C, the menu's Copy) copies nothing: the button
+  shakes and the hint says to use Copy Text. That keeps every copy filled in,
+  tagged and counted. Words inside one field (the advisor's own) still copy.
+- `firm.js` (`tkFields`, `tkCopy`, `tkBlockCopy`) holds this; the build wires
+  it into the sample tray. The live pages are unchanged.
 
 ### Firm password (welcome screen)
 
@@ -116,8 +120,8 @@ that don't spell out a customer's name.
 
 ### Usage events
 
-Every open, section view, sample open, template copy (button or a
-hand-selected copy), welcome screen shown and password accepted adds a document to the Firestore collection
+Every open, section view, sample open, template copy (Copy Text; copying by
+hand is turned off), welcome screen shown and password accepted adds a document to the Firestore collection
 `toolkit-events`:
 
 | Field | Value |

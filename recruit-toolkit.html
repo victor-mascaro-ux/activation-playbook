@@ -378,8 +378,8 @@
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<link rel="stylesheet" href="firm.css?v=5517e4682a">
-<script src="firm.js?v=03633ad684" data-kit="recruit"></script>
+<link rel="stylesheet" href="firm.css?v=225a3f2b02">
+<script src="firm.js?v=574d8b5ef6" data-kit="recruit"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
@@ -1140,8 +1140,8 @@
     function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
   });
 
-  /* text selected and copied by hand counts too (the button's own fallback copies from a textarea outside the tray) */
-  sheetBody.addEventListener('copy', function(){ if(!ceEDIT) tkTrack('copy',{sample:ceCurrentSample,label:sheetType.textContent,how:'select'}); });
+  /* samples copy through Copy Text only: a hand copy in the tray copies nothing and points at the button (firm.js) */
+  sheetBody.addEventListener('copy', tkBlockCopy);
 
   /* mobile drawer */
   var drawer=document.getElementById('drawer');
