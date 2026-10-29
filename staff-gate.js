@@ -56,10 +56,11 @@
   try{ if(window.top!==window.self && window.top.location.origin===location.origin) return; }catch(e){}
   /* ?edit=1 goes on to the shell's lock; with ?raw=1 it stays here, so it gets the card like any other visit */
   if(q.get('edit')==='1' && q.get('raw')!=='1') return;
-  if(firmPage){
-    var f=(q.get('firm')||'').toLowerCase();
-    if(!f){ try{ f=localStorage.getItem('knomee-toolkit-firm')||''; }catch(e){} }
-    if(f && f!=='none') return;
-  }
+  /* The original toolkits stay open to everyone: advisors use them every day (Victor, 2026-10-29, after closing
+     them locked those advisors out). Only a firm page opened without a firm is closed. */
+  if(!firmPage) return;
+  var f=(q.get('firm')||'').toLowerCase();
+  if(!f){ try{ f=localStorage.getItem('knomee-toolkit-firm')||''; }catch(e){} }
+  if(f && f!=='none') return;
   close();
 })();
