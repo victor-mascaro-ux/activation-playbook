@@ -199,6 +199,9 @@
   .email-body{padding:1.2rem 1.3rem}
   .email-body p{color:var(--ink-2);font-weight:300;margin-bottom:.7rem}
   .email-cta,.pill-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--lead);color:#fff;font-weight:600;padding:.7rem 1.3rem;border-radius:var(--r-pill);margin:.3rem 0 .9rem}
+/* an email's button is a rounded square, as knomee's product draws it (knomee-demo's invite email); the other
+   samples keep the pill */
+.email-cta{border-radius:10px}
   .email-body>:last-child,.frame-body>:last-child{margin-bottom:0}
   .frame-head{background:var(--lead);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem}
   .frame-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
@@ -316,7 +319,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <link rel="stylesheet" href="firm.css?v=d5be5d6ada">
-<script src="firm.js?v=4c89b05486" data-kit="client"></script>
+<script src="firm.js?v=95030f4f08" data-kit="client"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
