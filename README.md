@@ -207,6 +207,24 @@ demo), add `?lock=1`: `activation.knomee.com/acme/?lock=1`, or on any firm
 page. It forgets that browser's unlock and then drops out of the address, so a
 reload after the password stays unlocked.
 
+### Demo setup screen (`?setup=1`)
+
+For demos only: `activation.knomee.com/acme/?setup=1` opens a setup screen in
+the firm's brand. It shows the firm's onboarding: the six baseline numbers
+(Prospect and Recruit, as in the Baseline sections), then a password for the
+firm's advisors, typed twice. **Open the Toolkits** stays off until every field
+is filled and the passwords match, then it opens the firm's toolkits page,
+unlocked.
+
+- The numbers are saved where the Baseline sections read them: the firm's
+  Firestore documents (once the rule above is in), and the tab itself, so the
+  demo works without the rule.
+- The password lasts for that tab only. The welcome screen accepts it as well
+  as the firm's real password, which this screen doesn't change (that's
+  `tools/firm_password.py`).
+- Anyone with the link can set a password and so open the firm's toolkits in
+  their own browser. Keep it to demo firms like ACME.
+
 To add a firm: copy `acme/` and `firms/acme.json` (plus its logo) under the new
 slug and edit them, then give it a password or remove ACME's copied one. The repo is public, so these files are too: prefer slugs
 that don't spell out a customer's name.

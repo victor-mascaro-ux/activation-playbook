@@ -51,7 +51,7 @@
   if(FIRM){
     document.documentElement.classList.add('firm-pending');
     /* until the config says whether this firm has a password, a browser that hasn't unlocked it sees nothing */
-    if(!inShell && !cookie(KEY)) document.documentElement.classList.add('firm-gate-check');
+    if(!inShell && (!cookie(KEY) || q.get('setup')==='1')) document.documentElement.classList.add('firm-gate-check');
   }
 
   /* ── usage events ── */
@@ -343,6 +343,13 @@
     }
   }
 
+  /* what the demo setup screen (?setup=1) was given, for this tab only: {baseline:{<kit>:{…}}, gate} */
+  var DEMO='knomee-firm-demo:'+FIRM;
+  function demo(v){
+    try{ if(v===undefined) return JSON.parse(sessionStorage.getItem(DEMO)||'{}')||{}; sessionStorage.setItem(DEMO,JSON.stringify(v)); }catch(e){}
+    return {};
+  }
+
   /* ── Know Your Baseline: the numbers Prospect / Candidate Analytics measures the lift against ──
      Each [data-baseline] cell on the live page ("___ %", "$___M") becomes a number field with its unit around it.
      The numbers are the firm's, not one browser's (Victor, 2026-10-29): one Firestore document per firm and toolkit
@@ -351,7 +358,9 @@
      event, the metric and the number only. data-firm keeps a live edit from replacing a field. */
   function baseline(f){
     var cells=document.querySelectorAll('[data-baseline]'); if(!cells.length) return;
-    var name=f.name||FIRM, given=(f.baseline||{})[KIT]||{}, inputs=[], prefilled=false, shared=false;
+    var name=f.name||FIRM, given={}, inputs=[], prefilled=false, shared=false;
+    /* the onboarding numbers: the firm's config, and what the demo setup screen was given in this tab */
+    [(f.baseline||{})[KIT]||{}, (demo().baseline||{})[KIT]||{}].forEach(function(src){ Object.keys(src).forEach(function(k){ given[k]=src[k]; }); });
     store('knomee-toolkit-baseline:'+FIRM+':'+KIT,null); /* the per-browser copy an earlier version kept */
     var ref=null;
     try{ if(col()) ref=firebase.firestore().collection('toolkit-baselines').doc(FIRM+'_'+KIT+(base.env==='dev' ? '_dev' : '')); }catch(e){}
@@ -426,10 +435,11 @@
   }
 
   function gate(f){
+    if(q.get('setup')==='1' && !inShell){ showSetup(f); return; }
     if(!f.gate || inShell){ reveal(); return; }
     var t=cookie(KEY);
     (t ? sha(t) : Promise.resolve('')).then(function(h){
-      if(h===f.gate){ reveal(); return; }
+      if(h===f.gate || (h && h===demo().gate)){ reveal(); return; }
       if(t) cookie(KEY,null); /* the password changed since this browser unlocked */
       showGate(f);
     });
@@ -469,13 +479,119 @@
       btn.disabled=true;
       sha('knomee-firm:'+FIRM+':'+pw).then(function(t){ return sha(t).then(function(h){ return [t,h]; }); }).then(function(th){
         btn.disabled=false;
-        if(th[1]!==f.gate){
+        if(th[1]!==f.gate && th[1]!==demo().gate){
           err.textContent='That password doesn’t match. Check it and try again.';
           input.setAttribute('aria-invalid','true'); input.select();
           return;
         }
         cookie(KEY,th[0]);
         tkTrack('unlock');
+        g.classList.add('is-leaving'); reveal();
+        setTimeout(function(){ g.remove(); },400);
+      });
+    });
+  }
+
+  /* ── the demo setup screen: activation.knomee.com/<firm>/?setup=1 ──
+     For showing a firm's onboarding, and only for demo firms (Victor, 2026-10-29). In the firm's brand, it asks for
+     the firm's baseline, both toolkits', and a password for its advisors, then opens the toolkits.
+     - The numbers go where the Baseline sections read them: the firm's Firestore documents, and this tab (demo()),
+       in case Firestore can't take them yet.
+     - The password is for this tab only: the welcome screen accepts it beside the firm's real one, which stays as
+       it is (tools/firm_password.py). Anyone with the link can set one, and so open the firm's toolkits in their
+       own browser. */
+  var SETUP=[
+    {kit:'prospect', name:'Prospect Toolkit', fields:[['conversion','Conversion rate','','%'],['days','Time to client','','days'],['revenue','Revenue per client','$','']]},
+    {kit:'recruit', name:'Recruit Toolkit', fields:[['joined','Joining rate','','%'],['days','Time to decision','','days'],['aum','AUM per advisor','$','M']]}
+  ];
+  function showSetup(f){
+    var name=f.name||FIRM, safe=String(name).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; });
+    var root=document.documentElement; root.classList.add('firm-locked'); root.classList.remove('firm-gate-check');
+    var groups=SETUP.map(function(s){
+      return '<div class="fg-group"><div class="fg-group-name">'+s.name+'</div><div class="fg-grid">'+
+        s.fields.map(function(x){
+          var id='fgB-'+s.kit+'-'+x[0];
+          return '<div><label class="fg-label" for="'+id+'">'+x[1]+'</label>'+
+            '<div class="fg-num"><span class="fg-unit">'+x[2]+'</span>'+
+            '<input id="'+id+'" data-kit="'+s.kit+'" data-key="'+x[0]+'" type="text" inputmode="decimal" autocomplete="off" maxlength="12">'+
+            '<span class="fg-unit">'+x[3]+'</span></div></div>';
+        }).join('')+'</div></div>';
+    }).join('');
+    function pass(id,label,auto){
+      return '<label class="fg-label fg-label-gap" for="'+id+'">'+label+'</label>'+
+        '<div class="fg-pass"><input class="fg-input" id="'+id+'" type="password" autocomplete="'+auto+'">'+
+        '<button class="pw-eye" type="button" aria-controls="'+id+'" aria-label="Show password" aria-pressed="false">'+EYE+'</button></div>';
+    }
+    var g=document.createElement('div'); g.className='firm-gate';
+    g.setAttribute('role','dialog'); g.setAttribute('aria-modal','true'); g.setAttribute('aria-labelledby','fgTitle');
+    g.innerHTML=
+      '<div class="fg-main fg-wide">'+
+        (f.logo ? '<img class="fg-logo" src="'+f.logo+'" alt="'+safe+'">' : '<div class="fg-name">'+safe+'</div>')+
+        '<form class="fg-card fg-setup" novalidate>'+
+          '<div class="fg-title" id="fgTitle" role="heading" aria-level="1">Set up your Activation Toolkits</div>'+
+          '<p class="fg-sub">Two things before your advisors start: where '+safe+' is today, and the password they’ll use.</p>'+
+          '<fieldset class="fg-set"><legend class="fg-legend">Your baseline today</legend>'+
+            '<p class="fg-help">Your numbers before Knomee, which the lift is measured against. Everyone at '+safe+' sees them in each toolkit’s Baseline.</p>'+
+            groups+
+          '</fieldset>'+
+          '<fieldset class="fg-set"><legend class="fg-legend">Your advisors’ password</legend>'+
+            '<p class="fg-help">Advisors enter it on the welcome screen to open the toolkits. At least 4 characters.</p>'+
+            pass('fgNew','Password','new-password')+
+            pass('fgConfirm','Confirm password','new-password')+
+            '<p class="fg-error" id="fgError" role="alert"></p>'+
+          '</fieldset>'+
+          '<button class="fg-continue" type="submit" disabled>Open the Toolkits<svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true"><path d="M2 1l6 4-6 4z" fill="currentColor"/></svg></button>'+
+          '<p class="fg-hint" id="fgHint" aria-live="polite"></p>'+
+        '</form>'+
+      '</div>'+
+      (f.brand!=='white' ? '<div class="fg-foot"><span class="fg-credit"><span class="powered-by-text">powered by</span><img class="powered-by-logo" src="knomee-logo-plum.svg" alt="knomee"></span></div>' : '');
+    document.body.appendChild(g);
+    var nums=Array.prototype.slice.call(g.querySelectorAll('.fg-num input'));
+    var pw=g.querySelector('#fgNew'), again=g.querySelector('#fgConfirm'), err=g.querySelector('#fgError');
+    var btn=g.querySelector('.fg-continue'), hint=g.querySelector('#fgHint');
+    Array.prototype.forEach.call(g.querySelectorAll('.pw-eye'),function(b){ pwEye(b,g.querySelector('#'+b.getAttribute('aria-controls'))); });
+    /* a click anywhere on a number's box lands in its field */
+    Array.prototype.forEach.call(g.querySelectorAll('.fg-num'),function(box){ box.addEventListener('mousedown',function(e){ if(e.target!==box.querySelector('input')){ e.preventDefault(); box.querySelector('input').focus(); } }); });
+    function update(){
+      var missing=nums.filter(function(i){ return !i.value.trim(); }).length, p=pw.value, c=again.value;
+      var mismatch=!!c && (p.indexOf(c)!==0 || (document.activeElement!==again && c!==p));
+      err.textContent=mismatch ? 'The passwords don’t match.' : '';
+      if(mismatch) again.setAttribute('aria-invalid','true'); else again.removeAttribute('aria-invalid');
+      var left=[];
+      if(missing) left.push(missing===nums.length ? 'the '+missing+' numbers' : missing===1 ? '1 more number' : missing+' more numbers');
+      if(p.length<4) left.push('a password of at least 4 characters'); else if(c!==p) left.push('the same password twice');
+      btn.disabled=left.length>0;
+      hint.textContent=left.length ? 'Add '+left.join(' and ')+' to continue.' : '';
+    }
+    nums.forEach(function(i,n){
+      i.addEventListener('input',function(){ var v=i.value.replace(/[^\d.,]/g,''); if(v!==i.value) i.value=v; update(); });
+      i.addEventListener('keydown',function(e){ if(e.key!=='Enter') return; e.preventDefault(); (nums[n+1]||pw).focus(); });
+    });
+    [pw,again].forEach(function(i){ i.addEventListener('input',update); i.addEventListener('blur',update); });
+    update(); nums[0].focus();
+    g.querySelector('form').addEventListener('submit',function(e){
+      e.preventDefault();
+      update(); if(btn.disabled) return;
+      btn.disabled=true;
+      var vals={};
+      nums.forEach(function(i){ var k=i.getAttribute('data-kit'); (vals[k]=vals[k]||{})[i.getAttribute('data-key')]=i.value.trim(); });
+      sha('knomee-firm:'+FIRM+':'+pw.value).then(function(t){ return sha(t).then(function(h){
+        demo({baseline:vals, gate:h});
+        cookie(KEY,t);
+        var saves=[];
+        try{
+          if(col()) SETUP.forEach(function(s){
+            var d={firm:FIRM, kit:s.kit, at:firebase.firestore.FieldValue.serverTimestamp()};
+            Object.keys(vals[s.kit]).forEach(function(k){ d[k]=vals[s.kit][k]; });
+            saves.push(firebase.firestore().collection('toolkit-baselines').doc(FIRM+'_'+s.kit+(base.env==='dev' ? '_dev' : ''))
+              .set(d,{merge:true}).catch(function(x){ console.warn('setup baseline not saved',x); }));
+          });
+        }catch(x){}
+        /* the toolkits open even if Firestore is slow or refuses: the numbers are in this tab too */
+        return Promise.race([Promise.all(saves), new Promise(function(r){ setTimeout(r,1500); })]);
+      }); }).then(function(){
+        try{ q.delete('setup'); history.replaceState(history.state,'',location.pathname+(q.toString() ? '?'+q.toString() : '')+location.hash); }catch(x){}
+        if(KIT!=='home'){ location.replace('toolkits.html'); return; }
         g.classList.add('is-leaving'); reveal();
         setTimeout(function(){ g.remove(); },400);
       });
