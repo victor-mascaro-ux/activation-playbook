@@ -53,6 +53,9 @@ and changes nothing else.
   pages* GitHub Action (`.github/workflows/build-firm-pages.yml`) rebuilds the
   firm editions, commits them, and asks Pages to publish. It also runs on
   demand from the Actions tab. By hand: `python tools/build_firm_pages.py`.
+  It runs for changes to `firm.js` or `firm.css` too: the pages ask for those
+  by a version of their contents (`firm.js?v=…`), so browsers that cached
+  the old file pick up the new one at once.
 - **An edit made in a live page's inline editor** (`?edit=1`, saved to
   Firestore, no commit): each firm edition reads the same editor slot as its
   live page (`home-v4`, `prospect-v3`, `client-v2`, `recruit-v2`) and shows the

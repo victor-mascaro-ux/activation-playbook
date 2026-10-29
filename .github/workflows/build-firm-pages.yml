@@ -1,5 +1,5 @@
-# Rebuilds the firm editions (toolkits.html, *-toolkit.html) whenever a live page or the build changes on main,
-# commits them, and asks GitHub Pages to publish. A push made with this workflow's token starts no new workflow run,
+# Rebuilds the firm editions (toolkits.html, *-toolkit.html) whenever a live page, firm.js / firm.css (the pages ask
+# for them by version) or the build changes on main, commits them, and asks GitHub Pages to publish. A push made with this workflow's token starts no new workflow run,
 # so the commit below can't loop.
 name: Build firm pages
 
@@ -11,6 +11,8 @@ on:
       - prospect-playbook.html
       - client-playbook.html
       - recruit-playbook.html
+      - firm.js
+      - firm.css
       - tools/build_firm_pages.py
   workflow_dispatch:
 
