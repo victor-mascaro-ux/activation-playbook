@@ -1,0 +1,59 @@
+# Rebuilds the firm editions (toolkits.html, *-toolkit.html) whenever a live page or the build changes on main,
+# commits them, and asks GitHub Pages to publish. A push made with this workflow's token starts no new workflow run,
+# so the commit below can't loop.
+name: Build firm pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - home.html
+      - prospect-playbook.html
+      - client-playbook.html
+      - recruit-playbook.html
+      - tools/build_firm_pages.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: build-firm-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build the firm editions from the live pages
+        run: python tools/build_firm_pages.py
+
+      - name: Commit them if they changed
+        id: commit
+        run: |
+          git add toolkits.html prospect-toolkit.html client-toolkit.html recruit-toolkit.html
+          if git diff --cached --quiet; then
+            echo "Firm pages already match the live pages."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Firm pages follow the live pages" -m "Rebuilt by tools/build_firm_pages.py after ${GITHUB_SHA::7}."
+            git pull --rebase origin main
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Pages may not rebuild for a push made with this workflow's token, so ask for it.
+      - name: Publish to GitHub Pages
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds"
