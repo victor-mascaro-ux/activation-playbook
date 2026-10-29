@@ -724,11 +724,10 @@
 <section class="view" id="appendix">
   <div class="container section">
     <span class="backlink" data-back>← Home</span>
-    <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Appendix</h2><p class="intro">Everything behind the plays — the full Knomee video catalog, where each clip belongs, and the complete measurement baseline.</p></div>
+    <div class="head anim"><span class="eyebrow">Reference</span><h2 class="h2">Appendix</h2><p class="intro">Everything behind the plays — the full Knomee video catalog, and where each clip belongs.</p></div>
     <div class="tabs" data-tabs>
       <button class="tab active" data-tab="library">Video Library <span class="c">28</span></button>
       <button class="tab" data-tab="planner">Planner</button>
-      <button class="tab" data-tab="metrics">Metrics</button>
     </div>
 
     <div class="tabpanel active" data-panel="library">
@@ -754,19 +753,6 @@
         <tr><td class="m">Adventure Teaching Scripts</td><td><span class="stage w">Warm</span></td><td>Recurring newsletter block or drip sequence</td></tr>
       </tbody></table></div>
       <p style="margin-top:1.2rem;font-style:italic;color:var(--muted);font-size:.95rem">The v1/v2 Theme cuts are built for the 10% A/B test in “Test &amp; Learn.” Tip: tag every video link with <code>utm_content=</code> so the traffic report shows which videos drive completions.</p>
-    </div>
-
-    <div class="tabpanel" data-panel="metrics">
-      <p class="samples-note">📊 The complete tracking set behind the three headline outcomes — still tracked, just not the headline. If you don't track a metric, flag it with your CS contact.</p>
-      <div class="table-wrap"><table class="t"><thead><tr><th>Metric</th><th>Current Baseline</th><th>Where to Find It</th></tr></thead><tbody>
-        <tr><td><span class="m">Email open rate</span></td><td class="fill">___ %</td><td>Email platform (Mailchimp, HubSpot, etc.)</td></tr>
-        <tr><td><span class="m">Email click rate</span></td><td class="fill">___ %</td><td>Email platform campaign reports</td></tr>
-        <tr><td><span class="m">Email signups per month</span></td><td class="fill">___ / mo</td><td>Email platform list growth</td></tr>
-        <tr><td><span class="m">Lead-to-MQL rate (ads)</span></td><td class="fill">___ %</td><td>CRM + ad platform (HubSpot, Meta, LinkedIn)</td></tr>
-        <tr><td><span class="m">Lead-to-MQL rate (email)</span></td><td class="fill">___ %</td><td>CRM lifecycle reporting</td></tr>
-        <tr><td><span class="m">Lead-to-meeting conversion rate</span></td><td class="fill">___ %</td><td>CRM deal / meeting stage reporting</td></tr>
-        <tr><td><span class="m">Avg. landing page time-on-page</span></td><td class="fill">__:__</td><td>Web analytics (GA4, Fathom, etc.)</td></tr>
-      </tbody></table></div>
     </div>
   </div>
 </section>
@@ -844,7 +830,7 @@
     hot:['07','Hot','Build trust, close'],
     landing:['08','Landing Page','One destination'],
     testing:['09','Test & Learn','UTM & the 10% rule'],
-    appendix:['10','Appendix','Library · Planner · Metrics']
+    appendix:['10','Appendix','Library · Planner']
   };
   var views = {}; document.querySelectorAll('.view').forEach(function(v){ views[v.id]=v; });
   var navLinks = {}; document.querySelectorAll('#navLinks a').forEach(function(a){ navLinks[a.getAttribute('data-go')]=a; });
