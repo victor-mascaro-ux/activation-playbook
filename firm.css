@@ -122,7 +122,6 @@ html.firm-locked .powered-by{display:none}
 .fg-unit:empty{display:none}
 .fg-label-gap{margin-top:14px}
 .fg-pass .fg-input[aria-invalid="true"]{border-color:#d81e4a}
-.fg-hint{min-height:1.2em;margin:10px 0 0;text-align:center;font-size:12.5px;line-height:1.4;color:#6b6b75}
 @media(max-width:560px){.fg-setup{padding:24px 18px 20px}.fg-grid{grid-template-columns:1fr}.fg-num input,.fg-setup .fg-input{font-size:16px}}
 .fg-credit{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.82)}
 @media(prefers-reduced-motion:reduce){.fg-main{animation:none}.firm-gate{transition:none}}
