@@ -45,6 +45,20 @@ body:has(.sheet.open) .powered-by,body:has(.drawer.open) .powered-by,body.ce-on 
 .copy-btn.tk-nudge{animation:tkNudge .32s ease 2}
 @media(prefers-reduced-motion:reduce){.copy-btn.tk-nudge{animation:none}}
 
+/* ── Know Your Baseline: each "___ %" cell is a number field with its unit beside it, tinted like the template
+   fields (firm.js baseline) ── */
+td.tk-base-cell{font-style:normal;white-space:nowrap}
+.tk-base{display:inline-flex;align-items:baseline;gap:.35em;margin:-.2em 0;color:var(--ink-2,#4a4458);cursor:text}
+.tk-base input{box-sizing:content-box;width:5.5ch;padding:.2em .45em;border:0;border-radius:6px;background:color-mix(in srgb,var(--lead,#7639a1) 10%,#fff);box-shadow:inset 0 -2px 0 color-mix(in srgb,var(--lead,#7639a1) 50%,transparent);font:inherit;font-weight:600;color:var(--plum,#240446);text-align:right;transition:background .15s,box-shadow .15s}
+.tk-base input::placeholder{color:color-mix(in srgb,var(--lead,#7639a1) 60%,#6d6478);font-weight:400}
+.tk-base input:hover{background:color-mix(in srgb,var(--lead,#7639a1) 15%,#fff)}
+.tk-base input:focus{outline:none;background:#fff;box-shadow:inset 0 0 0 1.5px var(--lead,#7639a1)}
+.tk-base-num{display:inline-flex;align-items:baseline;gap:.35em}
+.tk-base-pre{min-width:.7em;text-align:right}
+.tk-base-note{margin-top:.8rem;color:var(--muted,#6d6478);font-size:.9rem}
+/* phones: the table is squeezed, so the field narrows and its unit can drop under it */
+@media(max-width:720px){td.tk-base-cell{white-space:normal}.tk-base{flex-wrap:wrap;row-gap:.25em}.tk-base input{width:4.5ch;font-size:16px}}
+
 /* ── the welcome screen: knomee-demo's sign-in card (src/screens/signUp.css) in the firm's brand ──
    The firm's colour fills the screen, its white logo sits over the card, and the credit holds the foot.
    Nothing of the page behind shows until the password is in. */

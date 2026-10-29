@@ -527,12 +527,12 @@
     <div class="head anim"><span class="eyebrow">Why this matters</span><h2 class="h2">Organic growth — better prospects, closed faster</h2><p class="intro">Knomee moves three numbers your firm already lives by. Track these as the headline, and capture where you are today so we can show the lift.</p></div>
     <div class="table-wrap anim">
       <table class="t"><thead><tr><th>The metric</th><th>What it means for your firm</th><th>Your baseline today</th></tr></thead><tbody>
-        <tr><td><span class="m">Conversion rate</span></td><td>More prospects become clients</td><td class="fill">___ %</td></tr>
-        <tr><td><span class="m">Time to first meeting</span></td><td>How fast we get in the room</td><td class="fill">___ days</td></tr>
-        <tr><td><span class="m">Meetings to close</span></td><td>Fewer touches to win — <span style="color:var(--muted)">number of meetings to conversion</span></td><td class="fill">___ meetings</td></tr>
+        <tr><td><span class="m">Conversion rate</span></td><td>More prospects become clients — <span style="color:var(--muted)">of the prospects you reach out to</span></td><td class="fill" data-baseline="conversion">___ %</td></tr>
+        <tr><td><span class="m">Time to client</span></td><td>Prospects decide sooner — <span style="color:var(--muted)">days from first contact to signed client</span></td><td class="fill" data-baseline="days">___ days</td></tr>
+        <tr><td><span class="m">Revenue per client</span></td><td>Each new client is worth more — <span style="color:var(--muted)">average first-year revenue from a new client</span></td><td class="fill" data-baseline="revenue">$___</td></tr>
       </tbody></table>
     </div>
-    <p class="anim" style="margin-top:1.2rem;color:var(--muted);font-size:.95rem">The full baseline set — every metric, with where to find each — lives in the <a data-go="appendix" style="color:var(--grape);font-weight:600;cursor:pointer">Appendix</a>. Nothing is dropped; it's still tracked, just not the headline.</p>
+    <p class="anim" style="margin-top:1.2rem;color:var(--muted);font-size:.95rem">Once prospects come through Knomee, <strong style="font-weight:600;color:var(--ink-2)">Prospect Analytics</strong> tracks the same three for you — clients from the Convert to Client button, days from the invitation to the client, and revenue from the assets entered at conversion.</p>
   </div>
 </section>
 
@@ -734,7 +734,7 @@
     <div class="tabpanel active" data-panel="library">
       <p class="samples-note">🎬 Your firm has access to ~28 Knomee videos across four categories — here's the full catalog.</p>
       <div class="table-wrap"><table class="t"><thead><tr><th>Category</th><th>What's inside</th></tr></thead><tbody>
-        <tr><td><span class="m">Videos</span><br><span style="font-size:.82rem;color:var(--muted)">6 short concept pieces</span></td><td><ul class="vids"><li>Financial Joy</li><li>Meaning over Returns</li><li>The Questions You Never Ask</li><li>The Thinking Partner</li><li>Transitions Scramble What You Thought You Wanted</li><li>When Life Changes, Money Changes</li></ul></td></tr>
+        <tr><td><span class="m">Concepts</span><br><span style="font-size:.82rem;color:var(--muted)">6 short concept pieces</span></td><td><ul class="vids"><li>Financial Joy</li><li>Meaning over Returns</li><li>The Questions You Never Ask</li><li>The Thinking Partner</li><li>Transitions Scramble What You Thought You Wanted</li><li>When Life Changes, Money Changes</li></ul></td></tr>
         <tr><td><span class="m">Themes</span><br><span style="font-size:.82rem;color:var(--muted)">12 value / explainer pieces</span></td><td><ul class="vids"><li>Years in the Making / The Rigor</li><li>Wealth Creates More Decisions, Not Fewer</li><li>Smart People, Emotional Decisions</li><li>Prepare for the Conversation</li><li>Money Personality</li><li>Money Anxiety</li><li>Financial Joy / Your “Why” <em>(several in v1/v2 cuts)</em></li></ul></td></tr>
         <tr><td><span class="m">Interviews</span><br><span style="font-size:.82rem;color:var(--muted)">4 first-person stories</span></td><td><ul class="vids"><li>Context</li><li>Nobody Ever Asked Me That</li><li>The Most Expensive Mistake</li><li>What Wealth Doesn't Solve</li></ul></td></tr>
         <tr><td><span class="m">Adventure Teaching Scripts</span><br><span style="font-size:.82rem;color:var(--muted)">6-part educational series</span></td><td><ul class="vids"><li>Financial Joy</li><li>Confidence</li><li>Outlook</li><li>Future You</li><li>Goals</li><li>What Wealth Doesn't Solve</li></ul></td></tr>
@@ -748,7 +748,7 @@
     <div class="tabpanel" data-panel="planner">
       <p class="samples-note">🧭 Match each category to the right stage and channel, then pull the files from the library.</p>
       <div class="table-wrap"><table class="t"><thead><tr><th>Category</th><th>Stage</th><th>Where to embed</th></tr></thead><tbody>
-        <tr><td class="m">Videos</td><td><span class="stage c">Cold</span></td><td>Paid social, display, landing page hero</td></tr>
+        <tr><td class="m">Concepts</td><td><span class="stage c">Cold</span></td><td>Paid social, display, landing page hero</td></tr>
         <tr><td class="m">Themes</td><td><span class="stage w">Warm</span></td><td>Nurture emails, newsletter, LinkedIn</td></tr>
         <tr><td class="m">Interviews</td><td><span class="stage w">Warm</span><span class="stage h">Hot</span></td><td>Newsletter features, pre-meeting emails</td></tr>
         <tr><td class="m">Adventure Teaching Scripts</td><td><span class="stage w">Warm</span></td><td>Recurring newsletter block or drip sequence</td></tr>
@@ -787,7 +787,7 @@
 <div class="sample-store" id="sampleStore">
   <div data-sample-id="cold-1" data-type="Email · Curiosity · Option 1" class="lead-cold">
     <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">How well does your financial advisor really know you?</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Most financial advisors know your portfolio.</p><p>Far fewer understand what’s actually driving your decisions.</p><p>We’ve created a short, 8-minute experience that helps uncover what’s most important to you, what’s changing in your life, and the questions worth discussing with an advisor.</p><p>At the end, you’ll receive a personalized summary that’s yours to keep.</p><p>No sales pitch. No obligation. Just a clearer picture of what matters most to you — and whether your financial plan reflects it.</p><a class="email-cta">Take the Assessment →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
-    <div class="pairing"><b>Suggested pairing:</b> a short awareness Video from the Appendix library — e.g. ‘Meaning over Returns’ or ‘The Questions You Never Ask.’ Optional.</div>
+    <div class="pairing"><b>Suggested pairing:</b> a short Concept video from the Appendix library — e.g. ‘Meaning over Returns’ or ‘The Questions You Never Ask.’ Optional.</div>
   </div>
   <div data-sample-id="cold-2" data-type="Email · No Strings · Option 2" class="lead-cold">
     <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Most financial conversations start in the wrong place</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>Most financial conversations start with your money. Here’s a different place to start: <b>you.</b></p><p>I’m offering a free 8-minute guided experience that helps you clarify what you want your money to make possible, what matters most right now, and the financial questions you want answered.</p><p><b>You’ll walk away with:</b></p><p>- A clearer understanding of what’s most important to you</p><p>- Personalized insights about your financial priorities</p><p>- Better questions to ask any financial advisor</p><p><b>No appointment required.</b></p><a class="email-cta">Start Your Personalized Assessment →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
@@ -795,7 +795,7 @@
   </div>
   <div data-sample-id="cold-3" data-type="Paid Social / Display Ad" class="lead-cold">
     <div class="frame"><div class="frame-banner">👤</div><div class="frame-body" data-copy><div class="kicker">Sponsored</div><h4>The best financial plans start with better questions.</h4><p>Before talking about investments, discover what’s most important to you.</p><p>In just 8 minutes you’ll receive personalized insights that can help you have a more meaningful conversation with a financial advisor.</p><p>No appointment required. Insights are yours to keep.</p><span class="pill-cta">Get My Personalized Insights →</span></div></div>
-    <div class="pairing"><b>Suggested pairing:</b> a short awareness Video such as ‘Financial Joy’ or ‘When Life Changes, Money Changes,’ or a real, editorial human face.</div>
+    <div class="pairing"><b>Suggested pairing:</b> a short Concept video such as ‘Financial Joy’ or ‘When Life Changes, Money Changes,’ or a real, editorial human face.</div>
   </div>
   <div data-sample-id="cold-4" data-type="Direct Mail · Postcard" class="lead-cold">
     <div class="frame"><div class="frame-body" data-copy><div class="kicker">Front</div><p class="quote">You know what your money is worth.</p><p class="quote">Do you know what it’s for?</p><div class="kicker" style="margin-top:1.2rem">Back</div><p>Take 8 minutes to discover what’s driving your financial decisions.</p><p><b>You’ll uncover:</b></p><p>- What matters most to you right now</p><p>- The questions your financial plan should answer</p><p>- Personalized insights you can keep</p><p class="prod-note">[QR CODE → Knomee landing page, direct-mail UTM tag]</p></div></div>
