@@ -7,6 +7,12 @@
    Branding follows knomee-demo's white-label pattern: the firm's colour on the top bar only, its white logo where
    the knomee mark was, and a "powered by knomee" credit fixed to the bottom-left corner (firms/<slug>.json).
 
+   A firm with a "gate" in its config opens on a welcome screen in its own brand that asks for its password, once per
+   browser. The config holds sha256(token), the browser keeps token = sha256('knomee-firm:<slug>:' + password), so
+   neither the page nor the config carries the password. Like the editor's password, this only stops casual
+   access: the site is static. Inside the commenting shell (same origin, already behind the editor password) the
+   welcome screen is skipped. tools/firm_password.py sets or changes a firm's password.
+
    Usage events (tkTrack) carry the firm, the page, a random id for this browser and one for this visit — never a
    name, email or link. Nothing is recorded in the editor, inside the commenting shell, or in a browser opted out
    with ?notrack=1 (?notrack=0 opts back in). Browsers that unlocked the editor are tagged staff, local servers
@@ -23,7 +29,13 @@
   else if(FIRM){ store('knomee-toolkit-firm',FIRM); }
   else { FIRM=store('knomee-toolkit-firm')||''; }
   window.TK_FIRM=FIRM;
-  if(FIRM) document.documentElement.classList.add('firm-pending');
+  var KEY='knomee-firm-key:'+FIRM;
+  var inShell=(function(){ try{ return window.top!==window.self && window.top.location.origin===location.origin; }catch(e){ return false; } })();
+  if(FIRM){
+    document.documentElement.classList.add('firm-pending');
+    /* until the config says whether this firm has a password, a browser that hasn't unlocked it sees nothing */
+    if(!inShell && !store(KEY)) document.documentElement.classList.add('firm-gate-check');
+  }
 
   /* ── usage events ── */
   if(q.get('notrack')==='1') store('knomee-toolkit-notrack','1');
@@ -101,9 +113,66 @@
     }
   }
 
+  /* ── the welcome screen (firms with a password) ── */
+  function sha(s){ return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){ return Array.prototype.map.call(new Uint8Array(b),function(x){ return ('0'+x.toString(16)).slice(-2); }).join(''); }); }
+  function reveal(){ var r=document.documentElement; r.classList.remove('firm-gate-check'); r.classList.remove('firm-locked'); }
+
+  function gate(f){
+    if(!f.gate || inShell){ reveal(); return; }
+    var t=store(KEY);
+    (t ? sha(t) : Promise.resolve('')).then(function(h){
+      if(h===f.gate){ reveal(); return; }
+      if(t) store(KEY,null); /* the password changed since this browser unlocked */
+      showGate(f);
+    });
+  }
+
+  function showGate(f){
+    var name=f.name||FIRM, safe=String(name).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; });
+    var root=document.documentElement; root.classList.add('firm-locked'); root.classList.remove('firm-gate-check');
+    var g=document.createElement('div'); g.className='firm-gate';
+    g.setAttribute('role','dialog'); g.setAttribute('aria-modal','true'); g.setAttribute('aria-labelledby','fgTitle');
+    g.innerHTML=
+      '<div class="fg-main">'+
+        (f.logo ? '<img class="fg-logo" src="'+f.logo+'" alt="'+safe+'">' : '<div class="fg-name">'+safe+'</div>')+
+        '<form class="fg-card" novalidate>'+
+          /* a div rather than an h1: the main page styles every h1 (hidden until its entrance animation) */
+          '<div class="fg-title" id="fgTitle" role="heading" aria-level="1">Welcome to your Activation Toolkits</div>'+
+          '<p class="fg-sub">Enter the password '+safe+' shared with you.</p>'+
+          '<label class="fg-label" for="fgPass">Password</label>'+
+          '<input class="fg-input" id="fgPass" type="password" autocomplete="current-password" placeholder="Enter your password">'+
+          '<p class="fg-error" id="fgError" role="alert"></p>'+
+          '<button class="fg-continue" type="submit">Continue<svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true"><path d="M2 1l6 4-6 4z" fill="currentColor"/></svg></button>'+
+        '</form>'+
+      '</div>'+
+      (f.brand!=='white' ? '<div class="fg-foot"><span class="fg-credit"><span class="powered-by-text">powered by</span><img class="powered-by-logo" src="knomee-logo-plum.svg" alt="knomee"></span></div>' : '');
+    document.body.appendChild(g);
+    tkTrack('gate');
+    var input=g.querySelector('#fgPass'), err=g.querySelector('#fgError'), btn=g.querySelector('.fg-continue');
+    input.focus();
+    input.addEventListener('input',function(){ err.textContent=''; input.removeAttribute('aria-invalid'); });
+    g.querySelector('form').addEventListener('submit',function(e){
+      e.preventDefault();
+      var pw=input.value; if(!pw){ input.focus(); return; }
+      btn.disabled=true;
+      sha('knomee-firm:'+FIRM+':'+pw).then(function(t){ return sha(t).then(function(h){ return [t,h]; }); }).then(function(th){
+        btn.disabled=false;
+        if(th[1]!==f.gate){
+          err.textContent='That password doesn’t match. Check it and try again.';
+          input.setAttribute('aria-invalid','true'); input.select();
+          return;
+        }
+        store(KEY,th[0]);
+        tkTrack('unlock');
+        g.classList.add('is-leaving'); reveal();
+        setTimeout(function(){ g.remove(); },400);
+      });
+    });
+  }
+
   fetch('firms/'+FIRM+'.json',{cache:'no-cache'})
     .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function(f){ return new Promise(function(done){ whenReady(function(){ apply(f); done(); }); }); })
-    .catch(function(e){ console.warn('firm "'+FIRM+'" not found',e); })
+    .then(function(f){ return new Promise(function(done){ whenReady(function(){ apply(f); gate(f); done(); }); }); })
+    .catch(function(e){ console.warn('firm "'+FIRM+'" not found',e); whenReady(reveal); })
     .then(function(){ whenReady(ready); });
 })();

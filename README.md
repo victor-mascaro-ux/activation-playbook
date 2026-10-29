@@ -64,19 +64,40 @@ the editor's element keys line up with the live page's. If the build ever
 stops on a line that no longer matches, a live page's markup has moved:
 update the matching line in the build script.
 
+### Firm password (welcome screen)
+
+A firm whose config has a `"gate"` opens on a welcome screen in its own brand:
+its colour fills the screen, its white logo sits over a sign-in card (the
+knomee-demo sign-in card), and "POWERED BY knomee" holds the foot. Once the
+right password is in, that browser stays unlocked for all of the firm's
+pages. ACME's password is set.
+
+```bash
+python tools/firm_password.py acme            # set or change it (asked for, not shown)
+python tools/firm_password.py acme --remove   # no password
+```
+
+The config keeps only `sha256(sha256('knomee-firm:<slug>:' + password))`, and
+the browser keeps the inner hash, so the password itself is never stored.
+Changing it sends every browser back to the welcome screen. Like the editor
+password, this stops casual access only: the site is static, the config is
+public, and the same toolkits are open on the live pages. Inside the
+commenting shell, which is already behind the editor password, the welcome
+screen is skipped.
+
 To add a firm: copy `acme/` and `firms/acme.json` (plus its logo) under the new
-slug and edit them. The repo is public, so these files are too: prefer slugs
+slug and edit them, then give it a password or remove ACME's copied one. The repo is public, so these files are too: prefer slugs
 that don't spell out a customer's name.
 
 ### Usage events
 
-Every open, section view, sample open and template copy (button or a
-hand-selected copy) adds a document to the Firestore collection
+Every open, section view, sample open, template copy (button or a
+hand-selected copy), welcome screen shown and password accepted adds a document to the Firestore collection
 `toolkit-events`:
 
 | Field | Value |
 | --- | --- |
-| `type` | `open`, `view`, `sample_open`, `copy` |
+| `type` | `open`, `view`, `sample_open`, `copy`, `gate`, `unlock` |
 | `firm` | the slug, or `unknown` |
 | `kit` | `home`, `prospect`, `client` or `recruit` |
 | `view` / `sample` / `label` / `how` / `via` | what was viewed or copied, and how |
@@ -97,7 +118,7 @@ console; reads stay with the console:
 ```
 match /toolkit-events/{id} {
   allow create: if request.resource.data.keys().hasOnly(['type','firm','kit','vid','sid','env','staff','device','at','via','view','sample','label','how'])
-    && request.resource.data.type in ['open','view','sample_open','copy']
+    && request.resource.data.type in ['open','view','sample_open','copy','gate','unlock']
     && request.resource.data.firm is string && request.resource.data.firm.size() <= 40
     && request.resource.data.at == request.time;
   allow read, update, delete: if false;
