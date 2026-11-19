@@ -207,7 +207,7 @@
 /* an email's button is a rounded square, as knomee's product draws it (knomee-demo's invite email); the other
    samples keep the pill */
 .email-cta{border-radius:10px}
-  .email-body>:last-child,.frame-body>:last-child{margin-bottom:0}
+  .email-body>:last-child,.frame-body>:last-child,.frame-body>[data-copy]>:last-child{margin-bottom:0}
   .frame-head{background:var(--lead);color:#fff;padding:1rem 1.3rem;font-weight:700;font-size:1.15rem}
   .frame-from{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
   .frame-from b{display:block;color:var(--plum);font-weight:600;font-size:.95rem;line-height:1.3}.frame-from span{color:var(--muted);font-weight:300;font-size:.82rem}
@@ -806,7 +806,7 @@
     <div class="pairing"><b>Suggested pairing:</b> a recap from a past event, or a Theme like ‘Years in the Making / The Rigor.’</div>
   </div>
   <div data-sample-id="warm-4" data-type="LinkedIn InMail / Social" class="lead-warm">
-    <div class="frame"><div class="frame-body" data-copy><div class="frame-from"><div class="email-av">A</div><div><b>Advisor Name</b><span>LinkedIn InMail / Direct Message</span></div></div><p>Hi {{First Name}},</p><p>Here’s something I’ve noticed.</p><p>Most of us spend hours researching vacations, home projects, or even our next car, but very little time stepping back to ask a much bigger question:</p><p><b>What do I actually want my money to make possible?</b></p><p>Here’s a short way to start answering it.</p><p>It’s a free 8-minute check-in that shows what’s driving your financial decisions and the three money questions that matter most to you right now. You get a personal summary to keep.</p><p>You might be surprised by what you discover.</p><p>{{Link}}</p><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div><div class="frame-banner" style="height:150px">▶</div></div>
+    <div class="frame"><div class="frame-body"><div class="frame-from"><div class="email-av">A</div><div><b>Advisor Name</b><span>LinkedIn InMail / Direct Message</span></div></div><div data-copy><p>Hi {{First Name}},</p><p>Here’s something I’ve noticed.</p><p>Most of us spend hours researching vacations, home projects, or even our next car, but very little time stepping back to ask a much bigger question:</p><p><b>What do I actually want my money to make possible?</b></p><p>Here’s a short way to start answering it.</p><p>It’s a free 8-minute check-in that shows what’s driving your financial decisions and the three money questions that matter most to you right now. You get a personal summary to keep.</p><p>You might be surprised by what you discover.</p><p>{{Link}}</p><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div><div class="frame-banner" style="height:150px">▶</div></div>
     <div class="pairing"><b>Suggested pairing:</b> a short, editorial Theme or Interview clip (e.g. ‘Money Personality’) over a stock finance photo.</div>
   </div>
   <div data-sample-id="hot-1" data-type="Email · Confirmation" class="lead-hot">
