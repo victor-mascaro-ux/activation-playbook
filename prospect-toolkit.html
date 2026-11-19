@@ -219,6 +219,9 @@
   .kicker{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
   .frame-body h4{font-size:1.3rem;font-weight:700;color:var(--plum);margin-bottom:.5rem;line-height:1.25}
   .frame-body p{color:var(--ink-2);font-weight:300;margin-bottom:.9rem}
+  /* a text message: one received bubble */
+  .sms{background:#eef0f5;border-radius:18px 18px 18px 6px;padding:.85rem 1.05rem;max-width:32rem}
+  .frame-body .sms p{margin-bottom:.65rem}.sms>:last-child{margin-bottom:0}
     .quote{font-size:1.35rem;font-weight:500;color:var(--plum);line-height:1.35}
   .pairing{background:var(--lead-tint);border-radius:12px;padding:.9rem 1.1rem;font-size:.92rem;color:var(--ink-2);font-weight:300;margin-top:1rem}
   .pairing b{color:var(--lead-ink);font-weight:700}
@@ -339,7 +342,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <link rel="stylesheet" href="firm.css?v=ed9f3929d2">
-<script src="firm.js?v=e2f7691b07" data-kit="prospect"></script>
+<script src="firm.js?v=78b4bc6058" data-kit="prospect"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true"><symbol id="pb-logo" viewBox="0 0 236 24">
@@ -647,7 +650,7 @@
     <div class="tabs" data-tabs>
       <button class="tab active" data-tab="strategy">Strategy</button>
       <button class="tab" data-tab="play">Toolkit <span class="c">3</span></button>
-      <button class="tab" data-tab="samples">Samples <span class="c">3</span></button>
+      <button class="tab" data-tab="samples">Samples <span class="c">4</span></button>
       <button class="tab" data-tab="metrics">Metrics</button>
     </div>
     <div class="tabpanel active" data-panel="strategy">
@@ -660,7 +663,7 @@
     </div>
     <div class="tabpanel" data-panel="play">
       <div class="steps">
-        <div class="step"><span class="num">1</span><div class="step-body"><strong>Meeting confirmation email</strong><p>Invite the prospect to take the check-in before you meet.</p><span class="chip">📧 Email</span></div></div>
+        <div class="step"><span class="num">1</span><div class="step-body"><strong>Meeting confirmation email or text</strong><p>Invite the prospect to take the check-in before you meet. A short text works too, if your firm allows it.</p><span class="chip">📧 Email</span> <span class="chip">💬 Text</span></div></div>
         <div class="step"><span class="num">2</span><div class="step-body"><strong>Reminder, 2 days before</strong><p>One version if they haven't done the check-in, another if they have.</p><span class="chip">⏰ Reminder</span></div></div>
         <div class="step"><span class="num">3</span><div class="step-body"><strong>Meeting follow-up</strong><p>Keep the conversation open if the prospect hasn't signed yet.</p><span class="chip">🔁 Follow-up</span></div></div>
       </div>
@@ -669,6 +672,7 @@
       <p class="samples-note">📋 Tap any sample to open it — then copy the text straight into your tool.</p>
       <div class="sample-grid">
         <button class="scard" data-sample="hot-1"><span class="type">Email · Confirmation</span><h4>Before we meet</h4><span class="prev">I’m looking forward to meeting you. Before we do, take about 8 minutes for this short check-in…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
+        <button class="scard" data-sample="hot-4"><span class="type">Text Message · Confirmation</span><h4>A quick text before we meet</h4><span class="prev">Hi {{First Name}}, this is {{Advisor Name}} from {{Firm Name}}…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
         <button class="scard" data-sample="hot-2"><span class="type">Email · Reminder · 2 days before</span><h4>A quick reminder before we meet</h4><span class="prev">I’m looking forward to our conversation on {{Day}}…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
         <button class="scard" data-sample="hot-3"><span class="type">Email · Meeting Follow-Up</span><h4>Thank you</h4><span class="prev">Thank you again for meeting with me. I enjoyed our conversation…</span><span class="open">Open &amp; Copy <span class="arw">→</span></span></button>
       </div>
@@ -771,7 +775,7 @@
 <aside class="sheet" id="sheet" aria-label="Sample">
   <div class="sheet-head"><span class="st" id="sheetType">Sample</span><button class="sheet-x" id="sheetX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sheet-body" id="sheetBody"></div>
-  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy Text</span></button><span class="copy-hint">Paste it into your email tool and swap in your details.</span></div>
+  <div class="sheet-foot"><button class="copy-btn" id="copyBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy Text</span></button><span class="copy-hint">Paste it where you’ll send it and swap in your details.</span></div>
 </aside>
 
 <!-- ── SAMPLE STORE (hidden source content) ── -->
@@ -811,6 +815,12 @@
   <div data-sample-id="hot-1" data-type="Email · Confirmation" class="lead-hot">
     <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">Before we meet</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>I’m looking forward to meeting you.</p><p>Before we do, take about 8 minutes for this short check-in. It helps you organize your thoughts and uncover your top three money questions, and you’ll get a personal summary to keep.</p><p>We’ll skip the basic fact-finding and spend our time on the questions and goals that matter most to you.</p><a class="email-cta">Start Your Check-In →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
     <div class="pairing"><b>Suggested pairing:</b> an Interview such as ‘Context’ or ‘What Wealth Doesn’t Solve,’ linked under the CTA.</div>
+  </div>
+  <!-- the text's own words use straight apostrophes on purpose: a curly one sends an SMS as Unicode, 70 characters a
+       segment instead of 160. Only the message bubble is copied, not the From line above it. -->
+  <div data-sample-id="hot-4" data-type="Text Message · Confirmation" class="lead-hot">
+    <div class="frame"><div class="frame-body"><div class="frame-from"><div class="email-av">A</div><div><b>Advisor Name</b><span>Text Message</span></div></div><div class="sms" data-copy><p>Hi {{First Name}}, this is {{Advisor Name}} from {{Firm Name}}. Great connecting {{How You Met}}.</p><p>Before we meet, take this 8-minute check-in: {{Link}}</p><p>You'll leave with your top 3 money questions and a personal summary to keep, so our time goes to what matters most to you. No documents needed.</p></div></div></div>
+    <div class="pairing"><b>Before you send:</b> use your firm’s approved texting tool, and text only people who’ve shared their number with you. Check with your compliance team before your first text.</div>
   </div>
   <div data-sample-id="hot-2" data-type="Email · Reminder · 2 days before" class="lead-hot">
     <div class="email"><div class="email-chrome"><div class="dots3"><i></i><i></i><i></i></div><span>Mail — Inbox</span></div><div class="email-head"><div class="email-from"><div class="email-av">A</div><div><b>Advisor Name</b> <span>&lt;advisor@acme.com&gt;</span></div></div><div class="email-subj">A quick reminder before we meet</div></div><div class="email-body" data-copy><p>Hi {{First Name}},</p><p>I’m looking forward to our conversation on {{Day}}.</p><p>If you haven’t had a chance yet, there’s still time for the short check-in I sent over. It helps you get clear on what matters most and your top three money questions.</p><p>I’ll read your answers beforehand, so we can skip the background questions and focus on what’s most relevant to you.</p><p>Your summary is yours to keep, whatever you decide.</p><a class="email-cta">Start Your Check-In →</a><p>Best,<br>{{Advisor Name}}<br>{{Firm Name}}</p></div></div>
