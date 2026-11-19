@@ -113,7 +113,8 @@
   function fullLink(v){ return /^https?:\/\//i.test(v) ? v : 'https://'+v; }
   function medium(label){
     label=(label||'').toLowerCase();
-    return /paid|display|sponsored/.test(label) ? 'paid' : /email/.test(label) ? 'email' : /linkedin|social|message/.test(label) ? 'social'
+    return /paid|display|sponsored/.test(label) ? 'paid' : /email/.test(label) ? 'email' : /\btext\b|sms/.test(label) ? 'sms'
+      : /linkedin|social|message/.test(label) ? 'social'
       : /event/.test(label) ? 'event' : /mail|postcard/.test(label) ? 'print' : 'other';
   }
   /* the template rides along as a UTM tag, so starts can be counted per template (an advisor's own tags win) */
